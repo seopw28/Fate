@@ -71,7 +71,7 @@ STATES = [
     ("선공권 배너", "showInitiativeBanner('enemy','체력 동일 · 필드 카드 3 < 6')"),
     ("사운드 패널", "toggleSoundPanel(true)"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
-    ("수호신 선택", "playerGuardian=null; openGuardianSelect()"),
+    ("수호신 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
 ]
 
 def main():

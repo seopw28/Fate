@@ -7,8 +7,8 @@
  *   - 수호신 수치: dist/index.html 의 `const GUARDIANS={...}` 를 직접 읽는다 (단일 출처)
  *
  * 모델링한 규칙: 영웅 체력 100, 마나 3→10(+1/라운드), 등급 롤(A 15% +2 / B 35% +1 / C 50%), 선공권(체력↓ → 필드 카드↓ → 나),
- *   소환 직후 공격 불가(플레이어) / 즉시 공격(상대), 가장 왼쪽 카드 공격, 반격 없음, 화상(내 턴 종료 시 정산),
- *   수호신 4종(청룡·백호·주작·현무=영웅 피해 경감)과 상대 수호신 무작위 배정(내가 고른 것 제외).
+ *   소환 직후 공격 불가(플레이어) / 즉시 공격(상대), 가장 왼쪽 카드 공격, 반격 없음, 
+ *   수호신 4종(청룡=마나 회복·백호=살아남으면 즉시 반격·주작=뽑을 때 S급 +3·현무=치명타 생존)과 상대 수호신 무작위 배정(내가 고른 것 제외).
  * 모델링하지 않은 것: 마법/함정/필살기, 챔피언 개별 능력, 혈마나, 추가 드로우. (모든 카드를 바닐라 능력치로 취급)
  *
  * 모드:
@@ -55,7 +55,8 @@ const shuffle = (arr, rnd) => { const a = arr.slice(); for (let i = a.length - 1
 const HERO_HP = 100, MANA_CAP = 10, START_MANA = 3, FIELD_LIMIT = 6, HAND_LIMIT = 8, ROUND_CAP = 40;
 const AI = { atkWeight: 1, hpWeight: 0.7, manaWeight: 0.35 };
 const grade = rnd => { const r = rnd(); return r < 0.15 ? 2 : r < 0.5 ? 1 : 0; };
-const mkCard = (base, rnd) => ({ cost: base.cost, atk: base.atk + grade(rnd), hp: base.hp });
+// 주작: 카드를 뽑을 때 chance 확률로 S급(+3). 시작 손패 5장은 수호신 선택 전에 정해지므로 제외.
+const mkCard = (base, rnd, jujak = false) => ({ cost: base.cost, atk: base.atk + (jujak && rnd() < GUARDIANS.jujak.chance ? 3 : grade(rnd)), hp: base.hp });
 const value = c => c.atk * AI.atkWeight + c.hp * AI.hpWeight;
 
 function plan(hand, mana, slots) {
@@ -73,7 +74,7 @@ function plan(hand, mana, slots) {
 function playGame(playerGuardian, enemyGuardian, rnd) {
   const mkSide = (guardian) => ({
     guardian, hp: HERO_HP, healed: 0, prevented: 0, procs: 0,
-    deck: shuffle(POOL, rnd).slice(0, 60).map(b => mkCard(b, rnd)),
+    deck: shuffle(POOL, rnd).slice(0, 60).map((b, i) => mkCard(b, rnd, guardian === 'jujak' && i >= 5)),
     hand: [], field: [],
   });
   const P = mkSide(playerGuardian), E = mkSide(enemyGuardian);
@@ -83,15 +84,11 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
   let winner = null;
 
   function damageUnit(side, unit, dmg) {
-    // 현무 챔프 피해 경감: unitChance 확률로 unitRatio 만큼 덜 받는다 (최소 1)
-    if ((GUARDIANS.hyeonmu.unitRatio || GUARDIANS.hyeonmu.unitFlat) && side.guardian === 'hyeonmu' && rnd() < (GUARDIANS.hyeonmu.unitChance ?? GUARDIANS.hyeonmu.chance) && dmg > 1) dmg = Math.max(1, GUARDIANS.hyeonmu.unitFlat ? dmg - GUARDIANS.hyeonmu.unitFlat : Math.round(dmg * (1 - GUARDIANS.hyeonmu.unitRatio)));
-    if (dmg >= unit.hp && !unit.saved && (!GUARDIANS.baekho.maxProcs || side.procs < GUARDIANS.baekho.maxProcs) && proc(side, 'baekho')) { unit.saved = true; side.procs++; dmg = unit.hp - 1; }
+    if (dmg >= unit.hp && !unit.saved && (!GUARDIANS.hyeonmu.maxProcs || side.procs < GUARDIANS.hyeonmu.maxProcs) && proc(side, 'hyeonmu')) { unit.saved = true; side.procs++; dmg = unit.hp - 1; }
     unit.hp -= dmg;
     if (unit.hp <= 0) side.field = side.field.filter(u => u !== unit);
   }
   function hitHero(side, dmg) {
-    // 현무 피해 경감: 영웅이 피해를 받을 때 chance 확률로 ratio 만큼 덜 받는다 (ratio 기본 0 = 사용 안 함)
-    if (GUARDIANS.hyeonmu.ratio && proc(side, 'hyeonmu')) { const reduced = Math.max(1, Math.round(dmg * (1 - GUARDIANS.hyeonmu.ratio))); side.prevented += dmg - reduced; dmg = reduced; }
     side.hp -= dmg; if (side.hp <= 0 && !winner) winner = side === P ? 'enemy' : 'player'; }
   function attack(attackerSide, defenderSide, unit) {
     if (winner || unit.hp <= 0) return;
@@ -99,7 +96,8 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
     if (!targets.length) { hitHero(defenderSide, unit.atk); return; }
     const target = targets[0];
     damageUnit(defenderSide, target, unit.atk);
-    if (target.hp > 0 && (proc(attackerSide, 'jujak'))) target.burn = (target.burn || 0) + 1;
+    // 백호: 공격을 받고 살아남으면 chance 확률로 즉시 반격(자기 공격력만큼 공격자에게 피해)
+    if (target.hp > 0 && proc(defenderSide, 'baekho')) damageUnit(attackerSide, unit, target.atk);
   }
   function healHero(side) { const before = side.hp; side.hp = Math.min(HERO_HP, side.hp + GUARDIANS.hyeonmu.amount); side.healed += side.hp - before; }
 
