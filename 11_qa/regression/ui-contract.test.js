@@ -55,10 +55,12 @@ test('initial battle hand is generated from validated card data', () => {
 });
 
 test('opening fields are dealt from the shuffled decks', () => {
-  assert.ok(html.includes('enemyOpeningField = enemyDeck.splice(0,2)'), 'Enemy opening field must consume the top two shuffled cards');
-  assert.ok(html.includes('playerOpeningField=deck.splice(0,2)'), 'Player opening field must consume the top two shuffled cards');
+  assert.ok(html.includes('takeCards(enemyDeck,'), 'Enemy opening field must be drawn from the shuffled enemy deck');
+  assert.ok(html.includes('playerOpeningField=takeCards(deck,'), 'Player opening field must be drawn from the shuffled player deck');
+  assert.ok(html.includes('OPENING_MAX_COST=STARTING_MANA'), 'Opening field cards must not cost more than the starting mana');
+  assert.ok(html.includes('power<=budget'), 'Enemy opening power must not exceed the player opening power');
   assert.ok(html.includes('dealOpeningFields()'), 'Opening fields must replace static placeholder units');
-  assert.ok(html.includes('양쪽 덱의 맨 위 카드 2장'), 'The battle log must explain the opening deal');
+  assert.ok(html.includes('양쪽 덱에서 시작 마나 이하 비용의 카드 2장'), 'The battle log must explain the opening deal');
   assert.ok(html.includes('crypto?.randomUUID?.()'), 'Normal matches must receive a fresh shuffle seed');
   assert.ok(html.includes('requestedSeed||'), 'An explicit seed must remain available for deterministic QA');
 });
