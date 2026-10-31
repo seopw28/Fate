@@ -502,6 +502,19 @@
     @keyframes ultimate-pick-pulse { 50% { box-shadow:0 0 0 3px #ffb0b888,0 0 30px #f05769aa; } }
     @media(prefers-reduced-motion:reduce){ .ultimate-slot-empty.ultimate-cta,.hand.ultimate-arming .card.summon-card { animation:none; } }
     .draw-action.blood-option, .turn-actions .draw-action.blood-option { border-color:#d65b74; background:linear-gradient(135deg,#4a1c2b,#26131c); color:#ffd3dc; box-shadow:0 0 18px #d65b7455; }
+    /* 세팅 모드: 일반 정보(설명/공격력·체력)는 숨기고 필살기 정보를 표시 */
+    .ult-preview { display:none; }
+    .hand.ultimate-arming .card.summon-card .ult-preview { display:flex; flex-direction:column; align-items:center; gap:3px; margin-top:4px; text-align:center; }
+    .hand.ultimate-arming .card.summon-card > p, .hand.ultimate-arming .card.summon-card > .card-stats { display:none; }
+    .ult-preview small { color:#ff9aa4; font-size:8px; font-weight:700; letter-spacing:.3em; }
+    .ult-preview strong { color:#ffe3e5; font-size:14px; font-weight:700; letter-spacing:.02em; text-shadow:0 0 10px #ef6a7688; }
+    .ult-preview p { margin:0; color:#e8d3d6; font-size:11px; line-height:1.35; word-break:keep-all; }
+    .ult-preview .ult-meta { display:flex; gap:5px; margin-top:2px; }
+    .ult-preview .ult-meta span { padding:2px 7px; border:1px solid #ef6a7699; border-radius:99px; background:#3d1824; color:#ffd3dc; font-size:10px; font-weight:700; white-space:nowrap; }
+    .ult-preview em { color:#bda5aa; font-size:10px; font-style:normal; line-height:1.3; word-break:keep-all; }
+    .hand.ultimate-arming .card.summon-card { height:auto; min-height:0; aspect-ratio:auto; }
+    .hand.ultimate-arming .card.summon-card .art { flex:none; }
+    .hand.ultimate-arming .card.summon-card h3 { position:relative; z-index:1; flex:none; }
 </style>
 </head>
 <body>
@@ -1013,7 +1026,9 @@
       const baseAffordability=updateCardAffordability;
       updateCardAffordability=function(){baseAffordability();if(!(ultimateArmed&&!ultimateState))return;document.querySelectorAll('.hand .card').forEach(card=>{card.classList.remove('unaffordable','blood-option');card.dataset.bloodPayment='';card.setAttribute('aria-disabled','false');});};
       const baseRender=renderUltimate;
-      renderUltimate=function(){baseRender();const arming=Boolean(ultimateArmed&&!ultimateState);document.querySelector('.hand')?.classList.toggle('ultimate-arming',arming);updateCardAffordability();};
+      renderUltimate=function(){baseRender();const arming=Boolean(ultimateArmed&&!ultimateState);document.querySelector('.hand')?.classList.toggle('ultimate-arming',arming);updateCardAffordability();syncUltimatePreviews(arming);};
+      /* 세팅 모드에서는 카드의 일반 정보 대신 '장착 시 실제 적용될 필살기 정보'를 보여준다 (원본 DOM은 건드리지 않고 미리보기만 덧붙임) */
+      function syncUltimatePreviews(arming){document.querySelectorAll('.hand .card .ult-preview').forEach(node=>node.remove());if(!arming)return;document.querySelectorAll('.hand .card.summon-card').forEach(card=>{const spec=ultimateSpec(card),box=document.createElement('div');box.className='ult-preview';box.innerHTML='<small>ULTIMATE</small><strong></strong><p></p><div class="ult-meta"><span></span><span></span></div><em></em>';box.querySelector('strong').textContent=spec.title.split(' · ')[1]||spec.title;box.querySelector('p').textContent=spec.description;const meta=box.querySelectorAll('.ult-meta span');meta[0].textContent='마나 '+spec.cost;meta[1].textContent=spec.minTurn+'턴부터';box.querySelector('em').textContent='조건 · '+spec.condition;card.querySelector('h3').after(box);});}
       renderUltimate();
     })();
 
