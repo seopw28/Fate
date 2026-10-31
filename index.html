@@ -1019,7 +1019,7 @@
 
     /* 배경음악: Vex - 최후 결전 (BPM 125). 효과음이 묻히지 않도록 작게(BGM_VOLUME) 재생한다.
        브라우저 자동재생 정책 때문에 첫 클릭/키 입력 때 시작하고, 사운드 버튼이 효과음과 함께 켜고 끈다. */
-    const BGM_VOLUME=.25;
+    const BGM_VOLUME=.18;
     const bgm=new Audio('assets/audio/bgm-final-battle.mp3');bgm.loop=true;bgm.volume=BGM_VOLUME;bgm.preload='auto';
     function syncBgm(){if(soundOn&&!document.hidden)bgm.play().catch(()=>{});else bgm.pause();}
     function toggleSound(button){soundOn=!soundOn;if(button)button.textContent=soundOn?'🔊 사운드':'🔇 사운드';syncBgm();}
