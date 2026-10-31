@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 560" role="img" aria-label="되살린 사령">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#3a2a6e"/><stop offset=".55" stop-color="#17133a"/><stop offset="1" stop-color="#07070f"/></radialGradient>
+    <radialGradient id="glow" cx="50%" cy="42%" r="45%"><stop offset="0" stop-color="#9d7bff" stop-opacity=".55"/><stop offset="1" stop-color="#9d7bff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="robe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c2152"/><stop offset="1" stop-color="#0d0b1f" stop-opacity=".1"/></linearGradient>
+    <radialGradient id="eye" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#e9fff7"/><stop offset=".45" stop-color="#58f5c8"/><stop offset="1" stop-color="#58f5c8" stop-opacity="0"/></radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <rect width="640" height="560" fill="url(#bg)"/>
+  <ellipse cx="320" cy="250" rx="260" ry="230" fill="url(#glow)"/>
+  <!-- 떠도는 영혼 불꽃 -->
+  <g fill="#7ff0d2" opacity=".75" filter="url(#soft)"><circle cx="96" cy="410" r="14"/><circle cx="552" cy="360" r="11"/><circle cx="470" cy="470" r="9"/><circle cx="150" cy="190" r="8"/></g>
+  <g fill="#c9fff0"><circle cx="96" cy="410" r="4"/><circle cx="552" cy="360" r="3.5"/><circle cx="470" cy="470" r="3"/><circle cx="150" cy="190" r="3"/></g>
+  <!-- 로브 -->
+  <path d="M320 70 C210 70 150 160 150 270 C150 350 110 420 60 560 L580 560 C530 420 490 350 490 270 C490 160 430 70 320 70 Z" fill="url(#robe)" stroke="#8a6cff" stroke-opacity=".55" stroke-width="3"/>
+  <path d="M320 70 C250 78 205 130 195 215 C260 175 380 175 445 215 C435 130 390 78 320 70 Z" fill="#120d2b" stroke="#8a6cff" stroke-opacity=".5" stroke-width="2"/>
+  <!-- 해골 -->
+  <path d="M320 150 C255 150 222 200 224 252 C225 285 240 304 258 316 L258 350 C258 358 264 364 272 364 L368 364 C376 364 382 358 382 350 L382 316 C400 304 415 285 416 252 C418 200 385 150 320 150 Z" fill="#e9e4f5"/>
+  <path d="M320 150 C255 150 222 200 224 252 C225 285 240 304 258 316 L258 350 C258 358 264 364 272 364 L368 364 C376 364 382 358 382 350 L382 316 C400 304 415 285 416 252 C418 200 385 150 320 150 Z" fill="none" stroke="#b9a8ee" stroke-width="3"/>
+  <ellipse cx="282" cy="250" rx="30" ry="36" fill="#0a0818"/><ellipse cx="358" cy="250" rx="30" ry="36" fill="#0a0818"/>
+  <circle cx="282" cy="254" r="30" fill="url(#eye)"/><circle cx="358" cy="254" r="30" fill="url(#eye)"/>
+  <circle cx="282" cy="254" r="7" fill="#fff"/><circle cx="358" cy="254" r="7" fill="#fff"/>
+  <path d="M320 286 L304 322 L336 322 Z" fill="#0a0818"/>
+  <g stroke="#0a0818" stroke-width="4" stroke-linecap="round"><path d="M290 340 V362"/><path d="M310 340 V362"/><path d="M330 340 V362"/><path d="M350 340 V362"/></g>
+  <path d="M258 340 H382" stroke="#0a0818" stroke-width="4"/>
+  <!-- 균열 -->
+  <path d="M345 154 L332 190 L350 210" fill="none" stroke="#6e5fb0" stroke-width="3" stroke-linecap="round"/>
+</svg>
