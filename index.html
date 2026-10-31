@@ -515,11 +515,20 @@
     .hand.ultimate-arming .card.summon-card { height:auto; min-height:0; aspect-ratio:auto; }
     .hand.ultimate-arming .card.summon-card .art { flex:none; }
     .hand.ultimate-arming .card.summon-card h3 { position:relative; z-index:1; flex:none; }
+    /* === 사운드 설정 패널 (배경음악/효과음 슬라이더) === */
+    .sound-wrap { position:relative; }
+    .sound-panel { position:absolute; z-index:40; top:calc(100% + 8px); right:0; width:250px; display:flex; flex-direction:column; gap:14px; padding:16px; border:1px solid #3b4655; border-radius:12px; background:#111721f2; box-shadow:0 14px 40px #000a; }
+    .sound-panel[hidden] { display:none; }
+    .sound-panel label { display:grid; grid-template-columns:1fr auto; row-gap:8px; color:#d5dbe5; font-size:12px; font-weight:700; }
+    .sound-panel output { color:var(--gold); font-variant-numeric:tabular-nums; }
+    .sound-panel input[type=range] { grid-column:1 / -1; width:100%; margin:0; accent-color:#f3bd68; cursor:pointer; }
+    .sound-mute { padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:#171d27; color:#b4bdca; font-size:12px; }
+    .sound-mute:hover { border-color:#8d7046; color:#f3c976; }
 </style>
 </head>
 <body>
   <main class="app">
-    <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><div class="top-actions"><span class="ghost cracker-wallet">◆ 크래커 <strong id="cracker-count">0</strong></span><button class="ghost" id="sound-toggle" onclick="toggleSound(this)">🔊 사운드</button><button class="ghost" onclick="openCollection('deck')">카드 소환 · 덱 편집</button><button class="ghost">게임 나가기</button></div></header>
+    <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><div class="top-actions"><span class="ghost cracker-wallet">◆ 크래커 <strong id="cracker-count">0</strong></span><div class="sound-wrap"><button class="ghost" id="sound-toggle" onclick="toggleSoundPanel()" aria-haspopup="true" aria-expanded="false">🔊 사운드</button><div class="sound-panel" id="sound-panel" hidden><label><span>배경음악</span><output id="bgm-value">25%</output><input type="range" id="bgm-slider" min="0" max="100" step="1" aria-label="배경음악 볼륨"></label><label><span>효과음</span><output id="sfx-value">100%</output><input type="range" id="sfx-slider" min="0" max="100" step="1" aria-label="효과음 볼륨"></label><button class="sound-mute" id="sound-mute" onclick="toggleMute()">🔇 전체 음소거</button></div></div><button class="ghost" onclick="openCollection('deck')">카드 소환 · 덱 편집</button><button class="ghost">게임 나가기</button></div></header>
     <div class="layout">
       <section class="battle">
         <div class="status"><span>랭크전 · 시즌 01</span><span>연쇄 <strong id="combo-count">0</strong> · 전투 기록 <strong>03:42</strong></span></div>
@@ -708,12 +717,13 @@
     function drawQuote(){const cost=drawActionsUsed+1,quote=bloodManaQuote(cost);return {cost,quote,paidMana:Math.min(mana,cost),blood:quote.shortage>0&&quote.affordable};}
     function updateDrawAction(){ const button=document.querySelector('#draw-action');if(!button)return;const handSize=document.querySelectorAll('.hand .card').length,{cost,quote,paidMana,blood}=drawQuote(),reason=battlePhase!=='setup'?'전투 진행 중':handSize>=8?'손패 가득 참':!deck.length?'덱 없음':quote.affordable?'':quote.unlocked&&quote.shortage?'체력 부족 · 혈마나 ♥'+quote.healthCost:'마나 '+cost+' 필요';button.disabled=Boolean(reason);button.classList.toggle('blood-option',blood&&!reason);button.innerHTML=reason?'＋ 카드 뽑기 <small>· '+reason+'</small>':blood?'＋ 카드 뽑기 <small>· 마나 '+paidMana+' + 부족 '+quote.shortage+' = ♥'+quote.healthCost+' · '+cost+'번째</small>':'＋ 카드 뽑기 <small>· 마나 '+cost+' · '+cost+'번째</small>'; }
     function useDrawAction(){ const {cost,quote,paidMana}=drawQuote();if(battlePhase!=='setup'||!quote.affordable||!deck.length||document.querySelectorAll('.hand .card').length>=8){updateDrawAction();return;}const missing=cost-paidMana,healthCost=missing*quote.rate;mana-=paidMana;if(healthCost){playerHp-=healthCost;bloodManaUses++;document.querySelector('#player-health').style.width=(playerHp/60*100)+'%';showBloodManaSpend(healthCost);}drawActionsUsed++;drawCard();updateMana();if(paidMana)showManaSpend(paidMana,'카드 뽑기');writeLog('<strong>이번 턴 '+drawActionsUsed+'번째 카드 뽑기</strong>'+(healthCost?': 남은 마나 '+paidMana+'을 먼저 소진하고, 부족한 마나 '+missing+'을 혈마나로 전환해 체력 '+healthCost+'을 지불했습니다. (남은 체력 '+playerHp+')':'로 마나 '+cost+'을 사용했습니다.')+' 다음 비용은 마나 '+(cost+1)+'입니다.'); }
-    let soundOn=true; let audioCtx; const audioFiles={slash:new Audio('assets/audio/sword-slash.mp3'), explosion:new Audio('assets/audio/explosion-impact.mp3'), metal:new Audio('assets/audio/metal-impact.mp3')}; Object.values(audioFiles).forEach(a=>a.preload='auto');
+    const AUDIO_PREF_KEY='fate.audio',audioPrefs=(()=>{const base={bgm:.25,sfx:1,muted:false};try{return Object.assign(base,JSON.parse(localStorage.getItem('fate.audio')||'{}'));}catch(e){return base;}})();
+    let soundOn=!audioPrefs.muted; let audioCtx; const audioFiles={slash:new Audio('assets/audio/sword-slash.mp3'), explosion:new Audio('assets/audio/explosion-impact.mp3'), metal:new Audio('assets/audio/metal-impact.mp3')}; Object.values(audioFiles).forEach(a=>a.preload='auto');
     function audioEngine(){if(!soundOn)return null;audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});return audioCtx;}
-    function tone(freq,duration,type='sine',volume=.08,endFreq=freq,delay=0){const ctx=audioEngine();if(!ctx)return;const start=ctx.currentTime+delay,o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,start);o.frequency.exponentialRampToValueAtTime(Math.max(20,endFreq),start+duration);g.gain.setValueAtTime(.001,start);g.gain.exponentialRampToValueAtTime(volume,start+.012);g.gain.exponentialRampToValueAtTime(.001,start+duration);o.connect(g);g.connect(ctx.destination);o.start(start);o.stop(start+duration+.02);}
-    function noise(duration=.12,volume=.04,filterFreq=1200,delay=0){const ctx=audioEngine();if(!ctx)return;const start=ctx.currentTime+delay,length=Math.ceil(ctx.sampleRate*duration),buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);const source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();source.buffer=buffer;filter.type='bandpass';filter.frequency.value=filterFreq;filter.Q.value=.8;gain.gain.setValueAtTime(volume,start);gain.gain.exponentialRampToValueAtTime(.001,start+duration);source.connect(filter);filter.connect(gain);gain.connect(ctx.destination);source.start(start);}
+    function tone(freq,duration,type='sine',volume=.08,endFreq=freq,delay=0){const ctx=audioEngine();if(!ctx)return;const start=ctx.currentTime+delay,o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,start);o.frequency.exponentialRampToValueAtTime(Math.max(20,endFreq),start+duration);g.gain.setValueAtTime(.001,start);g.gain.exponentialRampToValueAtTime(volume,start+.012);g.gain.exponentialRampToValueAtTime(.001,start+duration);o.connect(g);g.connect(sfxBus(ctx));o.start(start);o.stop(start+duration+.02);}
+    function noise(duration=.12,volume=.04,filterFreq=1200,delay=0){const ctx=audioEngine();if(!ctx)return;const start=ctx.currentTime+delay,length=Math.ceil(ctx.sampleRate*duration),buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);const source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();source.buffer=buffer;filter.type='bandpass';filter.frequency.value=filterFreq;filter.Q.value=.8;gain.gain.setValueAtTime(volume,start);gain.gain.exponentialRampToValueAtTime(.001,start+duration);source.connect(filter);filter.connect(gain);gain.connect(sfxBus(ctx));source.start(start);}
     const AUDIO_GAIN={explosion:.9};/* 효과음별 볼륨 보정: 폭발음은 다른 효과음보다 커서 기존 대비 90% */
-    function playAudio(name,volume=.65,rate=1){if(!soundOn)return;const audio=audioFiles[name].cloneNode();audio.volume=Math.min(1,volume*(AUDIO_GAIN[name]??1));audio.playbackRate=rate;audio.play().catch(()=>{});}
+    function playAudio(name,volume=.65,rate=1){if(!soundOn)return;const audio=audioFiles[name].cloneNode();audio.volume=Math.min(1,volume*(AUDIO_GAIN[name]??1)*audioPrefs.sfx);audio.playbackRate=rate;audio.play().catch(()=>{});}
     let sfxStep=0;
     function sfx(kind,variant='neutral',strength=3){if(!soundOn)return;const pitch=(1+(Math.random()-.5)*.1)*[.97,1,1.035,1.015][sfxStep++%4],power=Math.min(1,Math.max(.35,strength/8));
       if(kind==='ui-select'){tone((sfxStep%2?430:510)*pitch,.045,'triangle',.022,650*pitch);return;}
@@ -1033,14 +1043,24 @@
       renderUltimate();
     })();
 
-    /* 배경음악: Vex - 최후 결전 (BPM 125). 효과음이 묻히지 않도록 작게(BGM_VOLUME) 재생한다.
-       브라우저 자동재생 정책 때문에 첫 클릭/키 입력 때 시작하고, 사운드 버튼이 효과음과 함께 켜고 끈다. */
-    const BGM_VOLUME=.25;
-    const bgm=new Audio('assets/audio/bgm-final-battle.mp3');bgm.loop=true;bgm.volume=BGM_VOLUME;bgm.preload='auto';
-    function syncBgm(){if(soundOn&&!document.hidden)bgm.play().catch(()=>{});else bgm.pause();}
-    function toggleSound(button){soundOn=!soundOn;if(button)button.textContent=soundOn?'🔊 사운드':'🔇 사운드';syncBgm();}
+    /* 배경음악: Vex - 최후 결전 (BPM 125). 볼륨은 사운드 패널의 슬라이더로 조절하고 localStorage에 저장한다.
+       브라우저 자동재생 정책 때문에 첫 클릭/키 입력 때 시작한다. */
+    const bgm=new Audio('assets/audio/bgm-final-battle.mp3');bgm.loop=true;bgm.volume=audioPrefs.bgm;bgm.preload='auto';
+    var sfxBusNode=null;
+    function sfxBus(ctx){if(!sfxBusNode||sfxBusNode.context!==ctx){sfxBusNode=ctx.createGain();sfxBusNode.connect(ctx.destination);}sfxBusNode.gain.value=audioPrefs.sfx;return sfxBusNode;}
+    function saveAudioPrefs(){try{localStorage.setItem(AUDIO_PREF_KEY,JSON.stringify(audioPrefs));}catch(e){}}
+    function syncBgm(){if(soundOn&&!document.hidden&&audioPrefs.bgm>0)bgm.play().catch(()=>{});else bgm.pause();}
+    function renderSoundPanel(){const bgmSlider=document.querySelector('#bgm-slider'),sfxSlider=document.querySelector('#sfx-slider');bgmSlider.value=Math.round(audioPrefs.bgm*100);sfxSlider.value=Math.round(audioPrefs.sfx*100);document.querySelector('#bgm-value').textContent=bgmSlider.value+'%';document.querySelector('#sfx-value').textContent=sfxSlider.value+'%';document.querySelector('#sound-toggle').textContent=soundOn?'🔊 사운드':'🔇 사운드';document.querySelector('#sound-mute').textContent=soundOn?'🔇 전체 음소거':'🔊 음소거 해제';}
+    function toggleSoundPanel(force){const panel=document.querySelector('#sound-panel'),open=force===undefined?panel.hidden:force;panel.hidden=!open;document.querySelector('#sound-toggle').setAttribute('aria-expanded',String(open));if(open)renderSoundPanel();}
+    function toggleMute(){soundOn=!soundOn;audioPrefs.muted=!soundOn;saveAudioPrefs();syncBgm();renderSoundPanel();}
+    document.querySelector('#bgm-slider').addEventListener('input',e=>{audioPrefs.bgm=e.target.value/100;bgm.volume=audioPrefs.bgm;saveAudioPrefs();syncBgm();renderSoundPanel();});
+    document.querySelector('#sfx-slider').addEventListener('input',e=>{audioPrefs.sfx=e.target.value/100;if(sfxBusNode)sfxBusNode.gain.value=audioPrefs.sfx;saveAudioPrefs();renderSoundPanel();});
+    document.querySelector('#sfx-slider').addEventListener('change',()=>playAudio('metal',.4));
+    document.addEventListener('pointerdown',e=>{if(!e.target.closest('.sound-wrap'))toggleSoundPanel(false);});
+    addEventListener('keydown',e=>{if(e.key==='Escape')toggleSoundPanel(false);});
     ['pointerdown','keydown'].forEach(type=>addEventListener(type,function startBgm(){syncBgm();if(!bgm.paused)['pointerdown','keydown'].forEach(t=>removeEventListener(t,startBgm));},{capture:true}));
     document.addEventListener('visibilitychange',syncBgm);
+    renderSoundPanel();
 </script>
 </body>
 </html>
