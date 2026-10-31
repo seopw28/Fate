@@ -65,7 +65,7 @@ test('opening fields are dealt from the shuffled decks', () => {
 
 test('equipped ultimate remains visible when temporarily locked', () => {
   assert.ok(html.includes('button.hidden=!ultimateState||ultimateUsed'), 'Equipped ultimate action must only disappear before equip or after use');
-  assert.ok(html.includes("'필살기 대기 · '+reason"), 'Locked ultimate action must explain why it cannot fire');
+  assert.ok(html.includes('필살기 대기</span><span class="ult-reason">\'+reason'), 'Locked ultimate action must explain why it cannot fire');
   assert.ok(html.includes("button.classList.toggle('locked'"), 'Locked ultimate action must keep a persistent field state');
 });
 

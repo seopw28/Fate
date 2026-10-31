@@ -64,6 +64,7 @@ STATES = [
     ("뽑기 가능", "mana=9; document.querySelectorAll('.hand .card').forEach((c,i)=>{if(i>3)c.remove()}); updateDrawAction()"),
     ("뽑기 5번째", "drawActionsUsed=9; mana=9; updateDrawAction()"),
     ("마나 부족", "drawActionsUsed=4; mana=0; updateDrawAction()"),
+    ("필살기 대기", "ultimateState=ultimateSpec(document.querySelector('.hand .card')); ultimateUsed=false; renderFieldUltimateAction()"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
 ]
 
