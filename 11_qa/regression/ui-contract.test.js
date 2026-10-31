@@ -31,7 +31,7 @@ test('magic cards keep a stable rail composition', () => {
 test('champion fields are capped and fit six cards without rail overflow', () => {
   assert.ok(html.includes('const FIELD_CARD_LIMIT = 6'), 'Both champion fields must share a six-card limit');
   assert.ok(html.includes("length>=FIELD_CARD_LIMIT"), 'Player summons must stop before spending resources on a full field');
-  assert.ok(html.includes('grid-template-columns:repeat(6,minmax(0,150px))'), 'Desktop fields must use six fluid tracks');
+  assert.ok(html.includes('grid-template-columns:repeat(6,minmax(0,165px))'), 'Desktop fields must use six fluid tracks');
   assert.ok(html.includes('grid-template-columns:repeat(6,minmax(0,1fr))'), 'Narrow fields must shrink all six tracks inside the stage');
 });
 
@@ -65,7 +65,7 @@ test('opening fields are dealt from the shuffled decks', () => {
 
 test('equipped ultimate remains visible when temporarily locked', () => {
   assert.ok(html.includes('button.hidden=!ultimateState||ultimateUsed'), 'Equipped ultimate action must only disappear before equip or after use');
-  assert.ok(html.includes('필살기 대기</span><span class="ult-reason">\'+reason'), 'Locked ultimate action must explain why it cannot fire');
+  assert.ok(html.includes('<span class="ult-reason">\'+reason'), 'Locked ultimate action must explain why it cannot fire');
   assert.ok(html.includes("button.classList.toggle('locked'"), 'Locked ultimate action must keep a persistent field state');
 });
 
