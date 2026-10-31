@@ -5,7 +5,6 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function createPrimalEngine() {
   'use strict';
 
-  const ELEMENT_ADVANTAGE = Object.freeze({ fire: 'wind', wind: 'earth', earth: 'water', water: 'fire' });
   const ACTIONS = Object.freeze({
     PLAY_CARD: 'PLAY_CARD',
     DECLARE_ATTACK: 'DECLARE_ATTACK',
@@ -53,12 +52,9 @@
     });
   }
 
-  function calculateDamage(base, attackerElement, defenderElement) {
-    const amount = Math.max(0, Number(base) || 0);
-    if (attackerElement === 'neutral' || defenderElement === 'neutral') return { damage: amount, modifier: 1, label: '' };
-    if (ELEMENT_ADVANTAGE[attackerElement] === defenderElement) return { damage: Math.round(amount * 1.3), modifier: 1.3, label: '상성 유리 +30%' };
-    if (ELEMENT_ADVANTAGE[defenderElement] === attackerElement) return { damage: Math.round(amount * 0.8), modifier: 0.8, label: '상성 불리 -20%' };
-    return { damage: amount, modifier: 1, label: '' };
+  /* 속성 상성은 폐지: 피해량은 속성과 무관하다. (시그니처는 어댑터 호환을 위해 유지) */
+  function calculateDamage(base) {
+    return { damage: Math.max(0, Number(base) || 0), modifier: 1, label: '' };
   }
 
   function createMatchState({ matchId = 'local', seed = 'local', players, startingPlayer = 0 } = {}) {
@@ -122,5 +118,5 @@
     return { ok: true, state: next, events: [event] };
   }
 
-  return Object.freeze({ ACTIONS, ELEMENT_ADVANTAGE, createRng, calculateDamage, createMatchState, validateAction, applyAction });
+  return Object.freeze({ ACTIONS, createRng, calculateDamage, createMatchState, validateAction, applyAction });
 });
