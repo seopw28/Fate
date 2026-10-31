@@ -7,7 +7,7 @@
 import sys
 from playwright.sync_api import sync_playwright
 
-URL = next((a for a in sys.argv[1:] if a.startswith("http")), "http://localhost:8765/index.html?skipIntro")
+URL = next((a for a in sys.argv[1:] if a.startswith("http")), "http://localhost:8765/index.html?skipIntro&guardian=baekho")
 VIEWPORTS = [(1568, 900), (1366, 768), (1100, 800), (1000, 900)]
 if "--mobile" in sys.argv:
     VIEWPORTS += [(640, 900), (390, 844)]  # 현재 데스크톱 전용 레이아웃이라 기본에서는 제외
@@ -71,6 +71,7 @@ STATES = [
     ("선공권 배너", "showInitiativeBanner('enemy','체력 동일 · 필드 카드 3 < 6')"),
     ("사운드 패널", "toggleSoundPanel(true)"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
+    ("수호신 선택", "playerGuardian=null; openGuardianSelect()"),
 ]
 
 def main():

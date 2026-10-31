@@ -9,9 +9,9 @@ test('seeded RNG reproduces the same sequence and shuffle', () => {
   assert.deepEqual(left.shuffle([1, 2, 3, 4, 5]), right.shuffle([1, 2, 3, 4, 5]));
 });
 
-test('element damage is resolved by one deterministic rule', () => {
-  assert.deepEqual(engine.calculateDamage(10, 'fire', 'wind'), { damage: 13, modifier: 1.3, label: '상성 유리 +30%' });
-  assert.deepEqual(engine.calculateDamage(10, 'wind', 'fire'), { damage: 8, modifier: 0.8, label: '상성 불리 -20%' });
+test('element affinity is removed: damage ignores elements', () => {
+  assert.deepEqual(engine.calculateDamage(10, 'fire', 'wind'), { damage: 10, modifier: 1, label: '' });
+  assert.deepEqual(engine.calculateDamage(10, 'wind', 'fire'), { damage: 10, modifier: 1, label: '' });
   assert.deepEqual(engine.calculateDamage(10, 'neutral', 'fire'), { damage: 10, modifier: 1, label: '' });
 });
 
