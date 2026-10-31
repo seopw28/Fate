@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>아마테라스 — 검은 불꽃 이펙트</title>
+<style>
+@font-face{font-family:'GmarketSans';font-weight:300;font-style:normal;font-display:swap;src:url('../../dist/assets/fonts/GmarketSansLight.ttf') format('truetype')}
+@font-face{font-family:'GmarketSans';font-weight:500;font-style:normal;font-display:swap;src:url('../../dist/assets/fonts/GmarketSansMedium.ttf') format('truetype')}
+@font-face{font-family:'GmarketSans';font-weight:700;font-style:normal;font-display:swap;src:url('../../dist/assets/fonts/GmarketSansBold.ttf') format('truetype')}
+
+@font-face{font-family:'GmarketSans';font-weight:300;font-style:normal;font-display:swap;src:url('../../assets/fonts/GmarketSansLight.ttf') format('truetype')}
+@font-face{font-family:'GmarketSans';font-weight:500;font-style:normal;font-display:swap;src:url('../../assets/fonts/GmarketSansMedium.ttf') format('truetype')}
+@font-face{font-family:'GmarketSans';font-weight:700;font-style:normal;font-display:swap;src:url('../../assets/fonts/GmarketSansBold.ttf') format('truetype')}
+
+  html, body { margin: 0; height: 100%; background: #0b0710; overflow: hidden; }
+  canvas { display: block; width: 100%; height: 100%; }
+  #label {
+    position: fixed; left: 0; right: 0; bottom: 6%; text-align: center;
+    color: #d8b8c8; font: 700 28px/1 'GmarketSans', 'Apple SD Gothic Neo', sans-serif; letter-spacing: .4em;
+    text-shadow: 0 0 12px #6a2ac8; pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div id="label">아마테라스</div>
+<script src="amaterasu-flame.js"></script>
+<script>
+const fx = new AmaterasuFlame(document.getElementById('fx'));
+fx.start();
+</script>
+</body>
+</html>
