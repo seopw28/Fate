@@ -67,6 +67,7 @@ STATES = [
     ("마나 부족", "drawActionsUsed=4; mana=0; updateDrawAction()"),
     ("필살기 대기", "ultimateState=ultimateSpec(document.querySelector('.hand .card')); ultimateUsed=false; renderFieldUltimateAction()"),
     ("필살기 세팅 모드", "ultimateState=null; ultimateUsed=false; battlePhase='setup'; setHandFilter('champion'); armUltimateSetting()"),
+    ("사운드 패널", "toggleSoundPanel(true)"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
 ]
 
