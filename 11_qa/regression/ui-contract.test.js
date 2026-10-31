@@ -31,7 +31,7 @@ test('magic cards keep a stable rail composition', () => {
 test('champion fields are capped and fit six cards without rail overflow', () => {
   assert.ok(html.includes('const FIELD_CARD_LIMIT = 6'), 'Both champion fields must share a six-card limit');
   assert.ok(html.includes("length>=FIELD_CARD_LIMIT"), 'Player summons must stop before spending resources on a full field');
-  assert.ok(html.includes('grid-template-columns:repeat(6,minmax(0,165px))'), 'Desktop fields must use six fluid tracks');
+  assert.ok(html.includes('grid-template-columns:repeat(6,minmax(0,182px))'), 'Desktop fields must use six fluid tracks');
   assert.ok(html.includes('grid-template-columns:repeat(6,minmax(0,1fr))'), 'Narrow fields must shrink all six tracks inside the stage');
 });
 
