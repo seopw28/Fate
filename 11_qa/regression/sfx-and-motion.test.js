@@ -197,7 +197,7 @@ test('모션: 공격력이 높을수록 움직임이 크다', () => {
 // ───────── 연결 (index.html) ─────────
 test('연결: 스크립트 로드, 피격음 교체, 평타 모션/소리, 칸 밖 잘림 방지', () => {
   assert.ok(html.includes('<script src="runtime/sfx-variety.js"></script>') && html.includes('<script src="runtime/attack-motions.js"></script>'), 'Both modules must be loaded');
-  assert.ok(html.includes("sfx=function(kind,variant='neutral',strength=3){if(kind==='hit'&&soundOn){fateSfx.playHit(variant,strength,hitPan);return;}"), 'Hit sound must route through the variety engine');
+  assert.ok(html.includes("if(kind==='hit'&&soundOn){fateSfx.playHit(variant,strength,hitPan);return;}"), 'Hit sound must route through the variety engine');
   assert.ok(html.includes('hitPan=panFor(target);sfx(\'hit\',element,damage)'), 'Hit sound must be panned toward the target');
   assert.ok(html.includes('const motion=pickAttackMotion(attacker,dx,dy,moveX,moveY);attacker.animate(motion.keyframes'), 'Attacks must use the varied motion');
   assert.ok(html.includes('combatMs(Math.round(motion.duration*motion.hit))'), 'Impact must land at the motion contact point');
@@ -468,7 +468,7 @@ test('번개 소리: 물 공격의 번개 연출 전용 샘플을 쓰고, 팩이
 });
 
 test('번개 소리 연결: 물 공격에서 아주르 썬더폴 연출이 뜰 때 번개 소리를 함께 낸다', () => {
-  assert.ok(html.includes("if(element==='water'){showCinematicSkillEffect('lightning','아주르 썬더폴',1);fateSfx.playLightning(0);}"), 'Water attack lightning cinematic must have its own thunder sound');
+  assert.ok(html.includes("showCinematicSkillEffect('lightning','아주르 썬더폴',1);muteSfx(['hit:water'],1200);thunderfallAt=performance.now();fateSfx.playLightning(0);}"), 'Water attack lightning cinematic must have its own thunder sound');
 });
 
 test('물 피격음에는 폭발(천둥 같은 울림) 샘플을 섞지 않는다 — 번개 소리는 연출 전용으로 분리', () => {
@@ -491,4 +491,21 @@ test('번개 소리: 잔향 전송을 하지 않고 꼬리 길이를 조절할 �
   scheduled.length = 0;
   assert.equal(api.playLightning(0), true);
   assert.ok(Math.max(...scheduled) > 2.5, '기본은 길게(2.7초)');
+});
+
+// ───────── 스킬 고유 소리만 (번개 계열에는 번개, 빙결 계열에는 빙결) ─────────
+test('스킬 고유 소리: 아주르 썬더폴은 번개만, 빙결 계열은 빙결만 — 섞이는 일반 소리를 끈다', () => {
+  assert.ok(html.includes("function muteSfx(keys,ms)") && html.includes("function sfxIsMuted(kind,variant)"), 'Temporary mute helpers must exist');
+  assert.ok(html.includes("sfx=function(kind,variant='neutral',strength=3){if(soundOn&&sfxIsMuted(kind,variant))return;"), 'Every sound must pass the mute check first');
+  // 아주르 썬더폴: 일반 공격음 없음 + 물 피격음 음소거 + 휘두르는 소리 없음
+  assert.ok(html.includes("if(element!=='water')sfx('attack',element,3);"), 'Thunderfall must not play the generic water attack sound');
+  assert.ok(html.includes("muteSfx(['hit:water'],1200);thunderfallAt=performance.now();fateSfx.playLightning(0);"), 'Thunderfall must mute the water hit and play only lightning');
+  assert.ok(html.includes("if(performance.now()-thunderfallAt>300)fateSfx.playSwing("), 'Thunderfall must not play the generic swing sound');
+  // 빙결 계열(빙결 사슬 = champion-control, 프로스트 노바): 일반 마법 시전음·마법 효과음·물 피격음 끔
+  assert.ok(html.includes("['champion-control','frost-nova'].includes(card?.dataset?.effect))muteSfx(['spell','magic','hit:water'],1800)"), 'Frost spells must only have frost sounds');
+});
+
+test('스킬 소리 검사 스크립트가 있다 (실제 브라우저로 소리 구성을 확인)', () => {
+  const script = fs.readFileSync(path.join(root, '12_tools/qa/check-skill-sounds.py'), 'utf8');
+  for (const token of ['playLightning', 'playFrost', 'playHit:water', 'frozen-chain', 'frost-nova', 'INDEX_OVERRIDE']) assert.ok(script.includes(token), `check-skill-sounds.py must cover ${token}`);
 });
