@@ -69,7 +69,9 @@ STATES = [
     ("필살기 세팅 모드", "ultimateState=null; ultimateUsed=false; battlePhase='setup'; setHandFilter('champion'); armUltimateSetting()"),
     ("마법 세팅 모드", "battlePhase='setup'; setHandFilter('spell'); armMagicSetting()"),
     ("선공권 배너", "showInitiativeBanner('enemy','체력 동일 · 필드 카드 3 < 6')"),
+    ("대재앙 카드", "document.querySelector('.hand').appendChild(createRuntimeBattleCard('storm.great-ruin')); setHandFilter('spell')"),
     ("사운드 패널", "toggleSoundPanel(true)"),
+    ("최후의 발악 안내", "showDesperateNotice('enemy',{instant:true})"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
     ("수호신 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
 ]

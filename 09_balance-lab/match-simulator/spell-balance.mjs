@@ -5,7 +5,7 @@
  * 한쪽 시작 손패에만 마법 K장을 추가로 주고(--replace면 덱의 챔피언 K장과 교체) 상대는 마법 없이 대칭 대전을 시켜, 그 마법이 주는 승률 이득을 잰다.
  * 같은 코스트 구간에서 데미지를 바꿔가며 이득이 목표(기본 +4%p)가 되는 데미지를 찾는다.
  *
- * 마법 유형: board(아군 포함 전체 유닛) · aoe(적 전체 유닛) · single(적 가장 강한 유닛)
+ * 마법 유형: board(아군 포함 전체 유닛) · aoe(적 전체 유닛) · single(적 가장 강한 유닛) · wipe(양쪽 필드 전체 파괴, --eval wipe:코스트:0:대기턴수)
  * 규칙: 실제 게임처럼 세트한 마법은 '다음 내 필드 시작'에 발동한다(세트 시점에 마나를 낸다).
  * AI: 세트 시점의 예상 순이득(적 손실 − 아군 손실)이 코스트×0.9 이상일 때만 세트한다.
  * 한계: 영웅 직접 피해 마법은 영웅 체력이 승패를 거의 바꾸지 못하는 모델이라 다루지 않는다. 마법/함정의 부가 효과(동결·화상)는 무시한다.
@@ -45,7 +45,7 @@ function plan(hand, mana, slots) {
 function playGame(spell, rnd) {
   const mkSide = (withSpell) => {
     const deck = shuffle(POOL, rnd).slice(0, 60).map(b => ({ cost: b.cost, atk: b.atk + grade(rnd), hp: b.hp }));
-    const card = { spell: true, cost: spell.cost, dmg: spell.dmg, type: spell.type };
+    const card = { spell: true, cost: spell.cost, dmg: spell.dmg, type: spell.type, delay: spell.delay || 1 };
     // 기본(hand): 실제 게임처럼 마법은 덱이 아니라 시작 손패에 '추가'로 주어진다. --replace: 덱의 챔피언 K장을 마법으로 교체(카드 한 장의 가치 비교용)
     if (withSpell && args.replace) for (let k = 0; k < COPIES; k++) deck[5 + Math.floor(rnd() * 55)] = { ...card };
     const hand = deck.splice(0, 5);
@@ -59,13 +59,15 @@ function playGame(spell, rnd) {
   const loss = (u, d) => (d >= u.hp ? value(u) : value(u) * (d / u.hp) * 0.5);
   function netValue(S, F, sp) {
     const enemy = alive(F), ally = alive(S);
+    if (sp.type === 'wipe') return enemy.reduce((a, u) => a + value(u), 0) - ally.reduce((a, u) => a + value(u), 0);
     if (sp.type === 'board') return enemy.reduce((a, u) => a + loss(u, sp.dmg), 0) - ally.reduce((a, u) => a + loss(u, sp.dmg), 0);
     if (sp.type === 'aoe') return enemy.reduce((a, u) => a + loss(u, sp.dmg), 0);
     const t = enemy.slice().sort((a, b) => b.atk - a.atk)[0];
     return t ? loss(t, sp.dmg) : 0;
   }
   function resolve(S, F, sp) {
-    if (sp.type === 'board') { [...alive(F)].forEach(u => hit(F, u, sp.dmg)); [...alive(S)].forEach(u => hit(S, u, sp.dmg)); }
+    if (sp.type === 'wipe') { F.field = []; S.field = []; }
+    else if (sp.type === 'board') { [...alive(F)].forEach(u => hit(F, u, sp.dmg)); [...alive(S)].forEach(u => hit(S, u, sp.dmg)); }
     else if (sp.type === 'aoe') [...alive(F)].forEach(u => hit(F, u, sp.dmg));
     else { const t = alive(F).sort((a, b) => b.atk - a.atk)[0]; if (t) hit(F, t, sp.dmg); }
   }
@@ -79,11 +81,12 @@ function playGame(spell, rnd) {
     if (round >= 2) {
       if (!S.deck.length) { winner = S === P ? 'enemy' : 'player'; return; }
       const c = S.deck.shift(); if (S.hand.length < HAND_LIMIT) S.hand.push(c);
-      S.pending.splice(0).forEach(sp => resolve(S, F, sp));
+      S.pending.filter(sp => round >= sp.due).forEach(sp => resolve(S, F, sp));
+      S.pending = S.pending.filter(sp => round < sp.due);
     }
     let mana = maxMana;
     for (const card of S.hand.filter(c => c.spell).slice()) {
-      if (card.cost <= mana && S.pending.length < 2 && netValue(S, F, card) >= card.cost * 0.9) { mana -= card.cost; S.hand.splice(S.hand.indexOf(card), 1); S.pending.push(card); }
+      if (card.cost <= mana && S.pending.length < 2 && netValue(S, F, card) >= card.cost * 0.9 + (card.type === 'wipe' ? (Number(args.wipeThr) || 4) : 0)) { mana -= card.cost; S.hand.splice(S.hand.indexOf(card), 1); S.pending.push({ ...card, due: round + card.delay }); }
     }
     for (let guard = 0; guard < 12; guard++) {
       const picks = plan(S.hand, mana, FIELD_LIMIT - S.field.length);
@@ -111,7 +114,7 @@ const pct = x => (x * 100).toFixed(1).padStart(5) + '%';
 
 if (args.eval) {
   // --eval type:cost:dmg,type:cost:dmg  : 지정한 마법들의 승률 이득만 출력
-  for (const item of String(args.eval).split(',')) { const [type, cost, dmg] = item.split(':'); console.log(`${type} 코스트 ${cost} 피해 ${dmg}: ${pct(rate({ type, cost: Number(cost), dmg: Number(dmg) }))}`); }
+  for (const item of String(args.eval).split(',')) { const [type, cost, dmg, delay] = item.split(':'); console.log(`${type} 코스트 ${cost} 피해 ${dmg}${delay ? ' 대기 ' + delay + '턴' : ''}: ${pct(rate({ type, cost: Number(cost), dmg: Number(dmg), delay: Number(delay) || 1 }))}`); }
   process.exit(0);
 }
 
