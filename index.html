@@ -740,6 +740,36 @@
     .synth-spare { position:absolute; top:10px; left:10px; z-index:2; padding:2px 7px; border-radius:99px; background:#0c1016dd; color:#ffd77f; font-size:10px; font-weight:800; }
     .synth-pick.locked, .synth-pick:disabled { opacity:.5; cursor:not-allowed; } .synth-pick.locked img { filter:grayscale(.8) brightness(.6); } .synth-pick.locked .synth-spare { color:#8993a7; }
     @media(max-width:900px){ .synth-view { flex-direction:column; } .synth-altar { width:auto; } }
+    /* === 합성 재료 목록 개선: 덱 편성 구분 / 중복 카드 수량 선택 === */
+    .synth-pool-head { flex-wrap:wrap; gap:8px 10px; }
+    .synth-pool-head .synth-count { margin-left:auto; }
+    .codex-seg button.synth-dup { margin-left:2px; }
+    .synth-auto { padding:7px 12px; border:1px solid #9b7545; border-radius:9px; background:linear-gradient(135deg,#4a3a22,#2a241b); color:#ffd77f; font-size:11px; font-weight:800; }
+    .synth-auto:hover { filter:brightness(1.15); }
+    .synth-section { grid-column:1/-1; display:flex; align-items:center; gap:8px; margin:6px 0 0; padding:0 2px 5px; border-bottom:1px solid #303847; color:#b9c2cf; font-size:11px; font-weight:800; }
+    .synth-section b { padding:1px 7px; border-radius:99px; background:#2b241a; color:#ffd77f; font-size:10px; }
+    .synth-section.blocked { margin-top:14px; color:#748195; } .synth-section.blocked b { background:#1b2230; color:#8993a7; }
+    .synth-pick { padding:7px; gap:5px; }
+    .synth-pick-main { position:relative; padding:0; border:0; background:transparent; color:inherit; text-align:left; display:flex; flex-direction:column; gap:4px; min-width:0; }
+    .synth-pick-main:disabled { cursor:not-allowed; }
+    .synth-pick.picked { border-color:#ffd477; box-shadow:0 0 0 2px #ffd47766,0 0 18px #f3bd6855; }
+    .synth-picked { position:absolute; top:-9px; right:8px; z-index:3; padding:2px 8px; border-radius:99px; background:#ffd477; color:#282018; font-size:10px; font-weight:900; box-shadow:0 2px 6px #0008; }
+    .synth-spare { top:5px; left:5px; }
+    .synth-spare.lock { background:#1b2230dd; color:#9aa6b8; }
+    .synth-have { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; }
+    .synth-have span { padding:2px 0; border-radius:5px; background:#10151c; color:#657386; font-size:9px; text-align:center; white-space:nowrap; }
+    .synth-have b { font-size:11px; color:#aab4c3; }
+    .synth-have .deck.on { background:#16283d; color:#6fb3f0; } .synth-have .deck.on b { color:#8cc6ff; }
+    .synth-have .free.on { background:#2b241a; color:#c9a15a; } .synth-have .free.on b { color:#ffd77f; }
+    .synth-stepper { display:grid; grid-template-columns:30px 1fr 30px 42px; gap:4px; }
+    .synth-stepper button { height:28px; border:1px solid #465365; border-radius:7px; background:#111720; color:#d8dee8; font-weight:800; }
+    .synth-stepper button.max { font-size:10px; color:#ffd77f; border-color:#8c6d3f; }
+    .synth-stepper button:disabled { opacity:.35; cursor:not-allowed; }
+    .synth-stepper b { display:grid; place-items:center; border-radius:7px; background:#10151c; color:#ffd77f; font-size:13px; }
+    .synth-pick.picked .synth-stepper b { background:#2b241a; }
+    .synth-pick.locked { opacity:.55; } .synth-pick.locked img { filter:grayscale(.85) brightness(.55); }
+    .synth-pick:hover:not(.locked) { transform:none; }
+    .synth-grid { grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); }
 </style>
 </head>
 <body>
@@ -762,7 +792,7 @@
     <div class="collection-head"><div><h2 id="collection-title">카드 컬렉션</h2><p id="collection-sub"></p></div><div class="currency">◆ 크래커 <span id="collection-cracker-count">300</span></div><button class="modal-close" onclick="closeCollection()" aria-label="닫기">✕</button></div>
     <div class="collection-tabs"><button class="collection-tab" data-view="deck" onclick="switchCollectionView('deck')">🂠 덱 편집</button><button class="collection-tab" data-view="codex" onclick="switchCollectionView('codex')">📖 도감</button><button class="collection-tab" data-view="synth" onclick="switchCollectionView('synth')">⚗ 합성</button><button class="collection-tab" data-view="gacha" onclick="switchCollectionView('gacha')">◆ 상점</button></div>
     <section class="collection-view gacha-view" id="gacha-view"><div class="gacha-banner"><small class="shop-tag">상점 · 카드 소환</small><div class="gacha-orb">◆</div><h3>원소의 계약</h3><p>크래커로 캐릭터 카드를 획득합니다.<br>10회 소환에서는 희귀 이상 1장이 확정됩니다.</p><div class="gacha-actions"><button onclick="pullCards(1)">1회<br><small>◆ 30</small></button><button onclick="pullCards(10)">10회<br><small>◆ 270</small></button></div></div><div class="gacha-results" id="gacha-results"><div class="gacha-empty">아직 소환 결과가 없습니다.<br>원소의 계약을 시작해 보세요.</div></div></section>
-    <section class="collection-view synth-view" id="synth-view"><div class="synth-altar"><div class="synth-slots" id="synth-slots"></div><div class="synth-arrow" aria-hidden="true">▼</div><div class="synth-result" id="synth-result"></div><div class="synth-odds" id="synth-odds"></div><button class="synth-go" id="synth-go" onclick="runSynthesis()">합성하기</button><p class="synth-help">재료 3장은 사라지고 무작위 캐릭터 카드 1장이 만들어집니다. 높은 등급 재료일수록 높은 등급이 나오기 쉽고, 아직 없는 카드가 우선적으로 나옵니다.</p></div><div class="synth-pool"><div class="synth-pool-head"><div class="codex-seg" id="synth-filter"></div><span class="synth-count" id="synth-count"></span></div><div class="synth-grid" id="synth-grid"></div></div></section>
+    <section class="collection-view synth-view" id="synth-view"><div class="synth-altar"><div class="synth-slots" id="synth-slots"></div><div class="synth-arrow" aria-hidden="true">▼</div><div class="synth-result" id="synth-result"></div><div class="synth-odds" id="synth-odds"></div><button class="synth-go" id="synth-go" onclick="runSynthesis()">합성하기</button><p class="synth-help">재료 3장은 사라지고 무작위 캐릭터 카드 1장이 만들어집니다. 높은 등급 재료일수록 높은 등급이 나오기 쉽고, 아직 없는 카드가 우선적으로 나옵니다.</p></div><div class="synth-pool"><div class="synth-pool-head"><div class="codex-seg" id="synth-filter"></div><div class="codex-seg" id="synth-sort"></div><button class="synth-auto" onclick="synthAuto()" title="여분이 가장 많은 카드부터 3장을 자동으로 고릅니다">⚡ 여분 많은 카드로 자동 선택</button><span class="synth-count" id="synth-count"></span></div><div class="synth-grid" id="synth-grid"></div></div></section>
     <section class="collection-view codex-view" id="codex-view"><div class="codex-summary" id="codex-summary"></div><div class="codex-toolbar"><div class="codex-seg" id="codex-type"></div><div class="codex-seg" id="codex-status"></div><div class="codex-seg" id="codex-rarity"></div></div><div class="codex-body"><div class="codex-grid" id="codex-grid"></div><aside class="codex-detail" id="codex-detail"></aside></div></section>
     <section class="collection-view deck-view" id="deck-view"><div class="deck-toolbar"><div class="deck-filters" id="deck-filters"></div><div class="deck-count"><strong id="build-count">0</strong> / 60장</div></div><div class="deck-content"><div class="owned-grid" id="owned-grid"></div><div class="deck-list"><h3>전투 덱</h3><div class="deck-rows" id="deck-rows"></div><p class="deck-help">보유 카드를 눌러 추가하거나 이 패널로 드래그해 넣고, 덱 목록을 눌러(또는 보유 카드 영역으로 드래그해) 제거합니다. 저장하면 현재 전투의 남은 덱도 교체됩니다.</p><button class="deck-save" id="deck-save" onclick="saveBattleDeck()">60장 덱 저장</button></div></div></section>
   </div></div>
@@ -1529,7 +1559,7 @@
     /* ===== 합성: 여분 캐릭터 카드 3장 → 무작위 새 카드 1장 ===== */
     /* 재료는 '덱에 편성되지 않은 여분'만 쓴다. 재료 등급 점수(일반 0/희귀 1/전설 2 합계)가 높을수록 높은 등급이 나오기 쉽다. */
     const SYNTH_SCORE={common:0,rare:1,legendary:2},SYNTH_ODDS=[[85,14,1],[75,22,3],[65,30,5],[55,38,7],[40,48,12],[25,55,20],[10,55,35]]/* 점수 0~6: [일반,희귀,전설]% */,SYNTH_FRESH_BIAS=.7/* 아직 없는 카드를 우선할 확률 */;
-    var synthSlots=[],synthBusy=false,synthFilter='all',synthLast=null;
+    var synthSlots=[],synthBusy=false,synthFilter='all',synthSort='default',synthDupOnly=false,synthLast=null;
     function synthReserved(index){return Math.max(collectionState.deck.filter(i=>i===index).length,countInDraft(index));}
     function synthSpare(index){return collectionState.owned[index]-synthReserved(index)-synthSlots.filter(i=>i===index).length;}
     function synthOdds(slots=synthSlots){const score=slots.reduce((sum,i)=>sum+SYNTH_SCORE[rarityByCard[i]],0),row=SYNTH_ODDS[Math.min(SYNTH_ODDS.length-1,score)];return {common:row[0],rare:row[1],legendary:row[2]};}
@@ -1548,12 +1578,23 @@
       if(synthBusy)result.innerHTML='<div class="synth-swirl">⚗</div>';
       else if(synthLast){const card=collectionCards[synthLast.index],rarity=rarityByCard[synthLast.index];result.innerHTML='<article class="synth-card synth-pop '+rarity+'">'+(synthLast.isNew?'<span class="new-badge">NEW</span>':'')+'<img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+'</h4><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+' · 비용 '+card[3]+'</small></article>';}
       else result.innerHTML='<div class="synth-card unknown"><span>?</span><small>합성 결과</small></div>';
-      const owned=collectionCards.map((card,index)=>({card,index})).filter(({index})=>collectionState.owned[index]>0&&(synthFilter==='all'||rarityByCard[index]===synthFilter));
-      const seg=[['all','전체'],['common','일반'],['rare','희귀'],['legendary','전설']];
+      const rarityOrder={common:0,rare:1,legendary:2},info=index=>{const owned=collectionState.owned[index],reserved=synthReserved(index),picked=synthSlots.filter(i=>i===index).length,free=owned-reserved;return {index,owned,reserved,picked,free,left:free-picked};};
+      let list=collectionCards.map((_,index)=>info(index)).filter(c=>c.owned>0&&(synthFilter==='all'||rarityByCard[c.index]===synthFilter));
+      if(synthDupOnly)list=list.filter(c=>c.free>=2);
+      if(synthSort==='spare')list.sort((x,y)=>y.free-x.free||rarityOrder[rarityByCard[x.index]]-rarityOrder[rarityByCard[y.index]]);
+      const usable=list.filter(c=>c.free>0),blocked=list.filter(c=>c.free<=0),seg=[['all','전체'],['common','일반'],['rare','희귀'],['legendary','전설']];
       document.querySelector('#synth-filter').innerHTML=seg.map(([key,label])=>'<button class="'+(synthFilter===key?'active':'')+'" onclick="setSynthFilter(\''+key+'\')">'+label+'</button>').join('');
-      document.querySelector('#synth-count').textContent='여분 카드 총 '+collectionCards.reduce((sum,_,i)=>sum+Math.max(0,synthSpare(i)),0)+'장';
-      document.querySelector('#synth-grid').innerHTML=owned.map(({card,index})=>{const spare=Math.max(0,synthSpare(index)),rarity=rarityByCard[index],locked=spare<=0;return '<button class="synth-pick '+rarity+(locked?' locked':'')+'" '+(locked||synthBusy||full?'disabled':'')+' onclick="synthPick('+index+')"><span class="synth-spare">'+(locked?'덱 편성 중':'여분 '+spare)+'</span><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+'</small></button>';}).join('')||'<div class="gacha-empty">이 등급의 보유 카드가 없습니다.</div>';
+      document.querySelector('#synth-sort').innerHTML=[['default','기본 순'],['spare','여분 많은 순']].map(([key,label])=>'<button class="'+(synthSort===key?'active':'')+'" onclick="setSynthSort(\''+key+'\')">'+label+'</button>').join('')+'<button class="synth-dup '+(synthDupOnly?'active':'')+'" onclick="toggleSynthDup()" aria-pressed="'+synthDupOnly+'">여분 2장+만</button>';
+      const total=collectionCards.reduce((sum,_,i)=>sum+Math.max(0,collectionState.owned[i]-synthReserved(i)),0);
+      document.querySelector('#synth-count').textContent='여분 총 '+total+'장';
+      const tile=c=>{const card=collectionCards[c.index],rarity=rarityByCard[c.index],isBlocked=c.free<=0,canAdd=!synthBusy&&!full&&c.left>0;
+        return '<div class="synth-pick '+rarity+(isBlocked?' locked':'')+(c.picked?' picked':'')+'">'+(c.picked?'<span class="synth-picked">선택 '+c.picked+'</span>':'')+'<button class="synth-pick-main" '+(canAdd?'':'disabled')+' onclick="synthPick('+c.index+')" aria-label="'+card[2]+' 재료로 추가">'+(isBlocked?'<span class="synth-spare lock">🔒 덱 편성 중</span>':'<span class="synth-spare">여분 '+c.left+'</span>')+'<img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+'</small></button><div class="synth-have"><span>보유 <b>'+c.owned+'</b></span><span class="deck '+(c.reserved?'on':'')+'">덱 <b>'+c.reserved+'</b></span><span class="free '+(c.free>0?'on':'')+'">여분 <b>'+c.free+'</b></span></div>'+(isBlocked?'':'<div class="synth-stepper"><button onclick="synthStep('+c.index+',-1)" '+(c.picked&&!synthBusy?'':'disabled')+' aria-label="하나 빼기">−</button><b>'+c.picked+'</b><button onclick="synthStep('+c.index+',1)" '+(canAdd?'':'disabled')+' aria-label="하나 더하기">＋</button><button class="max" onclick="synthStep('+c.index+',3)" '+(canAdd&&c.left>=2?'':'disabled')+' title="남은 슬롯을 이 카드로 채우기">MAX</button></div>')+'</div>';};
+      document.querySelector('#synth-grid').innerHTML=(usable.length?'<div class="synth-section">합성에 쓸 수 있는 카드 <b>'+usable.length+'</b></div>'+usable.map(tile).join(''):'')+(blocked.length?'<div class="synth-section blocked">덱에 편성된 카드 · 재료로 쓸 수 없음 <b>'+blocked.length+'</b></div>'+blocked.map(tile).join(''):'')||'<div class="gacha-empty">조건에 맞는 카드가 없습니다.</div>';
     }
+    function setSynthSort(value){synthSort=value;renderSynthesis();}
+    function toggleSynthDup(){synthDupOnly=!synthDupOnly;renderSynthesis();}
+    function synthStep(index,delta){if(synthBusy)return;if(delta<0){const at=synthSlots.lastIndexOf(index);if(at>=0)synthSlots.splice(at,1);renderSynthesis();return;}let n=Math.min(delta,3-synthSlots.length);while(n-->0&&synthSpare(index)>0)synthSlots.push(index);synthLast=null;sfx('ui-select');renderSynthesis();}
+    function synthAuto(){if(synthBusy)return;synthSlots=[];const rank={common:0,rare:1,legendary:2},order=collectionCards.map((_,i)=>i).filter(i=>collectionState.owned[i]-synthReserved(i)>0).sort((x,y)=>(collectionState.owned[y]-synthReserved(y))-(collectionState.owned[x]-synthReserved(x))||rank[rarityByCard[x]]-rank[rarityByCard[y]]);for(const index of order){while(synthSlots.length<3&&synthSpare(index)>0)synthSlots.push(index);if(synthSlots.length>=3)break;}synthLast=null;sfx('ui-select');renderSynthesis();}
     function runSynthesis(){
       if(synthBusy||synthSlots.length!==3)return;
       const need=new Map();synthSlots.forEach(i=>need.set(i,(need.get(i)||0)+1));
