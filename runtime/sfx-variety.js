@@ -406,6 +406,23 @@
       return sample('spellLightningCast', { gain: level * 3.6, rate: rand(0.99, 1.01), pan, hp: 120, wet: 0, wide: 0, cap: opts.cap || 2.7, fade: opts.fade || 0.45 });
     }
 
+    // 바람 공격의 연출("실피드 템페스트") 소리: 칼바람이 "슈류륙" 하고 세 번 연달아 스쳐 지나간다.
+    // 한 번의 스침 = 높은 쉭 소리가 올라갔다 내려오는 대역 잡음 + 가는 휘파람 층. 세 번은 좌 → 우 → 중앙으로 움직이며 점점 높아진다.
+    // 합성음이라 샘플 팩과 무관하게 항상 난다.
+    function playGust(pan = 0) {
+      const ctx = ctxOrNull();
+      if (!ctx) return false;
+      const level = 0.34 + STRONG.power * 0.36;
+      [[0, -0.55, 1], [0.3, 0.55, 1.12], [0.58, 0, 1.25]].forEach(([delay, side, lift], i) => {
+        const p = { pan: clamp(pan + side, -1, 1), delay, wet: 0, space: 'short' };
+        const last = i === 2;
+        noise({ ...p, dur: last ? 0.5 : 0.36, vol: level * 0.2, type: 'bandpass', freq: 1500 * lift, endFreq: 5200 * lift, q: 1.3, attack: 0.1 });
+        noise({ ...p, dur: last ? 0.46 : 0.32, vol: level * 0.11, type: 'highpass', freq: 5200 * lift, endFreq: 7200 * lift, q: 0.7, attack: 0.08 });
+        noise({ ...p, delay: delay + 0.04, dur: last ? 0.42 : 0.28, vol: level * 0.07, type: 'bandpass', freq: 3000 * lift, endFreq: 1700 * lift, q: 6, attack: 0.12 });
+      });
+      return true;
+    }
+
     // 평타 모션에 맞춘 휘두르는 소리 (피격음보다 작게, 약간의 잔향)
     function playSwing(motion, element, power = 0.5, pan = 0) {
       const ctx = ctxOrNull();
@@ -422,7 +439,7 @@
       return true;
     }
 
-    return { load, playHit, playFrost, playLightning, playSwing, _buffers: buffers };
+    return { load, playHit, playFrost, playLightning, playGust, playSwing, _buffers: buffers };
   }
 
   const api = { BANK, LEGACY, HIT_SETS, STRONG, ELEMENT, FADE_DECIBELS_E, IR_SECONDS, CROWD_WINDOW, CROWD_STEP, CROWD_MIN, TRIM, SYNTH_NAMES, pickIndex, makeImpulse, init };
