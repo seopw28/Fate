@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>효과음 시험실 · Fate</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 28px 24px 60px; background: #0e131b; color: #e8edf5; font-family: "GmarketSans", "Apple SD Gothic Neo", system-ui, sans-serif; line-height: 1.5; }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  p.sub { margin: 0 0 20px; color: #93a0b4; font-size: 13px; word-break: keep-all; }
+  .bar { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; padding: 14px 16px; margin-bottom: 18px; border: 1px solid #2a3547; border-radius: 12px; background: #141b26; }
+  .bar label { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+  .bar input[type=range] { width: 170px; }
+  .status { margin-left: auto; font-size: 12px; color: #93a0b4; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+  .card { padding: 14px; border: 1px solid #2a3547; border-radius: 12px; background: #141b26; }
+  .card h2 { margin: 0 0 4px; font-size: 16px; }
+  .card p { margin: 0 0 10px; color: #93a0b4; font-size: 12px; word-break: keep-all; }
+  .card .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  button { padding: 8px 12px; border: 1px solid #3c4d68; border-radius: 8px; background: #1d2736; color: inherit; font: inherit; font-size: 13px; cursor: pointer; }
+  button:hover { border-color: #7fb4ff; background: #243349; }
+  button:active { transform: translateY(1px); }
+  .fire h2 { color: #ff8a65; } .water h2 { color: #6fd3ff; } .wind h2 { color: #8ff0c8; } .earth h2 { color: #e0b46c; } .neutral h2 { color: #d9c3ff; } .frost h2 { color: #b8e6ff; }
+  .note { margin-top: 22px; padding: 12px 14px; border: 1px dashed #3c4d68; border-radius: 10px; color: #93a0b4; font-size: 12px; word-break: keep-all; }
+</style>
+</head>
+<body>
+<h1>효과음 시험실</h1>
+<p class="sub">전투를 기다리지 않고 속성별 피격음과 빙결 카드 소리를 바로 들어 보는 페이지입니다. 게임과 같은 소리 엔진(<code>runtime/sfx-variety.js</code>)을 씁니다.</p>
+
+<div class="bar">
+  <label>효과음 크기 <input id="vol" type="range" min="0" max="100" value="35"><span id="volv">35%</span></label>
+  <label><input id="spell" type="checkbox" checked> 새 주문 샘플 팩 사용 (끄면 이전 조합만)</label>
+  <span class="status" id="status">클릭하면 소리가 준비됩니다…</span>
+</div>
+
+<div class="grid" id="grid"></div>
+<div class="note">
+  · "1회"는 같은 속성을 여러 번 눌러 변주(매번 다른 조합·음높이)를 확인하세요. "5연타"는 한 턴에 타격이 연속으로 나올 때(0.9초 간격) 잔향이 뭉치지 않는지 듣는 용도입니다.<br>
+  · 새 주문 샘플 팩은 불·물·바람(번개 어택)과 빙결 카드에만 섞여 있습니다. 체크를 껐다 켜며 비교해 보세요.
+</div>
+
+<script src="runtime/sfx-variety.js"></script>
+<script>
+  const state = { ctx: null, bus: null, spell: true, api: null };
+  const status = document.getElementById('status');
+  function engine() {
+    if (!state.ctx) { state.ctx = new (window.AudioContext || window.webkitAudioContext)(); state.bus = state.ctx.createGain(); state.bus.connect(state.ctx.destination); }
+    if (state.ctx.state === 'suspended') state.ctx.resume();
+    return state.ctx;
+  }
+  function volume() { return Number(document.getElementById('vol').value) / 100; }
+  function bus() { engine(); state.bus.gain.value = volume(); return state.bus; }
+  function api() {
+    const wantSpell = document.getElementById('spell').checked;
+    if (!state.api || state.spell !== wantSpell) {
+      const buffers = state.api ? state.api._buffers : undefined;
+      state.api = FateSfx.init({ engine, bus, spellPack: wantSpell, buffers });
+      state.spell = wantSpell;
+      if (!buffers) { state.api.load(); status.textContent = '샘플 불러오는 중…'; setTimeout(() => { status.textContent = '준비됨'; }, 1500); }
+    }
+    return state.api;
+  }
+  const ELEMENTS = [
+    ['fire', '불', '처음 쓰던 폭발 샘플 원본 그대로 (크기만 조금 줄임)'],
+    ['water', '물', '공간감 없이 건조하게 · 처음 소리를 4번 겹쳐 튀는 느낌'],
+    ['wind', '바람 (칼날)', '높고 예리하게 · 처음 소리를 3번 겹쳐 여러 번 스치는 느낌'],
+    ['earth', '대지', '더 낮고 크게 · 가장 넓은 공간감'],
+    ['neutral', '무속성 (금속)', '짧은 금속 울림 · 작은 방'],
+  ];
+  const grid = document.getElementById('grid');
+  for (const [key, name, desc] of ELEMENTS) {
+    const card = document.createElement('div');
+    card.className = 'card ' + key;
+    card.innerHTML = `<h2>${name}</h2><p>${desc}</p><div class="row"><button data-once="${key}">1회</button><button data-burst="${key}">5연타</button></div>`;
+    grid.appendChild(card);
+  }
+  const frost = document.createElement('div');
+  frost.className = 'card frost';
+  frost.innerHTML = '<h2>빙결 카드 (얼음)</h2><p>프로스트 노바·빙결 사슬·한서진의 시전 소리. 시전 후 약 0.45초에 피해가 들어가는 시점과 소리의 정점이 맞습니다.</p><div class="row"><button data-frost>시전 + 파편</button><button data-frost-hit>시전 → 0.45초 뒤 물 피격</button></div>';
+  grid.appendChild(frost);
+  grid.addEventListener('click', (event) => {
+    const button = event.target.closest('button');
+    if (!button) return;
+    const sfx = api();
+    if (button.dataset.once) sfx.playHit(button.dataset.once, 8, (Math.random() - 0.5) * 0.8);
+    else if (button.dataset.burst) for (let i = 0; i < 5; i++) setTimeout(() => sfx.playHit(button.dataset.burst, 8, (Math.random() - 0.5) * 0.8), i * 900);
+    else if ('frost' in button.dataset) { if (!sfx.playFrost('cast')) status.textContent = '얼음 샘플이 아직 로드되지 않았거나 팩이 꺼져 있습니다.'; setTimeout(() => sfx.playFrost('shatter'), 320); }
+    else if ('frostHit' in button.dataset) { sfx.playFrost('cast'); setTimeout(() => sfx.playFrost('shatter'), 320); setTimeout(() => sfx.playHit('water', 6, 0.2), 450); }
+  });
+  document.getElementById('vol').addEventListener('input', (event) => { document.getElementById('volv').textContent = event.target.value + '%'; if (state.bus) state.bus.gain.value = volume(); });
+  document.getElementById('spell').addEventListener('change', () => { api(); status.textContent = document.getElementById('spell').checked ? '새 주문 샘플 팩 켜짐' : '이전 조합만 (새 팩 꺼짐)'; });
+</script>
+</body>
+</html>
