@@ -62,6 +62,9 @@ for (const [index, card] of cards.entries()) {
   for (const effect of card.effects ?? []) if (effect.cardRef && !ids.has(effect.cardRef)) errors.push(`${at}: unknown cardRef ${effect.cardRef}`);
 }
 
+const missingArt = cards.filter(card => card.cardType !== 'champion' && !/\.(png|webp|jpe?g|avif)$/i.test(card.assetId ?? '') && card.releaseState !== 'prototype');
+if (missingArt.length) console.warn(`[art-queue] 일러스트 없는 마법/함정 ${missingArt.length}장 — Codex 토큰 회복 시 0순위로 생성 (06_assets/art-queue.md): ${missingArt.map(card => card.displayName).join(', ')}`);
+
 if (errors.length) {
   console.error(errors.join('\n'));
   process.exitCode = 1;

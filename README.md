@@ -20,3 +20,6 @@ Claude와 Codex가 서로 다른 작업 레인을 병렬로 개발할 수 있도
 5. `11_qa`, `12_tools`, `13_legal`
 
 각 작업 레인의 목표와 첫 산출물은 해당 폴더의 `README.md`를 참고합니다.
+
+## 미해결 TODO
+- **Codex 토큰 회복 시 0순위**: 일러스트 없는 마법·함정 카드 이미지 생성 → [06_assets/art-queue.md](06_assets/art-queue.md)
