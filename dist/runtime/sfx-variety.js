@@ -41,13 +41,14 @@
     fire: [
       [L('legacy_explosion', { g: 0.9 })]
     ],
-    // 물: 공간감(잔향) 없이 건조하게. 길게 울리는 폭발 샘플을 섞으면 불처럼 들려서 쓰지 않는다 (유리·얼음·물 주문 샘플만).
+    // 물: 공간감(잔향) 없이 건조하게, "물이 튀기는 소리"만. 실로폰·종처럼 음정이 들리는 유리/얼음 샘플은 쓰지 않고(빙결 전용),
+    // 물 주문 샘플(spellWater)을 여러 겹으로 키워 튀는 느낌을 살린다. 샘플 팩을 끈 비교용(?sfxpack=base)에는 마지막 조합만 남는다.
     water: [
-      [L('impactGlass_medium'), L('impactGlass_light', { g: 0.6, r: 1.12 })],
-      [L('spellWater', { g: 0.8, dur: 0.5 }), L('impactGlass_light', { g: 0.5 })],
-      [L('spellIce', { g: 0.7, dur: 0.5 }), L('impactGlass_medium', { g: 0.6 })],
-      [L('impactGlass_heavy'), L('impactSoft_medium', { g: 0.5 })],
-      [L('spellWater', { g: 0.7, r: 0.95, dur: 0.5 }), L('spellIce', { g: 0.45, r: 1.1, dur: 0.4 }), L('impactGlass_light', { g: 0.4 })]
+      [L('spellWater', { g: 1.1, dur: 0.6 }), L('spellWater', { g: 0.7, r: 1.15, dur: 0.4 })],
+      [L('spellWater', { g: 1, r: 0.95, dur: 0.6 }), L('impactSoft_medium', { g: 0.5 })],
+      [L('spellWater', { g: 1.1, r: 1.05, dur: 0.55 }), L('spellWater', { g: 0.6, r: 0.88, dur: 0.45 })],
+      [L('spellWater', { g: 1, r: 1.1, dur: 0.5 }), L('spellWater', { g: 0.65, r: 1.3, dur: 0.35 }), L('impactSoft_medium', { g: 0.4, r: 1.2 })],
+      [L('impactSoft_medium', { g: 0.9 }), L('impactSoft_medium', { g: 0.6, r: 1.2 })]
     ],
     // 바람(칼날): 칼 샘플을 높은 음으로 예리하게. 장난감 소리로 들리던 금속판·종 샘플은 빼고, 번개/고음 금속은 아주 얇은 어택으로만 얹는다.
     wind: [
@@ -99,7 +100,7 @@
   // 목표: 속성·조합이 달라도 비슷한 크기로 들리게 한다. 값이 없으면 1.
   const TRIM = {
     fire: [0.84],
-    water: [10.00, 10.00, 10.00, 10.00, 10.00],
+    water: [12.60, 12.60, 12.60, 12.60, 12.60], // 물 튀는 소리를 +2dB 키움 (보정 도구의 클램프 10 밖이라 직접 지정)
     wind: [8.69, 8.39, 9.49, 9.05, 8.86, 9.07],
     earth: [4.29, 4.69, 7.65, 3.37, 3.27],
     neutral: [1.93, 1.91, 1.78, 1.39, 1.05]
@@ -107,7 +108,7 @@
   // 합성 질감 레이어 이름 (잡음·공명 기반만 사용)
   const SYNTH_NAMES = {
     fire: ['crackle', 'boom', 'sizzle'],
-    water: ['splash', 'drops', 'sparkle'],
+    water: ['splash', 'splash', 'splash'], // 음정이 들리는 drops·sparkle(실로폰처럼 들림)은 빼고 물 튀는 잡음만
     wind: ['whoosh', 'swish', 'slice'],
     earth: ['rumble', 'crack', 'thud'],
     neutral: ['ring', 'clink', 'clang']

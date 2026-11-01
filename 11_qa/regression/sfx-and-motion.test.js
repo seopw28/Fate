@@ -236,7 +236,7 @@ test('음량 보정표: 모든 조합에 값이 있고 유효하다', () => {
   for (const element of Object.keys(Sfx.HIT_SETS)) {
     const trims = Sfx.TRIM[element];
     assert.ok(Array.isArray(trims) && trims.length === Sfx.HIT_SETS[element].length, `${element}: 조합 수만큼 보정값이 있어야 함 (python3 -I 12_tools/qa/measure-sfx.py --calibrate 로 다시 측정)`);
-    trims.forEach((value) => assert.ok(value >= 0.3 && value <= 10, `${element}: 보정값 ${value}`));
+    trims.forEach((value) => assert.ok(value >= 0.3 && value <= 14, `${element}: 보정값 ${value}`));
   }
 });
 
