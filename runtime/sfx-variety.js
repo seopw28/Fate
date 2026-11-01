@@ -418,20 +418,21 @@
     }
 
     // 바람 공격의 연출("실피드 템페스트") 소리: 칼바람이 "슈류륙" 하고 세 번 연달아 스쳐 지나간다.
-    // 한 번의 스침 = 높은 쉭 소리가 올라갔다 내려오는 대역 잡음 + 가는 휘파람 층. 세 번은 약 0.12초 간격으로 좌 → 우 → 중앙으로 움직이며 점점 높아진다.
+    // 한 번의 스침 = 높은 쉭 소리가 올라갔다 내려오는 대역 잡음 + 가는 휘파람 층. 세 번은 약 0.15초 간격으로 좌 → 우 → 중앙으로 움직이며 점점 높아진다.
     // 합성음이라 샘플 팩과 무관하게 항상 난다.
     function playGust(pan = 0) {
       const ctx = ctxOrNull();
       if (!ctx) return false;
       const level = 0.34 + STRONG.power * 0.36;
-      [[0, -0.55, 1], [0.12, 0.55, 1.1], [0.24, 0, 1.2]].forEach(([delay, side, lift], i) => {
+      // 세 번이 하나로 뭉쳐 들리지 않게: 한 번의 스침을 짧게(약 0.2초) 끊고 세 번의 세기를 똑같이 하며, 마지막만 조금 길게 끈다
+      [[0, -0.55, 1], [0.15, 0.55, 1.1], [0.3, 0, 1.2]].forEach(([delay, side, lift], i) => {
         const p = { pan: clamp(pan + side, -1, 1), delay, wet: 0, space: 'short' };
-        const last = i === 2;
-        noise({ ...p, dur: last ? 0.5 : 0.34, vol: level * 0.45, type: 'bandpass', freq: 1300 * lift, endFreq: 5000 * lift, q: 1.0, attack: 0.08 });
-        noise({ ...p, dur: last ? 0.46 : 0.3, vol: level * 0.26, type: 'highpass', freq: 4800 * lift, endFreq: 7200 * lift, q: 0.7, attack: 0.06 });
-        // 거친 질감: 낮은 대역의 두꺼운 잡음을 먼저 깔아 칼바람이 긁고 지나가는 느낌을 준다
-        noise({ ...p, dur: last ? 0.44 : 0.28, vol: level * 0.34, type: 'bandpass', freq: 600 * lift, endFreq: 2400 * lift, q: 0.6, attack: 0.05 });
-        noise({ ...p, delay: delay + 0.03, dur: last ? 0.42 : 0.26, vol: level * 0.15, type: 'bandpass', freq: 3000 * lift, endFreq: 1700 * lift, q: 6, attack: 0.1 });
+        const last = i === 2, d = last ? 0.34 : 0.2, g = [2.4, 4.2, 1.2][i]; // 짧은 스침일수록 에너지가 작아 세기를 더 줘서 세 번이 비슷하게 들리게
+        noise({ ...p, dur: d, vol: level * 0.8 * g, type: 'bandpass', freq: 1300 * lift, endFreq: 5000 * lift, q: 1.0, attack: 0.035 });
+        noise({ ...p, dur: d * 0.9, vol: level * 0.45 * g, type: 'highpass', freq: 4800 * lift, endFreq: 7200 * lift, q: 0.7, attack: 0.03 });
+        // 거친 질감: 낮은 대역의 두꺼운 잡음을 깔아 칼바람이 긁고 지나가는 느낌을 준다
+        noise({ ...p, dur: d * 0.85, vol: level * 0.6 * g, type: 'bandpass', freq: 600 * lift, endFreq: 2400 * lift, q: 0.6, attack: 0.03 });
+        noise({ ...p, delay: delay + 0.02, dur: d * 0.8, vol: level * 0.25 * g, type: 'bandpass', freq: 3000 * lift, endFreq: 1700 * lift, q: 6, attack: 0.04 });
       });
       return true;
     }
