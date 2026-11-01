@@ -696,6 +696,50 @@
     @media(max-width:900px){ .codex-summary { grid-template-columns:repeat(3,1fr); } .codex-total { grid-column:1/-1; } .codex-body { grid-template-columns:1fr; } .codex-detail { display:none; } }
     .codex-detail-art, .codex-detail-art.type-spell, .codex-detail-art.type-trap { aspect-ratio:auto; height:min(250px,32vh); width:100%; }
     .deck-curve { height:44px; }
+    /* === 합성 === */
+    .synth-view { gap:20px; padding:18px 22px 22px; min-height:0; }
+    .synth-altar { width:340px; flex:none; display:flex; flex-direction:column; align-items:center; gap:10px; padding:16px; border:1px solid #66543a; border-radius:16px; background:radial-gradient(circle at 50% 0,#3a2d4f55,transparent 55%),linear-gradient(160deg,#241d33,#14171f 70%); overflow:auto; }
+    .synth-slots { width:100%; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .synth-slot { position:relative; min-width:0; aspect-ratio:3/4; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:2px; padding:5px; border:2px dashed #4a5568; border-radius:10px; background:#10151c; color:#6b7686; overflow:hidden; }
+    .synth-slot.empty span { position:absolute; inset:0; display:grid; place-items:center; font-size:30px; }
+    .synth-slot.empty small { position:relative; font-size:10px; }
+    .synth-slot.filled { border-style:solid; border-color:#5b6b80; color:#e8edf4; cursor:pointer; }
+    .synth-slot.filled.rare { border-color:#b078d4; } .synth-slot.filled.legendary { border-color:#ffd477; }
+    .synth-slot img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 18%; }
+    .synth-slot b, .synth-slot small { position:relative; z-index:1; text-shadow:0 1px 4px #000,0 0 6px #000; }
+    .synth-slot b { font-size:11px; line-height:1.2; text-align:center; word-break:keep-all; } .synth-slot small { font-size:9px; }
+    .synth-slot.filled::after { content:'✕'; position:absolute; top:4px; right:5px; z-index:2; color:#fff; font-size:11px; opacity:.7; text-shadow:0 1px 3px #000; }
+    .synth-arrow { color:#8c6d3f; font-size:16px; }
+    .synth-result { width:100%; display:grid; place-items:center; }
+    .synth-card { position:relative; width:150px; aspect-ratio:3/4.4; padding:6px; display:flex; flex-direction:column; gap:3px; border:2px solid #394454; border-radius:12px; background:#1a212b; }
+    .synth-card.rare { border-color:#b078d4; box-shadow:0 0 18px #a85cdb44; } .synth-card.legendary { border-color:#ffd477; box-shadow:0 0 26px #f3bd6877; }
+    .synth-card img { width:100%; flex:1; min-height:0; object-fit:cover; object-position:center 18%; border-radius:8px; }
+    .synth-card h4 { margin:0; font-size:12px; text-align:center; } .synth-card small { color:#8993a7; font-size:9px; text-align:center; }
+    .synth-card.unknown { border-style:dashed; border-color:#3a4455; background:#10151c; align-items:center; justify-content:center; color:#4d5766; } .synth-card.unknown span { font-size:54px; font-weight:800; }
+    .synth-pop { animation:synth-pop .7s cubic-bezier(.2,1.3,.3,1); }
+    @keyframes synth-pop { 0% { transform:scale(.2) rotate(-14deg); opacity:0; filter:brightness(3); } 60% { transform:scale(1.12) rotate(3deg); opacity:1; } 100% { transform:none; filter:none; } }
+    .synth-swirl { width:96px; height:96px; display:grid; place-items:center; border:2px solid #b078d4; border-radius:50%; color:#e1c0ff; font-size:44px; box-shadow:0 0 28px #a85cdb99; animation:synth-spin .9s linear infinite; }
+    @keyframes synth-spin { to { transform:rotate(360deg); } }
+    .synth-altar.busy .synth-slots { opacity:.45; filter:saturate(.4); transition:opacity .3s; }
+    .synth-odds { width:100%; display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+    .synth-odd { padding:7px 4px; border:1px solid #394454; border-radius:8px; background:#10151c; text-align:center; } .synth-odd small { display:block; color:#8993a7; font-size:10px; } .synth-odd b { font-size:15px; color:#e8edf4; }
+    .synth-odd.rare { border-color:#7a4f96; } .synth-odd.rare b { color:#cf9bf0; } .synth-odd.legendary { border-color:#a8873a; } .synth-odd.legendary b { color:#ffd477; }
+    .synth-odds-hint { grid-column:1/-1; padding:9px; border:1px dashed #3a4455; border-radius:8px; color:#748195; font-size:11px; text-align:center; }
+    .synth-go { width:100%; padding:12px; border:1px solid #9b7545; border-radius:10px; background:linear-gradient(135deg,#4a3a22,#2a241b); color:#ffd77f; font-weight:800; font-size:14px; }
+    .synth-go:disabled { opacity:.45; cursor:not-allowed; }
+    .synth-help { margin:0; color:#748195; font-size:10px; line-height:1.5; text-align:center; word-break:keep-all; }
+    .synth-pool { min-width:0; min-height:0; flex:1; display:flex; flex-direction:column; gap:10px; }
+    .synth-pool-head { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .synth-count { color:#8993a7; font-size:11px; }
+    .synth-grid { min-height:0; flex:1; overflow:auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(118px,1fr)); align-content:start; gap:10px; padding:2px 6px 8px 2px; }
+    .synth-pick { position:relative; min-width:0; padding:7px; display:flex; flex-direction:column; gap:4px; border:2px solid #394454; border-radius:12px; background:#1a212b; color:inherit; text-align:left; transition:transform .15s,box-shadow .15s; }
+    .synth-pick:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 0 14px #f3bd6844; }
+    .synth-pick.rare { border-color:#b078d4; } .synth-pick.legendary { border-color:#ffd477; }
+    .synth-pick img { width:100%; aspect-ratio:3/4; object-fit:cover; object-position:center 18%; border-radius:8px; }
+    .synth-pick b { font-size:11px; line-height:1.25; word-break:keep-all; } .synth-pick small { color:#8993a7; font-size:9px; }
+    .synth-spare { position:absolute; top:10px; left:10px; z-index:2; padding:2px 7px; border-radius:99px; background:#0c1016dd; color:#ffd77f; font-size:10px; font-weight:800; }
+    .synth-pick.locked, .synth-pick:disabled { opacity:.5; cursor:not-allowed; } .synth-pick.locked img { filter:grayscale(.8) brightness(.6); } .synth-pick.locked .synth-spare { color:#8993a7; }
+    @media(max-width:900px){ .synth-view { flex-direction:column; } .synth-altar { width:auto; } }
 </style>
 </head>
 <body>
@@ -716,8 +760,9 @@
   <div class="result" id="result"><div class="result-box"><h2 id="result-title">승리</h2><p id="result-copy">상대의 본체 체력을 0으로 만들었습니다.</p><button onclick="location.reload()">다시 시작</button></div></div>
   <div class="collection-modal" id="collection-modal" role="dialog" aria-modal="true" aria-labelledby="collection-title"><div class="collection-shell">
     <div class="collection-head"><div><h2 id="collection-title">카드 컬렉션</h2><p id="collection-sub"></p></div><div class="currency">◆ 크래커 <span id="collection-cracker-count">300</span></div><button class="modal-close" onclick="closeCollection()" aria-label="닫기">✕</button></div>
-    <div class="collection-tabs"><button class="collection-tab" data-view="deck" onclick="switchCollectionView('deck')">🂠 덱 편집</button><button class="collection-tab" data-view="codex" onclick="switchCollectionView('codex')">📖 도감</button><button class="collection-tab" data-view="gacha" onclick="switchCollectionView('gacha')">◆ 상점</button></div>
+    <div class="collection-tabs"><button class="collection-tab" data-view="deck" onclick="switchCollectionView('deck')">🂠 덱 편집</button><button class="collection-tab" data-view="codex" onclick="switchCollectionView('codex')">📖 도감</button><button class="collection-tab" data-view="synth" onclick="switchCollectionView('synth')">⚗ 합성</button><button class="collection-tab" data-view="gacha" onclick="switchCollectionView('gacha')">◆ 상점</button></div>
     <section class="collection-view gacha-view" id="gacha-view"><div class="gacha-banner"><small class="shop-tag">상점 · 카드 소환</small><div class="gacha-orb">◆</div><h3>원소의 계약</h3><p>크래커로 캐릭터 카드를 획득합니다.<br>10회 소환에서는 희귀 이상 1장이 확정됩니다.</p><div class="gacha-actions"><button onclick="pullCards(1)">1회<br><small>◆ 30</small></button><button onclick="pullCards(10)">10회<br><small>◆ 270</small></button></div></div><div class="gacha-results" id="gacha-results"><div class="gacha-empty">아직 소환 결과가 없습니다.<br>원소의 계약을 시작해 보세요.</div></div></section>
+    <section class="collection-view synth-view" id="synth-view"><div class="synth-altar"><div class="synth-slots" id="synth-slots"></div><div class="synth-arrow" aria-hidden="true">▼</div><div class="synth-result" id="synth-result"></div><div class="synth-odds" id="synth-odds"></div><button class="synth-go" id="synth-go" onclick="runSynthesis()">합성하기</button><p class="synth-help">재료 3장은 사라지고 무작위 캐릭터 카드 1장이 만들어집니다. 높은 등급 재료일수록 높은 등급이 나오기 쉽고, 아직 없는 카드가 우선적으로 나옵니다.</p></div><div class="synth-pool"><div class="synth-pool-head"><div class="codex-seg" id="synth-filter"></div><span class="synth-count" id="synth-count"></span></div><div class="synth-grid" id="synth-grid"></div></div></section>
     <section class="collection-view codex-view" id="codex-view"><div class="codex-summary" id="codex-summary"></div><div class="codex-toolbar"><div class="codex-seg" id="codex-type"></div><div class="codex-seg" id="codex-status"></div><div class="codex-seg" id="codex-rarity"></div></div><div class="codex-body"><div class="codex-grid" id="codex-grid"></div><aside class="codex-detail" id="codex-detail"></aside></div></section>
     <section class="collection-view deck-view" id="deck-view"><div class="deck-toolbar"><div class="deck-filters" id="deck-filters"></div><div class="deck-count"><strong id="build-count">0</strong> / 60장</div></div><div class="deck-content"><div class="owned-grid" id="owned-grid"></div><div class="deck-list"><h3>전투 덱</h3><div class="deck-rows" id="deck-rows"></div><p class="deck-help">보유 카드를 눌러 추가하거나 이 패널로 드래그해 넣고, 덱 목록을 눌러(또는 보유 카드 영역으로 드래그해) 제거합니다. 저장하면 현재 전투의 남은 덱도 교체됩니다.</p><button class="deck-save" id="deck-save" onclick="saveBattleDeck()">60장 덱 저장</button></div></div></section>
   </div></div>
@@ -826,9 +871,9 @@
     function updateCrackerHud(){const balance=(collectionState.crackers||0).toLocaleString('ko-KR');const node=document.querySelector('#cracker-count'),modalNode=document.querySelector('#collection-cracker-count');if(node)node.textContent=balance;if(modalNode)modalNode.textContent=balance;const enemyLabel=document.querySelector('#enemy-deck-label');if(enemyLabel)enemyLabel.textContent=enemyLabel.textContent.includes('크래커')?enemyLabel.textContent.replace(/크래커\s+\d+/,'크래커 '+enemyCrackers):enemyLabel.textContent+' · 크래커 '+enemyCrackers;}
     function openCollection(view='deck'){ draftDeck=[...collectionState.deck];document.querySelector('#collection-modal').classList.add('show');document.body.style.overflow='hidden';switchCollectionView(view);renderCollection(); }
     function closeCollection(){ document.querySelector('#collection-modal').classList.remove('show');document.body.style.overflow=''; }
-    const COLLECTION_SUBTITLE={deck:'내가 쓸 60장 덱을 속성·비용·희귀도별로 살펴보며 편성하세요.',codex:'모든 카드의 수집 현황을 확인하세요. 캐릭터는 소환으로, 마법·함정은 전투에서 발견하면 등록됩니다.',gacha:'크래커로 새로운 캐릭터 카드를 소환해 컬렉션을 늘리세요.'};
-    function switchCollectionView(view){document.querySelector('#collection-sub').textContent=COLLECTION_SUBTITLE[view]||''; document.querySelectorAll('.collection-tab').forEach(button=>button.classList.toggle('active',button.dataset.view===view));document.querySelectorAll('.collection-view').forEach(panel=>panel.classList.toggle('active',panel.id===view+'-view'));if(view==='deck')renderDeckBuilder();if(view==='codex')renderCodex(); }
-    function renderCollection(){updateCrackerHud();document.querySelectorAll('.gacha-actions button').forEach((button,i)=>button.disabled=gachaPulling||collectionState.crackers<(i?270:30));renderDeckBuilder();renderCodex();}
+    const COLLECTION_SUBTITLE={deck:'내가 쓸 60장 덱을 속성·비용·희귀도별로 살펴보며 편성하세요.',codex:'모든 카드의 수집 현황을 확인하세요. 캐릭터는 소환으로, 마법·함정은 전투에서 발견하면 등록됩니다.',synth:'여분 캐릭터 카드 3장을 합쳐 무작위 새 카드를 만들어 보세요. 덱에 편성된 카드는 재료로 쓰이지 않습니다.',gacha:'크래커로 새로운 캐릭터 카드를 소환해 컬렉션을 늘리세요.'};
+    function switchCollectionView(view){document.querySelector('#collection-sub').textContent=COLLECTION_SUBTITLE[view]||''; document.querySelectorAll('.collection-tab').forEach(button=>button.classList.toggle('active',button.dataset.view===view));document.querySelectorAll('.collection-view').forEach(panel=>panel.classList.toggle('active',panel.id===view+'-view'));if(view==='deck')renderDeckBuilder();if(view==='codex')renderCodex();if(view==='synth')renderSynthesis(); }
+    function renderCollection(){updateCrackerHud();document.querySelectorAll('.gacha-actions button').forEach((button,i)=>button.disabled=gachaPulling||collectionState.crackers<(i?270:30));renderDeckBuilder();renderCodex();renderSynthesis();}
     function pickCard(forceRare=false){ const roll=Math.random(),rarity=forceRare?(roll<.18?'legendary':'rare'):(roll<.05?'legendary':roll<.25?'rare':'common');const pool=collectionCards.map((_,i)=>i).filter(i=>rarityByCard[i]===rarity);return pool[Math.floor(Math.random()*pool.length)]; }
     function pullCardMarkup({index,isNew},position=0){const card=collectionCards[index],rarity=rarityByCard[index];return '<article class="pull-card pull-land '+rarity+'" style="--delay:'+(position*.075)+'s">'+(isNew?'<span class="new-badge">NEW</span>':'')+'<img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+'</h4><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+'</small></article>';}
     function pullCards(count){
@@ -1473,13 +1518,52 @@
       const visible=all.filter(e=>(codexType==='all'||e.type===codexType)&&(codexStatus==='all'||(codexStatus==='got')===e.collected)&&(codexRarity==='all'||e.def.rarity===codexRarity));
       document.querySelector('#codex-grid').innerHTML=visible.map(e=>{const d=e.def;return '<button class="codex-card type-'+e.type+' rarity-'+d.rarity+(e.collected?' got':' missing')+(codexSelected===e.no?' selected':'')+'" onclick="selectCodex('+e.no+')" aria-label="'+(e.collected?d.displayName:'미수집 카드')+'"><span class="codex-no">No.'+String(e.no).padStart(3,'0')+'</span><span class="codex-type">'+CODEX_TYPE_LABEL[e.type]+'</span><div class="codex-art">'+codexArtMarkup(e)+(e.collected?'':'<span class="codex-lock">?</span>')+'</div><b class="codex-name">'+(e.collected?d.displayName:'???')+'</b><small>'+(e.collected?rarityLabel[d.rarity]+(e.type==='champion'?' · '+elementLabel[d.element]:''):'미수집')+'</small>'+(e.collected&&e.owned?'<span class="codex-own">×'+e.owned+'</span>':'')+'</button>';}).join('')||'<div class="gacha-empty">조건에 맞는 카드가 없습니다.</div>';
       const pick=all.find(e=>e.no===codexSelected)||visible[0]||all[0],d=pick.def,effect=runtimeEffectKey(d);
-      document.querySelector('#codex-detail').innerHTML='<div class="codex-detail-art type-'+pick.type+' rarity-'+d.rarity+(pick.collected?' got':' missing')+'">'+codexArtMarkup(pick,true)+(pick.collected?'':'<span class="codex-lock">?</span>')+'</div><div class="codex-detail-meta"><small>No.'+String(pick.no).padStart(3,'0')+' · '+CODEX_TYPE_LABEL[pick.type]+' · '+rarityLabel[d.rarity]+'</small><h3>'+(pick.collected?d.displayName:'???')+'</h3>'+(pick.collected?'<div class="codex-detail-stats"><span>비용 <b>'+d.cost+'</b></span>'+(pick.type==='champion'?'<span>⚔ <b>'+d.stats.attack+'</b></span><span>♥ <b>'+d.stats.health+'</b></span><span>'+elementLabel[d.element]+'</span>':'')+'</div><p>'+runtimeRulesText(effect)+'</p><div class="codex-detail-state got">'+(pick.type==='champion'?'✔ 보유 '+pick.owned+'장':'✔ 발견함')+'</div>':'<p>아직 수집하지 못한 카드입니다.</p><div class="codex-detail-state missing">'+(pick.type==='champion'?'상점에서 카드를 소환하면 획득할 수 있습니다.':'전투 중 손패에 등장하면 도감에 등록됩니다.')+'</div>')+'</div>';
+      document.querySelector('#codex-detail').innerHTML='<div class="codex-detail-art type-'+pick.type+' rarity-'+d.rarity+(pick.collected?' got':' missing')+'">'+codexArtMarkup(pick,true)+(pick.collected?'':'<span class="codex-lock">?</span>')+'</div><div class="codex-detail-meta"><small>No.'+String(pick.no).padStart(3,'0')+' · '+CODEX_TYPE_LABEL[pick.type]+' · '+rarityLabel[d.rarity]+'</small><h3>'+(pick.collected?d.displayName:'???')+'</h3>'+(pick.collected?'<div class="codex-detail-stats"><span>비용 <b>'+d.cost+'</b></span>'+(pick.type==='champion'?'<span>⚔ <b>'+d.stats.attack+'</b></span><span>♥ <b>'+d.stats.health+'</b></span><span>'+elementLabel[d.element]+'</span>':'')+'</div><p>'+runtimeRulesText(effect)+'</p><div class="codex-detail-state got">'+(pick.type==='champion'?'✔ 보유 '+pick.owned+'장':'✔ 발견함')+'</div>':'<p>아직 수집하지 못한 카드입니다.</p><div class="codex-detail-state missing">'+(pick.type==='champion'?'상점에서 카드를 소환하거나 합성으로 획득할 수 있습니다.':'전투 중 손패에 등장하면 도감에 등록됩니다.')+'</div>')+'</div>';
     }
     (function(){
       const baseCreate=createRuntimeBattleCard;
       createRuntimeBattleCard=function(cardId){const card=baseCreate(cardId),def=cardDefinitionById.get(cardId);if(def&&def.cardType!=='champion')markCodexSeen(cardId);return card;};
       document.querySelectorAll('.hand .card[data-card-id]').forEach(card=>{const def=cardDefinitionById.get(card.dataset.cardId);if(def&&def.cardType!=='champion')markCodexSeen(def.cardId);});
     })();
+
+    /* ===== 합성: 여분 캐릭터 카드 3장 → 무작위 새 카드 1장 ===== */
+    /* 재료는 '덱에 편성되지 않은 여분'만 쓴다. 재료 등급 점수(일반 0/희귀 1/전설 2 합계)가 높을수록 높은 등급이 나오기 쉽다. */
+    const SYNTH_SCORE={common:0,rare:1,legendary:2},SYNTH_ODDS=[[85,14,1],[75,22,3],[65,30,5],[55,38,7],[40,48,12],[25,55,20],[10,55,35]]/* 점수 0~6: [일반,희귀,전설]% */,SYNTH_FRESH_BIAS=.7/* 아직 없는 카드를 우선할 확률 */;
+    var synthSlots=[],synthBusy=false,synthFilter='all',synthLast=null;
+    function synthReserved(index){return Math.max(collectionState.deck.filter(i=>i===index).length,countInDraft(index));}
+    function synthSpare(index){return collectionState.owned[index]-synthReserved(index)-synthSlots.filter(i=>i===index).length;}
+    function synthOdds(slots=synthSlots){const score=slots.reduce((sum,i)=>sum+SYNTH_SCORE[rarityByCard[i]],0),row=SYNTH_ODDS[Math.min(SYNTH_ODDS.length-1,score)];return {common:row[0],rare:row[1],legendary:row[2]};}
+    function synthRoll(slots){const odds=synthOdds(slots),r=Math.random()*100,rarity=r<odds.legendary?'legendary':r<odds.legendary+odds.rare?'rare':'common',pool=collectionCards.map((_,i)=>i).filter(i=>rarityByCard[i]===rarity),fresh=pool.filter(i=>collectionState.owned[i]===0),from=fresh.length&&Math.random()<SYNTH_FRESH_BIAS?fresh:pool;return from[Math.floor(Math.random()*from.length)];}
+    function synthPick(index){if(synthBusy||synthSlots.length>=3||synthSpare(index)<=0)return;synthSlots.push(index);synthLast=null;sfx('ui-select');renderSynthesis();}
+    function synthRemove(position){if(synthBusy)return;synthSlots.splice(position,1);renderSynthesis();}
+    function setSynthFilter(value){synthFilter=value;renderSynthesis();}
+    function renderSynthesis(){
+      const slotsEl=document.querySelector('#synth-slots');if(!slotsEl)return;
+      document.querySelector('.synth-altar').classList.toggle('busy',synthBusy);
+      slotsEl.innerHTML=[0,1,2].map(pos=>{const index=synthSlots[pos];if(index===undefined)return '<button class="synth-slot empty" disabled><span>＋</span><small>재료 '+(pos+1)+'</small></button>';const card=collectionCards[index],rarity=rarityByCard[index];return '<button class="synth-slot filled '+rarity+'" onclick="synthRemove('+pos+')" title="눌러서 빼기"><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>'+rarityLabel[rarity]+'</small></button>';}).join('');
+      const full=synthSlots.length===3,odds=full?synthOdds():null;
+      document.querySelector('#synth-odds').innerHTML=full?['common','rare','legendary'].map(r=>'<div class="synth-odd '+r+'"><small>'+rarityLabel[r]+'</small><b>'+odds[r]+'%</b></div>').join(''):'<div class="synth-odds-hint">재료 '+(3-synthSlots.length)+'장을 더 선택하면 등급 확률이 표시됩니다.</div>';
+      const go=document.querySelector('#synth-go');go.disabled=!full||synthBusy;go.textContent=synthBusy?'합성 중…':full?'⚗ 합성하기':'재료 3장을 골라주세요';
+      const result=document.querySelector('#synth-result');
+      if(synthBusy)result.innerHTML='<div class="synth-swirl">⚗</div>';
+      else if(synthLast){const card=collectionCards[synthLast.index],rarity=rarityByCard[synthLast.index];result.innerHTML='<article class="synth-card synth-pop '+rarity+'">'+(synthLast.isNew?'<span class="new-badge">NEW</span>':'')+'<img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+'</h4><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+' · 비용 '+card[3]+'</small></article>';}
+      else result.innerHTML='<div class="synth-card unknown"><span>?</span><small>합성 결과</small></div>';
+      const owned=collectionCards.map((card,index)=>({card,index})).filter(({index})=>collectionState.owned[index]>0&&(synthFilter==='all'||rarityByCard[index]===synthFilter));
+      const seg=[['all','전체'],['common','일반'],['rare','희귀'],['legendary','전설']];
+      document.querySelector('#synth-filter').innerHTML=seg.map(([key,label])=>'<button class="'+(synthFilter===key?'active':'')+'" onclick="setSynthFilter(\''+key+'\')">'+label+'</button>').join('');
+      document.querySelector('#synth-count').textContent='여분 카드 총 '+collectionCards.reduce((sum,_,i)=>sum+Math.max(0,synthSpare(i)),0)+'장';
+      document.querySelector('#synth-grid').innerHTML=owned.map(({card,index})=>{const spare=Math.max(0,synthSpare(index)),rarity=rarityByCard[index],locked=spare<=0;return '<button class="synth-pick '+rarity+(locked?' locked':'')+'" '+(locked||synthBusy||full?'disabled':'')+' onclick="synthPick('+index+')"><span class="synth-spare">'+(locked?'덱 편성 중':'여분 '+spare)+'</span><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+'</small></button>';}).join('')||'<div class="gacha-empty">이 등급의 보유 카드가 없습니다.</div>';
+    }
+    function runSynthesis(){
+      if(synthBusy||synthSlots.length!==3)return;
+      const need=new Map();synthSlots.forEach(i=>need.set(i,(need.get(i)||0)+1));
+      for(const [index,count] of need)if(collectionState.owned[index]-synthReserved(index)<count){synthSlots=[];renderSynthesis();return;}
+      const slots=[...synthSlots],result=synthRoll(slots),isNew=collectionState.owned[result]===0;
+      slots.forEach(i=>collectionState.owned[i]--);collectionState.owned[result]++;persistCollection();
+      synthBusy=true;synthSlots=[];synthLast=null;renderSynthesis();
+      [220,330,440,660].forEach((f,k)=>tone(f,.22,'triangle',.05,f*1.5,k*.22));
+      setTimeout(()=>{synthBusy=false;synthLast={index:result,isNew};const rarity=rarityByCard[result];tone(rarity==='legendary'?1040:rarity==='rare'?820:680,.4,'triangle',.09);renderCollection();},950);
+    }
 </script>
 </body>
 </html>
