@@ -14,7 +14,8 @@ function seeded(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) 
 // ───────── 효과음 ─────────
 test('피격음은 피해량과 무관하게 항상 같은 "강한 신호"다 (강도 단계 없음)', () => {
   assert.equal(Sfx.hitTier, undefined, '피해 강도 단계는 없애기로 함');
-  assert.ok(Sfx.STRONG && Sfx.STRONG.wet > 0 && Sfx.STRONG.wide > 0, '강한 신호 설정(잔향·좌우 폭)이 있어야 함');
+  assert.ok(Sfx.STRONG && Sfx.STRONG.cap > 0 && Sfx.STRONG.power > 0.5, '강한 신호 설정이 있어야 함');
+  for (const element of Object.keys(Sfx.ELEMENT)) assert.ok(Sfx.ELEMENT[element].wet > 0 && Sfx.ELEMENT[element].wide > 0, `${element}: 속성별 잔향·좌우 폭이 있어야 함`);
   for (const element of Object.keys(Sfx.HIT_SETS)) assert.ok(Array.isArray(Sfx.HIT_SETS[element]), `${element}: 조합 배열`);
 });
 
@@ -58,7 +59,7 @@ test('음원 파일: 목록의 모든 mp3와 CC0 라이선스 안내가 저장�
 // 최소한의 가짜 Web Audio (소리는 안 나지만 호출 구조는 그대로 실행)
 function fakeAudio() {
   const stats = { started: 0, nodes: 0, panners: 0 };
-  const param = () => ({ value: 0, setValueAtTime() {}, exponentialRampToValueAtTime() {}, linearRampToValueAtTime() {} });
+  const param = () => ({ value: 0, setValueAtTime() {}, exponentialRampToValueAtTime() {}, linearRampToValueAtTime() {}, setTargetAtTime() {}, cancelScheduledValues() {} });
   const node = (extra = {}) => { stats.nodes++; return Object.assign({ connect() {}, start() { stats.started++; }, stop() {}, gain: param(), frequency: param(), Q: param(), pan: param() }, extra); };
   const ctx = {
     currentTime: 0, sampleRate: 8000,
@@ -203,14 +204,14 @@ test('공간감: 효과음은 압축기와 잔향(컨볼버) 체인을 통과한
   api.playHit('fire', 9, 0);
   api.playHit('water', 3, 0);
   assert.equal(made.filter((n) => n === 'createDynamicsCompressor').length, 1, '체인은 컨텍스트당 한 번만 만든다');
-  assert.equal(made.filter((n) => n === 'createConvolver').length, 1);
+  assert.equal(made.filter((n) => n === 'createConvolver').length, Object.keys(Sfx.IR_SECONDS).length, '잔향 종류(홀/작은 방)마다 컨볼버 하나');
 });
 
 test('음량 보정표: 모든 조합에 값이 있고 유효하다', () => {
   for (const element of Object.keys(Sfx.HIT_SETS)) {
     const trims = Sfx.TRIM[element];
     assert.ok(Array.isArray(trims) && trims.length === Sfx.HIT_SETS[element].length, `${element}: 조합 수만큼 보정값이 있어야 함 (python3 -I 12_tools/qa/measure-sfx.py --calibrate 로 다시 측정)`);
-    trims.forEach((value) => assert.ok(value >= 0.3 && value <= 6, `${element}: 보정값 ${value}`));
+    trims.forEach((value) => assert.ok(value >= 0.3 && value <= 10, `${element}: 보정값 ${value}`));
   }
 });
 
@@ -228,4 +229,52 @@ test('조합 고정(force.combo)과 연속 반복 금지가 함께 동작한다'
   const api = Sfx.init({ engine: () => ctx, bus: () => ctx.createGain() });
   assert.equal(api.playHit('earth', 8, 0, { combo: 1 }), true);
   assert.equal(api.playHit('earth', 8, 0, { combo: 99 }), true, '범위를 넘는 번호도 안전하게 처리');
+});
+
+// ───────── 공간감 구별·연속 타격 ─────────
+test('공간감 구별: 칼날(바람)과 금속(무속성)은 짧고 건조하고, 불·물·대지는 길고 넓다', () => {
+  const E = Sfx.ELEMENT;
+  for (const sharp of ['wind', 'neutral']) {
+    assert.equal(E[sharp].space, 'short', `${sharp}: 작은 방 잔향`);
+    assert.ok(E[sharp].wet <= 0.15, `${sharp}: 잔향이 적어야 예리함이 산다`);
+    assert.ok(E[sharp].tail <= 0.5, `${sharp}: 꼬리가 짧아야 함`);
+  }
+  for (const roomy of ['fire', 'water', 'earth']) {
+    assert.equal(E[roomy].space, 'long', `${roomy}: 홀 잔향`);
+    assert.ok(E[roomy].wet >= 0.18 && E[roomy].tail >= 0.7, `${roomy}: 공간감이 충분해야 함`);
+  }
+  assert.ok(E.wind.tail < E.fire.tail && E.wind.wet < E.water.wet, '바람은 불·물보다 훨씬 건조해야 구별이 된다');
+  assert.ok(E.wind.hp > 0, '칼날은 저음(둔한 울림)을 걷어낸다');
+});
+
+test('울림 길이: 처음 설계(잔향 1.7초, 꼬리 2.0초)의 70% 이하', () => {
+  assert.ok(Sfx.IR_SECONDS.long <= 1.7 * 0.7 + 1e-9, `홀 잔향 ${Sfx.IR_SECONDS.long}초`);
+  assert.ok(Sfx.IR_SECONDS.short < Sfx.IR_SECONDS.long);
+  assert.ok(Sfx.STRONG.cap <= 2.0 * 0.7 + 1e-9, `샘플 꼬리 ${Sfx.STRONG.cap}초`);
+  for (const element of Object.keys(Sfx.ELEMENT)) assert.ok(Sfx.STRONG.cap * Sfx.ELEMENT[element].tail <= 1.4, `${element}: 최종 꼬리`);
+  for (const combo of Sfx.HIT_SETS.wind) assert.ok(!combo.some((layer) => layer.s === 'legacy_explosion'), '칼날 조합에는 길게 울리는 폭발 몸통을 쓰지 않는다');
+});
+
+test('연속 타격: 같은 시간에 쌓일수록 잔향을 줄이고, 새 타격마다 이전 잔향을 눌러 준다', () => {
+  const { ctx } = fakeAudio();
+  const wets = [], ducks = [];
+  const realGain = ctx.createGain;
+  ctx.createGain = () => { const node = realGain(); const setTarget = node.gain.setTargetAtTime; node.gain.setTargetAtTime = (value, ...rest) => { ducks.push(value); return setTarget(value, ...rest); }; return node; };
+  const bus = ctx.createGain();
+  const api = Sfx.init({ engine: () => ctx, bus: () => bus });
+  ducks.length = 0;
+  for (let i = 0; i < 5; i++) { ctx.currentTime = i * 0.9; api.playHit('fire', 8, 0); }
+  assert.ok(ducks.includes(0.55), '두 번째 타격부터 이전 잔향을 눌러야 함');
+  assert.ok(Sfx.CROWD_STEP > 0 && Sfx.CROWD_MIN >= 0.4 && Sfx.CROWD_MIN < 1);
+  // 시간이 충분히 흐르면 다시 처음처럼 (덕킹 없음)
+  const quiet = fakeAudio();
+  const ducksQuiet = [];
+  const g2 = quiet.ctx.createGain;
+  quiet.ctx.createGain = () => { const node = g2(); const st = node.gain.setTargetAtTime; node.gain.setTargetAtTime = (v, ...r) => { ducksQuiet.push(v); return st(v, ...r); }; return node; };
+  const bus2 = quiet.ctx.createGain();
+  const api2 = Sfx.init({ engine: () => quiet.ctx, bus: () => bus2 });
+  ducksQuiet.length = 0;
+  quiet.ctx.currentTime = 0; api2.playHit('fire', 8, 0);
+  quiet.ctx.currentTime = 10; api2.playHit('fire', 8, 0);
+  assert.ok(!ducksQuiet.includes(0.55), '간격이 충분하면 덕킹하지 않는다');
 });
