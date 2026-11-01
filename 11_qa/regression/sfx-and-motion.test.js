@@ -498,7 +498,7 @@ test('스킬 고유 소리: 아주르 썬더폴은 번개만, 빙결 계열은 �
   assert.ok(html.includes("function muteSfx(keys,ms)") && html.includes("function sfxIsMuted(kind,variant)"), 'Temporary mute helpers must exist');
   assert.ok(html.includes("sfx=function(kind,variant='neutral',strength=3){if(soundOn&&sfxIsMuted(kind,variant))return;"), 'Every sound must pass the mute check first');
   // 아주르 썬더폴: 일반 공격음 없음 + 물 피격음 음소거 + 휘두르는 소리 없음
-  assert.ok(html.includes("if(element!=='water')sfx('attack',element,3);"), 'Thunderfall must not play the generic water attack sound');
+  assert.ok(html.includes("if(element!=='water'&&element!=='wind')sfx('attack',element,3);"), 'Thunderfall must not play the generic water attack sound');
   assert.ok(html.includes("muteSfx(['hit:water'],1200);thunderfallAt=performance.now();fateSfx.playLightning(0);"), 'Thunderfall must mute the water hit and play only lightning');
   assert.ok(html.includes("if(performance.now()-thunderfallAt>300)fateSfx.playSwing("), 'Thunderfall must not play the generic swing sound');
   // 빙결 계열(빙결 사슬 = champion-control, 프로스트 노바): 일반 마법 시전음·마법 효과음·물 피격음 끔
