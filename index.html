@@ -620,6 +620,11 @@
     .command-rail .hand.ultimate-arming .ult-preview .ult-cond em { display:block; font-size:13px; font-weight:600; line-height:1.3; color:#ecd7db; text-align:left; }
     .command-rail .hand.ultimate-arming .ult-preview .ult-meta { grid-area:meta; align-self:start; justify-self:center; display:flex; flex-direction:column; align-items:center; gap:5px; margin:0; }
     .command-rail .hand.ultimate-arming .ult-preview .ult-meta span { padding:2px 9px; font-size:12px; white-space:normal; }
+    /* 챔프 카드: 그림을 가리지 않도록 별(희귀도)은 코스트 오른쪽, 등급은 공격력·체력 사이로 옮기고 HP 바는 없앤다 */
+    .card-hp-meter { display:none!important; }
+    .command-rail .card.summon-card > .rarity-stars { display:block; top:10px; left:44px; font-size:12px; padding:4px 9px; }
+    .command-rail .card.summon-card .card-stats { display:flex; align-items:center; justify-content:space-between; gap:6px; }
+    .command-rail .card.summon-card .card-stats .power-grade { position:static; flex:none; margin:0; padding:3px 11px; font-size:15px; font-weight:900; line-height:1.15; letter-spacing:.02em; }
     /* === 사운드 설정 패널 (배경음악/효과음 슬라이더) === */
     .sound-wrap { position:relative; }
     /* 시작 연출·수호신 선택 화면에서도 사운드 조절은 항상 보이게 한다 */
@@ -979,8 +984,8 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function rollAttack(min,max){return engineAdapter.randomInt(Number(min),Number(max));}
     function rollPowerGrade(){const roll=engineAdapter.random();return roll<.15?{key:'a',label:'A급',bonus:2}:roll<.50?{key:'b',label:'B급',bonus:1}:{key:'c',label:'C급',bonus:0};}
     function gradeCardData(data,side){const grade=rollPowerGrade(side==='player'?'player':'enemy');return {...data,grade,atkFinal:Number(data.atk)+grade.bonus};}
-    function applyPowerGrade(card,base){const grade=rollPowerGrade('player'),attack=Number(base)+grade.bonus;card.classList.remove('grade-a','grade-b','grade-c','grade-s');card.classList.add('grade-'+grade.key);card.dataset.atk=attack;card.dataset.baseAtk=base;card.dataset.grade=grade.key;card.dataset.gradeBonus=grade.bonus;card.querySelector('.power-grade')?.remove();const badge=document.createElement('span');badge.className='power-grade';badge.textContent=grade.label+' · +'+grade.bonus;card.appendChild(badge);const attackNode=card.querySelector('.card-stats span:first-child');if(attackNode)attackNode.textContent='⚔ '+attack+(grade.bonus?' (+'+grade.bonus+')':'');return grade;}
-    function renderCardHpMeter(card){if(!card?.classList.contains('summon-card'))return;const frame=card.querySelector('.art'),hp=Number(card.dataset.hp||card.querySelector('.card-stats span:last-child')?.textContent.replace(/[^0-9]/g,''));if(!frame||!hp)return;frame.querySelector('.card-hp-meter')?.remove();const meter=document.createElement('span');meter.className='card-hp-meter';meter.setAttribute('aria-label','HP '+hp);meter.innerHTML='<i style="width:100%"></i><b>HP '+hp+'</b>';frame.appendChild(meter);}
+    function applyPowerGrade(card,base){const grade=rollPowerGrade('player'),attack=Number(base)+grade.bonus;card.classList.remove('grade-a','grade-b','grade-c','grade-s');card.classList.add('grade-'+grade.key);card.dataset.atk=attack;card.dataset.baseAtk=base;card.dataset.grade=grade.key;card.dataset.gradeBonus=grade.bonus;card.querySelector('.power-grade')?.remove();const badge=document.createElement('span');badge.className='power-grade';badge.textContent=grade.label;const statsRow=card.querySelector('.card-stats');if(statsRow&&statsRow.lastElementChild&&statsRow.children.length>=2)statsRow.insertBefore(badge,statsRow.lastElementChild);else card.appendChild(badge);const attackNode=card.querySelector('.card-stats span:first-child');if(attackNode)attackNode.textContent='⚔ '+attack+(grade.bonus?' (+'+grade.bonus+')':'');return grade;}
+    function renderCardHpMeter(card){card?.querySelector?.('.card-hp-meter')?.remove();}/* 카드 그림을 가리던 HP 바는 폐지(체력은 하단 ♥ 숫자로만 표시) */
     function setCardArtwork(card,art,alt){card.dataset.art=art;const frame=card.querySelector('.art');if(frame)frame.innerHTML='<img class="creature-art" src="'+art+'" alt="'+alt+'">';renderCardHpMeter(card);return art;}
     function cardArtwork(card){return card.querySelector('.creature-art')?.getAttribute('src')||card.dataset.art||'';}
     /* 테스트용: 시작 손패는 접속/새로고침마다 챔피언 3 + 마법·함정 5를 무작위로 뽑는다(마법·함정 중 2장은 불리할 때 판을 뒤집는 전역 피해 마법 보장). URL에 ?fixedStarter 를 붙이면 battle-starter.json 고정 구성을 쓴다. */
