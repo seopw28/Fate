@@ -408,18 +408,20 @@
     }
 
     // 바람 공격의 연출("실피드 템페스트") 소리: 칼바람이 "슈류륙" 하고 세 번 연달아 스쳐 지나간다.
-    // 한 번의 스침 = 높은 쉭 소리가 올라갔다 내려오는 대역 잡음 + 가는 휘파람 층. 세 번은 약 0.19초 간격으로 좌 → 우 → 중앙으로 움직이며 점점 높아진다.
+    // 한 번의 스침 = 높은 쉭 소리가 올라갔다 내려오는 대역 잡음 + 가는 휘파람 층. 세 번은 약 0.12초 간격으로 좌 → 우 → 중앙으로 움직이며 점점 높아진다.
     // 합성음이라 샘플 팩과 무관하게 항상 난다.
     function playGust(pan = 0) {
       const ctx = ctxOrNull();
       if (!ctx) return false;
       const level = 0.34 + STRONG.power * 0.36;
-      [[0, -0.55, 1], [0.19, 0.55, 1.12], [0.38, 0, 1.25]].forEach(([delay, side, lift], i) => {
+      [[0, -0.55, 1], [0.12, 0.55, 1.1], [0.24, 0, 1.2]].forEach(([delay, side, lift], i) => {
         const p = { pan: clamp(pan + side, -1, 1), delay, wet: 0, space: 'short' };
         const last = i === 2;
-        noise({ ...p, dur: last ? 0.5 : 0.36, vol: level * 0.32, type: 'bandpass', freq: 1500 * lift, endFreq: 5200 * lift, q: 1.3, attack: 0.1 });
-        noise({ ...p, dur: last ? 0.46 : 0.32, vol: level * 0.18, type: 'highpass', freq: 5200 * lift, endFreq: 7200 * lift, q: 0.7, attack: 0.08 });
-        noise({ ...p, delay: delay + 0.04, dur: last ? 0.42 : 0.28, vol: level * 0.11, type: 'bandpass', freq: 3000 * lift, endFreq: 1700 * lift, q: 6, attack: 0.12 });
+        noise({ ...p, dur: last ? 0.5 : 0.34, vol: level * 0.45, type: 'bandpass', freq: 1300 * lift, endFreq: 5000 * lift, q: 1.0, attack: 0.08 });
+        noise({ ...p, dur: last ? 0.46 : 0.3, vol: level * 0.26, type: 'highpass', freq: 4800 * lift, endFreq: 7200 * lift, q: 0.7, attack: 0.06 });
+        // 거친 질감: 낮은 대역의 두꺼운 잡음을 먼저 깔아 칼바람이 긁고 지나가는 느낌을 준다
+        noise({ ...p, dur: last ? 0.44 : 0.28, vol: level * 0.34, type: 'bandpass', freq: 600 * lift, endFreq: 2400 * lift, q: 0.6, attack: 0.05 });
+        noise({ ...p, delay: delay + 0.03, dur: last ? 0.42 : 0.26, vol: level * 0.15, type: 'bandpass', freq: 3000 * lift, endFreq: 1700 * lift, q: 6, attack: 0.1 });
       });
       return true;
     }
