@@ -86,3 +86,32 @@
 | **피격 효과음 변주 + 평타 모션 6종** (Kenney CC0 샘플 + 합성음) | [10](10-audio-and-motion.md). 테스트 12개 추가 |
 | 테스트용 `?crackers=N` | 결제 테스트 편의 (이후 개발 환경 전용으로 제한) |
 | **코드 리뷰(TEAM_REVIEW)**: 약자멸시 기권 이중 차감 수정, 이탈=패배, 수호신 선불 100, URL 옵션 개발 전용, 저장 데이터 `cardIds` | 테스트: 계약 24개 + 경제 시나리오 9개 |
+
+## D. 되돌리기 지도 (작업 → 커밋)
+
+> 작업을 되돌릴 때 이 표를 보세요. **단독 커밋**은 `git revert <해시>`로 깔끔하게 되돌아갑니다. **다른 세션 작업과 한 커밋에 묶인 것**은 `git revert`를 하면 같이 되돌려지므로, 오른쪽 "부분 되돌리기" 방법을 쓰세요.
+
+### 단독 커밋 (그대로 `git revert` 가능)
+
+| 작업 | 커밋 |
+|---|---|
+| 프로스트 노바 + 빙결 이펙트/사운드 | `57fcb8b27` |
+| 상대 AI 개선, 초기 전장 공정화, 영웅 체력 100, 단축키, 턴 시작 캐릭터 탭 | `0a80680b9` |
+| 캐릭터 카드 "불가침의 유나" | `844f2df66` |
+| 테스트용 `?crackers=N` 옵션 | `b1355abcb` |
+| 피격 효과음 개선: 속성별 공간감 구별 · 울림 70% · 연속 타격 정리 | `1bc4dc7b6` |
+| 효과음 측정 도구(`--burst`, 피크, 음량 목표) | `8e5d804b9` |
+
+### 다른 세션 작업과 묶인 커밋 (부분 되돌리기)
+
+| 작업 | 커밋 | 부분 되돌리기 |
+|---|---|---|
+| **코드 리뷰 개선**: 약자멸시 기권·이탈=패배, 수호신 선불 100, URL 옵션 개발 환경 전용(`DEV_MODE`), 저장 데이터 `cardIds` | `5c17adf49` (대재앙 마법·약자멸시 경제 규칙·사운드 버튼 상시 노출과 함께) | `dist/index.html`에서 `DEV_MODE`, `CHALLENGE_LOSS_COST`, `pendingChallenge`, `remapSavedByCardIds`, `COLLECTION_CARD_IDS`, `GUARDIAN_COST` 부분을 수동으로 원복. 테스트(`save-and-economy.test.js`, `check-economy-flow.py`)는 파일 단위로 삭제 가능 |
+| **역전 돌진 · 최후의 발악(게이지 연출·중앙 안내) · 필살기 횟수 제한** | `5c17adf49` (필살기 무제한으로의 변경은 `bd08279a4`) | `comebackRushActive`, `totalHealth`, `showDesperateNotice`, `updateDesperation`, CSS `.desperate*` 블록을 `dist/index.html`에서 제거 |
+| **게임 규칙서** `game-rules/01~09` | `5c17adf49` | 폴더 단위: `git checkout 5c17adf49~1 -- 02_game-design/game-rules` |
+| **피격 효과음 v1 + 평타 모션 6종 + Kenney 음원 + 측정 도구 초판** | `bd08279a4` (블랙타워 제외·새 인물 16명·필살기 무제한과 함께) | 파일 단위: `05_game-client/battle/sfx-variety.js`, `attack-motions.js`, `dist/assets/audio/sfx/`, `dist/runtime/{sfx-variety,attack-motions}.js`, `12_tools/asset-pipeline/build-sfx.py`, `12_tools/qa/measure-sfx.py`, `12_tools/build-scripts/build-runtime.mjs`의 복사 2줄, `11_qa/regression/sfx-and-motion.test.js`, 규칙서 `10-audio-and-motion.md`. `dist/index.html`에서는 `fateSfx`, `panFor`, `hitPan`, `pickAttackMotion`, `.summon-zone:has(.field-attacker)` 블록 제거 후 `sfx`/`fieldAttack` 원복 |
+
+### 참고
+- 위 표의 "묶인 커밋"은 같은 파일(`dist/index.html`)을 두 세션이 동시에 수정하다가 한쪽 커밋에 함께 들어간 것입니다. 앞으로는 작업별로 먼저 커밋해 이런 묶임을 줄이는 것이 좋습니다.
+- 이미 올라간 커밋의 이력을 다시 쓰는 것(rebase/amend)은 다른 세션의 작업을 깨뜨릴 수 있어 하지 않았습니다.
+
