@@ -69,11 +69,11 @@
     // 무속성(금속): 강철끼리 부딪히는 "깡! 쨍! 창!" — 단단하고 밝은 어택 위주, 여운은 짧게. 폭발·펀치·종 샘플은 금속으로 들리지 않아 뺐다.
     // 철판/금속 타격 샘플을 어택으로, 길게 울리는 금속 샘플은 짧게 잘라(dur) 얹고, 합성 "부딪힘"(잡음 어택 + 어긋난 고음 공명)을 더한다.
     neutral: [
-      [L('impactPlate_heavy'), L('impactMetal_heavy', { g: 0.8 }), L('legacy_metal', { g: 0.5, r: 1.15, dur: 0.5 })],
-      [L('impactMetal_medium', { r: 1.1 }), L('impactPlate_medium', { g: 0.8 }), L('impactTin_medium', { g: 0.4, hp: 2500 })],
-      [L('impactPlate_heavy', { r: 1.12 }), L('impactMetal_light', { g: 0.7, r: 1.3, hp: 1800 }), L('legacy_metal', { g: 0.45, r: 1.3, dur: 0.45 })],
-      [L('impactMetal_heavy', { r: 1.05 }), L('impactPlate_medium', { g: 0.9, r: 1.1 }), L('legacy_metal', { g: 0.55, dur: 0.5 })],
-      [L('impactPlate_medium', { r: 1.2 }), L('impactMetal_medium', { g: 0.9, r: 1.15 }), L('impactTin_medium', { g: 0.5, r: 1.2 })]
+      [L('impactMetal_heavy'), L('legacy_metal', { g: 0.95, r: 1.1, dur: 0.9 }), L('impactPlate_heavy', { g: 0.4 })],
+      [L('impactMetal_medium', { r: 1.1 }), L('legacy_metal', { g: 0.85, r: 1.25, dur: 0.8 }), L('impactTin_medium', { g: 0.4, hp: 2500 })],
+      [L('impactMetal_heavy', { r: 1.12 }), L('impactMetal_light', { g: 0.7, r: 1.3, hp: 1800 }), L('legacy_metal', { g: 0.9, r: 1.35, dur: 0.8 })],
+      [L('impactMetal_heavy', { r: 1.05 }), L('legacy_metal', { g: 1, dur: 0.9 }), L('impactPlate_medium', { g: 0.4, r: 1.1 })],
+      [L('impactMetal_medium', { r: 1.2 }), L('legacy_metal', { g: 0.85, r: 1.4, dur: 0.7 }), L('impactTin_medium', { g: 0.5, r: 1.2 })]
     ]
   };
   // 공간·길이 설정 (wet=잔향 양, wide=좌우 폭, cap=샘플 최대 길이 초, layers=합성 질감 개수)
@@ -97,7 +97,7 @@
     // 대지: 더 낮고 묵직하게 — rate·lp·강한 저음 EQ. 공간감(잔향·꼬리·좌우 폭)을 크게. pitch는 합성 저음(쿵·우르릉)에도 적용된다
     earth: { eq: [{ type: 'lowshelf', freq: 140, gain: 8 }], wet: 0.38, space: 'long', tail: 1.0, wide: 0.4, hp: 0, fade: 0.4, rate: 0.82, lp: 4200 },
     // 무속성(금속): 강철 부딪힘 — 고음을 살리고 여운은 짧게(tail 0.55), "깡-깡" 두 번 연달아 부딪히는 느낌으로 2번 겹침, 합성 부딪힘 1층
-    neutral: { eq: [{ type: 'highshelf', freq: 3000, gain: 4 }], wet: 0.08, space: 'short', tail: 0.55, wide: 0.2, hp: 0, fade: 0.15, synth: 1, stack: { count: 2, spacing: [0.07, 0.1], decay: 0.6, pitch: 0.06, jitter: 0.04, spread: 0.3, layers: 1, cap: 0.3 } },
+    neutral: { eq: [{ type: 'highshelf', freq: 3000, gain: 4 }], wet: 0.08, space: 'short', tail: 0.8, wide: 0.2, hp: 0, fade: 0.3, synth: 1, stack: { count: 2, spacing: [0.07, 0.1], decay: 0.55, pitch: 0.06, jitter: 0.04, spread: 0.3, layers: 1, cap: 0.45 } },
   };
   // 조합별 음량 보정 (12_tools/qa/measure-sfx.py --calibrate 로 조합마다 렌더링·측정해 맞춘 값). TRIM[속성][조합 번호]
   // 목표: 속성·조합이 달라도 비슷한 크기로 들리게 한다. 값이 없으면 1.
@@ -318,11 +318,13 @@
       crack(p) { noise({ dur: 0.06, vol: 0.07 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'bandpass', freq: rand(900, 1500) * (p.pitch || 1), q: 1.2 }); noise({ dur: 0.05, vol: 0.045 * p.power * p.boost, delay: rand(0.05, 0.1), pan: p.pan, wet: p.wet, space: p.space, type: 'bandpass', freq: rand(1200, 2000), q: 1.2 }); },
       thud(p) { sub({ freq: rand(75, 95) * (p.pitch || 1), endFreq: 32 * (p.pitch || 1), dur: 0.3 + p.power * 0.2, vol: 0.14 * p.power * p.boost, pan: p.pan, wet: p.wet * 0.5 , space: p.space}); },
       ring(p) { const base = rand(520, 760); resonate({ freqs: [base, base * 2.76, base * 5.4, base * 8.9], q: 40, dur: 0.6 + p.power * 0.4, vol: 0.02 * p.power * p.boost, pan: p.pan, wet: p.wet * 1.4 , space: p.space}); },
-      clash(p) { // 강철끼리 "깡·쨍" 부딪힘: 짧고 밝은 잡음 어택 + 서로 어긋난 고음 공명(0.3초 안팎)
-        noise({ dur: 0.05, vol: 0.05 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'highpass', freq: 3500, q: 0.7, attack: 0.001 });
-        const f = rand(1900, 2900);
-        resonate({ freqs: [f, f * 1.47, f * 2.09, f * 2.86], q: 28, dur: 0.28 + p.power * 0.12, vol: 0.03 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space });
+      clash(p) { // 강철끼리 부딪히는 소리: 짧고 밝은 잡음 어택 + 쇠막대처럼 길게 우는 어긋난 고음 공명(0.7초 안팎, 플라스틱처럼 뚝 죽지 않게)
+        noise({ dur: 0.04, vol: 0.05 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'highpass', freq: 4000, q: 0.7, attack: 0.001 });
+        const f = rand(1500, 2300);
+        resonate({ freqs: [f, f * 2.76, f * 5.4, f * 8.93], q: 70, dur: 0.6 + p.power * 0.25, vol: 0.04 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space });
+        resonate({ freqs: [f * 1.5, f * 3.9], q: 50, dur: 0.45, vol: 0.02 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space });
       },
+
       clink(p) { resonate({ freqs: [rand(1800, 2300), rand(3300, 4100), rand(5200, 6400)], q: 34, dur: 0.22, vol: 0.02 * p.power * p.boost, pan: p.pan, wet: p.wet , space: p.space}); },
       clang(p) { const base = rand(300, 420); resonate({ freqs: [base, base * 2.4, base * 4.1, base * 6.3], q: 22, dur: 0.45 + p.power * 0.25, vol: 0.022 * p.power * p.boost, pan: p.pan, wet: p.wet , space: p.space}); }
     };
