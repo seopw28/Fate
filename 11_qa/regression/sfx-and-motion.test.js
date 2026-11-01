@@ -236,7 +236,7 @@ test('음량 보정표: 모든 조합에 값이 있고 유효하다', () => {
   for (const element of Object.keys(Sfx.HIT_SETS)) {
     const trims = Sfx.TRIM[element];
     assert.ok(Array.isArray(trims) && trims.length === Sfx.HIT_SETS[element].length, `${element}: 조합 수만큼 보정값이 있어야 함 (python3 -I 12_tools/qa/measure-sfx.py --calibrate 로 다시 측정)`);
-    trims.forEach((value) => assert.ok(value >= 0.3 && value <= 14, `${element}: 보정값 ${value}`));
+    trims.forEach((value) => assert.ok(value >= 0.3 && value <= 16, `${element}: 보정값 ${value}`));
   }
 });
 
@@ -266,7 +266,7 @@ test('공간감 구별: 대지는 가장 넓은 홀 잔향, 칼날·금속은 �
   for (const sharp of ['wind', 'neutral']) {
     assert.equal(E[sharp].space, 'short', `${sharp}: 작은 방 잔향`);
     assert.ok(E[sharp].wet <= 0.15, `${sharp}: 잔향이 적어야 예리함이 산다`);
-    assert.ok(E[sharp].tail <= 0.5, `${sharp}: 꼬리가 짧아야 함`);
+    assert.ok(E[sharp].tail <= (sharp === 'neutral' ? 0.9 : 0.5), `${sharp}: 꼬리가 짧아야 함 (금속은 "띵!" 여운을 위해 0.9까지)`);
   }
   assert.equal(E.earth.space, 'long');
   assert.ok(E.earth.wet >= 0.3 && E.earth.tail >= 0.9 && E.earth.wide >= 0.35, '대지는 공간감을 크게 쓴다');

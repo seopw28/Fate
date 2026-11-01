@@ -66,12 +66,14 @@
       [L('impactMining'), L('impactPunch_heavy', { r: 0.8 }), L('impactSoft_heavy', { r: 0.7 }), L('legacy_explosion', { g: 0.85, r: 0.6, lp: 1400 })],
       [L('impactWood_heavy', { r: 0.85 }), L('impactMining', { g: 0.8 }), L('legacy_explosion', { g: 0.8, r: 0.7, lp: 1500 }), L('legacy_metal', { g: 0.3, r: 0.6 })]
     ],
+    // 무속성(금속): 철을 쳤을 때 "띵!" 하고 맑게 울리는 소리. 단단한 금속 타격(어택) + 길게 울리는 금속 샘플(여운) + 얇은 고음 핑.
+    // 폭발·펀치·종(둔하게 "둥" 울림) 샘플은 금속으로 들리지 않아 뺐다.
     neutral: [
-      [L('impactMetal_heavy'), L('legacy_metal', { g: 0.75, r: 0.95 }), L('impactBell_heavy', { g: 0.25 }), L('legacy_explosion', { g: 0.3, r: 1.25, lp: 3500 })],
-      [L('impactPlate_heavy'), L('impactMetal_medium'), L('legacy_metal', { g: 0.65, r: 0.9 }), L('legacy_explosion', { g: 0.3, r: 1.25, lp: 3500 })],
-      [L('impactMetal_heavy'), L('impactPunch_heavy', { g: 0.7 }), L('legacy_metal', { g: 0.6, r: 1 }), L('legacy_explosion', { g: 0.25, r: 1.1, lp: 3000 })],
-      [L('impactMetal_heavy'), L('impactPlate_heavy'), L('impactBell_heavy', { g: 0.5 }), L('legacy_metal', { g: 0.95, r: 0.85 }), L('legacy_explosion', { g: 0.4, r: 1.1, lp: 3000 })],
-      [L('impactPlate_heavy'), L('impactMetal_heavy'), L('impactPunch_heavy', { g: 0.8 }), L('legacy_metal', { g: 0.9, r: 0.9 }), L('legacy_explosion', { g: 0.45, r: 1, lp: 3500 })]
+      [L('impactMetal_heavy'), L('legacy_metal', { g: 0.8, r: 1.05 })],
+      [L('impactMetal_medium'), L('legacy_metal', { g: 0.75, r: 1.15 }), L('impactTin_medium', { g: 0.35, hp: 2500 })],
+      [L('impactMetal_heavy', { r: 1.08 }), L('impactMetal_light', { g: 0.6, r: 1.4, hp: 2000 }), L('legacy_metal', { g: 0.7 })],
+      [L('impactMetal_medium'), L('legacy_metal', { g: 0.9, r: 0.95 })],
+      [L('impactMetal_heavy'), L('impactTin_medium', { g: 0.5, r: 1.2 }), L('legacy_metal', { g: 0.65, r: 1.2 })]
     ]
   };
   // 공간·길이 설정 (wet=잔향 양, wide=좌우 폭, cap=샘플 최대 길이 초, layers=합성 질감 개수)
@@ -94,7 +96,8 @@
     wind: { eq: [{ type: 'highshelf', freq: 4500, gain: 4 }], wet: 0.02, space: 'short', tail: 0.3, wide: 0.1, hp: 600, fade: 0.1, rate: 1.2, stack: { count: 3, spacing: [0.03, 0.055], decay: 0.74, pitch: 0.04, jitter: 0.03, spread: 0.4, layers: 1, cap: 0.16 } },
     // 대지: 더 낮고 묵직하게 — rate·lp·강한 저음 EQ. 공간감(잔향·꼬리·좌우 폭)을 크게. pitch는 합성 저음(쿵·우르릉)에도 적용된다
     earth: { eq: [{ type: 'lowshelf', freq: 140, gain: 8 }], wet: 0.38, space: 'long', tail: 1.0, wide: 0.4, hp: 0, fade: 0.4, rate: 0.82, lp: 4200 },
-    neutral: { eq: [], wet: 0.13, space: 'short', tail: 0.5, wide: 0.2, hp: 0, fade: 0.4 }
+    // 무속성(금속): 맑게 울리도록 고음을 살리고 여운을 길게(tail 0.9), 합성 핑 1층
+    neutral: { eq: [{ type: 'highshelf', freq: 3000, gain: 3 }], wet: 0.1, space: 'short', tail: 0.9, wide: 0.2, hp: 0, fade: 0.4, synth: 1 }
   };
   // 조합별 음량 보정 (12_tools/qa/measure-sfx.py --calibrate 로 조합마다 렌더링·측정해 맞춘 값). TRIM[속성][조합 번호]
   // 목표: 속성·조합이 달라도 비슷한 크기로 들리게 한다. 값이 없으면 1.
@@ -103,7 +106,7 @@
     water: [12.60, 12.60, 12.60, 12.60, 12.60], // 물 튀는 소리를 +2dB 키움 (보정 도구의 클램프 10 밖이라 직접 지정)
     wind: [8.69, 8.39, 9.49, 9.05, 8.86, 9.07],
     earth: [4.29, 4.69, 7.65, 3.37, 3.27],
-    neutral: [1.93, 1.91, 1.78, 1.39, 1.05]
+    neutral: [15.00, 15.00, 15.00, 15.00, 15.00] // 금속 "띵!" 조합은 원래 작은 소리라 보정 도구의 클램프 10 밖
   };
   // 합성 질감 레이어 이름 (잡음·공명 기반만 사용)
   const SYNTH_NAMES = {
@@ -111,7 +114,7 @@
     water: ['splash', 'splash', 'splash'], // 음정이 들리는 drops·sparkle(실로폰처럼 들림)은 빼고 물 튀는 잡음만
     wind: ['whoosh', 'swish', 'slice'],
     earth: ['rumble', 'crack', 'thud'],
-    neutral: ['ring', 'clink', 'clang']
+    neutral: ['ping', 'ping', 'ping'] // 철이 "띵!" 하고 맑게 울리는 핑만 사용
   };
 
   const rand = (min, max) => min + Math.random() * (max - min);
@@ -315,6 +318,7 @@
       crack(p) { noise({ dur: 0.06, vol: 0.07 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'bandpass', freq: rand(900, 1500) * (p.pitch || 1), q: 1.2 }); noise({ dur: 0.05, vol: 0.045 * p.power * p.boost, delay: rand(0.05, 0.1), pan: p.pan, wet: p.wet, space: p.space, type: 'bandpass', freq: rand(1200, 2000), q: 1.2 }); },
       thud(p) { sub({ freq: rand(75, 95) * (p.pitch || 1), endFreq: 32 * (p.pitch || 1), dur: 0.3 + p.power * 0.2, vol: 0.14 * p.power * p.boost, pan: p.pan, wet: p.wet * 0.5 , space: p.space}); },
       ring(p) { const base = rand(520, 760); resonate({ freqs: [base, base * 2.76, base * 5.4, base * 8.9], q: 40, dur: 0.6 + p.power * 0.4, vol: 0.02 * p.power * p.boost, pan: p.pan, wet: p.wet * 1.4 , space: p.space}); },
+      ping(p) { const f = rand(1500, 1900); resonate({ freqs: [f, f * 2.32, f * 4.17], q: 60, dur: 0.9 + p.power * 0.3, vol: 0.03 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space }); }, // 철이 "띵!" 하고 맑게 울리는 고음 공명
       clink(p) { resonate({ freqs: [rand(1800, 2300), rand(3300, 4100), rand(5200, 6400)], q: 34, dur: 0.22, vol: 0.02 * p.power * p.boost, pan: p.pan, wet: p.wet , space: p.space}); },
       clang(p) { const base = rand(300, 420); resonate({ freqs: [base, base * 2.4, base * 4.1, base * 6.3], q: 22, dur: 0.45 + p.power * 0.25, vol: 0.022 * p.power * p.boost, pan: p.pan, wet: p.wet , space: p.space}); }
     };
