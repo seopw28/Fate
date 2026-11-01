@@ -12,6 +12,7 @@
 모든 피격은 피해량과 무관하게 같은 "강한 신호"로 울린다. 그래서 속성·조합이 달라도 비슷한 크기로 들리게 하는 것이 목표다.
 
 수치 해석
+  cut      꼬리가 뚝 끊기는 정도(dB/10ms). 낮을수록 부드러움 (자연스러운 감쇠 약 2 이하, 6 초과면 끊김으로 들림)
   peak     최대 피크(dBFS, 버스 볼륨 0.35 적용 후). 0에 가까우면 찌그러질 위험
   rms      첫 0.25초 평균 음량(dB) = 사람이 소리 크기를 느끼는 적분 구간. 짧은 칼날 소리도 길게 울리는 폭발과 같은 기준으로 비교한다. 조합마다 목표(TARGET_RMS)에 가까워야 한다
   tail30   최대 음량보다 30dB 떨어질 때까지의 시간(초) = 울림 길이
@@ -67,6 +68,24 @@ RMS_ONLY = """async([el,combo,reps])=>{
   return sum/reps;}"""
 
 
+def cut_drop(mono):
+    """꼬리가 "뚝" 끊기는 정도(dB/10ms). 최대 음량 0.2초 뒤부터(타격 직후의 자연스러운 급감 제외),
+    소리가 아직 들리는 구간(최대보다 -50dB 이내)에서 음량이 가장 크게 떨어진 값.
+    저음은 10ms 안에 파형이 몇 주기 없어 음량이 요동치므로, 40ms 창으로 부드럽게 만든 포락선(10ms 간격)을 쓴다.
+    자연스러운 감쇠는 대개 1~3dB, 5dB를 넘으면 귀에 끊김으로 들린다."""
+    win, hop = int(SR * 0.04), int(SR * 0.01)
+    power = mono.astype(np.float64) ** 2
+    csum = np.concatenate([[0.0], np.cumsum(power)])
+    starts = np.arange(0, len(mono) - win, hop)
+    db = 10 * np.log10((csum[starts + win] - csum[starts]) / win + 1e-14)
+    peak = int(np.argmax(db))
+    worst = 0.0
+    for i in range(peak + 20, len(db) - 1):
+        if db[i] > db[peak] - 50:
+            worst = max(worst, db[i] - db[i + 1])
+    return float(worst)
+
+
 def metrics(x):
     left, right = x[:, 0], x[:, 1]
     mono = (left + right) / 2
@@ -82,6 +101,7 @@ def metrics(x):
     return {
         "rms": float(20 * np.log10(np.sqrt(np.mean(mono[: int(SR * 0.25)] ** 2)) + 1e-9)),
         "peak": float(20 * np.log10(np.abs(x).max() + 1e-9)),
+        "cut": cut_drop(mono),
         "tail30": float((idx[-1] + 1) * 0.02) if len(idx) else 0.0,
         "late": float((mono[int(SR * 0.3):] ** 2).sum() / ((mono ** 2).sum() + 1e-12) * 100),
         "corr": float(corr),
@@ -163,14 +183,14 @@ def main():
                 print(f"{e:8s}{avg[0]:9.1f}{avg[1]:12.1f}dB{avg[2]:14.2f}")
             browser.close()
             return
-        print(f"{'속성':8s}{'조합':4s}{'rms':>7s}{'peak':>7s}{'tail30':>8s}{'late%':>7s}{'corr':>6s}{'centroid':>9s}")
+        print(f"{'속성':8s}{'조합':4s}{'rms':>7s}{'peak':>7s}{'cut':>6s}{'tail30':>8s}{'late%':>7s}{'corr':>6s}{'centroid':>9s}")
         worst = 0.0
         for e in counts:
             for c in range(counts[e]):
                 data = render(page, e, c)
                 m = metrics(data)
                 worst = max(worst, abs(m["rms"] - TARGET_RMS - TARGET_OFFSET.get(e, 0.0)))
-                print(f"{e:8s}{c:<4d}{m['rms']:7.1f}{m['peak']:7.1f}{m['tail30']:8.2f}{m['late']:7.1f}{m['corr']:6.2f}{m['centroid']:9.0f}")
+                print(f"{e:8s}{c:<4d}{m['rms']:7.1f}{m['peak']:7.1f}{m['cut']:6.1f}{m['tail30']:8.2f}{m['late']:7.1f}{m['corr']:6.2f}{m['centroid']:9.0f}")
                 if wav_dir:
                     save_wav(wav_dir / f"{e}_{c}.wav", data)
         print(f"\n목표 음량(기준 {TARGET_RMS:.1f}dB, 속성별 가감 {TARGET_OFFSET})과의 최대 차이: {worst:.1f}dB")
