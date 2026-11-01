@@ -48,7 +48,7 @@ Constraints: no visible people, no readable text, no letters, no numbers, no log
 2. `03_card-data/sets/core-set.json`의 해당 카드 `assetId`를 `spells/generated/<이름>.png` / `traps/generated/<이름>.png`로 교체. (※ `*.json`은 `.gitignore`에 걸려 git에 안 올라간다. 빌드 결과 `dist/runtime/cards.js`가 커밋된다.)
 3. `npm run build:runtime` → `npm run validate:cards`(경고 목록이 줄어드는지) → 도감/손패에서 확인 → `npm run qa:overflow`.
 
-## P1 — 임시로 다른 카드 그림을 같이 쓰는 마법 · 8장 (전용 일러스트로 교체)
+## P1 — 임시로 다른 카드 그림을 같이 쓰는 마법 · 10장 (전용 일러스트로 교체)
 
 | 카드 | cardId | 지금 쓰는 그림(중복) |
 |---|---|---|
@@ -58,6 +58,10 @@ Constraints: no visible people, no readable text, no letters, no numbers, no log
 | 종말의 파동 | `storm.doom-wave` | `soul-return.png` (소울 리턴과 공유) |
 | 대재앙 | `storm.great-ruin` | `amaterasu.png` (아마테라스와 공유) |
 | 프로스트 노바 | `tower.frost-nova` | 미국 농무부 눈결정 사진(퍼블릭 도메인, 임시) |
+| 낙뢰 | `volt.lightning-strike` | `void-recall.png` (보이드 리콜·폭풍우와 공유) |
+| 연쇄 번개 | `volt.chain-lightning` | `mana-overflow.png` (마나 오버플로와 공유) |
+| 천벌 | `volt.heavenly-wrath` | `arcane-insight.png` (아케인 인사이트와 공유) |
+| 서리 감옥 | `frost.ice-prison` | `frost-nova.png` (프로스트 노바와 공유) |
 
 (이 카드들은 `storm.*`가 `character-expansions.json`, `tower.frost-nova`가 `core-set.json`에 있다. 새 파일은 `dist/assets/spells/generated/`.)
 

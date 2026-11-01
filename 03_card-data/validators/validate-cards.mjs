@@ -12,11 +12,11 @@ const errors = [];
 const ids = new Set();
 const cardsById = new Map(cards.map(card => [card.cardId, card]));
 const allowedTypes = new Set(['champion', 'spell', 'trap']);
-const allowedElements = new Set(['fire', 'water', 'wind', 'earth', 'neutral']);
+const allowedElements = new Set(['fire', 'water', 'ice', 'wind', 'thunder', 'earth', 'neutral']);
 const allowedRarities = new Set(['common', 'rare', 'legendary']);
 const allowedSources = new Set(['starter', 'character_chat', 'summon', 'event', 'craft']);
 const allowedReleaseStates = new Set(['live', 'prototype', 'retired']);
-const allowedEffects = new Set(['burn', 'heal', 'damage', 'attack_down', 'buff', 'prevent_damage', 'lone_wolf', 'comeback', 'add_counter', 'transform', 'global_destroy', 'freeze_strongest', 'weaken_all', 'shock_storage', 'explosive_mark', 'blink_shield', 'armor_pierce', 'arcane_arrow', 'mass_heal', 'heal_bless', 'piercing_shot', 'battle_enhance', 'summon_wolf', 'sword_aura', 'necromancy', 'board_damage', 'draw', 'cleanse', 'bounce', 'mana_ramp', 'resurrect', 'negate_summon', 'self_replicate', 'black_flame', 'turn_invulnerable', 'frost_nova', 'swarm_fury', 'swarm_bulwark']);
+const allowedEffects = new Set(['burn', 'heal', 'damage', 'attack_down', 'buff', 'prevent_damage', 'lone_wolf', 'comeback', 'add_counter', 'transform', 'global_destroy', 'freeze_strongest', 'weaken_all', 'shock_storage', 'explosive_mark', 'blink_shield', 'armor_pierce', 'arcane_arrow', 'mass_heal', 'heal_bless', 'piercing_shot', 'battle_enhance', 'summon_wolf', 'sword_aura', 'necromancy', 'board_damage', 'draw', 'cleanse', 'bounce', 'mana_ramp', 'resurrect', 'negate_summon', 'self_replicate', 'black_flame', 'turn_invulnerable', 'frost_nova', 'swarm_fury', 'swarm_bulwark', 'lightning_strike', 'chain_lightning']);
 
 for (const [index, card] of cards.entries()) {
   const at = `${setId}.cards[${index}]`;

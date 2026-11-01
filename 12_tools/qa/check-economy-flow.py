@@ -5,8 +5,8 @@
 전제: dist를 http.server로 띄운 상태 (기본 http://localhost:8765). 실패하면 exit 1.
 
 검사 항목
-  1. 약자멸시에서 기권 → 패배(−200)만 차감, 20 이중 차감 없음
-  2. 일반 수호신에서 기권 → 선불(−100) + 전달(−20)
+  1. 약자멸시에서 기권 → 패배(−200)만 차감, 전달분 이중 차감 없음
+  2. 일반 수호신에서 기권 → 선불(−100) + 패배(−200)
   3. 약자멸시를 끝내지 않고 새로고침 → 다음 접속에서 패배(−200)
   4. 약자멸시를 정상 종료(승리/패배) 후 새로고침 → 추가 차감 없음
   5. 개발 환경이 아닌 주소에서는 ?crackers / ?guardian이 무시됨
@@ -57,7 +57,7 @@ with sync_playwright() as p:
     pg.wait_for_timeout(300)
     check("수호신 선불 100", crackers(pg), 900)
     surrender(pg)
-    check("수호신 기권 = 전달 20", crackers(pg), 880)
+    check("수호신 기권 = 패배 200", crackers(pg), 700)
 
     # 3. 약자멸시 이탈 (새로고침)
     pg = new_page()
@@ -73,7 +73,7 @@ with sync_playwright() as p:
     pg.evaluate("pickGuardian('none')")
     pg.wait_for_timeout(300)
     pg.evaluate("finish(false,'테스트 패배')")
-    pg.wait_for_timeout(500)
+    pg.wait_for_timeout(3500)
     check("약자멸시 패배 200 차감", crackers(pg), 800)
     pg.goto(f"{BASE}/index.html?skipIntro")
     pg.wait_for_timeout(900)

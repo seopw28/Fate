@@ -60,11 +60,11 @@ test('경제: 수호신 선불 100, 약자멸시 패배·기권·이탈 200', ()
   assert.ok(html.includes('const CHALLENGE_LOSS_COST = 200;'), 'Challenge loss must be a single named constant');
 });
 
-test('경제: 약자멸시 기권은 패배로만 계산하고 20 이중 차감을 하지 않는다', () => {
-  const surrender = html.slice(html.indexOf('function surrenderBattle('), html.indexOf('function surrenderBattle(') + 2400);
-  const branch = surrender.indexOf("if(challengeMode){finish(false,'기권했습니다.");
-  const amount = surrender.indexOf('const amount=Math.min(20');
-  assert.ok(branch > 0 && amount > branch, 'Challenge-mode surrender must finish as a defeat before the 20-cracker transfer is computed');
+test('경제: 기권은 패배(finish)로 합쳐 처리하고 별도 전달분을 두지 않는다', () => {
+  const surrender = html.slice(html.indexOf('function surrenderBattle('), html.indexOf('function finish('));
+  assert.ok(surrender.includes("finish(false,'기권했습니다. 기권은 패배로 계산됩니다.',true)"), 'Surrender must finish as a defeat with the forfeit flag');
+  assert.ok(!surrender.includes('animateCrackerTransfer'), 'Surrender must not run its own cracker transfer');
+  assert.ok(html.includes('if(!win&&(challengeMode||forfeit))'), 'Defeat penalty must cover both challenge mode and forfeit');
 });
 
 test('경제: 약자멸시를 끝내지 않고 떠나면 다음 접속에서 패배로 정산한다', () => {
@@ -77,4 +77,23 @@ test('보안: 크래커/수호신 URL 옵션은 개발 환경에서만 동작한
   assert.ok(html.includes("const DEV_MODE = ['localhost','127.0.0.1','[::1]',''].includes(location.hostname);"), 'DEV_MODE must be derived from the host');
   assert.ok(html.includes("requested=DEV_MODE?params.get('crackers'):null"), '?crackers must be gated by DEV_MODE');
   assert.ok(html.includes("preset=DEV_MODE?params.get('guardian'):null"), '?guardian must be gated by DEV_MODE');
+});
+
+test('필살기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤에 적용한다', () => {
+  assert.ok(html.includes('ULTIMATE_EFFECT_DELAY=ULTIMATE_OVERLAY_MS+30'), 'Effect delay must exceed the overlay duration');
+  assert.ok(html.includes('},ULTIMATE_EFFECT_DELAY);setTimeout(()=>overlay.remove(),ULTIMATE_OVERLAY_MS);'), 'Effects must be scheduled with the named delay, not a fixed 900ms');
+});
+
+test('필살기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다시 쓸 수 있다', () => {
+  assert.ok(html.includes('const ULTIMATE_COOLDOWN_TURNS=3;'), 'Cooldown must be a single named constant');
+  assert.ok(html.includes('turnNumber<lastUltimateTurn+ULTIMATE_COOLDOWN_TURNS'), 'Lock reason must enforce the cooldown');
+  assert.ok(html.includes('lastUltimateTurn=turnNumber;'), 'Activation must record the turn it was used');
+});
+
+test('필살기: 땅 필살기는 회복이 아니라 절대방어(+강한 카드는 부활)다', () => {
+  assert.ok(html.includes("earth:'절대성역'"), 'Earth ultimate must be renamed to the absolute sanctuary');
+  assert.ok(html.includes("else if(spec.element==='earth'){absoluteDefense=true;"), 'Earth ultimate must enable absolute defense');
+  assert.ok(!html.includes("showSkillEffect('shield',unit,'성역 +'+heal)"), 'Earth ultimate must no longer heal allies');
+  assert.ok(html.includes('if(absoluteDefense&&target.closest&&sideOfUnit(target)===\'player\')'), 'Allied champions must take no damage during absolute defense');
+  assert.ok(html.includes("absoluteDefense=false;turnNumber++;"), 'Absolute defense must expire when the next player turn starts');
 });
