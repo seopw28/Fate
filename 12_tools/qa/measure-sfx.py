@@ -36,7 +36,7 @@ SR = 44100
 TARGET_RMS = -21.5  # 버스 볼륨 0.35 기준, 첫 0.25초 평균 음량(dB)
 # 사람 귀는 3~5kHz에 민감해서(A-가중) 고음이 많은 소리는 같은 RMS여도 더 크게 들리고 피크도 높다 → 속성별로 목표를 낮춘다.
 # (효과음 볼륨 슬라이더를 최대로 올려도 피크가 0dBFS를 넘지 않도록 -9dB 여유가 필요하다)
-TARGET_OFFSET = {"wind": -4.0, "neutral": -1.0}
+TARGET_OFFSET = {"wind": -4.0, "neutral": -1.0, "earth": 7.0, "fire": 1.0}  # 대지는 더 크고 묵직하게(+7dB), 불은 원본 폭발음(이전 방식 RMS 약 -18dB)보다 조금 작게(-20.5dB)
 
 BURST = """async([el,gap,count])=>{
   const ctx=new OfflineAudioContext(2,Math.floor(44100*(gap*count+1.5)),44100);const bus=ctx.createGain();bus.gain.value=0.35;bus.connect(ctx.destination);
@@ -48,7 +48,7 @@ BURST = """async([el,gap,count])=>{
 LOAD = """async()=>{window.__bufs={};const c=new OfflineAudioContext(2,44100,44100);
   const api=FateSfx.init({engine:()=>c,bus:()=>c.createGain(),buffers:window.__bufs});api.load();
   for(let i=0;i<80;i++){await new Promise(r=>setTimeout(r,100));
-    if(Object.values(window.__bufs).reduce((a,v)=>a+v.filter(Boolean).length,0)>=108)break}}"""
+    if(Object.values(window.__bufs).reduce((a,v)=>a+v.filter(Boolean).length,0)>=Object.values(FateSfx.BANK).reduce((a,b)=>a+b,0)+Object.keys(FateSfx.LEGACY).length)break}}"""
 RENDER = """async([el,combo])=>{
   const ctx=new OfflineAudioContext(2,44100*4,44100);const bus=ctx.createGain();bus.gain.value=0.35;bus.connect(ctx.destination);
   const api=FateSfx.init({engine:()=>ctx,bus:()=>bus,buffers:window.__bufs});
