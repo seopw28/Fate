@@ -794,6 +794,28 @@
     .synth-card.synth-pop::before { content:''; position:absolute; left:50%; top:50%; width:100%; aspect-ratio:1; border:3px solid #e1c0ff; border-radius:50%; transform:translate(-50%,-50%) scale(.3); opacity:0; pointer-events:none; animation:sc-burst .8s ease-out; box-shadow:0 0 24px #b078d4, inset 0 0 18px #b078d4; }
     @keyframes sc-burst { 0% { opacity:1; transform:translate(-50%,-50%) scale(.3); } 100% { opacity:0; transform:translate(-50%,-50%) scale(2.6); } }
     @media(prefers-reduced-motion:reduce){ .synth-circle * { animation:none !important; } }
+    /* === 도감: 팝업을 전체 화면에 가깝게 확장하고 카드를 크게 보여준다 === */
+    .collection-shell { transition:width .28s ease,height .28s ease; }
+    .collection-shell.codex-mode { width:calc(100vw - 32px); max-width:2600px; height:calc(100vh - 32px); }
+    .collection-modal:has(.collection-shell.codex-mode) { padding:16px; }
+    .codex-mode .codex-view { padding:20px clamp(22px,2vw,40px) 24px; gap:16px; }
+    .codex-mode .codex-summary { grid-template-columns:minmax(260px,2.4fr) repeat(6,minmax(84px,1fr)); gap:12px; }
+    .codex-mode .codex-total { padding:14px 20px; } .codex-mode .codex-total-num b { font-size:clamp(28px,2.4vw,42px); } .codex-mode .codex-total-num span { font-size:clamp(12px,.95vw,16px); }
+    .codex-mode .codex-progress { height:10px; margin-top:10px; }
+    .codex-mode .codex-stat { padding:12px 14px; } .codex-mode .codex-stat small { font-size:clamp(10px,.8vw,13px); } .codex-mode .codex-stat b { font-size:clamp(18px,1.6vw,26px); }
+    .codex-mode .codex-seg button { padding:8px 16px; font-size:clamp(11px,.85vw,14px); }
+    .codex-mode .codex-body { grid-template-columns:minmax(0,1fr) clamp(320px,27vw,540px); gap:clamp(16px,1.6vw,28px); }
+    .codex-mode .codex-grid { grid-template-columns:repeat(auto-fill,minmax(clamp(150px,10.6vw,240px),1fr)); gap:clamp(12px,1.1vw,20px); padding:4px 10px 12px 4px; }
+    .codex-mode .codex-card { padding:clamp(8px,.7vw,12px); gap:6px; border-radius:14px; }
+    .codex-mode .codex-no { font-size:clamp(9px,.7vw,12px); } .codex-mode .codex-type { font-size:clamp(9px,.7vw,12px); padding:3px 8px; top:clamp(8px,.7vw,12px); right:clamp(8px,.7vw,12px); }
+    .codex-mode .codex-name { font-size:clamp(12px,1vw,17px); } .codex-mode .codex-card small { font-size:clamp(10px,.8vw,13px); }
+    .codex-mode .codex-own { font-size:clamp(10px,.8vw,13px); bottom:clamp(36px,3vw,48px); } .codex-mode .codex-glyph { font-size:clamp(44px,4.2vw,84px); } .codex-mode .codex-lock { font-size:clamp(34px,3.2vw,64px); }
+    .codex-mode .codex-detail { display:flex; flex-direction:column; gap:14px; padding:clamp(14px,1.2vw,22px); }
+    .codex-mode .codex-detail-art, .codex-mode .codex-detail-art.type-spell, .codex-mode .codex-detail-art.type-trap { flex:1; min-height:clamp(120px,22vh,300px); height:auto; }
+    .codex-mode .codex-detail-meta { flex:none; } .codex-mode .codex-detail-meta small { font-size:clamp(10px,.85vw,13px); margin-top:0; }
+    .codex-mode .codex-detail-meta h3 { font-size:clamp(18px,1.8vw,30px); } .codex-mode .codex-detail-meta p { font-size:clamp(12px,1vw,16px); }
+    .codex-mode .codex-detail-stats span { font-size:clamp(11px,.9vw,14px); padding:4px 12px; } .codex-mode .codex-detail-state { font-size:clamp(11px,.9vw,14px); }
+    .codex-mode .codex-detail-art .codex-glyph { font-size:clamp(84px,8vw,160px); }
 </style>
 </head>
 <body>
@@ -926,7 +948,7 @@
     function openCollection(view='deck'){ draftDeck=[...collectionState.deck];document.querySelector('#collection-modal').classList.add('show');document.body.style.overflow='hidden';switchCollectionView(view);renderCollection(); }
     function closeCollection(){ document.querySelector('#collection-modal').classList.remove('show');document.body.style.overflow=''; }
     const COLLECTION_SUBTITLE={deck:'내가 쓸 60장 덱을 속성·비용·희귀도별로 살펴보며 편성하세요.',codex:'모든 카드의 수집 현황을 확인하세요. 캐릭터는 소환으로, 마법·함정은 전투에서 발견하면 등록됩니다.',synth:'여분 캐릭터 카드 3장을 합쳐 무작위 새 카드를 만들어 보세요. 덱에 편성된 카드는 재료로 쓰이지 않습니다.',gacha:'크래커로 새로운 캐릭터 카드를 소환해 컬렉션을 늘리세요.'};
-    function switchCollectionView(view){document.querySelector('#collection-sub').textContent=COLLECTION_SUBTITLE[view]||''; document.querySelectorAll('.collection-tab').forEach(button=>button.classList.toggle('active',button.dataset.view===view));document.querySelectorAll('.collection-view').forEach(panel=>panel.classList.toggle('active',panel.id===view+'-view'));if(view==='deck')renderDeckBuilder();if(view==='codex')renderCodex();if(view==='synth')renderSynthesis(); }
+    function switchCollectionView(view){document.querySelector('#collection-sub').textContent=COLLECTION_SUBTITLE[view]||'';document.querySelector('.collection-shell').classList.toggle('codex-mode',view==='codex'); document.querySelectorAll('.collection-tab').forEach(button=>button.classList.toggle('active',button.dataset.view===view));document.querySelectorAll('.collection-view').forEach(panel=>panel.classList.toggle('active',panel.id===view+'-view'));if(view==='deck')renderDeckBuilder();if(view==='codex')renderCodex();if(view==='synth')renderSynthesis(); }
     function renderCollection(){updateCrackerHud();document.querySelectorAll('.gacha-actions button').forEach((button,i)=>button.disabled=gachaPulling||collectionState.crackers<(i?270:30));renderDeckBuilder();renderCodex();renderSynthesis();}
     function pickCard(forceRare=false){ const roll=Math.random(),rarity=forceRare?(roll<.18?'legendary':'rare'):(roll<.05?'legendary':roll<.25?'rare':'common');const pool=collectionCards.map((_,i)=>i).filter(i=>rarityByCard[i]===rarity);return pool[Math.floor(Math.random()*pool.length)]; }
     function pullCardMarkup({index,isNew},position=0){const card=collectionCards[index],rarity=rarityByCard[index];return '<article class="pull-card pull-land '+rarity+'" style="--delay:'+(position*.075)+'s">'+(isNew?'<span class="new-badge">NEW</span>':'')+'<img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+'</h4><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+'</small></article>';}
