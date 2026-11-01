@@ -1,0 +1,332 @@
+/* 피격·평타 효과음 변주 (v2: 공간감 · 몸통 · 잔향).
+ *
+ * 소리 한 번 = 여러 층의 합성:
+ *   ① 몸통(body)   : 길게 울리는 기존 샘플(폭발·금속·칼) — 음높이/필터를 속성별로 달리 해서 공간감과 무게를 만든다
+ *   ② 어택(accent) : Kenney Impact Sounds(CC0)의 짧은 타격음 — 매번 다른 변형을 골라 질감을 바꾼다
+ *   ③ 합성 질감    : 잡음·공명(resonator) 기반 레이어 (삑 하는 순수 톤은 쓰지 않는다)
+ * 그리고 공통으로
+ *   - 잔향(리버브): 합성 임펄스 응답(IR)으로 만든 ConvolverNode. 강타일수록 잔향이 크다.
+ *   - 스테레오 폭: 중간 이상 타격은 같은 소리를 좌우로 11ms 어긋나게 겹쳐 넓힌다 (Haas).
+ *   - 압축기: 여러 층이 겹쳐도 찌그러지지 않고 하나의 소리로 묶인다.
+ *   - 속성별 EQ: 불=저음 두툼, 물=고음 반짝, 대지=아주 낮게.
+ * 같은 조합이 연달아 나오지 않게 하고, 음높이·볼륨·타이밍·좌우 위치를 매번 조금씩 바꾼다.
+ * 샘플이 아직 로드되지 않았거나 실패해도 합성음만으로 소리가 난다. (PM 메모: 피격음의 "고급스러움"은 대부분 ①과 잔향에서 나온다)
+ *
+ * 사용: const api = FateSfx.init({ engine: ()=>AudioContext|null, bus: ctx=>GainNode }); api.load(); api.playHit('fire', 6, pan);
+ */
+(function (root) {
+  'use strict';
+
+  // assets/audio/sfx/<이름>_00<번호>.mp3  (12_tools/asset-pipeline/build-sfx.py 로 생성)
+  const BANK = {
+    impactBell_heavy: 5, impactGeneric_light: 5, impactGlass_heavy: 5, impactGlass_light: 5, impactGlass_medium: 5,
+    impactMetal_heavy: 5, impactMetal_light: 5, impactMetal_medium: 5, impactMining: 5, impactPlank_medium: 5,
+    impactPlate_heavy: 5, impactPlate_light: 5, impactPlate_medium: 5, impactPunch_heavy: 5, impactPunch_medium: 5,
+    impactSoft_heavy: 5, impactSoft_medium: 5, impactTin_medium: 5, impactWood_heavy: 5, impactWood_light: 5, impactWood_medium: 5
+  };
+  // 기존 3종 샘플(길게 울리는 몸통 소리)
+  const LEGACY = { legacy_slash: 'assets/audio/sword-slash.mp3', legacy_explosion: 'assets/audio/explosion-impact.mp3', legacy_metal: 'assets/audio/metal-impact.mp3' };
+
+  // 층 정의: s=샘플 이름, g=볼륨 배율, r=음높이 배율, lp/hp=저역/고역 필터(Hz), dur=최대 길이(초)
+  const L = (s, o = {}) => Object.assign({ s }, o);
+
+  // 속성별 조합 후보 (모든 피격은 강한 신호로 통일: 피해 강도에 따라 소리를 바꾸지 않는다).
+  // 한 번 칠 때 후보 중 하나(직전 제외)를 고르고 그 안의 층을 모두 겹쳐 재생한다.
+  const HIT_SETS = {
+    fire: [
+      [L('legacy_explosion', { g: 0.55, r: 1, lp: 6000 }), L('impactPunch_heavy'), L('impactSoft_heavy', { r: 0.8 })],
+      [L('impactPunch_heavy'), L('impactMetal_heavy', { g: 0.8 }), L('legacy_explosion', { g: 0.45, r: 0.9 })],
+      [L('impactSoft_heavy'), L('impactPlate_heavy'), L('legacy_explosion', { g: 0.5, r: 1.1 })],
+      [L('legacy_explosion', { g: 0.85, r: 0.85 }), L('impactPunch_heavy', { r: 0.8 }), L('impactMining'), L('impactSoft_heavy', { r: 0.7 })],
+      [L('legacy_explosion', { g: 0.8, r: 0.95 }), L('impactPunch_heavy'), L('impactMetal_heavy', { g: 0.8 }), L('impactBell_heavy', { g: 0.3, r: 0.8 })]
+    ],
+    water: [
+      [L('impactGlass_heavy'), L('impactBell_heavy', { g: 0.35, r: 1.2 }), L('legacy_explosion', { g: 0.32, r: 1.3, lp: 3500 })],
+      [L('impactGlass_heavy'), L('impactSoft_heavy', { g: 0.8 }), L('legacy_slash', { g: 0.5, r: 0.85 }), L('legacy_explosion', { g: 0.3, r: 1.25, lp: 3500 })],
+      [L('impactGlass_medium', { r: 0.9 }), L('impactBell_heavy', { g: 0.3 }), L('legacy_explosion', { g: 0.35, r: 1.2, lp: 4000 })],
+      [L('impactGlass_heavy'), L('impactBell_heavy', { g: 0.55 }), L('legacy_explosion', { g: 0.6, r: 1.1, lp: 4000 }), L('impactPunch_heavy', { r: 0.9, g: 0.7 })],
+      [L('impactGlass_heavy', { r: 0.9 }), L('impactGlass_medium'), L('impactBell_heavy', { g: 0.5, r: 0.9 }), L('legacy_explosion', { g: 0.55, r: 1.2, lp: 3500 })]
+    ],
+    wind: [
+      [L('impactMetal_heavy'), L('legacy_slash', { g: 0.9, r: 0.95 }), L('legacy_metal', { g: 0.35, r: 1.15, dur: 1 }), L('legacy_explosion', { g: 0.3, r: 1.25, lp: 3500 })],
+      [L('impactPlate_heavy'), L('legacy_slash', { g: 0.8, r: 0.9 }), L('legacy_explosion', { g: 0.3, r: 1.25, lp: 3500 })],
+      [L('impactMetal_medium'), L('impactPunch_medium'), L('legacy_slash', { g: 0.85, r: 1 }), L('legacy_explosion', { g: 0.2, r: 1.3, lp: 3500, dur: 1.2 })],
+      [L('impactMetal_heavy'), L('impactPlate_heavy'), L('legacy_slash', { g: 1, r: 0.85 }), L('legacy_explosion', { g: 0.45, r: 1.2, lp: 3800 })],
+      [L('impactMetal_heavy'), L('impactBell_heavy', { g: 0.35 }), L('legacy_slash', { g: 1, r: 0.9 }), L('legacy_metal', { g: 0.5, r: 1.1 }), L('legacy_explosion', { g: 0.3, r: 1.25, lp: 3500 })]
+    ],
+    earth: [
+      [L('impactWood_heavy'), L('impactSoft_heavy'), L('legacy_explosion', { g: 0.55, r: 0.7, lp: 1200 })],
+      [L('impactMining'), L('legacy_explosion', { g: 0.5, r: 0.65, lp: 1000 })],
+      [L('impactPunch_heavy', { r: 0.85 }), L('impactMining', { g: 0.7 }), L('legacy_metal', { g: 0.25, r: 0.7 }), L('legacy_explosion', { g: 0.3, r: 0.75, lp: 1100 })],
+      [L('impactMining'), L('impactPunch_heavy', { r: 0.8 }), L('impactSoft_heavy', { r: 0.7 }), L('legacy_explosion', { g: 0.85, r: 0.6, lp: 1400 })],
+      [L('impactWood_heavy', { r: 0.85 }), L('impactMining', { g: 0.8 }), L('legacy_explosion', { g: 0.8, r: 0.7, lp: 1500 }), L('legacy_metal', { g: 0.3, r: 0.6 })]
+    ],
+    neutral: [
+      [L('impactMetal_heavy'), L('legacy_metal', { g: 0.75, r: 0.95 }), L('impactBell_heavy', { g: 0.25 }), L('legacy_explosion', { g: 0.3, r: 1.25, lp: 3500 })],
+      [L('impactPlate_heavy'), L('impactMetal_medium'), L('legacy_metal', { g: 0.65, r: 0.9 }), L('legacy_explosion', { g: 0.3, r: 1.25, lp: 3500 })],
+      [L('impactMetal_heavy'), L('impactPunch_heavy', { g: 0.7 }), L('legacy_metal', { g: 0.6, r: 1 }), L('legacy_explosion', { g: 0.25, r: 1.1, lp: 3000 })],
+      [L('impactMetal_heavy'), L('impactPlate_heavy'), L('impactBell_heavy', { g: 0.5 }), L('legacy_metal', { g: 0.95, r: 0.85 }), L('legacy_explosion', { g: 0.4, r: 1.1, lp: 3000 })],
+      [L('impactPlate_heavy'), L('impactMetal_heavy'), L('impactPunch_heavy', { g: 0.8 }), L('legacy_metal', { g: 0.9, r: 0.9 }), L('legacy_explosion', { g: 0.45, r: 1, lp: 3500 })]
+    ]
+  };
+  // 공간·길이 설정 (wet=잔향 양, wide=좌우 폭, cap=샘플 최대 길이 초, layers=합성 질감 개수)
+  const STRONG = { wet: 0.32, wide: 0.3, cap: 2.0, layers: 2, rate: 0.95, power: 0.85 };
+  // 속성별 EQ와 잔향 가감
+  const ELEMENT = {
+    fire: { eq: [{ type: 'lowshelf', freq: 180, gain: 4 }], wet: 0 },
+    water: { eq: [{ type: 'highshelf', freq: 6000, gain: 3 }], wet: 0.08 },
+    wind: { eq: [{ type: 'highshelf', freq: 3500, gain: 1.5 }], wet: 0.03 },
+    earth: { eq: [{ type: 'lowshelf', freq: 120, gain: 6 }], wet: -0.04 },
+    neutral: { eq: [], wet: 0 }
+  };
+  // 조합별 음량 보정 (12_tools/qa/measure-sfx.py --calibrate 로 조합마다 렌더링·측정해 맞춘 값). TRIM[속성][조합 번호]
+  // 목표: 속성·조합이 달라도 비슷한 크기로 들리게 한다. 값이 없으면 1.
+  const TRIM = {
+    fire: [0.82, 0.98, 0.85, 0.59, 0.61],
+    water: [1.82, 1.90, 1.61, 0.97, 1.07],
+    wind: [2.15, 1.95, 2.80, 1.39, 2.17],
+    earth: [0.70, 0.78, 1.18, 0.47, 0.53],
+    neutral: [2.11, 2.10, 2.21, 1.49, 1.38]
+  };
+  // 합성 질감 레이어 이름 (잡음·공명 기반만 사용)
+  const SYNTH_NAMES = {
+    fire: ['crackle', 'boom', 'sizzle'],
+    water: ['splash', 'drops', 'sparkle'],
+    wind: ['whoosh', 'swish', 'slice'],
+    earth: ['rumble', 'crack', 'thud'],
+    neutral: ['ring', 'clink', 'clang']
+  };
+
+  const rand = (min, max) => min + Math.random() * (max - min);
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  // 직전(last)과 다른 번호를 고른다. 후보가 1개뿐이면 0.
+  function pickIndex(last, n, rnd = Math.random) {
+    if (n <= 1) return 0;
+    let index = Math.floor(rnd() * (n - 1));
+    if (last !== undefined && last >= 0 && index >= last) index++;
+    return index;
+  }
+  // 합성 임펄스 응답: 12ms 프리딜레이 + 초기 반사 + 고음부터 먹혀 들어가는 지수 감쇠 (RT60 ≈ seconds)
+  function makeImpulse(ctx, seconds = 1.7) {
+    const sr = ctx.sampleRate, length = Math.max(8, Math.floor(sr * seconds)), pre = Math.floor(sr * 0.012);
+    const buffer = ctx.createBuffer(2, length, sr);
+    for (let ch = 0; ch < 2; ch++) {
+      const data = buffer.getChannelData(ch);
+      let y = 0;
+      for (let i = pre; i < length; i++) {
+        const t = (i - pre) / sr, envelope = Math.exp((-6.9 * t) / seconds), alpha = 0.5 * Math.exp(-t * 3) + 0.06;
+        y += alpha * ((Math.random() * 2 - 1) - y);
+        data[i] = y * envelope;
+      }
+      [0.017, 0.029, 0.041, 0.057, 0.073].forEach((time, k) => {
+        const i = Math.floor(sr * time) + ch * 7;
+        if (i < length) data[i] += (0.8 - 0.12 * k) * (k % 2 ? -1 : 1) * (ch ? 0.9 : 1);
+      });
+    }
+    return buffer;
+  }
+
+  function init(deps) {
+    const buffers = deps.buffers || {}; // 테스트·측정용: 이미 디코딩된 샘플을 공유할 수 있다
+    const memory = {};
+    const chains = typeof WeakMap === 'function' ? new WeakMap() : new Map();
+    let loading = false;
+
+    const pick = (key, n) => { const index = pickIndex(memory[key], n); memory[key] = index; return index; };
+    const pickFrom = (key, list) => list[pick(key, list.length)];
+    const ctxOrNull = () => { try { return deps.engine(); } catch (e) { return null; } };
+
+    function load() {
+      const ctx = ctxOrNull();
+      if (!ctx || loading) return;
+      loading = true;
+      const fetchBuffer = (name, url, index) => fetch(url).then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(url))))
+        .then((data) => new Promise((resolve, reject) => ctx.decodeAudioData(data, resolve, reject)))
+        .then((buffer) => { (buffers[name] = buffers[name] || [])[index] = buffer; })
+        .catch(() => {});
+      Object.entries(BANK).forEach(([name, count]) => { for (let i = 0; i < count; i++) fetchBuffer(name, `assets/audio/sfx/${name}_00${i}.mp3`, i); });
+      Object.entries(LEGACY).forEach(([name, url]) => fetchBuffer(name, url, 0));
+    }
+
+    // 출력 체인: 직접음 → 압축기 → 효과음 버스 / 잔향 보내기 → 컨볼버 → 하이패스 → 압축기
+    function chain(ctx) {
+      const volumeBus = deps.bus(ctx); // 호출할 때마다 사운드 설정의 효과음 볼륨이 반영된다
+      let c = chains.get(ctx);
+      if (c && c.volumeBus === volumeBus) return c;
+      const comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -20; comp.knee.value = 18; comp.ratio.value = 4; comp.attack.value = 0.002; comp.release.value = 0.16;
+      comp.connect(volumeBus);
+      const dry = ctx.createGain(); dry.gain.value = 0.85; dry.connect(comp);
+      const convolver = ctx.createConvolver(); convolver.buffer = makeImpulse(ctx, 1.7);
+      const highpass = ctx.createBiquadFilter(); highpass.type = 'highpass'; highpass.frequency.value = 220;
+      const wetGain = ctx.createGain(); wetGain.gain.value = 1;
+      const send = ctx.createGain();
+      send.connect(convolver); convolver.connect(highpass); highpass.connect(wetGain); wetGain.connect(comp);
+      c = { volumeBus, dry, send };
+      chains.set(ctx, c);
+      return c;
+    }
+
+    function out(ctx, node, pan, wet = 0) {
+      const c = chain(ctx);
+      let tail = node;
+      if (pan && ctx.createStereoPanner) {
+        const panner = ctx.createStereoPanner();
+        panner.pan.value = clamp(pan, -1, 1);
+        node.connect(panner); tail = panner;
+      }
+      tail.connect(c.dry);
+      if (wet > 0) { const amount = ctx.createGain(); amount.gain.value = wet; tail.connect(amount); amount.connect(c.send); }
+    }
+
+    // 샘플 1개(또는 좌우로 넓힌 2개) 재생. 재생했으면 true.
+    function sample(name, o = {}) {
+      const ctx = ctxOrNull();
+      const list = (buffers[name] || []).filter(Boolean);
+      if (!ctx || !list.length) return false;
+      const { gain = 0.5, rate = 1, pan = 0, delay = 0, lp = 0, hp = 0, eq = [], wet = 0, wide = 0, cap = 0 } = o;
+      const buffer = list[pick('sample:' + name, list.length)], base = ctx.currentTime + delay;
+      const play = (panValue, extra, rateMul, gainMul) => {
+        const source = ctx.createBufferSource(), amp = ctx.createGain(), at = base + extra;
+        source.buffer = buffer;
+        source.playbackRate.value = rate * rateMul;
+        amp.gain.setValueAtTime(gain * gainMul, at);
+        let node = source;
+        const filter = (type, freq, g) => { const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = freq; if (g !== undefined) f.gain.value = g; node.connect(f); node = f; };
+        if (hp) filter('highpass', hp);
+        if (lp) filter('lowpass', lp);
+        eq.forEach((band) => filter(band.type, band.freq, band.gain));
+        node.connect(amp);
+        const length = (buffer.duration || 0) / (rate * rateMul);
+        if (cap && length > cap) { // 너무 긴 꼬리는 부드럽게 줄여 연속 타격에서 소리가 뭉치지 않게 한다
+          amp.gain.setValueAtTime(gain * gainMul, at + cap * 0.55);
+          amp.gain.exponentialRampToValueAtTime(0.0001, at + cap);
+          source.start(at); source.stop(at + cap + 0.05);
+        } else source.start(at);
+        out(ctx, amp, panValue, wet);
+      };
+      if (wide) { play(clamp(pan - wide, -1, 1), 0, 1, 0.72); play(clamp(pan + wide, -1, 1), 0.011, 1.004, 0.72); } else play(pan, 0, 1, 1);
+      return true;
+    }
+
+    function noise({ dur = 0.12, vol = 0.04, delay = 0, pan = 0, type = 'bandpass', freq = 1200, endFreq = freq, q = 0.8, attack = 0.002, wet = 0 } = {}) {
+      const ctx = ctxOrNull();
+      if (!ctx) return;
+      const start = ctx.currentTime + delay, length = Math.max(1, Math.ceil(ctx.sampleRate * dur));
+      const buffer = ctx.createBuffer(1, length, ctx.sampleRate), data = buffer.getChannelData(0);
+      for (let i = 0; i < length; i++) data[i] = Math.random() * 2 - 1;
+      const source = ctx.createBufferSource(), filter = ctx.createBiquadFilter(), amp = ctx.createGain();
+      source.buffer = buffer; filter.type = type; filter.Q.value = q;
+      filter.frequency.setValueAtTime(Math.max(30, freq), start);
+      filter.frequency.exponentialRampToValueAtTime(Math.max(30, endFreq), start + dur);
+      amp.gain.setValueAtTime(0.0001, start);
+      amp.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol), start + attack);
+      amp.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+      source.connect(filter); filter.connect(amp);
+      out(ctx, amp, pan, wet);
+      source.start(start);
+    }
+
+    // 저음 몸통(서브)용 사인 — 높은 음의 순수 톤은 쓰지 않는다
+    function sub({ freq = 100, endFreq = 40, dur = 0.25, vol = 0.1, delay = 0, pan = 0, wet = 0 } = {}) {
+      const ctx = ctxOrNull();
+      if (!ctx) return;
+      const start = ctx.currentTime + delay, osc = ctx.createOscillator(), amp = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(Math.max(20, freq), start);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(20, endFreq), start + dur);
+      amp.gain.setValueAtTime(0.0001, start);
+      amp.gain.exponentialRampToValueAtTime(Math.max(0.0002, vol), start + 0.008);
+      amp.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+      osc.connect(amp);
+      out(ctx, amp, pan, wet);
+      osc.start(start); osc.stop(start + dur + 0.03);
+    }
+
+    // 공명 합성: 짧은 잡음 한 번을 높은 Q의 대역 필터 여러 개에 통과시켜 금속·유리·종 같은 울림을 만든다
+    function resonate({ freqs, q = 28, dur = 0.4, vol = 0.05, delay = 0, pan = 0, wet = 0 } = {}) {
+      const ctx = ctxOrNull();
+      if (!ctx) return;
+      const start = ctx.currentTime + delay, length = Math.max(1, Math.ceil(ctx.sampleRate * 0.012));
+      const buffer = ctx.createBuffer(1, length, ctx.sampleRate), data = buffer.getChannelData(0);
+      for (let i = 0; i < length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / length);
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      freqs.forEach((freq, i) => {
+        const filter = ctx.createBiquadFilter(), amp = ctx.createGain(), life = dur / (1 + i * 0.35);
+        filter.type = 'bandpass'; filter.frequency.value = freq; filter.Q.value = q;
+        amp.gain.setValueAtTime(vol * 14 / Math.pow(i + 1, 0.7), start);
+        amp.gain.exponentialRampToValueAtTime(0.0001, start + life);
+        source.connect(filter); filter.connect(amp);
+        out(ctx, amp, pan, wet);
+      });
+      source.start(start);
+    }
+
+    // 합성 질감 레이어. p = { power: 0.3~1, pan, wet, boost }
+    const SYNTH = {
+      crackle(p) { const n = 3 + Math.floor(p.power * 4); for (let i = 0; i < n; i++) noise({ dur: rand(0.025, 0.07), vol: 0.05 * p.power * p.boost, delay: rand(0.02, 0.22), pan: p.pan + rand(-0.2, 0.2), wet: p.wet, type: 'highpass', freq: rand(2500, 6000), q: 1 }); },
+      boom(p) { sub({ freq: rand(95, 125), endFreq: 38, dur: 0.3 + p.power * 0.2, vol: 0.12 * p.power * p.boost, pan: p.pan, wet: p.wet * 0.5 }); noise({ dur: 0.25 + p.power * 0.2, vol: 0.07 * p.power * p.boost, pan: p.pan, wet: p.wet, type: 'lowpass', freq: 500, endFreq: 120, q: 0.7, attack: 0.01 }); },
+      sizzle(p) { noise({ dur: 0.2 + p.power * 0.2, vol: 0.035 * p.power * p.boost, pan: p.pan, wet: p.wet, type: 'bandpass', freq: rand(4200, 6200), endFreq: 2400, q: 1.6 }); },
+      splash(p) { noise({ dur: 0.2 + p.power * 0.2, vol: 0.05 * p.power * p.boost, pan: p.pan, wet: p.wet, type: 'bandpass', freq: rand(3000, 3800), endFreq: rand(1200, 1800), q: 0.9 }); },
+      drops(p) { const n = 2 + Math.floor(p.power * 3); for (let i = 0; i < n; i++) { const f = rand(700, 2200); resonate({ freqs: [f, f * 1.9], q: 18, dur: rand(0.06, 0.12), vol: 0.03 * p.power * p.boost, delay: 0.03 + i * 0.05 + rand(0, 0.03), pan: p.pan + rand(-0.3, 0.3), wet: p.wet * 1.4 }); } },
+      sparkle(p) { resonate({ freqs: [rand(2800, 3400), rand(4200, 5200), rand(6200, 7400)], q: 30, dur: 0.35 + p.power * 0.2, vol: 0.022 * p.power * p.boost, pan: p.pan, wet: p.wet * 1.5 }); },
+      whoosh(p) { const up = Math.random() < 0.5; noise({ dur: 0.16 + p.power * 0.14, vol: 0.065 * p.power * p.boost, pan: p.pan, wet: p.wet, type: 'bandpass', freq: up ? 700 : 4200, endFreq: up ? 4200 : 700, q: 1.4, attack: 0.03 }); },
+      swish(p) { noise({ dur: 0.12, vol: 0.05 * p.power * p.boost, pan: p.pan, wet: p.wet, type: 'highpass', freq: 2500, endFreq: 6500, q: 0.8, attack: 0.02 }); },
+      slice(p) { noise({ dur: 0.08, vol: 0.06 * p.power * p.boost, pan: p.pan, wet: p.wet, type: 'highpass', freq: rand(3500, 5500), q: 0.7 }); noise({ dur: 0.14, vol: 0.03 * p.power * p.boost, delay: 0.02, pan: p.pan, wet: p.wet, type: 'bandpass', freq: 1800, endFreq: 600, q: 1.2 }); },
+      rumble(p) { noise({ dur: 0.35 + p.power * 0.3, vol: 0.1 * p.power * p.boost, pan: p.pan, wet: p.wet, type: 'lowpass', freq: rand(240, 330), endFreq: 80, q: 0.7, attack: 0.012 }); },
+      crack(p) { noise({ dur: 0.06, vol: 0.07 * p.power * p.boost, pan: p.pan, wet: p.wet, type: 'bandpass', freq: rand(900, 1500), q: 1.2 }); noise({ dur: 0.05, vol: 0.045 * p.power * p.boost, delay: rand(0.05, 0.1), pan: p.pan, wet: p.wet, type: 'bandpass', freq: rand(1200, 2000), q: 1.2 }); },
+      thud(p) { sub({ freq: rand(75, 95), endFreq: 32, dur: 0.3 + p.power * 0.2, vol: 0.14 * p.power * p.boost, pan: p.pan, wet: p.wet * 0.5 }); },
+      ring(p) { const base = rand(520, 760); resonate({ freqs: [base, base * 2.76, base * 5.4, base * 8.9], q: 40, dur: 0.6 + p.power * 0.4, vol: 0.02 * p.power * p.boost, pan: p.pan, wet: p.wet * 1.4 }); },
+      clink(p) { resonate({ freqs: [rand(1800, 2300), rand(3300, 4100), rand(5200, 6400)], q: 34, dur: 0.22, vol: 0.02 * p.power * p.boost, pan: p.pan, wet: p.wet }); },
+      clang(p) { const base = rand(300, 420); resonate({ freqs: [base, base * 2.4, base * 4.1, base * 6.3], q: 22, dur: 0.45 + p.power * 0.25, vol: 0.022 * p.power * p.boost, pan: p.pan, wet: p.wet }); }
+    };
+
+    // force.combo: 측정·테스트용으로 조합 번호를 고정한다
+    function playHit(element, damage, pan = 0, force = null) {
+      const ctx = ctxOrNull();
+      if (!ctx) return false;
+      // damage는 소리를 바꾸는 데 쓰지 않는다: 모든 피격이 같은 "강한 신호"로 울린다 (조합·음높이·위치만 매번 달라짐)
+      const t = STRONG, e = ELEMENT[element] || ELEMENT.neutral, power = t.power, level = 0.34 + power * 0.36;
+      const combos = HIT_SETS[element] || HIT_SETS.neutral;
+      const comboIndex = force && force.combo !== undefined ? force.combo % combos.length : pick(`hit:${element}`, combos.length);
+      const combo = combos[comboIndex];
+      const wet = clamp(t.wet + e.wet, 0, 0.7), baseRate = t.rate * rand(0.95, 1.05), trim = ((TRIM[element] || [])[comboIndex]) || 1;
+      let played = 0;
+      combo.forEach((layer, i) => {
+        const legacy = layer.s.startsWith('legacy_');
+        if (sample(layer.s, {
+          gain: level * trim * (layer.g !== undefined ? layer.g : legacy ? 0.9 : 0.8) * rand(0.9, 1.1),
+          rate: baseRate * (layer.r || 1) * rand(0.98, 1.02), pan, delay: i * 0.008 + rand(0, 0.008),
+          lp: layer.lp || 0, hp: layer.hp || 0, eq: e.eq, wet, wide: t.wide, cap: layer.dur || t.cap
+        })) played++;
+      });
+      const params = { power, pan, wet, boost: (played ? 1 : 1.8) * trim }; // 샘플이 없으면 합성음을 키운다
+      const names = SYNTH_NAMES[element] || SYNTH_NAMES.neutral;
+      for (let i = 0; i < t.layers; i++) SYNTH[pickFrom(`syn:${element}:${i}`, names)](params);
+      return true;
+    }
+
+    // 평타 모션에 맞춘 휘두르는 소리 (피격음보다 작게, 약간의 잔향)
+    function playSwing(motion, element, power = 0.5, pan = 0) {
+      const ctx = ctxOrNull();
+      if (!ctx) return false;
+      const v = 0.8, p = { pan, wet: 0.12 }; // 공격력과 무관하게 같은 세기
+      switch (motion) {
+        case 'slam': noise({ dur: 0.3, vol: 0.05 * v, ...p, type: 'bandpass', freq: 400, endFreq: 2600, q: 1.1, attack: 0.09 }); break;
+        case 'bash': sub({ freq: 150, endFreq: 70, dur: 0.22, vol: 0.07 * v, ...p }); noise({ dur: 0.16, vol: 0.035 * v, ...p, delay: 0.1, type: 'lowpass', freq: 500, endFreq: 200 }); break;
+        case 'jab': noise({ dur: 0.05, vol: 0.05 * v, ...p, type: 'highpass', freq: 3200 }); noise({ dur: 0.05, vol: 0.05 * v, ...p, delay: 0.1, type: 'highpass', freq: 3600 }); break;
+        case 'spin': noise({ dur: 0.2, vol: 0.05 * v, ...p, type: 'bandpass', freq: 900, endFreq: 3400, q: 1.5, attack: 0.04 }); noise({ dur: 0.2, vol: 0.04 * v, ...p, delay: 0.16, type: 'bandpass', freq: 3400, endFreq: 800, q: 1.5, attack: 0.02 }); break;
+        case 'swoop': noise({ dur: 0.32, vol: 0.05 * v, pan: -pan * 0.6, wet: 0.12, type: 'bandpass', freq: 500, endFreq: 3000, q: 1.2, attack: 0.1 }); break;
+        default: noise({ dur: 0.18, vol: 0.05 * v, ...p, type: 'bandpass', freq: 600, endFreq: 2500, q: 1.2, attack: 0.04 });
+      }
+      return true;
+    }
+
+    return { load, playHit, playSwing, _buffers: buffers };
+  }
+
+  const api = { BANK, LEGACY, HIT_SETS, STRONG, ELEMENT, TRIM, SYNTH_NAMES, pickIndex, makeImpulse, init };
+  root.FateSfx = api;
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this);

@@ -20,6 +20,7 @@
 | 7 | [07-opponent-ai.md](07-opponent-ai.md) | 상대 AI 행동, 공정성 장치 | 난이도 조정 |
 | 8 | [08-controls-and-dev.md](08-controls-and-dev.md) | 단축키, 테스트용 주소 옵션, 개발·QA 명령 | 테스트/QA |
 | 9 | [09-decisions-and-open-issues.md](09-decisions-and-open-issues.md) | 확정된 방침, **미해결 이슈·위험** | **꼭 먼저 읽을 것** |
+| 10 | [10-audio-and-motion.md](10-audio-and-motion.md) | 피격 효과음 변주, 평타 모션 6종, 음원 라이선스 | 사운드·연출 조정 |
 
 ## 용어집
 
