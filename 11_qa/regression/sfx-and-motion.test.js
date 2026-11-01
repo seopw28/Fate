@@ -515,7 +515,7 @@ test('바람 연출(실피드 템페스트): 칼바람 소리가 3번 연달아 
   const engine = fs.readFileSync(path.resolve(__dirname, '../../05_game-client/battle/sfx-variety.js'), 'utf8');
   const index = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
   assert.ok(/function playGust\(/.test(engine) && engine.includes('playLightning, playGust'), 'Engine must expose playGust');
-  assert.ok(engine.includes('[[0, -0.55, 1], [0.12, 0.55, 1.1], [0.24, 0, 1.2]]'), 'Gust must pass three times in a row');
+  assert.ok(engine.includes('[[0, -0.55, 1], [0.15, 0.55, 1.1], [0.3, 0, 1.2]]'), 'Gust must pass three times in a row');
   assert.ok(index.includes("if(element==='wind'){showCinematicSkillEffect('gust','실피드 템페스트',1);fateSfx.playGust(0);}"), 'Wind cinematic must play the gust');
   assert.ok(index.includes("if(element!=='water'&&element!=='wind')sfx('attack',element,3);"), 'Wind must not also play the generic attack sound');
 });
