@@ -46,7 +46,9 @@ JS = r"""
     // 박스가 화면 밖(스크롤/숨김 영역)이면 건너뜀
     const bs = getComputedStyle(box);
     const clipped = false;
-    const over = Math.max(b.left - t.left, t.right - b.right, b.top - t.top, t.bottom - b.bottom);
+    // 스크롤 가능한 박스는 스크롤 방향의 '아래/옆에 가려진 내용'을 넘침으로 세지 않는다
+    const scrollY = ['auto','scroll'].includes(bs.overflowY), scrollX = ['auto','scroll'].includes(bs.overflowX);
+    const over = Math.max(scrollX ? -1e9 : Math.max(b.left - t.left, t.right - b.right), scrollY ? -1e9 : Math.max(b.top - t.top, t.bottom - b.bottom), -1);
     if (over > 1.5 || clipped) {
       out.push({ text: n.textContent.trim().slice(0, 30), el: label(el), box: label(box),
                  over: Math.round(over), clipped, textW: Math.round(t.width), boxW: Math.round(b.width) });
@@ -72,6 +74,9 @@ STATES = [
     ("대재앙 카드", "document.querySelector('.hand').appendChild(createRuntimeBattleCard('storm.great-ruin')); setHandFilter('spell')"),
     ("사운드 패널", "toggleSoundPanel(true)"),
     ("최후의 발악 안내", "showDesperateNotice('enemy',{instant:true})"),
+    ("덱 편집 화면", "openCollection('deck')"),
+    ("도감 화면", "openCollection('codex')"),
+    ("상점 화면", "openCollection('gacha')"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
     ("수호신 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
 ]
