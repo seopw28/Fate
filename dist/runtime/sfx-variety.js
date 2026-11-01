@@ -401,7 +401,7 @@
       const ctx = ctxOrNull();
       if (!ctx || deps.spellPack === false) return false;
       const level = 0.34 + STRONG.power * 0.36;
-      return sample('spellLightningCast', { gain: level * 2.8, rate: rand(0.99, 1.01), pan, hp: 120, wet: 0.1, space: 'short', wide: 0.3, cap: 1.5, fade: 0.4 });
+      return sample('spellLightningCast', { gain: level * 2.8, rate: rand(0.99, 1.01), pan, hp: 120, wet: 0.1, space: 'short', wide: 0.3, cap: 2.7, fade: 0.45 }); // 번개는 천둥처럼 길게 울린다 (원본 약 3초 중 2.7초)
     }
 
     // 평타 모션에 맞춘 휘두르는 소리 (피격음보다 작게, 약간의 잔향)
