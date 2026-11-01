@@ -10,6 +10,8 @@
                              (그대로 쓰면 화면의 타격보다 소리가 0.5초 넘게 늦게 터진다)
   - spellIceCast_00N.mp3     빙결 카드 시전음용. 차오름부터 전체를 그대로 쓴다. (시전 후 약 0.45초에 피해가 들어가고
                              얼음 소리의 정점도 약 0.5초라 시전과 타격이 자연스럽게 맞는다)
+  - spellLightningCast_00N.mp3  물 공격의 번개 연출("아주르 썬더폴")용. 번개가 내리치는 순간이 시작 후 0.45초에 오도록
+                             앞부분(차오름)을 잘라 정렬한다. (연출은 공격 시작에 뜨고 타격은 약 0.3~0.5초 뒤에 들어간다)
 공통: 스테레오 유지(원본의 공간감) → 44.1kHz → 앞 0.6초의 평균 음량(RMS)을 TARGET_MEAN_DB에 맞춤
       (같은 이름의 변형 5개가 비슷한 크기로 들리게) → 피크 -1.5dB 리미터 → 길이 제한 + 끝 페이드아웃 → mp3(VBR q4)
 출처·라이선스: 06_assets/audio/basic-spell-impacts/SOURCE.md (CC0)
@@ -29,7 +31,8 @@ TARGET_MEAN_DB = -22.0     # 앞 0.6초 평균 음량(dBFS)
 LIMIT = 0.84               # 약 -1.5dBFS
 ONSET_DB = -6.0            # 정점 대비 이 값에 처음 도달한 지점을 "터지는 순간"으로 본다
 PRE_ROLL = 0.03            # 터지는 순간보다 30ms 앞에서 시작(어택을 살림)
-CAST_KINDS = ("Ice",)      # 시전음(원본 전체)도 만들 속성
+CAST_KINDS = ("Ice", "Lightning")   # 시전음도 만들 속성
+CAST_STRIKE_AT = {"Lightning": 0.45}   # 속성별로 "터지는 순간"을 시작 후 이 시각에 오도록 앞을 잘라 정렬 (없으면 원본 처음부터)
 
 
 def run(cmd):
@@ -93,8 +96,10 @@ def main():
         start = onset_seconds(f)
         convert(f, dst / f.with_suffix(".mp3").name, start, MAX_SECONDS)
         bank[key] = bank.get(key, 0) + 1
-        if any(key == f"spell{kind}" for kind in CAST_KINDS):
-            convert(f, dst / f"{key}Cast_{number}.mp3", 0.0, CAST_MAX_SECONDS)
+        kind = key[len("spell"):]
+        if kind in CAST_KINDS:
+            cast_start = max(0.0, start + PRE_ROLL - CAST_STRIKE_AT[kind]) if kind in CAST_STRIKE_AT else 0.0
+            convert(f, dst / f"{key}Cast_{number}.mp3", cast_start, CAST_MAX_SECONDS)
             bank[key + "Cast"] = bank.get(key + "Cast", 0) + 1
         print(f"{f.name}: 터지는 순간 {start * 1000:.0f}ms 앞의 차오름 제거")
     total = sum(p.stat().st_size for p in dst.glob("spell*.mp3"))
