@@ -279,7 +279,7 @@ test('공간감 구별: 대지는 가장 넓은 홀 잔향, 칼날·금속은 �
     assert.ok(E[element].wet <= 0.15, `${element}: 잔향 대신 겹쳐 내기`);
   }
   assert.ok(E.water.stack.count >= E.wind.stack.count, '물이 더 많이 튄다');
-  assert.equal(E.neutral.stack.count, 2, '금속은 "깡-깡" 두 번 부딪힌다');
+  assert.ok(!E.neutral.stack && E.neutral.synth === 0, '금속(무속성)은 "쓰윽" 칼 스치는 소리만: 겹쳐 내기·합성 층 없음');
   for (const element of ['fire', 'earth']) assert.ok(!E[element].stack, `${element}: 겹쳐 내기를 쓰지 않는다`);
 });
 
