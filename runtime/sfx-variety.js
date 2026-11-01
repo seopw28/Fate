@@ -22,7 +22,10 @@
     impactBell_heavy: 5, impactGeneric_light: 5, impactGlass_heavy: 5, impactGlass_light: 5, impactGlass_medium: 5,
     impactMetal_heavy: 5, impactMetal_light: 5, impactMetal_medium: 5, impactMining: 5, impactPlank_medium: 5,
     impactPlate_heavy: 5, impactPlate_light: 5, impactPlate_medium: 5, impactPunch_heavy: 5, impactPunch_medium: 5,
-    impactSoft_heavy: 5, impactSoft_medium: 5, impactTin_medium: 5, impactWood_heavy: 5, impactWood_light: 5, impactWood_medium: 5
+    impactSoft_heavy: 5, impactSoft_medium: 5, impactTin_medium: 5, impactWood_heavy: 5, impactWood_light: 5, impactWood_medium: 5,
+    // Basic Spell Impacts(CC0, 스테레오·잔향 포함): 06_assets/audio/basic-spell-impacts, 변환은 12_tools/asset-pipeline/build-spell-sfx.py
+    // spell<속성>은 폭발 직전부터 자른 피격음용, spellIceCast는 차오름(약 0.5초 뒤 정점)까지 전체를 쓰는 빙결 시전음용
+    spellFire: 5, spellIce: 5, spellIceCast: 5, spellLightning: 5, spellWater: 5
   };
   // 기존 3종 샘플(길게 울리는 몸통 소리)
   const LEGACY = { legacy_slash: 'assets/audio/sword-slash.mp3', legacy_explosion: 'assets/audio/explosion-impact.mp3', legacy_metal: 'assets/audio/metal-impact.mp3' };
@@ -33,26 +36,26 @@
   // 속성별 조합 후보 (모든 피격은 강한 신호로 통일: 피해 강도에 따라 소리를 바꾸지 않는다).
   // 한 번 칠 때 후보 중 하나(직전 제외)를 고르고 그 안의 층을 모두 겹쳐 재생한다.
   const HIT_SETS = {
+    // 불: 처음 쓰던 폭발 샘플 "원본"이 가장 불다워서 가공 없이 그대로 쓴다 (변주는 음높이·좌우 위치·볼륨의 미세한 흔들림으로만).
     fire: [
-      [L('legacy_explosion', { g: 0.55, r: 1, lp: 6000 }), L('impactPunch_heavy'), L('impactSoft_heavy', { r: 0.8 })],
-      [L('impactPunch_heavy'), L('impactMetal_heavy', { g: 0.8 }), L('legacy_explosion', { g: 0.45, r: 0.9 })],
-      [L('impactSoft_heavy'), L('impactPlate_heavy'), L('legacy_explosion', { g: 0.5, r: 1.1 })],
-      [L('legacy_explosion', { g: 0.85, r: 0.85 }), L('impactPunch_heavy', { r: 0.8 }), L('impactMining'), L('impactSoft_heavy', { r: 0.7 })],
-      [L('legacy_explosion', { g: 0.8, r: 0.95 }), L('impactPunch_heavy'), L('impactMetal_heavy', { g: 0.8 }), L('impactBell_heavy', { g: 0.3, r: 0.8 })]
+      [L('legacy_explosion', { g: 0.9 })]
     ],
+    // 물: 공간감(잔향) 없이 건조하게. 길게 울리는 폭발 샘플을 섞으면 불처럼 들려서 쓰지 않는다 (유리·얼음·물 주문 샘플만).
     water: [
-      [L('impactGlass_heavy'), L('impactBell_heavy', { g: 0.35, r: 1.2 }), L('legacy_explosion', { g: 0.32, r: 1.3, lp: 3500 })],
-      [L('impactGlass_heavy'), L('impactSoft_heavy', { g: 0.8 }), L('legacy_slash', { g: 0.5, r: 0.85 }), L('legacy_explosion', { g: 0.3, r: 1.25, lp: 3500 })],
-      [L('impactGlass_medium', { r: 0.9 }), L('impactBell_heavy', { g: 0.3 }), L('legacy_explosion', { g: 0.35, r: 1.2, lp: 4000 })],
-      [L('impactGlass_heavy'), L('impactBell_heavy', { g: 0.55 }), L('legacy_explosion', { g: 0.6, r: 1.1, lp: 4000 }), L('impactPunch_heavy', { r: 0.9, g: 0.7 })],
-      [L('impactGlass_heavy', { r: 0.9 }), L('impactGlass_medium'), L('impactBell_heavy', { g: 0.5, r: 0.9 }), L('legacy_explosion', { g: 0.55, r: 1.2, lp: 3500 })]
+      [L('impactGlass_medium'), L('impactGlass_light', { g: 0.6, r: 1.12 })],
+      [L('spellWater', { g: 0.8, dur: 0.5 }), L('impactGlass_light', { g: 0.5 })],
+      [L('spellIce', { g: 0.7, dur: 0.5 }), L('impactGlass_medium', { g: 0.6 })],
+      [L('impactGlass_heavy'), L('impactSoft_medium', { g: 0.5 })],
+      [L('spellWater', { g: 0.7, r: 0.95, dur: 0.5 }), L('spellIce', { g: 0.45, r: 1.1, dur: 0.4 }), L('impactGlass_light', { g: 0.4 })]
     ],
+    // 바람(칼날): 칼 샘플을 높은 음으로 예리하게. 장난감 소리로 들리던 금속판·종 샘플은 빼고, 번개/고음 금속은 아주 얇은 어택으로만 얹는다.
     wind: [
-      [L('impactMetal_heavy'), L('legacy_slash', { g: 0.9, r: 0.95 }), L('legacy_metal', { g: 0.35, r: 1.15, dur: 1 })],
-      [L('impactPlate_heavy'), L('legacy_slash', { g: 0.8, r: 0.9 })],
-      [L('impactMetal_medium'), L('impactPunch_medium'), L('legacy_slash', { g: 0.85, r: 1 })],
-      [L('impactMetal_heavy'), L('impactPlate_heavy'), L('legacy_slash', { g: 1, r: 0.85 })],
-      [L('impactMetal_heavy'), L('impactBell_heavy', { g: 0.35 }), L('legacy_slash', { g: 1, r: 0.9 }), L('legacy_metal', { g: 0.5, r: 1.1 })]
+      [L('legacy_slash', { g: 1 }), L('spellLightning', { g: 0.4, hp: 2500, dur: 0.3 })],
+      [L('legacy_slash', { g: 0.95, r: 1.1 }), L('impactMetal_light', { g: 0.35, hp: 3000, dur: 0.25 })],
+      [L('legacy_slash', { g: 1, r: 0.95, hp: 900 }), L('spellLightning', { g: 0.35, r: 1.2, hp: 3500, dur: 0.25 })],
+      [L('legacy_slash', { g: 0.9, r: 1.2 }), L('impactGeneric_light', { g: 0.5, hp: 3500 })],
+      [L('legacy_slash', { g: 1 }), L('legacy_metal', { g: 0.18, r: 1.8, hp: 3500, dur: 0.3 })],
+      [L('legacy_slash', { g: 0.85, r: 1.3 })]
     ],
     earth: [
       [L('impactWood_heavy'), L('impactSoft_heavy'), L('legacy_explosion', { g: 0.55, r: 0.7, lp: 1200 })],
@@ -76,23 +79,29 @@
   // 연속 타격 대응: 최근 CROWD_WINDOW초 안의 타격 수가 늘수록 잔향·꼬리를 줄이고, 새 타격 때 이전 잔향을 잠깐 눌러 준다
   const CROWD_WINDOW = 2.5, CROWD_STEP = 0.16, CROWD_MIN = 0.45;
   const FADE_DECIBELS_E = 6.9; // 지수 감쇠가 cap에서 e^-6.9 ≈ -60dB 가 되도록 하는 상수 (페이드 길이 ÷ 이 값 = 시정수)
-  // 속성별 공간·음색: wet=잔향 양, space=잔향 종류, tail=샘플 꼬리 길이 배율(전체 cap 기준), wide=좌우 폭, hp=저음 제거(Hz), fade=꼬리 감쇠 시작 비율
-  // 구별이 되도록 속성마다 다르게 둔다: 불·물·대지는 넓고 길게, 바람(칼날)·무속성(금속)은 짧고 건조하게.
+  // 속성별 공간·음색: wet=잔향 양, space=잔향 종류, tail=샘플 꼬리 길이 배율(전체 cap 기준), wide=좌우 폭, hp=저음 제거(Hz), fade=꼬리 감쇠 시작 비율,
+  // rate=음높이 배율, lp=고음 제한(Hz), jitter=음높이 무작위 폭, synth=합성 질감 층 수(없으면 STRONG.layers), stack=겹쳐 내기
+  // 구별이 되도록 속성마다 다르게 둔다: 대지는 넓고 크게, 불은 원본 그대로, 물은 건조하게 겹쳐서, 바람(칼날)은 높고 예리하게, 무속성(금속)은 짧게.
   const ELEMENT = {
-    fire: { eq: [{ type: 'lowshelf', freq: 180, gain: 4 }], wet: 0.26, space: 'long', tail: 0.85, wide: 0.3, hp: 0, fade: 0.4 },
-    water: { eq: [{ type: 'highshelf', freq: 6000, gain: 3 }], wet: 0.3, space: 'long', tail: 0.75, wide: 0.3, hp: 0, fade: 0.4 },
-    wind: { eq: [{ type: 'highshelf', freq: 3500, gain: 2.5 }], wet: 0.06, space: 'short', tail: 0.3, wide: 0.1, hp: 220, fade: 0.1 },
-    earth: { eq: [{ type: 'lowshelf', freq: 120, gain: 6 }], wet: 0.2, space: 'long', tail: 0.8, wide: 0.28, hp: 0, fade: 0.4 },
+    // 불: 원본 폭발 샘플을 가공 없이 (EQ·좌우 확장·합성음 없음). 길이만 부드럽게 줄인다.
+    fire: { eq: [], wet: 0.08, space: 'long', tail: 1.0, wide: 0, hp: 0, fade: 0.45, jitter: 0.06, synth: 0 },
+    // 물: 공간감(잔향) 완전 제거. 처음 소리를 4번 겹쳐 튀는 물방울·물결처럼. stack: count=반복 횟수(첫 번째는 일반 재생), spacing=간격(초),
+    //   decay=반복마다 곱해지는 볼륨, pitch=반복마다 올라가는 음높이, jitter=무작위 폭, spread=좌우로 번지는 정도, layers=반복할 층 수(앞쪽 층=어택), cap=반복음 길이(초)
+    water: { eq: [{ type: 'highshelf', freq: 6000, gain: 3 }], wet: 0, space: 'short', tail: 0.5, wide: 0.12, hp: 0, fade: 0.4, stack: { count: 4, spacing: [0.04, 0.075], decay: 0.7, pitch: 0.03, jitter: 0.05, spread: 0.5, layers: 1, cap: 0.22 } },
+    // 바람(칼날): 높고 예리하게 (음높이 +20%, 저음 600Hz 이하 제거, 고음 강조), 잔향 거의 없음. 여러 번 스치도록 3번 겹침.
+    wind: { eq: [{ type: 'highshelf', freq: 4500, gain: 4 }], wet: 0.02, space: 'short', tail: 0.3, wide: 0.1, hp: 600, fade: 0.1, rate: 1.2, stack: { count: 3, spacing: [0.03, 0.055], decay: 0.74, pitch: 0.04, jitter: 0.03, spread: 0.4, layers: 1, cap: 0.16 } },
+    // 대지: 더 낮고 묵직하게 — rate·lp·강한 저음 EQ. 공간감(잔향·꼬리·좌우 폭)을 크게. pitch는 합성 저음(쿵·우르릉)에도 적용된다
+    earth: { eq: [{ type: 'lowshelf', freq: 140, gain: 8 }], wet: 0.38, space: 'long', tail: 1.0, wide: 0.4, hp: 0, fade: 0.4, rate: 0.82, lp: 4200 },
     neutral: { eq: [], wet: 0.13, space: 'short', tail: 0.5, wide: 0.2, hp: 0, fade: 0.4 }
   };
   // 조합별 음량 보정 (12_tools/qa/measure-sfx.py --calibrate 로 조합마다 렌더링·측정해 맞춘 값). TRIM[속성][조합 번호]
   // 목표: 속성·조합이 달라도 비슷한 크기로 들리게 한다. 값이 없으면 1.
   const TRIM = {
-    fire: [0.78, 0.92, 0.93, 0.52, 0.57],
-    water: [2.20, 2.18, 1.91, 1.04, 1.24],
-    wind: [9.46, 8.37, 3.32, 7.18, 7.13],
-    earth: [0.72, 0.80, 1.14, 0.45, 0.52],
-    neutral: [1.97, 1.89, 1.80, 1.36, 1.13]
+    fire: [0.84],
+    water: [10.00, 10.00, 10.00, 10.00, 10.00],
+    wind: [8.69, 8.39, 9.49, 9.05, 8.86, 9.07],
+    earth: [4.29, 4.69, 7.65, 3.37, 3.27],
+    neutral: [1.93, 1.91, 1.78, 1.39, 1.05]
   };
   // 합성 질감 레이어 이름 (잡음·공명 기반만 사용)
   const SYNTH_NAMES = {
@@ -217,9 +226,16 @@
           amp.gain.setTargetAtTime(0, at + cap - 0.02, 0.006);
           source.start(at); source.stop(at + cap + 0.08);
         } else {
-          // 샘플이 자연스럽게 끝나는 경우에도 끝에서 클릭이 나지 않게 마지막 20ms를 부드럽게 마무리한다
-          const end = at + length;
-          if (length > 0.06) { amp.gain.setValueAtTime(gain * gainMul, end - 0.02); amp.gain.linearRampToValueAtTime(0.0001, end); }
+          // 샘플이 자연스럽게 끝나는 경우에도 끝이 뚝 끊기지 않게 마지막 구간을 지수적으로 부드럽게 마무리한다
+          // (잔향이 없는 물·바람에서는 샘플의 끝이 그대로 드러나므로 길이에 비례해 최대 100ms)
+          const end = at + length, taper = Math.min(0.1, length * 0.4);
+          // -80dB까지 내리면 100ms 동안 10ms당 8dB씩 떨어져 오히려 끊김처럼 들린다 → -30dB까지만 완만하게(10ms당 3dB) 내리고 마지막 4ms에만 0으로 닫는다
+          if (length > 0.06) {
+            const level = gain * gainMul;
+            amp.gain.setValueAtTime(level, end - taper);
+            amp.gain.exponentialRampToValueAtTime(Math.max(0.0002, level * 0.03), end - 0.004);
+            amp.gain.linearRampToValueAtTime(0.0001, end);
+          }
           source.start(at);
         }
         out(ctx, amp, panValue, wet, space);
@@ -293,9 +309,9 @@
       whoosh(p) { const up = Math.random() < 0.5; noise({ dur: 0.16 + p.power * 0.14, vol: 0.065 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'bandpass', freq: up ? 700 : 4200, endFreq: up ? 4200 : 700, q: 1.4, attack: 0.03 }); },
       swish(p) { noise({ dur: 0.12, vol: 0.05 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'highpass', freq: 2500, endFreq: 6500, q: 0.8, attack: 0.02 }); },
       slice(p) { noise({ dur: 0.08, vol: 0.06 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'highpass', freq: rand(3500, 5500), q: 0.7 }); noise({ dur: 0.14, vol: 0.03 * p.power * p.boost, delay: 0.02, pan: p.pan, wet: p.wet, space: p.space, type: 'bandpass', freq: 1800, endFreq: 600, q: 1.2 }); },
-      rumble(p) { noise({ dur: 0.35 + p.power * 0.3, vol: 0.1 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'lowpass', freq: rand(240, 330), endFreq: 80, q: 0.7, attack: 0.012 }); },
-      crack(p) { noise({ dur: 0.06, vol: 0.07 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'bandpass', freq: rand(900, 1500), q: 1.2 }); noise({ dur: 0.05, vol: 0.045 * p.power * p.boost, delay: rand(0.05, 0.1), pan: p.pan, wet: p.wet, space: p.space, type: 'bandpass', freq: rand(1200, 2000), q: 1.2 }); },
-      thud(p) { sub({ freq: rand(75, 95), endFreq: 32, dur: 0.3 + p.power * 0.2, vol: 0.14 * p.power * p.boost, pan: p.pan, wet: p.wet * 0.5 , space: p.space}); },
+      rumble(p) { noise({ dur: 0.35 + p.power * 0.3, vol: 0.1 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'lowpass', freq: rand(240, 330) * (p.pitch || 1), endFreq: 80 * (p.pitch || 1), q: 0.7, attack: 0.012 }); },
+      crack(p) { noise({ dur: 0.06, vol: 0.07 * p.power * p.boost, pan: p.pan, wet: p.wet, space: p.space, type: 'bandpass', freq: rand(900, 1500) * (p.pitch || 1), q: 1.2 }); noise({ dur: 0.05, vol: 0.045 * p.power * p.boost, delay: rand(0.05, 0.1), pan: p.pan, wet: p.wet, space: p.space, type: 'bandpass', freq: rand(1200, 2000), q: 1.2 }); },
+      thud(p) { sub({ freq: rand(75, 95) * (p.pitch || 1), endFreq: 32 * (p.pitch || 1), dur: 0.3 + p.power * 0.2, vol: 0.14 * p.power * p.boost, pan: p.pan, wet: p.wet * 0.5 , space: p.space}); },
       ring(p) { const base = rand(520, 760); resonate({ freqs: [base, base * 2.76, base * 5.4, base * 8.9], q: 40, dur: 0.6 + p.power * 0.4, vol: 0.02 * p.power * p.boost, pan: p.pan, wet: p.wet * 1.4 , space: p.space}); },
       clink(p) { resonate({ freqs: [rand(1800, 2300), rand(3300, 4100), rand(5200, 6400)], q: 34, dur: 0.22, vol: 0.02 * p.power * p.boost, pan: p.pan, wet: p.wet , space: p.space}); },
       clang(p) { const base = rand(300, 420); resonate({ freqs: [base, base * 2.4, base * 4.1, base * 6.3], q: 22, dur: 0.45 + p.power * 0.25, vol: 0.022 * p.power * p.boost, pan: p.pan, wet: p.wet , space: p.space}); }
@@ -325,25 +341,57 @@
       // damage는 소리를 바꾸는 데 쓰지 않는다: 모든 피격이 같은 "강한 신호"로 울린다 (조합·음높이·위치만 매번 달라짐)
       const t = STRONG, e = ELEMENT[element] || ELEMENT.neutral, power = t.power, level = 0.34 + power * 0.36;
       const combos = HIT_SETS[element] || HIT_SETS.neutral;
-      const comboIndex = force && force.combo !== undefined ? force.combo % combos.length : pick(`hit:${element}`, combos.length);
+      // 새 샘플 팩(spell*)을 쓰는 조합을 끄고 비교하고 싶을 때(?sfxpack=base): 조합 번호(TRIM 기준)는 그대로 두고 후보에서만 뺀다
+      const allowed = combos.map((c, i) => i).filter((i) => deps.spellPack !== false || !combos[i].some((layer) => layer.s.startsWith('spell')));
+      const comboIndex = force && force.combo !== undefined ? force.combo % combos.length : allowed[pick(`hit:${element}`, allowed.length)];
       const combo = combos[comboIndex];
       const crowd = crowding(ctx);
       if (crowd.count) duck(ctx, 0.7);
-      const wet = clamp(e.wet * crowd.scale, 0, 0.7), baseRate = t.rate * rand(0.95, 1.05), trim = ((TRIM[element] || [])[comboIndex]) || 1;
+      const wet = clamp(e.wet * crowd.scale, 0, 0.7), baseRate = t.rate * (e.rate || 1) * rand(1 - (e.jitter || 0.05), 1 + (e.jitter || 0.05)), trim = ((TRIM[element] || [])[comboIndex]) || 1;
       let played = 0;
       combo.forEach((layer, i) => {
         const legacy = layer.s.startsWith('legacy_');
         if (sample(layer.s, {
           gain: level * trim * (layer.g !== undefined ? layer.g : legacy ? 0.9 : 0.8) * rand(0.9, 1.1),
           rate: baseRate * (layer.r || 1) * rand(0.98, 1.02), pan, delay: i * 0.008 + rand(0, 0.008),
-          lp: layer.lp || 0, hp: layer.hp || e.hp || 0, eq: e.eq, wet, space: e.space, wide: e.wide * (crowd.count ? 0.8 : 1),
+          lp: layer.lp || e.lp || 0, hp: layer.hp || e.hp || 0, eq: e.eq, wet, space: e.space, wide: e.wide * (crowd.count ? 0.8 : 1),
           cap: (layer.dur ? Math.min(layer.dur, t.cap) : t.cap) * e.tail * crowd.scale, fade: e.fade
         })) played++;
       });
-      const params = { power, pan, wet, space: e.space, boost: (played ? 1 : 1.8) * trim }; // 샘플이 없으면 합성음을 키운다
+      // 겹쳐 내기(stack): 어택 층만 짧은 간격으로 여러 번 — 갈수록 작아지고 음높이·좌우가 조금씩 어긋난다. 연속 타격이 쌓이면 반복 수를 줄인다.
+      if (e.stack) {
+        const st = e.stack, count = Math.max(1, Math.round(st.count * Math.max(0.5, crowd.scale)));
+        let at = 0;
+        for (let k = 1; k < count; k++) {
+          at += rand(st.spacing[0], st.spacing[1]);
+          const side = (k % 2 ? 1 : -1) * st.spread * (k / count);
+          combo.slice(0, st.layers || 1).forEach((layer, i) => sample(layer.s, {
+            gain: level * trim * (layer.g !== undefined ? layer.g : layer.s.startsWith('legacy_') ? 0.9 : 0.8) * Math.pow(st.decay, k) * rand(0.9, 1.1),
+            rate: baseRate * (layer.r || 1) * (1 + st.pitch * k + rand(-st.jitter, st.jitter)), pan: clamp(pan + side, -1, 1), delay: at + i * 0.006,
+            lp: layer.lp || e.lp || 0, hp: layer.hp || e.hp || 0, eq: e.eq, wet: wet * 0.5, space: e.space, wide: 0,
+            cap: Math.min(st.cap || 0.22, (layer.dur || t.cap) * e.tail), fade: 0.2 // 반복음은 짧게 끊어 하나하나 구별되게
+          }));
+        }
+      }
+      const params = { power, pan, wet, space: e.space, pitch: e.rate || 1, boost: (played ? 1 : 1.8) * trim }; // 샘플이 없으면 합성음을 키운다
       const names = SYNTH_NAMES[element] || SYNTH_NAMES.neutral;
-      for (let i = 0; i < t.layers; i++) SYNTH[pickFrom(`syn:${element}:${i}`, names)](params);
+      // 합성 질감: 속성 설정이 우선(불은 0). 단 샘플이 하나도 재생되지 못했으면(아직 로드 전·실패) 소리가 비지 않게 최소 1개는 낸다
+      const synthLayers = played ? (e.synth !== undefined ? e.synth : t.layers) : Math.max(1, e.synth !== undefined ? e.synth : t.layers);
+      for (let i = 0; i < synthLayers; i++) SYNTH[pickFrom(`syn:${element}:${i}`, names)](params);
       return true;
+    }
+
+    // 빙결 카드 소리(프로스트 노바·빙결 사슬·한서진). 샘플이 없거나 ?sfxpack=base 면 false를 돌려줘 호출한 쪽이 합성음을 쓴다.
+    //  - cast: 얼음 주문 전체(차오름 → 약 0.5초에 정점). 빙결 카드는 시전 후 약 0.45초에 피해가 들어가 시점이 맞는다. (음높이를 바꾸면 정점 시각이 달라지므로 거의 그대로 쓴다)
+    //  - shatter: 시전 0.3초 뒤에 얹는 가벼운 얼음 파편음 (정점 직전이라 크게 겹치지 않게 작고 높게)
+    function playFrost(kind, pan = 0) {
+      const ctx = ctxOrNull();
+      if (!ctx || deps.spellPack === false) return false;
+      const e = ELEMENT.water, level = 0.34 + STRONG.power * 0.36;
+      if (kind === 'shatter') {
+        return sample('spellIce', { gain: level * 0.45, rate: rand(1.18, 1.3), pan, hp: 1500, eq: e.eq, wet: e.wet * 0.8, space: 'long', wide: e.wide, cap: 0.5, fade: 0.3 });
+      }
+      return sample('spellIceCast', { gain: level * 1.05, rate: rand(0.99, 1.01), pan, eq: e.eq, wet: e.wet, space: 'long', wide: e.wide, cap: 1.8, fade: 0.45 });
     }
 
     // 평타 모션에 맞춘 휘두르는 소리 (피격음보다 작게, 약간의 잔향)
@@ -362,7 +410,7 @@
       return true;
     }
 
-    return { load, playHit, playSwing, _buffers: buffers };
+    return { load, playHit, playFrost, playSwing, _buffers: buffers };
   }
 
   const api = { BANK, LEGACY, HIT_SETS, STRONG, ELEMENT, FADE_DECIBELS_E, IR_SECONDS, CROWD_WINDOW, CROWD_STEP, CROWD_MIN, TRIM, SYNTH_NAMES, pickIndex, makeImpulse, init };

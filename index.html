@@ -1192,10 +1192,10 @@
     /* 피격·평타 효과음 변주: 속성 × 피해 강도 × 무작위 변주 (Kenney CC0 샘플 + 합성음, 05_game-client/battle/sfx-variety.js) */
     let hitPan=0;
     function panFor(element){const r=element.getBoundingClientRect();return Math.max(-.7,Math.min(.7,((r.left+r.width/2)/innerWidth-.5)*1.6));}
-    const fateSfx=FateSfx.init({engine:audioEngine,bus:sfxBus});
+    const fateSfx=FateSfx.init({engine:audioEngine,bus:sfxBus,spellPack:new URLSearchParams(location.search).get('sfxpack')!=='base'});/* ?sfxpack=base : 새 주문 샘플 팩(Basic Spell Impacts) 없이 이전 조합만 (소리 비교용) */
     ['pointerdown','keydown','touchstart'].forEach(type=>addEventListener(type,()=>fateSfx.load(),{once:true,capture:true}));
     const sfxBeforeVariety=sfx;
-    sfx=function(kind,variant='neutral',strength=3){if(kind==='hit'&&soundOn){fateSfx.playHit(variant,strength,hitPan);return;}return sfxBeforeVariety(kind,variant,strength);};
+    sfx=function(kind,variant='neutral',strength=3){if(kind==='hit'&&soundOn){fateSfx.playHit(variant,strength,hitPan);return;}if(soundOn&&(kind==='frost-cast'||kind==='frost-shatter')&&fateSfx.playFrost(kind==='frost-cast'?'cast':'shatter'))return;return sfxBeforeVariety(kind,variant,strength);};
     function impact(target,damage,element='fire'){
       hitPan=panFor(target);sfx('hit',element,damage); const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches; const color=impactPalette[element]||impactPalette.fire;if(target.classList.contains('avatar'))heroProfileImpact(target,damage,element); const arena=document.querySelector('.arena'); arena.classList.remove('impact'); void arena.offsetWidth; arena.classList.add('impact');slowCombatAnimations(arena);const r=target.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
       target.classList.remove('hit-react'); void target.offsetWidth; target.classList.add('hit-react');slowCombatAnimations(target);setTimeout(()=>target.classList.remove('hit-react'),combatMs(460));
@@ -1514,7 +1514,7 @@
        브라우저 자동재생 정책 때문에 첫 클릭/키 입력 때 시작한다. */
     const bgm=new Audio('assets/audio/bgm-final-battle.mp3');bgm.loop=true;bgm.volume=audioPrefs.bgm;bgm.preload='auto';
     var sfxBusNode=null;
-    function sfxBus(ctx){if(!sfxBusNode||sfxBusNode.context!==ctx){sfxBusNode=ctx.createGain();sfxBusNode.connect(ctx.destination);}sfxBusNode.gain.value=audioPrefs.sfx;return sfxBusNode;}
+    function sfxBus(ctx){if(!sfxBusNode||sfxBusNode.context!==ctx){sfxBusNode=ctx.createGain();/* 안전 리미터: 효과음 볼륨을 크게 올려도 -6dBFS 부근에서 눌러 찌그러짐을 막는다 */const limiter=ctx.createDynamicsCompressor();limiter.threshold.value=-6;limiter.knee.value=0;limiter.ratio.value=20;limiter.attack.value=.001;limiter.release.value=.12;sfxBusNode.connect(limiter);limiter.connect(ctx.destination);}sfxBusNode.gain.value=audioPrefs.sfx;return sfxBusNode;}
     function saveAudioPrefs(){try{localStorage.setItem(AUDIO_PREF_KEY,JSON.stringify(audioPrefs));}catch(e){}}
     function syncBgm(){if(soundOn&&!document.hidden&&audioPrefs.bgm>0)bgm.play().catch(()=>{});else bgm.pause();}
     function renderSoundPanel(){const bgmSlider=document.querySelector('#bgm-slider'),sfxSlider=document.querySelector('#sfx-slider');bgmSlider.value=Math.round(audioPrefs.bgm*100);sfxSlider.value=Math.round(audioPrefs.sfx*100);document.querySelector('#bgm-value').textContent=bgmSlider.value+'%';document.querySelector('#sfx-value').textContent=sfxSlider.value+'%';document.querySelector('#sound-toggle').textContent=soundOn?'🔊 사운드':'🔇 사운드';document.querySelector('#sound-mute').textContent=soundOn?'🔇 전체 음소거':'🔊 음소거 해제';}
