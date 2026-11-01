@@ -12,7 +12,7 @@
 | 빈 전장으로 시작 | 낮은 비용 카드부터 직접 세팅하게 함. 초기 전장이 상대에게 유리하게 깔리는 문제도 사라짐 |
 | 상대 마나 = 내 최대 마나 | 상대가 마나를 덜 쓰던 비대칭을 없애고 "과한 선점 없이" 똑똑하게 만들기 위함 |
 | 승리 시 상대 크래커 최대 200 갈취 | 이기면 재화가 늘어나는 구조 |
-| 필살기 배틀당 횟수 제한 없음, 사용 카드는 묘지 | 사용 가능 턴·마나·카드 소모가 자연스러운 제한. 부활 효과와 상호작용 |
+| 궁극기 배틀당 횟수 제한 없음, 사용 카드는 묘지 | 사용 가능 턴·마나·카드 소모가 자연스러운 제한. 부활 효과와 상호작용 |
 | 역전 돌진 + 최후의 발악 연출 | 밀리는 쪽에 반격 기회와 극적인 피드백 제공 |
 | 약자멸시: 기권·중도 이탈도 패배로 계산 | 도망갈 구멍을 없애 약자멸시가 "공짜 선택"이 되지 않게 함 (사용자 결정) |
 | 수호신 선불 100 | 기대값 균형 (수호신 EV 0 ↔ 약자멸시 −16) |
@@ -53,7 +53,7 @@
 
 ### 6. 🟠 해석·가정으로 구현된 것 (기획 확인 필요)
 - **역전 돌진의 "총 체력"** = 영웅 체력 + 전장 챔프 체력 합 (영웅 체력만 볼 수도 있음)
-- **필살기로 쓴 카드가 묘지로** → 부활 효과로 되살릴 수 있게 한 해석
+- **궁극기로 쓴 카드가 묘지로** → 부활 효과로 되살릴 수 있게 한 해석
 - 상대에게는 역전 돌진을 적용하지 않음(원래 소환 즉시 공격)
 
 ### 7. 🟡 카드 데이터와 코드의 불일치
@@ -64,7 +64,7 @@
 - 상대 챔프의 소환 효과/능력이 작동하지 않음
 
 ### 8. 🟡 밸런스 검증의 한계
-시뮬레이터(`09_balance-lab/match-simulator`)는 마법·함정·필살기·혈마나·챔프 개별 능력을 모델링하지 않습니다. 대칭 모드는 양쪽 모두 소환 즉시 공격하므로 **역전 돌진·필살기 2회 같은 최근 규칙은 측정되지 않았습니다.** 수호신 승률 격차(약 1.5%p)는 참고 수치입니다. 실제 플레이 테스트가 필요합니다.
+시뮬레이터(`09_balance-lab/match-simulator`)는 마법·함정·궁극기·혈마나·챔프 개별 능력을 모델링하지 않습니다. 대칭 모드는 양쪽 모두 소환 즉시 공격하므로 **역전 돌진·궁극기 2회 같은 최근 규칙은 측정되지 않았습니다.** 수호신 승률 격차(약 1.5%p)는 참고 수치입니다. 실제 플레이 테스트가 필요합니다.
 
 ### 9. 🟡 기타
 - 덱 편집/덱 상점 UI 개편 계획 (카드 디자인과 효과를 함께 보여 주는 덱 편성, 화려한 카드 오픈 연출, 두 메뉴 분리)은 요구사항 인터뷰 단계입니다. 확정된 설계 없음.
@@ -83,7 +83,7 @@
 | 단축키: 스페이스=탭 전환, Enter=턴 종료 | 기존 스페이스=턴 종료에서 변경 |
 | 불가침의 유나 (소환 턴 무적) | 신규 카드 |
 | 역전 돌진 + 최후의 발악 연출·안내 | 총 체력 ≤ 상대의 절반 |
-| 필살기 배틀당 횟수 제한 없음, 사용한 카드는 묘지로 이동 | `ULTIMATE_MAX_USES` (Infinity) |
+| 궁극기 배틀당 횟수 제한 없음, 사용한 카드는 묘지로 이동 | `ULTIMATE_MAX_USES` (Infinity) |
 | 슬라임·남성 캐릭터 삭제 | 저장 데이터 마이그레이션 v6, v7 |
 | 약자멸시 패배 시 200 소모 | `CHALLENGE_LOSS_COST` |
 | **피격 효과음 변주 + 평타 모션 6종** (Kenney CC0 샘플 + 합성음) | [10](10-audio-and-motion.md). 테스트 12개 추가 |
@@ -115,9 +115,9 @@
 | 작업 | 커밋 | 부분 되돌리기 |
 |---|---|---|
 | **코드 리뷰 개선**: 약자멸시 기권·이탈=패배, 수호신 선불 100, URL 옵션 개발 환경 전용(`DEV_MODE`), 저장 데이터 `cardIds` | `5c17adf49` (대재앙 마법·약자멸시 경제 규칙·사운드 버튼 상시 노출과 함께) | `dist/index.html`에서 `DEV_MODE`, `CHALLENGE_LOSS_COST`, `pendingChallenge`, `remapSavedByCardIds`, `COLLECTION_CARD_IDS`, `GUARDIAN_COST` 부분을 수동으로 원복. 테스트(`save-and-economy.test.js`, `check-economy-flow.py`)는 파일 단위로 삭제 가능 |
-| **역전 돌진 · 최후의 발악(게이지 연출·중앙 안내) · 필살기 횟수 제한** | `5c17adf49` (필살기 무제한으로의 변경은 `bd08279a4`) | `comebackRushActive`, `totalHealth`, `showDesperateNotice`, `updateDesperation`, CSS `.desperate*` 블록을 `dist/index.html`에서 제거 |
+| **역전 돌진 · 최후의 발악(게이지 연출·중앙 안내) · 궁극기 횟수 제한** | `5c17adf49` (궁극기 무제한으로의 변경은 `bd08279a4`) | `comebackRushActive`, `totalHealth`, `showDesperateNotice`, `updateDesperation`, CSS `.desperate*` 블록을 `dist/index.html`에서 제거 |
 | **게임 규칙서** `game-rules/01~09` | `5c17adf49` | 폴더 단위: `git checkout 5c17adf49~1 -- 02_game-design/game-rules` |
-| **피격 효과음 v1 + 평타 모션 6종 + Kenney 음원 + 측정 도구 초판** | `bd08279a4` (블랙타워 제외·새 인물 16명·필살기 무제한과 함께) | 파일 단위: `05_game-client/battle/sfx-variety.js`, `attack-motions.js`, `dist/assets/audio/sfx/`, `dist/runtime/{sfx-variety,attack-motions}.js`, `12_tools/asset-pipeline/build-sfx.py`, `12_tools/qa/measure-sfx.py`, `12_tools/build-scripts/build-runtime.mjs`의 복사 2줄, `11_qa/regression/sfx-and-motion.test.js`, 규칙서 `10-audio-and-motion.md`. `dist/index.html`에서는 `fateSfx`, `panFor`, `hitPan`, `pickAttackMotion`, `.summon-zone:has(.field-attacker)` 블록 제거 후 `sfx`/`fieldAttack` 원복 |
+| **피격 효과음 v1 + 평타 모션 6종 + Kenney 음원 + 측정 도구 초판** | `bd08279a4` (블랙타워 제외·새 인물 16명·궁극기 무제한과 함께) | 파일 단위: `05_game-client/battle/sfx-variety.js`, `attack-motions.js`, `dist/assets/audio/sfx/`, `dist/runtime/{sfx-variety,attack-motions}.js`, `12_tools/asset-pipeline/build-sfx.py`, `12_tools/qa/measure-sfx.py`, `12_tools/build-scripts/build-runtime.mjs`의 복사 2줄, `11_qa/regression/sfx-and-motion.test.js`, 규칙서 `10-audio-and-motion.md`. `dist/index.html`에서는 `fateSfx`, `panFor`, `hitPan`, `pickAttackMotion`, `.summon-zone:has(.field-attacker)` 블록 제거 후 `sfx`/`fieldAttack` 원복 |
 
 ### 참고
 - 위 표의 "묶인 커밋"은 같은 파일(`dist/index.html`)을 두 세션이 동시에 수정하다가 한쪽 커밋에 함께 들어간 것입니다. 앞으로는 작업별로 먼저 커밋해 이런 묶임을 줄이는 것이 좋습니다.

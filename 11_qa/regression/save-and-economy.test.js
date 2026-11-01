@@ -79,18 +79,18 @@ test('보안: 크래커/수호신 URL 옵션은 개발 환경에서만 동작한
   assert.ok(html.includes("preset=DEV_MODE?params.get('guardian'):null"), '?guardian must be gated by DEV_MODE');
 });
 
-test('필살기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤에 적용한다', () => {
+test('궁극기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤에 적용한다', () => {
   assert.ok(html.includes('ULTIMATE_EFFECT_DELAY=ULTIMATE_OVERLAY_MS+30'), 'Effect delay must exceed the overlay duration');
   assert.ok(html.includes('},ULTIMATE_EFFECT_DELAY);setTimeout(()=>overlay.remove(),ULTIMATE_OVERLAY_MS);'), 'Effects must be scheduled with the named delay, not a fixed 900ms');
 });
 
-test('필살기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다시 쓸 수 있다', () => {
+test('궁극기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다시 쓸 수 있다', () => {
   assert.ok(html.includes('const ULTIMATE_COOLDOWN_TURNS=3;'), 'Cooldown must be a single named constant');
   assert.ok(html.includes('turnNumber<lastUltimateTurn+ULTIMATE_COOLDOWN_TURNS'), 'Lock reason must enforce the cooldown');
   assert.ok(html.includes('lastUltimateTurn=turnNumber;'), 'Activation must record the turn it was used');
 });
 
-test('필살기: 땅 필살기는 회복이 아니라 절대방어(+강한 카드는 부활)다', () => {
+test('궁극기: 땅 궁극기는 회복이 아니라 절대방어(+강한 카드는 부활)다', () => {
   assert.ok(html.includes("earth:'절대성역'"), 'Earth ultimate must be renamed to the absolute sanctuary');
   assert.ok(html.includes("else if(spec.element==='earth'){absoluteDefense=true;"), 'Earth ultimate must enable absolute defense');
   assert.ok(!html.includes("showSkillEffect('shield',unit,'성역 +'+heal)"), 'Earth ultimate must no longer heal allies');
