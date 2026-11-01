@@ -25,7 +25,8 @@
     impactSoft_heavy: 5, impactSoft_medium: 5, impactTin_medium: 5, impactWood_heavy: 5, impactWood_light: 5, impactWood_medium: 5,
     // Basic Spell Impacts(CC0, 스테레오·잔향 포함): 06_assets/audio/basic-spell-impacts, 변환은 12_tools/asset-pipeline/build-spell-sfx.py
     // spell<속성>은 폭발 직전부터 자른 피격음용, spellIceCast는 차오름(약 0.5초 뒤 정점)까지 전체를 쓰는 빙결 시전음용
-    spellFire: 5, spellIce: 5, spellIceCast: 5, spellLightning: 5, spellWater: 5
+    // spellLightningCast는 번개가 내리치는 순간이 0.45초에 오도록 정렬한 물 공격의 번개 연출("아주르 썬더폴")용
+    spellFire: 5, spellIce: 5, spellIceCast: 5, spellLightning: 5, spellLightningCast: 5, spellWater: 5
   };
   // 기존 3종 샘플(길게 울리는 몸통 소리)
   const LEGACY = { legacy_slash: 'assets/audio/sword-slash.mp3', legacy_explosion: 'assets/audio/explosion-impact.mp3', legacy_metal: 'assets/audio/metal-impact.mp3' };
@@ -394,6 +395,15 @@
       return sample('spellIceCast', { gain: level * 1.05, rate: rand(0.99, 1.01), pan, eq: e.eq, wet: e.wet, space: 'long', wide: e.wide, cap: 1.8, fade: 0.45 });
     }
 
+    // 물 공격의 번개 연출("아주르 썬더폴") 소리: 연출이 뜰 때 차오르다가 약 0.45초에 번개가 내리친다 (타격 시점과 맞춤).
+    // 물 피격음에서 불처럼 들리는 폭발 샘플을 뺀 대신, 번개 소리는 이 연출에 전용으로 붙인다. 샘플이 없거나 ?sfxpack=base 면 false.
+    function playLightning(pan = 0) {
+      const ctx = ctxOrNull();
+      if (!ctx || deps.spellPack === false) return false;
+      const level = 0.34 + STRONG.power * 0.36;
+      return sample('spellLightningCast', { gain: level * 2.8, rate: rand(0.99, 1.01), pan, hp: 120, wet: 0.1, space: 'short', wide: 0.3, cap: 1.5, fade: 0.4 });
+    }
+
     // 평타 모션에 맞춘 휘두르는 소리 (피격음보다 작게, 약간의 잔향)
     function playSwing(motion, element, power = 0.5, pan = 0) {
       const ctx = ctxOrNull();
@@ -410,7 +420,7 @@
       return true;
     }
 
-    return { load, playHit, playFrost, playSwing, _buffers: buffers };
+    return { load, playHit, playFrost, playLightning, playSwing, _buffers: buffers };
   }
 
   const api = { BANK, LEGACY, HIT_SETS, STRONG, ELEMENT, FADE_DECIBELS_E, IR_SECONDS, CROWD_WINDOW, CROWD_STEP, CROWD_MIN, TRIM, SYNTH_NAMES, pickIndex, makeImpulse, init };
