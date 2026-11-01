@@ -66,14 +66,14 @@
       [L('impactMining'), L('impactPunch_heavy', { r: 0.8 }), L('impactSoft_heavy', { r: 0.7 }), L('legacy_explosion', { g: 0.85, r: 0.6, lp: 1400 })],
       [L('impactWood_heavy', { r: 0.85 }), L('impactMining', { g: 0.8 }), L('legacy_explosion', { g: 0.8, r: 0.7, lp: 1500 }), L('legacy_metal', { g: 0.3, r: 0.6 })]
     ],
-    // 무속성(금속): 강철끼리 부딪히는 "깡! 쨍! 창!" — 단단하고 밝은 어택 위주, 여운은 짧게. 폭발·펀치·종 샘플은 금속으로 들리지 않아 뺐다.
-    // 철판/금속 타격 샘플을 어택으로, 길게 울리는 금속 샘플은 짧게 잘라(dur) 얹고, 합성 "부딪힘"(잡음 어택 + 어긋난 고음 공명)을 더한다.
+    // 무속성(금속): 강철 칼날이 부딪히고 스치는 소리. 음정이 들려 실로폰처럼 들리던 합성 공명·주석(tin) 샘플은 빼고,
+    // 금속 타격(어택) + 실제 금속 여운(legacy_metal) + 칼 스치는 소리(legacy_slash, 고음만)를 겹친다.
     neutral: [
-      [L('impactMetal_heavy'), L('legacy_metal', { g: 0.95, r: 1.1, dur: 0.9 }), L('impactPlate_heavy', { g: 0.4 })],
-      [L('impactMetal_medium', { r: 1.1 }), L('legacy_metal', { g: 0.85, r: 1.25, dur: 0.8 }), L('impactTin_medium', { g: 0.4, hp: 2500 })],
-      [L('impactMetal_heavy', { r: 1.12 }), L('impactMetal_light', { g: 0.7, r: 1.3, hp: 1800 }), L('legacy_metal', { g: 0.9, r: 1.35, dur: 0.8 })],
-      [L('impactMetal_heavy', { r: 1.05 }), L('legacy_metal', { g: 1, dur: 0.9 }), L('impactPlate_medium', { g: 0.4, r: 1.1 })],
-      [L('impactMetal_medium', { r: 1.2 }), L('legacy_metal', { g: 0.85, r: 1.4, dur: 0.7 }), L('impactTin_medium', { g: 0.5, r: 1.2 })]
+      [L('impactMetal_heavy', { g: 0.8 }), L('legacy_metal', { g: 1.1, r: 1.05, dur: 0.9 }), L('legacy_slash', { g: 0.7, r: 1.15, hp: 1500, dur: 0.6 })],
+      [L('impactMetal_medium', { r: 1.1 }), L('legacy_metal', { g: 1, r: 1.2, dur: 0.8 }), L('legacy_slash', { g: 0.75, r: 1.25, hp: 1800, dur: 0.55 })],
+      [L('impactMetal_heavy', { r: 1.08 }), L('legacy_metal', { g: 1.05, r: 1.3, dur: 0.8 }), L('legacy_slash', { g: 0.8, r: 1.1, hp: 1200, dur: 0.65 })],
+      [L('impactMetal_heavy', { g: 0.7 }), L('legacy_metal', { g: 1.15, dur: 0.9 }), L('legacy_slash', { g: 0.65, r: 1.3, hp: 2000, dur: 0.5 })],
+      [L('impactMetal_medium', { r: 1.15 }), L('legacy_metal', { g: 1, r: 1.35, dur: 0.7 }), L('legacy_slash', { g: 0.8, r: 1.2, hp: 1500, dur: 0.6 })]
     ]
   };
   // 공간·길이 설정 (wet=잔향 양, wide=좌우 폭, cap=샘플 최대 길이 초, layers=합성 질감 개수)
@@ -97,7 +97,7 @@
     // 대지: 더 낮고 묵직하게 — rate·lp·강한 저음 EQ. 공간감(잔향·꼬리·좌우 폭)을 크게. pitch는 합성 저음(쿵·우르릉)에도 적용된다
     earth: { eq: [{ type: 'lowshelf', freq: 140, gain: 8 }], wet: 0.38, space: 'long', tail: 1.0, wide: 0.4, hp: 0, fade: 0.4, rate: 0.82, lp: 4200 },
     // 무속성(금속): 강철 부딪힘 — 고음을 살리고 여운은 짧게(tail 0.55), "깡-깡" 두 번 연달아 부딪히는 느낌으로 2번 겹침, 합성 부딪힘 1층
-    neutral: { eq: [{ type: 'highshelf', freq: 3000, gain: 4 }], wet: 0.08, space: 'short', tail: 0.8, wide: 0.2, hp: 0, fade: 0.3, synth: 1, stack: { count: 2, spacing: [0.07, 0.1], decay: 0.55, pitch: 0.06, jitter: 0.04, spread: 0.3, layers: 1, cap: 0.45 } },
+    neutral: { eq: [{ type: 'highshelf', freq: 3000, gain: 4 }], wet: 0.08, space: 'short', tail: 0.8, wide: 0.2, hp: 0, fade: 0.3, synth: 0, stack: { count: 2, spacing: [0.07, 0.1], decay: 0.55, pitch: 0.06, jitter: 0.04, spread: 0.3, layers: 1, cap: 0.45 } },
   };
   // 조합별 음량 보정 (12_tools/qa/measure-sfx.py --calibrate 로 조합마다 렌더링·측정해 맞춘 값). TRIM[속성][조합 번호]
   // 목표: 속성·조합이 달라도 비슷한 크기로 들리게 한다. 값이 없으면 1.
