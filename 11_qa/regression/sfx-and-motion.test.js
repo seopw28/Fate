@@ -462,7 +462,7 @@ test('번개 소리: 물 공격의 번개 연출 전용 샘플을 쓰고, 팩이
   const buffers = { spellLightningCast: [{ duration: 2.9 }] };
   const before = stats.started;
   assert.equal(Sfx.init({ engine: () => ctx, bus: () => bus, buffers, spellPack: true }).playLightning(0), true);
-  assert.ok(stats.started - before >= 2, '좌우로 넓혀 재생');
+  assert.equal(stats.started - before, 1, '공간감을 만드는 처리(좌우 확장)를 하지 않아 원본 소리 하나만 재생');
   assert.equal(Sfx.init({ engine: () => ctx, bus: () => bus, buffers, spellPack: false }).playLightning(0), false, '?sfxpack=base 면 재생 안 함');
   assert.equal(Sfx.init({ engine: () => ctx, bus: () => bus, buffers: {}, spellPack: true }).playLightning(0), false, '샘플 미로드면 재생 안 함');
 });
@@ -473,4 +473,22 @@ test('번개 소리 연결: 물 공격에서 아주르 썬더폴 연출이 뜰 �
 
 test('물 피격음에는 폭발(천둥 같은 울림) 샘플을 섞지 않는다 — 번개 소리는 연출 전용으로 분리', () => {
   for (const combo of Sfx.HIT_SETS.water) for (const layer of combo) assert.notEqual(layer.s, 'legacy_explosion');
+});
+
+test('번개 소리: 잔향 전송을 하지 않고 꼬리 길이를 조절할 수 있다', () => {
+  const { ctx } = fakeAudio();
+  const sends = [];
+  const realGain = ctx.createGain;
+  ctx.createGain = () => { const node = realGain(); node.__id = sends.length; return node; };
+  const bus = ctx.createGain();
+  const buffers = { spellLightningCast: [{ duration: 2.9 }] };
+  const api = Sfx.init({ engine: () => ctx, bus: () => bus, buffers, spellPack: true });
+  const scheduled = [];
+  const realSource = ctx.createBufferSource;
+  ctx.createBufferSource = () => { const node = realSource(); const stop = node.stop; node.stop = (when) => { scheduled.push(when); return stop(when); }; return node; };
+  assert.equal(api.playLightning(0, { cap: 1.2 }), true);
+  assert.ok(Math.max(...scheduled) < 1.4, `cap 1.2초면 약 1.3초 안에 끝난다 (${Math.max(...scheduled).toFixed(2)})`);
+  scheduled.length = 0;
+  assert.equal(api.playLightning(0), true);
+  assert.ok(Math.max(...scheduled) > 2.5, '기본은 길게(2.7초)');
 });

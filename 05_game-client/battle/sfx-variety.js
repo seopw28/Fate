@@ -397,11 +397,13 @@
 
     // 물 공격의 번개 연출("아주르 썬더폴") 소리: 연출이 뜰 때 차오르다가 약 0.45초에 번개가 내리친다 (타격 시점과 맞춤).
     // 물 피격음에서 불처럼 들리는 폭발 샘플을 뺀 대신, 번개 소리는 이 연출에 전용으로 붙인다. 샘플이 없거나 ?sfxpack=base 면 false.
-    function playLightning(pan = 0) {
+    // opts.cap: 꼬리 최대 길이(초). 비교·조절용(시험실). 기본 2.7
+    function playLightning(pan = 0, opts = {}) {
       const ctx = ctxOrNull();
       if (!ctx || deps.spellPack === false) return false;
       const level = 0.34 + STRONG.power * 0.36;
-      return sample('spellLightningCast', { gain: level * 2.8, rate: rand(0.99, 1.01), pan, hp: 120, wet: 0.1, space: 'short', wide: 0.3, cap: 2.7, fade: 0.45 }); // 번개는 천둥처럼 길게 울린다 (원본 약 3초 중 2.7초)
+      // 번개는 천둥처럼 길게 울리되(원본 약 3초 중 2.7초), 공간감을 만드는 처리(잔향 전송·좌우 확장)는 넣지 않고 실제 번개 소리만 낸다 (wet 0, wide 0).
+      return sample('spellLightningCast', { gain: level * 3.6, rate: rand(0.99, 1.01), pan, hp: 120, wet: 0, wide: 0, cap: opts.cap || 2.7, fade: opts.fade || 0.45 });
     }
 
     // 평타 모션에 맞춘 휘두르는 소리 (피격음보다 작게, 약간의 잔향)
