@@ -509,3 +509,12 @@ test('스킬 소리 검사 스크립트가 있다 (실제 브라우저로 소리
   const script = fs.readFileSync(path.join(root, '12_tools/qa/check-skill-sounds.py'), 'utf8');
   for (const token of ['playLightning', 'playFrost', 'playHit:water', 'frozen-chain', 'frost-nova', 'INDEX_OVERRIDE']) assert.ok(script.includes(token), `check-skill-sounds.py must cover ${token}`);
 });
+
+test('바람 연출(실피드 템페스트): 칼바람 소리가 3번 연달아 나고 일반 공격음은 빠진다', () => {
+  const engine = fs.readFileSync(path.resolve(__dirname, '../../05_game-client/battle/sfx-variety.js'), 'utf8');
+  const index = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(/function playGust\(/.test(engine) && engine.includes('playLightning, playGust'), 'Engine must expose playGust');
+  assert.ok(engine.includes('[[0, -0.55, 1], [0.3, 0.55, 1.12], [0.58, 0, 1.25]]'), 'Gust must pass three times in a row');
+  assert.ok(index.includes("if(element==='wind'){showCinematicSkillEffect('gust','실피드 템페스트',1);fateSfx.playGust(0);}"), 'Wind cinematic must play the gust');
+  assert.ok(index.includes("if(element!=='water'&&element!=='wind')sfx('attack',element,3);"), 'Wind must not also play the generic attack sound');
+});

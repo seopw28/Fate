@@ -45,11 +45,12 @@ function plan(hand, mana, slots) {
 function playGame(spell, rnd) {
   const mkSide = (withSpell) => {
     const deck = shuffle(POOL, rnd).slice(0, 60).map(b => ({ cost: b.cost, atk: b.atk + grade(rnd), hp: b.hp }));
-    const card = { spell: true, cost: spell.cost, dmg: spell.dmg, type: spell.type, delay: spell.delay || 1 };
+    const card = { spell: true, cost: spell.cost, dmg: spell.dmg, type: spell.type, delay: spell.delay ?? 1, minRound: spell.minRound || 0 };
     // 기본(hand): 실제 게임처럼 마법은 덱이 아니라 시작 손패에 '추가'로 주어진다. --replace: 덱의 챔피언 K장을 마법으로 교체(카드 한 장의 가치 비교용)
     if (withSpell && args.replace) for (let k = 0; k < COPIES; k++) deck[5 + Math.floor(rnd() * 55)] = { ...card };
     const hand = deck.splice(0, 5);
     if (withSpell && !args.replace) for (let k = 0; k < COPIES; k++) hand.push({ ...card });
+    if (!withSpell && args['vs-champion']) { const [vc, vs] = String(args['vs-champion']).split(':').map(Number); const atk = Math.round(vs / 2); for (let k = 0; k < COPIES; k++) hand.push({ cost: vc, atk: atk + grade(rnd), hp: Math.max(1, vs - atk) }); }
     return { hp: HERO_HP, deck, hand, field: [], pending: [] };
   };
   const P = mkSide(true), E = mkSide(false);
@@ -88,7 +89,7 @@ function playGame(spell, rnd) {
     }
     let mana = maxMana;
     for (const card of S.hand.filter(c => c.spell).slice()) {
-      if (card.cost <= mana && S.pending.length < 2 && netValue(S, F, card) >= card.cost * 0.9 + (card.type === 'wipe' ? (Number(args.wipeThr) || 4) : 0)) { mana -= card.cost; S.hand.splice(S.hand.indexOf(card), 1); S.pending.push({ ...card, due: round + card.delay }); }
+      if (card.cost <= mana && round >= card.minRound && S.pending.length < 2 && netValue(S, F, card) >= card.cost * 0.9 + (card.type === 'wipe' ? (Number(args.wipeThr) || 4) : 0)) { mana -= card.cost; S.hand.splice(S.hand.indexOf(card), 1); if (card.delay === 0) resolve(S, F, card); else S.pending.push({ ...card, due: round + card.delay }); }
     }
     for (let guard = 0; guard < 12; guard++) {
       const picks = plan(S.hand, mana, FIELD_LIMIT - S.field.length);
@@ -116,7 +117,7 @@ const pct = x => (x * 100).toFixed(1).padStart(5) + '%';
 
 if (args.eval) {
   // --eval type:cost:dmg,type:cost:dmg  : 지정한 마법들의 승률 이득만 출력
-  for (const item of String(args.eval).split(',')) { const [type, cost, dmg, delay] = item.split(':'); console.log(`${type} 코스트 ${cost} 피해 ${dmg}${delay ? ' 대기 ' + delay + '턴' : ''}: ${pct(rate({ type, cost: Number(cost), dmg: Number(dmg), delay: Number(delay) || 1 }))}`); }
+  for (const item of String(args.eval).split(',')) { const [type, cost, dmg, delay, minRound] = item.split(':'); console.log(`${type} 코스트 ${cost} 피해 ${dmg}${delay !== undefined && delay !== '' ? ' 대기 ' + delay + '턴' : ''}${minRound ? ' · ' + minRound + '라운드부터' : ''}: ${pct(rate({ type, cost: Number(cost), dmg: Number(dmg), delay: delay === undefined || delay === '' ? 1 : Number(delay), minRound: Number(minRound) || 0 }))}`); }
   process.exit(0);
 }
 
