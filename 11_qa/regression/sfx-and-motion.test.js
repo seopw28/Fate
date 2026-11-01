@@ -15,7 +15,7 @@ function seeded(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) 
 test('피격음은 피해량과 무관하게 항상 같은 "강한 신호"다 (강도 단계 없음)', () => {
   assert.equal(Sfx.hitTier, undefined, '피해 강도 단계는 없애기로 함');
   assert.ok(Sfx.STRONG && Sfx.STRONG.cap > 0 && Sfx.STRONG.power > 0.5, '강한 신호 설정이 있어야 함');
-  for (const element of Object.keys(Sfx.ELEMENT)) assert.ok(Sfx.ELEMENT[element].wet > 0 && Sfx.ELEMENT[element].wide > 0, `${element}: 속성별 잔향·좌우 폭이 있어야 함`);
+  for (const element of Object.keys(Sfx.ELEMENT)) assert.ok(['long', 'short'].includes(Sfx.ELEMENT[element].space), `${element}: 속성별 공간 종류가 있어야 함`);
   for (const element of Object.keys(Sfx.HIT_SETS)) assert.ok(Array.isArray(Sfx.HIT_SETS[element]), `${element}: 조합 배열`);
 });
 
@@ -32,18 +32,43 @@ test('변주: 직전과 같은 번호를 고르지 않고 나머지는 모두 �
   assert.equal(Sfx.pickIndex(undefined, 1), 0, '후보가 1개면 0');
 });
 
-test('조합표: 모든 속성에 변주 후보가 4개 이상이고, 모두 길게 울리는 몸통 샘플을 포함하며, 쓰는 샘플이 실제로 존재한다', () => {
+test('조합표: 속성별 변주 후보가 있고, 쓰는 샘플이 실제로 존재한다 (불은 원본 폭발음, 물은 건조한 유리·얼음)', () => {
   const known = new Set([...Object.keys(Sfx.BANK), ...Object.keys(Sfx.LEGACY)]);
   for (const element of ['fire', 'water', 'wind', 'earth', 'neutral']) {
     const combos = Sfx.HIT_SETS[element];
-    assert.ok(combos.length >= 4, `${element}: 변주 후보가 4개 이상이어야 함`);
+    assert.ok(combos.length >= (element === 'fire' ? 1 : 4), `${element}: 변주 후보 수 (불은 원본 폭발음 하나로 충분)`);
     for (const combo of combos) {
-      assert.ok(combo.length >= 2, `${element}: 조합은 샘플을 겹쳐야 함`);
-      assert.ok(combo.some((layer) => layer.s.startsWith('legacy_')), `${element}: 모든 조합에 몸통(길게 울리는) 샘플이 있어야 밋밋해지지 않음`);
+      assert.ok(combo.length >= (element === 'fire' || element === 'wind' && combo.length === 1 ? 1 : 2), `${element}: 조합은 샘플을 겹쳐야 함`);
       for (const layer of combo) assert.ok(known.has(layer.s), `${element}: 알 수 없는 샘플 ${layer.s}`);
+      if (element !== 'water') assert.ok(combo.some((layer) => layer.s.startsWith('legacy_') || layer.s.startsWith('spell')), `${element}: 조합에 몸통(길게 울리는) 샘플이 있어야 밋밋해지지 않음`);
     }
-    assert.ok(Sfx.SYNTH_NAMES[element].length >= 3, `${element}: 합성음 후보가 3개 이상이어야 함`);
+    assert.ok(element === 'fire' || Sfx.SYNTH_NAMES[element].length >= 3, `${element}: 합성음 후보가 3개 이상이어야 함`);
   }
+});
+
+test('불: 처음 쓰던 폭발 샘플 원본을 가공 없이 쓴다 (EQ·음높이·좌우 확장·합성음·다른 샘플 섞기 없음)', () => {
+  const fire = Sfx.ELEMENT.fire;
+  assert.deepEqual(fire.eq, [], 'EQ 없음');
+  assert.ok(!fire.rate && !fire.lp && !fire.hp, '음높이·필터 가공 없음');
+  assert.equal(fire.wide, 0, '좌우 폭을 인위적으로 넓히지 않는다 (원본이 이미 스테레오)');
+  assert.equal(fire.synth, 0, '합성 질감을 얹지 않는다');
+  assert.ok(fire.wet <= 0.12, '잔향을 더하지 않는다');
+  assert.ok(Sfx.HIT_SETS.fire.every((combo) => combo.length === 1 && combo[0].s === 'legacy_explosion'), '불은 원본 폭발음만');
+});
+
+test('물: 공간감(잔향) 없이 건조하고, 불처럼 들리는 폭발 샘플을 섞지 않는다', () => {
+  assert.equal(Sfx.ELEMENT.water.wet, 0, '잔향 0');
+  assert.equal(Sfx.ELEMENT.water.space, 'short');
+  for (const combo of Sfx.HIT_SETS.water) for (const layer of combo) assert.ok(!/explosion|legacy_/.test(layer.s), `물에 ${layer.s} 금지 (불처럼 들림)`);
+});
+
+test('바람: 높고 예리하게 — 음높이 상향, 저음 제거, 고음 강조, 장난감 같은 금속판·종 샘플 제외', () => {
+  const wind = Sfx.ELEMENT.wind;
+  assert.ok(wind.rate >= 1.15, '음높이를 올린다');
+  assert.ok(wind.hp >= 500, '저음(둔한 울림)을 걷어낸다');
+  const shelf = wind.eq.find((band) => band.type === 'highshelf');
+  assert.ok(shelf && shelf.gain >= 3, '고음을 강조');
+  for (const combo of Sfx.HIT_SETS.wind) for (const layer of combo) assert.ok(!/Plate|Bell|Tin|Punch/.test(layer.s), `바람에 ${layer.s} 금지 (장난감 같은 소리)`);
 });
 
 test('음원 파일: 목록의 모든 mp3와 CC0 라이선스 안내가 저장소에 있다', () => {
@@ -217,11 +242,15 @@ test('음량 보정표: 모든 조합에 값이 있고 유효하다', () => {
 
 test('디코딩된 샘플을 공유하면 그대로 재생한다 (몸통 샘플 우선)', () => {
   const { ctx, stats } = fakeAudio();
-  const buffers = { legacy_explosion: [{ duration: 4.5 }], impactPunch_heavy: [{ duration: 0.4 }], impactSoft_heavy: [{ duration: 0.4 }], impactMining: [{ duration: 0.9 }] };
+  const buffers = {};
+  for (const name of [...Object.keys(Sfx.BANK), ...Object.keys(Sfx.LEGACY)]) buffers[name] = [{ duration: 1 }];
   const api = Sfx.init({ engine: () => ctx, bus: () => ctx.createGain(), buffers });
   const before = stats.started;
-  api.playHit('fire', 12, 0, { combo: 0 });
+  api.playHit('earth', 12, 0, { combo: 0 });
   assert.ok(stats.started - before >= 8, '샘플은 좌우로 넓혀 2번씩 재생되므로 시작 수가 충분히 많아야 함');
+  const fireBefore = stats.started;
+  api.playHit('fire', 12, 0, { combo: 0 });
+  assert.equal(stats.started - fireBefore, 1, '불은 원본 폭발음 하나만 가공 없이 한 번 재생');
 });
 
 test('조합 고정(force.combo)과 연속 반복 금지가 함께 동작한다', () => {
@@ -232,19 +261,25 @@ test('조합 고정(force.combo)과 연속 반복 금지가 함께 동작한다'
 });
 
 // ───────── 공간감 구별·연속 타격 ─────────
-test('공간감 구별: 칼날(바람)과 금속(무속성)은 짧고 건조하고, 불·물·대지는 길고 넓다', () => {
+test('공간감 구별: 대지는 가장 넓은 홀 잔향, 칼날·금속은 건조, 물은 잔향 대신 소리를 겹쳐 낸다', () => {
   const E = Sfx.ELEMENT;
   for (const sharp of ['wind', 'neutral']) {
     assert.equal(E[sharp].space, 'short', `${sharp}: 작은 방 잔향`);
     assert.ok(E[sharp].wet <= 0.15, `${sharp}: 잔향이 적어야 예리함이 산다`);
     assert.ok(E[sharp].tail <= 0.5, `${sharp}: 꼬리가 짧아야 함`);
   }
-  for (const roomy of ['fire', 'water', 'earth']) {
-    assert.equal(E[roomy].space, 'long', `${roomy}: 홀 잔향`);
-    assert.ok(E[roomy].wet >= 0.18 && E[roomy].tail >= 0.7, `${roomy}: 공간감이 충분해야 함`);
+  assert.equal(E.earth.space, 'long');
+  assert.ok(E.earth.wet >= 0.3 && E.earth.tail >= 0.9 && E.earth.wide >= 0.35, '대지는 공간감을 크게 쓴다');
+  for (const other of ['fire', 'water', 'wind', 'neutral']) assert.ok(E.earth.wet > E[other].wet, `대지(${E.earth.wet})가 ${other}(${E[other].wet})보다 잔향이 많아야 구별된다`);
+  assert.ok(E.wind.tail < E.earth.tail && E.wind.wet < E.earth.wet, '바람은 대지보다 훨씬 건조해야 구별이 된다');
+  for (const element of ['water', 'wind']) {
+    const st = E[element].stack;
+    assert.ok(st && st.count >= 3 && st.count <= 5, `${element}: 겹쳐 내기 3~5회`);
+    assert.ok(st.decay > 0.4 && st.decay < 0.9 && st.spacing[0] >= 0.02 && st.spacing[1] <= 0.1, `${element}: 갈수록 작아지고 30~70ms 안팎 간격`);
+    assert.ok(E[element].wet <= 0.15, `${element}: 잔향 대신 겹쳐 내기`);
   }
-  assert.ok(E.wind.tail < E.fire.tail && E.wind.wet < E.water.wet, '바람은 불·물보다 훨씬 건조해야 구별이 된다');
-  assert.ok(E.wind.hp > 0, '칼날은 저음(둔한 울림)을 걷어낸다');
+  assert.ok(E.water.stack.count >= E.wind.stack.count, '물이 더 많이 튄다');
+  for (const element of ['fire', 'earth', 'neutral']) assert.ok(!E[element].stack, `${element}: 겹쳐 내기를 쓰지 않는다`);
 });
 
 test('울림 길이: 처음 설계(잔향 1.7초, 꼬리 2.0초)의 70% 이하', () => {
@@ -310,4 +345,111 @@ test('페이드아웃: 속성별 시작 시점 — 칼날은 일찍(예리하게
   assert.ok(E.wind.fade <= 0.2, '칼날은 일찍 줄기 시작해야 날카롭게 끝난다');
   for (const roomy of ['fire', 'water', 'earth', 'neutral']) assert.ok(E[roomy].fade >= 0.3 && E[roomy].fade <= 0.6, `${roomy}: 너무 일찍(공간감 손실)·너무 늦게(뚝 끊김) 줄이지 않는다`);
   assert.ok(Sfx.FADE_DECIBELS_E >= 6, '감쇠는 사실상 무음(-52dB 이하)까지 내려가야 마지막 단차가 안 들린다');
+});
+
+// ───────── 주문 샘플 팩 (Basic Spell Impacts, CC0) ─────────
+test('주문 팩: 불·물·바람 조합에 쓰이고, 원본·출처 기록이 저장소에 있다', () => {
+  const used = (element) => Sfx.HIT_SETS[element].filter((combo) => combo.some((layer) => layer.s.startsWith('spell')));
+  assert.ok(used('water').length >= 2, '물에는 새 주문 샘플(물·얼음) 조합이 있어야 함');
+  assert.equal(used('fire').length, 0, '불은 처음 쓰던 원본 폭발음만 쓴다');
+  assert.ok(used('wind').length >= 1, '바람에는 번개 샘플이 예리한 어택으로 얹힌다');
+  assert.equal(used('earth').length, 0, '이 팩에 없는 속성은 바꾸지 않는다');
+  const dir = path.join(root, '06_assets/audio/basic-spell-impacts');
+  assert.equal(fs.readdirSync(dir).filter((name) => name.endsWith('.wav')).length, 20, '원본 WAV 20개');
+  const source = fs.readFileSync(path.join(dir, 'SOURCE.md'), 'utf8');
+  assert.ok(/CC0/.test(source) && source.includes('lentikula.itch.io'), '출처와 라이선스 기록');
+  for (const name of ['spellFire', 'spellIce', 'spellIceCast', 'spellLightning', 'spellWater']) assert.equal(Sfx.BANK[name], 5, `${name} 변형 5개`);
+});
+
+test('주문 팩: ?sfxpack=base 이면 새 샘플 조합을 쓰지 않는다 (소리 비교용)', () => {
+  const { ctx } = fakeAudio();
+  const used = new Set();
+  const realSource = ctx.createBufferSource;
+  ctx.createBufferSource = () => { const node = realSource(); const start = node.start; node.start = (...args) => { if (node.buffer && node.buffer.tag) used.add(node.buffer.tag); return start(...args); }; return node; };
+  const buffers = {};
+  for (const name of [...Object.keys(Sfx.BANK), ...Object.keys(Sfx.LEGACY)]) buffers[name] = [{ tag: name, duration: 1 }];
+  const bus = ctx.createGain();
+  for (const [flag, expectSpell] of [[false, false], [true, true]]) {
+    used.clear();
+    const api = Sfx.init({ engine: () => ctx, bus: () => bus, buffers, spellPack: flag });
+    for (let i = 0; i < 200; i++) { ctx.currentTime = i * 5; for (const element of ['fire', 'water', 'wind']) api.playHit(element, 8, 0); }
+    assert.equal([...used].some((tag) => tag.startsWith('spell')), expectSpell, `spellPack=${flag}`);
+  }
+});
+
+test('빙결 소리: 얼음 샘플을 쓰고, 팩이 꺼져 있거나 샘플이 없으면 false (합성음으로 대체)', () => {
+  const { ctx, stats } = fakeAudio();
+  const buffers = { spellIceCast: [{ duration: 3 }], spellIce: [{ duration: 1.8 }] };
+  const bus = ctx.createGain();
+  const on = Sfx.init({ engine: () => ctx, bus: () => bus, buffers, spellPack: true });
+  const before = stats.started;
+  assert.equal(on.playFrost('cast'), true);
+  assert.equal(on.playFrost('shatter'), true);
+  assert.ok(stats.started - before >= 4, '좌우로 넓혀 재생하므로 소리가 여러 개 시작');
+  assert.equal(Sfx.init({ engine: () => ctx, bus: () => bus, buffers, spellPack: false }).playFrost('cast'), false, '?sfxpack=base 면 기존 합성음');
+  assert.equal(Sfx.init({ engine: () => ctx, bus: () => bus, buffers: {}, spellPack: true }).playFrost('cast'), false, '샘플 미로드면 기존 합성음');
+});
+
+test('빙결 소리 연결: index.html이 얼음 샘플을 먼저 시도하고 실패하면 기존 합성음을 쓴다', () => {
+  assert.ok(html.includes("spellPack:new URLSearchParams(location.search).get('sfxpack')!=='base'"), '?sfxpack=base 비교 옵션');
+  assert.ok(html.includes("(kind==='frost-cast'||kind==='frost-shatter')&&fateSfx.playFrost("), '빙결 카드 소리는 얼음 샘플 우선');
+});
+
+// ───────── 대지: 더 낮고 묵직하게 ─────────
+test('대지: 다른 속성보다 낮은 음높이와 고음 제한, 강한 저음 EQ', () => {
+  const E = Sfx.ELEMENT;
+  assert.ok(E.earth.rate <= 0.9, '대지는 음높이를 낮춘다');
+  for (const other of ['fire', 'water', 'wind', 'neutral']) assert.ok(!E[other].rate || E[other].rate > E.earth.rate, `${other}보다 낮아야 함`);
+  assert.ok(E.earth.lp > 0 && E.earth.lp <= 5000, '고음을 제한해 둔탁하게');
+  const lowShelf = E.earth.eq.find((band) => band.type === 'lowshelf');
+  assert.ok(lowShelf && lowShelf.gain >= 8, '저음 EQ를 강하게');
+});
+
+test('대지: 합성 저음(쿵·우르릉)도 음높이를 따라 내려간다', () => {
+  const { ctx } = fakeAudio();
+  const freqs = [];
+  const realOsc = ctx.createOscillator;
+  ctx.createOscillator = () => { const node = realOsc(); const set = node.frequency.setValueAtTime; node.frequency.setValueAtTime = (value, ...rest) => { freqs.push(value); return set(value, ...rest); }; return node; };
+  const bus = ctx.createGain();
+  const api = Sfx.init({ engine: () => ctx, bus: () => bus });
+  freqs.length = 0;
+  for (let i = 0; i < 80; i++) { ctx.currentTime = i * 5; api.playHit('earth', 8, 0); }
+  const sub = freqs.filter((f) => f < 200);
+  assert.ok(sub.length > 0, '저음 서브가 만들어져야 함');
+  assert.ok(Math.max(...sub) <= 95 * Sfx.ELEMENT.earth.rate + 0.01, `서브 저음이 음높이 배율(${Sfx.ELEMENT.earth.rate})만큼 낮아져야 함 (최대 ${Math.max(...sub).toFixed(1)}Hz)`);
+});
+
+test('겹쳐 내기: 물·바람은 같은 어택을 연달아 여러 번 재생하고, 연속 타격이 쌓이면 줄인다', () => {
+  // 합성 질감 레이어는 매번 달라 소리 개수가 흔들리므로 끄고(샘플 어택만) 비교한다
+  const layers = Sfx.STRONG.layers;
+  Sfx.STRONG.layers = 0;
+  try {
+    const run = (element, { stack = true, crowded = false } = {}) => {
+      const { ctx, stats } = fakeAudio();
+      const buffers = {};
+      for (const name of [...Object.keys(Sfx.BANK), ...Object.keys(Sfx.LEGACY)]) buffers[name] = [{ duration: 0.4 }];
+      const bus = ctx.createGain();
+      const saved = Sfx.ELEMENT[element].stack;
+      if (!stack) delete Sfx.ELEMENT[element].stack;
+      try {
+        const api = Sfx.init({ engine: () => ctx, bus: () => bus, buffers });
+        if (crowded) for (let i = 0; i < 4; i++) { ctx.currentTime = i * 0.2; api.playHit(element, 8, 0, { combo: 0 }); }
+        ctx.currentTime = crowded ? 0.8 : 0;
+        const before = stats.started;
+        api.playHit(element, 8, 0, { combo: 0 });
+        return stats.started - before;
+      } finally { Sfx.ELEMENT[element].stack = saved; }
+    };
+    for (const element of ['water', 'wind']) {
+      const extra = run(element) - run(element, { stack: false });
+      assert.equal(extra, Sfx.ELEMENT[element].stack.count - 1, `${element}: 반복 횟수만큼 추가 재생`);
+      const crowdedExtra = run(element, { crowded: true }) - run(element, { stack: false, crowded: true });
+      assert.ok(crowdedExtra > 0 && crowdedExtra < extra, `${element}: 연속 타격이 쌓이면 반복은 줄지만 사라지지는 않는다 (${crowdedExtra} < ${extra})`);
+    }
+  } finally { Sfx.STRONG.layers = layers; }
+});
+
+test('안전 리미터: 효과음 버스는 리미터를 거쳐 출력되어 볼륨을 올려도 찌그러지지 않는다', () => {
+  assert.ok(html.includes('const limiter=ctx.createDynamicsCompressor();limiter.threshold.value=-6;'), 'sfxBus must end in a limiter');
+  assert.ok(html.includes('sfxBusNode.connect(limiter);limiter.connect(ctx.destination);'), 'bus -> limiter -> destination');
 });
