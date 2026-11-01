@@ -75,23 +75,24 @@
   const IR_SECONDS = { long: 1.15, short: 0.4 }; // long=홀(1.7초×0.7 이하), short=작은 방(칼날·금속처럼 예리한 소리용)
   // 연속 타격 대응: 최근 CROWD_WINDOW초 안의 타격 수가 늘수록 잔향·꼬리를 줄이고, 새 타격 때 이전 잔향을 잠깐 눌러 준다
   const CROWD_WINDOW = 2.5, CROWD_STEP = 0.16, CROWD_MIN = 0.45;
+  const FADE_DECIBELS_E = 6.9; // 지수 감쇠가 cap에서 e^-6.9 ≈ -60dB 가 되도록 하는 상수 (페이드 길이 ÷ 이 값 = 시정수)
   // 속성별 공간·음색: wet=잔향 양, space=잔향 종류, tail=샘플 꼬리 길이 배율(전체 cap 기준), wide=좌우 폭, hp=저음 제거(Hz), fade=꼬리 감쇠 시작 비율
   // 구별이 되도록 속성마다 다르게 둔다: 불·물·대지는 넓고 길게, 바람(칼날)·무속성(금속)은 짧고 건조하게.
   const ELEMENT = {
-    fire: { eq: [{ type: 'lowshelf', freq: 180, gain: 4 }], wet: 0.26, space: 'long', tail: 0.85, wide: 0.3, hp: 0, fade: 0.55 },
-    water: { eq: [{ type: 'highshelf', freq: 6000, gain: 3 }], wet: 0.3, space: 'long', tail: 0.75, wide: 0.3, hp: 0, fade: 0.5 },
-    wind: { eq: [{ type: 'highshelf', freq: 3500, gain: 2.5 }], wet: 0.06, space: 'short', tail: 0.3, wide: 0.1, hp: 220, fade: 0.35 },
-    earth: { eq: [{ type: 'lowshelf', freq: 120, gain: 6 }], wet: 0.2, space: 'long', tail: 0.8, wide: 0.28, hp: 0, fade: 0.55 },
+    fire: { eq: [{ type: 'lowshelf', freq: 180, gain: 4 }], wet: 0.26, space: 'long', tail: 0.85, wide: 0.3, hp: 0, fade: 0.4 },
+    water: { eq: [{ type: 'highshelf', freq: 6000, gain: 3 }], wet: 0.3, space: 'long', tail: 0.75, wide: 0.3, hp: 0, fade: 0.4 },
+    wind: { eq: [{ type: 'highshelf', freq: 3500, gain: 2.5 }], wet: 0.06, space: 'short', tail: 0.3, wide: 0.1, hp: 220, fade: 0.1 },
+    earth: { eq: [{ type: 'lowshelf', freq: 120, gain: 6 }], wet: 0.2, space: 'long', tail: 0.8, wide: 0.28, hp: 0, fade: 0.4 },
     neutral: { eq: [], wet: 0.13, space: 'short', tail: 0.5, wide: 0.2, hp: 0, fade: 0.4 }
   };
   // 조합별 음량 보정 (12_tools/qa/measure-sfx.py --calibrate 로 조합마다 렌더링·측정해 맞춘 값). TRIM[속성][조합 번호]
   // 목표: 속성·조합이 달라도 비슷한 크기로 들리게 한다. 값이 없으면 1.
   const TRIM = {
-    fire: [0.80, 0.96, 0.95, 0.51, 0.60],
-    water: [2.13, 2.20, 1.92, 1.03, 1.23],
-    wind: [3.56, 3.53, 2.00, 2.89, 2.82],
-    earth: [0.71, 0.79, 1.14, 0.46, 0.54],
-    neutral: [1.93, 1.88, 1.80, 1.39, 1.08]
+    fire: [0.78, 0.92, 0.93, 0.52, 0.57],
+    water: [2.20, 2.18, 1.91, 1.04, 1.24],
+    wind: [9.46, 8.37, 3.32, 7.18, 7.13],
+    earth: [0.72, 0.80, 1.14, 0.45, 0.52],
+    neutral: [1.97, 1.89, 1.80, 1.36, 1.13]
   };
   // 합성 질감 레이어 이름 (잡음·공명 기반만 사용)
   const SYNTH_NAMES = {
@@ -207,11 +208,20 @@
         eq.forEach((band) => filter(band.type, band.freq, band.gain));
         node.connect(amp);
         const length = (buffer.duration || 0) / (rate * rateMul);
-        if (cap && length > cap) { // 너무 긴 꼬리는 부드럽게 줄여 연속 타격에서 소리가 뭉치지 않게 한다
-          amp.gain.setValueAtTime(gain * gainMul, at + cap * fade);
-          amp.gain.exponentialRampToValueAtTime(0.0001, at + cap);
-          source.start(at); source.stop(at + cap + 0.05);
-        } else source.start(at);
+        if (cap && length > cap) {
+          // 너무 긴 꼬리는 줄이되 "뚝" 끊기지 않게: cap*fade 지점부터 지수적으로 서서히 줄여 cap에서 약 -60dB(사실상 무음)가 되게 한다
+          // (정점 근처로 유지하다 한꺼번에 줄이면 끊김으로 들린다). 끝에서 남은 잔여는 짧게 0으로 마무리한다.
+          const begin = at + cap * fade, tau = Math.max(0.01, (at + cap - begin) / FADE_DECIBELS_E);
+          amp.gain.setValueAtTime(gain * gainMul, begin);
+          amp.gain.setTargetAtTime(0, begin, tau);
+          amp.gain.setTargetAtTime(0, at + cap - 0.02, 0.006);
+          source.start(at); source.stop(at + cap + 0.08);
+        } else {
+          // 샘플이 자연스럽게 끝나는 경우에도 끝에서 클릭이 나지 않게 마지막 20ms를 부드럽게 마무리한다
+          const end = at + length;
+          if (length > 0.06) { amp.gain.setValueAtTime(gain * gainMul, end - 0.02); amp.gain.linearRampToValueAtTime(0.0001, end); }
+          source.start(at);
+        }
         out(ctx, amp, panValue, wet, space);
       };
       if (wide) { play(clamp(pan - wide, -1, 1), 0, 1, 0.72); play(clamp(pan + wide, -1, 1), 0.011, 1.004, 0.72); } else play(pan, 0, 1, 1);
@@ -304,8 +314,8 @@
     function duck(ctx, amount) {
       const c = chain(ctx), gain = c.wetGain.gain, now = ctx.currentTime;
       if (gain.cancelScheduledValues) gain.cancelScheduledValues(now);
-      gain.setTargetAtTime(amount, now, 0.015);
-      gain.setTargetAtTime(1, now + 0.14, 0.35);
+      gain.setTargetAtTime(amount, now, 0.06); // 천천히 눌러 이전 잔향이 갑자기 사라지는 느낌을 없앤다
+      gain.setTargetAtTime(1, now + 0.2, 0.4);
     }
 
     // force.combo: 측정·테스트용으로 조합 번호를 고정한다
@@ -318,7 +328,7 @@
       const comboIndex = force && force.combo !== undefined ? force.combo % combos.length : pick(`hit:${element}`, combos.length);
       const combo = combos[comboIndex];
       const crowd = crowding(ctx);
-      if (crowd.count) duck(ctx, 0.55);
+      if (crowd.count) duck(ctx, 0.7);
       const wet = clamp(e.wet * crowd.scale, 0, 0.7), baseRate = t.rate * rand(0.95, 1.05), trim = ((TRIM[element] || [])[comboIndex]) || 1;
       let played = 0;
       combo.forEach((layer, i) => {
@@ -355,7 +365,7 @@
     return { load, playHit, playSwing, _buffers: buffers };
   }
 
-  const api = { BANK, LEGACY, HIT_SETS, STRONG, ELEMENT, IR_SECONDS, CROWD_WINDOW, CROWD_STEP, CROWD_MIN, TRIM, SYNTH_NAMES, pickIndex, makeImpulse, init };
+  const api = { BANK, LEGACY, HIT_SETS, STRONG, ELEMENT, FADE_DECIBELS_E, IR_SECONDS, CROWD_WINDOW, CROWD_STEP, CROWD_MIN, TRIM, SYNTH_NAMES, pickIndex, makeImpulse, init };
   root.FateSfx = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

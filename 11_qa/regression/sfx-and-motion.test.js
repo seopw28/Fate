@@ -264,7 +264,7 @@ test('연속 타격: 같은 시간에 쌓일수록 잔향을 줄이고, 새 타�
   const api = Sfx.init({ engine: () => ctx, bus: () => bus });
   ducks.length = 0;
   for (let i = 0; i < 5; i++) { ctx.currentTime = i * 0.9; api.playHit('fire', 8, 0); }
-  assert.ok(ducks.includes(0.55), '두 번째 타격부터 이전 잔향을 눌러야 함');
+  assert.ok(ducks.includes(0.7), '두 번째 타격부터 이전 잔향을 눌러야 함');
   assert.ok(Sfx.CROWD_STEP > 0 && Sfx.CROWD_MIN >= 0.4 && Sfx.CROWD_MIN < 1);
   // 시간이 충분히 흐르면 다시 처음처럼 (덕킹 없음)
   const quiet = fakeAudio();
@@ -276,5 +276,38 @@ test('연속 타격: 같은 시간에 쌓일수록 잔향을 줄이고, 새 타�
   ducksQuiet.length = 0;
   quiet.ctx.currentTime = 0; api2.playHit('fire', 8, 0);
   quiet.ctx.currentTime = 10; api2.playHit('fire', 8, 0);
-  assert.ok(!ducksQuiet.includes(0.55), '간격이 충분하면 덕킹하지 않는다');
+  assert.ok(!ducksQuiet.includes(0.7), '간격이 충분하면 덕킹하지 않는다');
+});
+
+// ───────── 페이드아웃 (뚝 끊김 방지) ─────────
+test('페이드아웃: 긴 꼬리는 일찍부터 지수적으로 완만하게 줄이고 끝에서 클릭 없이 마무리한다', () => {
+  const { ctx } = fakeAudio();
+  const calls = [];
+  const realGain = ctx.createGain;
+  ctx.createGain = () => {
+    const node = realGain();
+    const original = node.gain.setTargetAtTime;
+    node.gain.setTargetAtTime = (target, time, tau) => { calls.push({ target, time, tau }); return original(target, time, tau); };
+    return node;
+  };
+  const bus = ctx.createGain();
+  const buffers = { legacy_explosion: [{ duration: 4.6 }], impactPunch_heavy: [{ duration: 0.65 }], impactSoft_heavy: [{ duration: 0.5 }] };
+  const api = Sfx.init({ engine: () => ctx, bus: () => bus, buffers });
+  calls.length = 0;
+  api.playHit('fire', 8, 0, { combo: 0 }); // 첫 타격: 덕킹 없음
+  const fades = calls.filter((c) => c.target === 0);
+  const cap = Sfx.STRONG.cap * Sfx.ELEMENT.fire.tail;
+  const body = fades.find((c) => c.tau >= 0.05);
+  assert.ok(body, '길게 울리는 몸통 샘플은 완만한 지수 감쇠(시정수 0.05초 이상)로 줄어야 함');
+  assert.ok(body.time >= cap * Sfx.ELEMENT.fire.fade - 0.02 && body.time < cap * 0.7, `감쇠 시작 ${body.time.toFixed(2)}초: 꼬리 길이(${cap.toFixed(2)}초)의 중간 이전에 시작해야 함`);
+  assert.ok(body.tau * Sfx.FADE_DECIBELS_E <= cap - body.time + 0.01, '감쇠가 cap 안에서 끝나야 함');
+  const finish = fades.find((c) => c.tau < 0.02);
+  assert.ok(finish && finish.time >= cap - 0.05 && finish.time < cap, '끝에서 남은 잔여를 짧게 0으로 마무리');
+});
+
+test('페이드아웃: 속성별 시작 시점 — 칼날은 일찍(예리하게 사라짐), 나머지는 공간감을 위해 늦게', () => {
+  const E = Sfx.ELEMENT;
+  assert.ok(E.wind.fade <= 0.2, '칼날은 일찍 줄기 시작해야 날카롭게 끝난다');
+  for (const roomy of ['fire', 'water', 'earth', 'neutral']) assert.ok(E[roomy].fade >= 0.3 && E[roomy].fade <= 0.6, `${roomy}: 너무 일찍(공간감 손실)·너무 늦게(뚝 끊김) 줄이지 않는다`);
+  assert.ok(Sfx.FADE_DECIBELS_E >= 6, '감쇠는 사실상 무음(-52dB 이하)까지 내려가야 마지막 단차가 안 들린다');
 });
