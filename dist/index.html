@@ -818,28 +818,79 @@
     .synth-card.synth-pop::before { content:''; position:absolute; left:50%; top:50%; width:100%; aspect-ratio:1; border:3px solid #e1c0ff; border-radius:50%; transform:translate(-50%,-50%) scale(.3); opacity:0; pointer-events:none; animation:sc-burst .8s ease-out; box-shadow:0 0 24px #b078d4, inset 0 0 18px #b078d4; }
     @keyframes sc-burst { 0% { opacity:1; transform:translate(-50%,-50%) scale(.3); } 100% { opacity:0; transform:translate(-50%,-50%) scale(2.6); } }
     @media(prefers-reduced-motion:reduce){ .synth-circle * { animation:none !important; } }
-    /* === 도감: 팝업을 전체 화면에 가깝게 확장하고 카드를 크게 보여준다 === */
+    /* === 컬렉션 창: 모든 탭(덱 편집/도감/합성/상점)이 전체 화면에 가깝게 넓은 공간을 쓴다 === */
     .collection-shell { transition:width .28s ease,height .28s ease; }
-    .collection-shell.codex-mode { width:calc(100vw - 32px); max-width:2600px; height:calc(100vh - 32px); }
-    .collection-modal:has(.collection-shell.codex-mode) { padding:16px; }
-    .codex-mode .codex-view { padding:20px clamp(22px,2vw,40px) 24px; gap:16px; }
-    .codex-mode .codex-summary { grid-template-columns:minmax(260px,2.4fr) repeat(6,minmax(84px,1fr)); gap:12px; }
-    .codex-mode .codex-total { padding:14px 20px; } .codex-mode .codex-total-num b { font-size:clamp(28px,2.4vw,42px); } .codex-mode .codex-total-num span { font-size:clamp(12px,.95vw,16px); }
-    .codex-mode .codex-progress { height:10px; margin-top:10px; }
-    .codex-mode .codex-stat { padding:12px 14px; } .codex-mode .codex-stat small { font-size:clamp(10px,.8vw,13px); } .codex-mode .codex-stat b { font-size:clamp(18px,1.6vw,26px); }
-    .codex-mode .codex-seg button { padding:8px 16px; font-size:clamp(11px,.85vw,14px); }
-    .codex-mode .codex-body { grid-template-columns:minmax(0,1fr) clamp(320px,27vw,540px); gap:clamp(16px,1.6vw,28px); }
-    .codex-mode .codex-grid { grid-template-columns:repeat(auto-fill,minmax(clamp(150px,10.6vw,240px),1fr)); gap:clamp(12px,1.1vw,20px); padding:4px 10px 12px 4px; }
-    .codex-mode .codex-card { padding:clamp(8px,.7vw,12px); gap:6px; border-radius:14px; }
-    .codex-mode .codex-no { font-size:clamp(9px,.7vw,12px); } .codex-mode .codex-type { font-size:clamp(9px,.7vw,12px); padding:3px 8px; top:clamp(8px,.7vw,12px); right:clamp(8px,.7vw,12px); }
-    .codex-mode .codex-name { font-size:clamp(12px,1vw,17px); } .codex-mode .codex-card small { font-size:clamp(10px,.8vw,13px); }
-    .codex-mode .codex-own { font-size:clamp(10px,.8vw,13px); bottom:clamp(36px,3vw,48px); } .codex-mode .codex-glyph { font-size:clamp(44px,4.2vw,84px); } .codex-mode .codex-lock { font-size:clamp(34px,3.2vw,64px); }
-    .codex-mode .codex-detail { display:flex; flex-direction:column; gap:14px; padding:clamp(14px,1.2vw,22px); }
-    .codex-mode .codex-detail-art, .codex-mode .codex-detail-art.type-spell, .codex-mode .codex-detail-art.type-trap { flex:1; min-height:clamp(120px,22vh,300px); height:auto; }
-    .codex-mode .codex-detail-meta { flex:none; } .codex-mode .codex-detail-meta small { font-size:clamp(10px,.85vw,13px); margin-top:0; }
-    .codex-mode .codex-detail-meta h3 { font-size:clamp(18px,1.8vw,30px); } .codex-mode .codex-detail-meta p { font-size:clamp(12px,1vw,16px); }
-    .codex-mode .codex-detail-stats span { font-size:clamp(11px,.9vw,14px); padding:4px 12px; } .codex-mode .codex-detail-state { font-size:clamp(11px,.9vw,14px); }
-    .codex-mode .codex-detail-art .codex-glyph { font-size:clamp(84px,8vw,160px); }
+    .collection-shell { width:calc(100vw - 32px); max-width:2600px; height:calc(100vh - 32px); }
+    .collection-modal { padding:16px; }
+    .codex-view { padding:20px clamp(22px,2vw,40px) 24px; gap:16px; }
+    .codex-summary { grid-template-columns:minmax(260px,2.4fr) repeat(6,minmax(84px,1fr)); gap:12px; }
+    .codex-total { padding:14px 20px; } .codex-total-num b { font-size:clamp(28px,2.4vw,42px); } .codex-total-num span { font-size:clamp(12px,.95vw,16px); }
+    .codex-progress { height:10px; margin-top:10px; }
+    .codex-stat { padding:12px 14px; } .codex-stat small { font-size:clamp(10px,.8vw,13px); } .codex-stat b { font-size:clamp(18px,1.6vw,26px); }
+    .codex-seg button { padding:8px 16px; font-size:clamp(11px,.85vw,14px); }
+    .codex-body { grid-template-columns:minmax(0,1fr) clamp(320px,27vw,540px); gap:clamp(16px,1.6vw,28px); }
+    .codex-grid { grid-template-columns:repeat(auto-fill,minmax(clamp(150px,10.6vw,240px),1fr)); gap:clamp(12px,1.1vw,20px); padding:4px 10px 12px 4px; }
+    .codex-card { padding:clamp(8px,.7vw,12px); gap:6px; border-radius:14px; }
+    .codex-no { font-size:clamp(9px,.7vw,12px); } .codex-type { font-size:clamp(9px,.7vw,12px); padding:3px 8px; top:clamp(8px,.7vw,12px); right:clamp(8px,.7vw,12px); }
+    .codex-name { font-size:clamp(12px,1vw,17px); } .codex-card small { font-size:clamp(10px,.8vw,13px); }
+    .codex-own { font-size:clamp(10px,.8vw,13px); bottom:clamp(36px,3vw,48px); } .codex-glyph { font-size:clamp(44px,4.2vw,84px); } .codex-lock { font-size:clamp(34px,3.2vw,64px); }
+    .codex-detail { display:flex; flex-direction:column; gap:14px; padding:clamp(14px,1.2vw,22px); }
+    .codex-detail-art, .codex-detail-art.type-spell, .codex-detail-art.type-trap { flex:1; min-height:clamp(120px,22vh,300px); height:auto; }
+    .codex-detail-meta { flex:none; } .codex-detail-meta small { font-size:clamp(10px,.85vw,13px); margin-top:0; }
+    .codex-detail-meta h3 { font-size:clamp(18px,1.8vw,30px); } .codex-detail-meta p { font-size:clamp(12px,1vw,16px); }
+    .codex-detail-stats span { font-size:clamp(11px,.9vw,14px); padding:4px 12px; } .codex-detail-state { font-size:clamp(11px,.9vw,14px); }
+    .codex-detail-art .codex-glyph { font-size:clamp(84px,8vw,160px); }
+    /* --- 공통 헤더/탭 --- */
+    .collection-head { padding:clamp(18px,1.5vw,28px) clamp(22px,2vw,40px); } .collection-head h2 { font-size:clamp(18px,1.5vw,26px); } .collection-head p { font-size:clamp(11px,.85vw,14px); }
+    .collection-head .currency { font-size:clamp(13px,1vw,17px); padding:clamp(9px,.7vw,13px) clamp(14px,1.1vw,22px); }
+    .collection-tabs { padding:clamp(12px,1vw,18px) clamp(22px,2vw,40px); gap:clamp(8px,.7vw,12px); } .collection-tab { padding:clamp(8px,.7vw,12px) clamp(14px,1.2vw,24px); font-size:clamp(12px,.95vw,16px); }
+    @media(min-width:901px){
+    /* --- 덱 편집 --- */
+    .deck-view { padding:20px clamp(22px,2vw,40px) 24px; }
+    .deck-toolbar { margin-bottom:clamp(12px,1vw,18px); } .deck-filter { padding:clamp(6px,.5vw,10px) clamp(10px,.9vw,16px); font-size:clamp(10px,.85vw,14px); } .deck-tools button { font-size:clamp(10px,.85vw,14px); padding:clamp(6px,.5vw,10px) clamp(9px,.8vw,14px); }
+    .deck-count { font-size:clamp(12px,.95vw,16px); } .deck-count strong { font-size:clamp(18px,1.7vw,30px); }
+    .deck-content { grid-template-columns:minmax(0,1fr) clamp(340px,26vw,540px); gap:clamp(20px,1.6vw,32px); }
+    .owned-grid { grid-template-columns:repeat(auto-fill,minmax(clamp(170px,12.4vw,270px),1fr)); gap:clamp(14px,1.1vw,22px); }
+    .owned-card { padding:clamp(12px,.9vw,16px); } .owned-card h4 { font-size:clamp(13px,1vw,17px); } .owned-card small { font-size:clamp(10px,.8vw,13px); } .owned-count { font-size:clamp(9px,.7vw,12px); }
+    .deck-card-controls { grid-template-columns:clamp(32px,2.4vw,42px) 1fr clamp(32px,2.4vw,42px); } .deck-card-controls button { height:clamp(30px,2.3vw,40px); } .deck-card-controls b { font-size:clamp(11px,.9vw,15px); }
+    .deck-list { padding:clamp(14px,1.2vw,22px); } .deck-list h3 { font-size:clamp(15px,1.2vw,20px); }
+    .deck-row { padding:clamp(6px,.5vw,9px); grid-template-columns:clamp(38px,3vw,58px) minmax(0,1fr) auto; font-size:clamp(12px,.95vw,15px); } .deck-row img { width:clamp(38px,3vw,58px); height:clamp(48px,3.8vw,72px); } .deck-row small { font-size:clamp(8px,.72vw,12px); }
+    .deck-summary, .deck-legend { font-size:clamp(10px,.8vw,13px); } .deck-group-head { font-size:clamp(11px,.9vw,15px); } .deck-group-toggle button { font-size:clamp(11px,.9vw,14px); padding:clamp(6px,.5vw,10px) 4px; }
+    .deck-curve { height:clamp(44px,4vw,80px); } .deck-save { padding:clamp(12px,1vw,18px); font-size:clamp(13px,1vw,17px); } .deck-help { font-size:clamp(9px,.75vw,12px); }
+    /* --- 합성 --- */
+    .synth-view { gap:clamp(20px,1.6vw,32px); padding:20px clamp(22px,2vw,40px) 24px; }
+    .synth-altar { width:clamp(340px,27vw,540px); padding:clamp(16px,1.3vw,26px); gap:clamp(10px,.9vw,16px); }
+    .synth-slot b { font-size:clamp(11px,.9vw,15px); } .synth-slot small { font-size:clamp(9px,.75vw,12px); } .synth-slot.empty span { font-size:clamp(30px,2.6vw,48px); }
+    .synth-card { width:clamp(130px,min(12.5vw,19vh),250px); } .synth-card h4 { font-size:clamp(12px,1vw,17px); } .synth-card small { font-size:clamp(9px,.75vw,12px); }
+    .synth-circle { width:clamp(190px,min(16vw,26vh),330px); height:clamp(190px,min(16vw,26vh),330px); }
+    .synth-odd small { font-size:clamp(10px,.8vw,13px); } .synth-odd b { font-size:clamp(15px,1.3vw,22px); } .synth-odds-hint { font-size:clamp(11px,.85vw,14px); }
+    .synth-go { padding:clamp(12px,1vw,18px); font-size:clamp(14px,1.1vw,19px); } .synth-help { font-size:clamp(10px,.8vw,13px); }
+    .synth-grid { grid-template-columns:repeat(auto-fill,minmax(clamp(132px,9.8vw,220px),1fr)); gap:clamp(10px,.9vw,18px); }
+    .synth-pick { padding:clamp(7px,.6vw,11px); } .synth-pick b { font-size:clamp(11px,.9vw,15px); } .synth-pick small { font-size:clamp(9px,.75vw,12px); } .synth-have span { font-size:clamp(9px,.75vw,12px); } .synth-have b { font-size:clamp(11px,.9vw,15px); }
+    .synth-stepper { grid-template-columns:clamp(30px,2.3vw,40px) 1fr clamp(30px,2.3vw,40px) clamp(42px,3.2vw,58px); } .synth-stepper button { height:clamp(28px,2.1vw,38px); }
+    .synth-section { font-size:clamp(11px,.9vw,15px); } .synth-count { font-size:clamp(11px,.85vw,14px); } .synth-auto { font-size:clamp(11px,.85vw,14px); padding:clamp(7px,.6vw,11px) clamp(12px,1vw,18px); }
+    .synth-pool-head .codex-seg button { font-size:clamp(11px,.85vw,14px); padding:clamp(6px,.5vw,10px) clamp(12px,1vw,18px); }
+    /* --- 상점 --- */
+    .gacha-view { gap:clamp(22px,2vw,40px); padding:clamp(22px,2vw,40px); }
+    .gacha-banner { width:clamp(300px,25vw,500px); padding:clamp(24px,2vw,40px); }
+    .gacha-orb { width:clamp(150px,13vw,260px); height:clamp(150px,13vw,260px); font-size:clamp(62px,5.5vw,110px); }
+    .gacha-banner h3 { font-size:clamp(18px,1.6vw,28px); } .gacha-banner p { font-size:clamp(12px,1vw,16px); } .shop-tag { font-size:clamp(10px,.8vw,13px); }
+    .gacha-actions button { padding:clamp(12px,1vw,20px); font-size:clamp(13px,1.1vw,18px); } .gacha-actions small { font-size:clamp(11px,.9vw,15px); }
+    .gacha-results { grid-template-columns:repeat(auto-fill,minmax(clamp(130px,10.5vw,230px),1fr)); gap:clamp(10px,1vw,18px); }
+    .pull-card { padding:clamp(10px,.8vw,14px); } .pull-card h4 { font-size:clamp(11px,.9vw,15px); } .pull-card small { font-size:clamp(9px,.75vw,12px); }
+    .gacha-empty { font-size:clamp(13px,1vw,17px); }
+    }
+    /* --- 큰 창 미세 조정 --- */
+    @media(min-width:901px){
+    .gacha-placeholder { grid-column:1/-1; align-self:start; display:flex; flex-direction:column; align-items:center; gap:clamp(18px,2vw,34px); padding:clamp(8px,1vw,16px) 0; }
+    .gacha-placeholder .ghosts { width:100%; display:grid; grid-template-columns:repeat(5,1fr); gap:clamp(10px,1vw,18px); }
+    .gacha-placeholder .ghost { aspect-ratio:4/5; display:grid; place-items:center; border:2px dashed #2f3a4a; border-radius:14px; background:linear-gradient(160deg,#151b24,#10151c); color:#2f3a4a; font-size:clamp(28px,3vw,56px); font-weight:800; }
+    .gacha-placeholder p { margin:0; color:#748195; font-size:clamp(13px,1.1vw,18px); line-height:1.6; text-align:center; }
+    .synth-card { width:clamp(120px,min(12.5vw,16vh),240px); }
+    .synth-circle { width:clamp(180px,min(16vw,24vh),320px); height:clamp(180px,min(16vw,24vh),320px); }
+    .synth-altar { gap:clamp(8px,.8vw,14px); }
+    }
+    @media(min-width:901px) and (max-height:1000px){ .deck-help { display:none; } .deck-curve { height:clamp(36px,3.2vw,60px); } .deck-comp { padding:8px 10px; margin-bottom:8px; } .deck-curve-label { margin:6px 0 2px; } }
 </style>
 </head>
 <body>
@@ -861,7 +912,7 @@
   <div class="collection-modal" id="collection-modal" role="dialog" aria-modal="true" aria-labelledby="collection-title"><div class="collection-shell">
     <div class="collection-head"><div><h2 id="collection-title">카드 컬렉션</h2><p id="collection-sub"></p></div><div class="currency">◆ 크래커 <span id="collection-cracker-count">300</span></div><button class="modal-close" onclick="closeCollection()" aria-label="닫기">✕</button></div>
     <div class="collection-tabs"><button class="collection-tab" data-view="deck" onclick="switchCollectionView('deck')">🂠 덱 편집</button><button class="collection-tab" data-view="codex" onclick="switchCollectionView('codex')">📖 도감</button><button class="collection-tab" data-view="synth" onclick="switchCollectionView('synth')">⚗ 합성</button><button class="collection-tab" data-view="gacha" onclick="switchCollectionView('gacha')">◆ 상점</button></div>
-    <section class="collection-view gacha-view" id="gacha-view"><div class="gacha-banner"><small class="shop-tag">상점 · 카드 소환</small><div class="gacha-orb">◆</div><h3>원소의 계약</h3><p>크래커로 캐릭터 카드를 획득합니다.<br>10회 소환에서는 희귀 이상 1장이 확정됩니다.</p><div class="gacha-actions"><button onclick="pullCards(1)">1회<br><small>◆ 30</small></button><button onclick="pullCards(10)">10회<br><small>◆ 270</small></button></div></div><div class="gacha-results" id="gacha-results"><div class="gacha-empty">아직 소환 결과가 없습니다.<br>원소의 계약을 시작해 보세요.</div></div></section>
+    <section class="collection-view gacha-view" id="gacha-view"><div class="gacha-banner"><small class="shop-tag">상점 · 카드 소환</small><div class="gacha-orb">◆</div><h3>원소의 계약</h3><p>크래커로 캐릭터 카드를 획득합니다.<br>10회 소환에서는 희귀 이상 1장이 확정됩니다.</p><div class="gacha-actions"><button onclick="pullCards(1)">1회<br><small>◆ 30</small></button><button onclick="pullCards(10)">10회<br><small>◆ 270</small></button></div></div><div class="gacha-results" id="gacha-results"><div class="gacha-placeholder"><div class="ghosts"><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div></div><p>아직 소환 결과가 없습니다.<br>원소의 계약을 시작해 보세요.</p></div></div></section>
     <section class="collection-view synth-view" id="synth-view"><div class="synth-altar"><div class="synth-slots" id="synth-slots"></div><div class="synth-arrow" aria-hidden="true">▼</div><div class="synth-result" id="synth-result"></div><div class="synth-odds" id="synth-odds"></div><button class="synth-go" id="synth-go" onclick="runSynthesis()">합성하기</button><p class="synth-help">재료 3장은 사라지고 무작위 캐릭터 카드 1장이 만들어집니다. 높은 등급 재료일수록 높은 등급이 나오기 쉽고, 아직 없는 카드가 우선적으로 나옵니다.</p></div><div class="synth-pool"><div class="synth-pool-head"><div class="codex-seg" id="synth-filter"></div><div class="codex-seg" id="synth-sort"></div><button class="synth-auto" onclick="synthAuto()" title="여분이 가장 많은 카드부터 3장을 자동으로 고릅니다">⚡ 여분 많은 카드로 자동 선택</button><span class="synth-count" id="synth-count"></span></div><div class="synth-grid" id="synth-grid"></div></div></section>
     <section class="collection-view codex-view" id="codex-view"><div class="codex-summary" id="codex-summary"></div><div class="codex-toolbar"><div class="codex-seg" id="codex-type"></div><div class="codex-seg" id="codex-status"></div><div class="codex-seg" id="codex-rarity"></div></div><div class="codex-body"><div class="codex-grid" id="codex-grid"></div><aside class="codex-detail" id="codex-detail"></aside></div></section>
     <section class="collection-view deck-view" id="deck-view"><div class="deck-toolbar"><div class="deck-filters" id="deck-filters"></div><div class="deck-count"><strong id="build-count">0</strong> / 60장</div></div><div class="deck-content"><div class="owned-grid" id="owned-grid"></div><div class="deck-list"><h3>전투 덱</h3><div class="deck-rows" id="deck-rows"></div><p class="deck-help">보유 카드를 눌러 추가하거나 이 패널로 드래그해 넣고, 덱 목록을 눌러(또는 보유 카드 영역으로 드래그해) 제거합니다. 저장하면 현재 전투의 남은 덱도 교체됩니다.</p><button class="deck-save" id="deck-save" onclick="saveBattleDeck()">60장 덱 저장</button></div></div></section>
@@ -974,7 +1025,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function openCollection(view='deck'){ draftDeck=[...collectionState.deck];document.querySelector('#collection-modal').classList.add('show');document.body.style.overflow='hidden';switchCollectionView(view);renderCollection(); }
     function closeCollection(){ document.querySelector('#collection-modal').classList.remove('show');document.body.style.overflow=''; }
     const COLLECTION_SUBTITLE={deck:'내가 쓸 60장 덱을 속성·비용·희귀도별로 살펴보며 편성하세요.',codex:'모든 카드의 수집 현황을 확인하세요. 캐릭터는 소환으로, 마법·함정은 전투에서 발견하면 등록됩니다.',synth:'여분 캐릭터 카드 3장을 합쳐 무작위 새 카드를 만들어 보세요. 덱에 편성된 카드는 재료로 쓰이지 않습니다.',gacha:'크래커로 새로운 캐릭터 카드를 소환해 컬렉션을 늘리세요.'};
-    function switchCollectionView(view){document.querySelector('#collection-sub').textContent=COLLECTION_SUBTITLE[view]||'';document.querySelector('.collection-shell').classList.toggle('codex-mode',view==='codex'); document.querySelectorAll('.collection-tab').forEach(button=>button.classList.toggle('active',button.dataset.view===view));document.querySelectorAll('.collection-view').forEach(panel=>panel.classList.toggle('active',panel.id===view+'-view'));if(view==='deck')renderDeckBuilder();if(view==='codex')renderCodex();if(view==='synth')renderSynthesis(); }
+    function switchCollectionView(view){document.querySelector('#collection-sub').textContent=COLLECTION_SUBTITLE[view]||''; document.querySelectorAll('.collection-tab').forEach(button=>button.classList.toggle('active',button.dataset.view===view));document.querySelectorAll('.collection-view').forEach(panel=>panel.classList.toggle('active',panel.id===view+'-view'));if(view==='deck')renderDeckBuilder();if(view==='codex')renderCodex();if(view==='synth')renderSynthesis(); }
     function renderCollection(){updateCrackerHud();document.querySelectorAll('.gacha-actions button').forEach((button,i)=>button.disabled=gachaPulling||collectionState.crackers<(i?270:30));renderDeckBuilder();renderCodex();renderSynthesis();}
     function pickCard(forceRare=false){ const roll=Math.random(),rarity=forceRare?(roll<.18?'legendary':'rare'):(roll<.05?'legendary':roll<.25?'rare':'common');const pool=collectionCards.map((_,i)=>i).filter(i=>rarityByCard[i]===rarity);return pool[Math.floor(Math.random()*pool.length)]; }
     function pullCardMarkup({index,isNew},position=0){const card=collectionCards[index],rarity=rarityByCard[index];return '<article class="pull-card pull-land '+rarity+'" style="--delay:'+(position*.075)+'s">'+(isNew?'<span class="new-badge">NEW</span>':'')+'<img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+'</h4><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+'</small></article>';}
