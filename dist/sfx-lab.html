@@ -81,6 +81,10 @@
   frost.className = 'card frost';
   frost.innerHTML = '<h2>빙결 카드 (얼음)</h2><p>프로스트 노바·빙결 사슬·한서진의 시전 소리. 시전 후 약 0.45초에 피해가 들어가는 시점과 소리의 정점이 맞습니다.</p><div class="row"><button data-frost>시전 + 파편</button><button data-frost-hit>시전 → 0.45초 뒤 물 피격</button></div>';
   grid.appendChild(frost);
+  const thunder = document.createElement('div');
+  thunder.className = 'card water';
+  thunder.innerHTML = '<h2>물 공격 번개 (아주르 썬더폴)</h2><p>물 속성 공격 때 번개 그림 연출과 함께 나는 소리. 번개가 내리치는 순간이 시작 후 0.45초이며 타격 시점과 맞춥니다.</p><div class="row"><button data-thunder>번개만</button><button data-thunder-hit>번개 → 0.45초 뒤 물 피격</button></div>';
+  grid.appendChild(thunder);
   grid.addEventListener('click', (event) => {
     const button = event.target.closest('button');
     if (!button) return;
@@ -88,6 +92,8 @@
     if (button.dataset.once) sfx.playHit(button.dataset.once, 8, (Math.random() - 0.5) * 0.8);
     else if (button.dataset.burst) for (let i = 0; i < 5; i++) setTimeout(() => sfx.playHit(button.dataset.burst, 8, (Math.random() - 0.5) * 0.8), i * 900);
     else if ('frost' in button.dataset) { if (!sfx.playFrost('cast')) status.textContent = '얼음 샘플이 아직 로드되지 않았거나 팩이 꺼져 있습니다.'; setTimeout(() => sfx.playFrost('shatter'), 320); }
+    else if ('thunder' in button.dataset) { if (!sfx.playLightning(0)) status.textContent = '번개 샘플이 아직 로드되지 않았거나 팩이 꺼져 있습니다.'; }
+    else if ('thunderHit' in button.dataset) { sfx.playLightning(0); setTimeout(() => sfx.playHit('water', 8, 0.1), 450); }
     else if ('frostHit' in button.dataset) { sfx.playFrost('cast'); setTimeout(() => sfx.playFrost('shatter'), 320); setTimeout(() => sfx.playHit('water', 6, 0.2), 450); }
   });
   document.getElementById('vol').addEventListener('input', (event) => { document.getElementById('volv').textContent = event.target.value + '%'; if (state.bus) state.bus.gain.value = volume(); });

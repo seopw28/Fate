@@ -453,3 +453,24 @@ test('안전 리미터: 효과음 버스는 리미터를 거쳐 출력되어 볼
   assert.ok(html.includes('const limiter=ctx.createDynamicsCompressor();limiter.threshold.value=-6;'), 'sfxBus must end in a limiter');
   assert.ok(html.includes('sfxBusNode.connect(limiter);limiter.connect(ctx.destination);'), 'bus -> limiter -> destination');
 });
+
+// ───────── 물 공격 번개 연출 (아주르 썬더폴) ─────────
+test('번개 소리: 물 공격의 번개 연출 전용 샘플을 쓰고, 팩이 꺼져 있거나 샘플이 없으면 false', () => {
+  assert.equal(Sfx.BANK.spellLightningCast, 5, '번개 연출용 변형 5개');
+  const { ctx, stats } = fakeAudio();
+  const bus = ctx.createGain();
+  const buffers = { spellLightningCast: [{ duration: 2.9 }] };
+  const before = stats.started;
+  assert.equal(Sfx.init({ engine: () => ctx, bus: () => bus, buffers, spellPack: true }).playLightning(0), true);
+  assert.ok(stats.started - before >= 2, '좌우로 넓혀 재생');
+  assert.equal(Sfx.init({ engine: () => ctx, bus: () => bus, buffers, spellPack: false }).playLightning(0), false, '?sfxpack=base 면 재생 안 함');
+  assert.equal(Sfx.init({ engine: () => ctx, bus: () => bus, buffers: {}, spellPack: true }).playLightning(0), false, '샘플 미로드면 재생 안 함');
+});
+
+test('번개 소리 연결: 물 공격에서 아주르 썬더폴 연출이 뜰 때 번개 소리를 함께 낸다', () => {
+  assert.ok(html.includes("if(element==='water'){showCinematicSkillEffect('lightning','아주르 썬더폴',1);fateSfx.playLightning(0);}"), 'Water attack lightning cinematic must have its own thunder sound');
+});
+
+test('물 피격음에는 폭발(천둥 같은 울림) 샘플을 섞지 않는다 — 번개 소리는 연출 전용으로 분리', () => {
+  for (const combo of Sfx.HIT_SETS.water) for (const layer of combo) assert.notEqual(layer.s, 'legacy_explosion');
+});
