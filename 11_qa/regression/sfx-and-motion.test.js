@@ -40,7 +40,7 @@ test('조합표: 속성별 변주 후보가 있고, 쓰는 샘플이 실제로 �
     for (const combo of combos) {
       assert.ok(combo.length >= (element === 'fire' || element === 'wind' && combo.length === 1 ? 1 : 2), `${element}: 조합은 샘플을 겹쳐야 함`);
       for (const layer of combo) assert.ok(known.has(layer.s), `${element}: 알 수 없는 샘플 ${layer.s}`);
-      if (element !== 'water') assert.ok(combo.some((layer) => layer.s.startsWith('legacy_') || layer.s.startsWith('spell')), `${element}: 조합에 몸통(길게 울리는) 샘플이 있어야 밋밋해지지 않음`);
+      if (element !== 'water' && element !== 'neutral') assert.ok(combo.some((layer) => layer.s.startsWith('legacy_') || layer.s.startsWith('spell')), `${element}: 조합에 몸통(길게 울리는) 샘플이 있어야 밋밋해지지 않음`);
     }
     assert.ok(element === 'fire' || Sfx.SYNTH_NAMES[element].length >= 3, `${element}: 합성음 후보가 3개 이상이어야 함`);
   }
@@ -279,7 +279,8 @@ test('공간감 구별: 대지는 가장 넓은 홀 잔향, 칼날·금속은 �
     assert.ok(E[element].wet <= 0.15, `${element}: 잔향 대신 겹쳐 내기`);
   }
   assert.ok(E.water.stack.count >= E.wind.stack.count, '물이 더 많이 튄다');
-  for (const element of ['fire', 'earth', 'neutral']) assert.ok(!E[element].stack, `${element}: 겹쳐 내기를 쓰지 않는다`);
+  assert.equal(E.neutral.stack.count, 2, '금속은 "깡-깡" 두 번 부딪힌다');
+  for (const element of ['fire', 'earth']) assert.ok(!E[element].stack, `${element}: 겹쳐 내기를 쓰지 않는다`);
 });
 
 test('울림 길이: 처음 설계(잔향 1.7초, 꼬리 2.0초)의 70% 이하', () => {
@@ -342,8 +343,8 @@ test('페이드아웃: 긴 꼬리는 일찍부터 지수적으로 완만하게 �
 
 test('페이드아웃: 속성별 시작 시점 — 칼날은 일찍(예리하게 사라짐), 나머지는 공간감을 위해 늦게', () => {
   const E = Sfx.ELEMENT;
-  assert.ok(E.wind.fade <= 0.2, '칼날은 일찍 줄기 시작해야 날카롭게 끝난다');
-  for (const roomy of ['fire', 'water', 'earth', 'neutral']) assert.ok(E[roomy].fade >= 0.3 && E[roomy].fade <= 0.6, `${roomy}: 너무 일찍(공간감 손실)·너무 늦게(뚝 끊김) 줄이지 않는다`);
+  assert.ok(E.wind.fade <= 0.2 && E.neutral.fade <= 0.2, '칼날·강철 부딪힘은 일찍 줄기 시작해야 날카롭게 끝난다');
+  for (const roomy of ['fire', 'water', 'earth']) assert.ok(E[roomy].fade >= 0.3 && E[roomy].fade <= 0.6, `${roomy}: 너무 일찍(공간감 손실)·너무 늦게(뚝 끊김) 줄이지 않는다`);
   assert.ok(Sfx.FADE_DECIBELS_E >= 6, '감쇠는 사실상 무음(-52dB 이하)까지 내려가야 마지막 단차가 안 들린다');
 });
 
