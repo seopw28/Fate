@@ -343,8 +343,8 @@ test('페이드아웃: 긴 꼬리는 일찍부터 지수적으로 완만하게 �
 
 test('페이드아웃: 속성별 시작 시점 — 칼날은 일찍(예리하게 사라짐), 나머지는 공간감을 위해 늦게', () => {
   const E = Sfx.ELEMENT;
-  assert.ok(E.wind.fade <= 0.2 && E.neutral.fade <= 0.2, '칼날·강철 부딪힘은 일찍 줄기 시작해야 날카롭게 끝난다');
-  for (const roomy of ['fire', 'water', 'earth']) assert.ok(E[roomy].fade >= 0.3 && E[roomy].fade <= 0.6, `${roomy}: 너무 일찍(공간감 손실)·너무 늦게(뚝 끊김) 줄이지 않는다`);
+  assert.ok(E.wind.fade <= 0.2, '칼날은 일찍 줄기 시작해야 날카롭게 끝난다');
+  for (const roomy of ['fire', 'water', 'earth', 'neutral']) assert.ok(E[roomy].fade >= 0.3 && E[roomy].fade <= 0.6, `${roomy}: 너무 일찍(공간감 손실)·너무 늦게(뚝 끊김) 줄이지 않는다`);
   assert.ok(Sfx.FADE_DECIBELS_E >= 6, '감쇠는 사실상 무음(-52dB 이하)까지 내려가야 마지막 단차가 안 들린다');
 });
 
