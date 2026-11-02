@@ -85,6 +85,7 @@ STATES = [
     ("상점 화면", "openCollection('gacha')"),
     ("운명 걸기 마나 10", "battlePhase='setup'; fateGambleUsed=false; mana=10; updateMana()"),
     ("운명 걸기 사용함", "fateGambleUsed=true; updateFateGamble()"),
+    ("혈마나 궁극기 버튼", "const c=createRuntimeBattleCard('core.seraphina');ultimateState=ultimateSpec(c);ultimateUsed=false;lastUltimateTurn=null;turnNumber=2;battlePhase='setup';mana=10;playerHp=100;const l=document.querySelector('.arena .lane:first-child');if(!l.querySelector('.unit')){const e=document.createElement('div');e.className='unit water';e.innerHTML='<div class=emoji></div><h4>t</h4><div class=stats><span>⚔ 3</span><span>♥ 9</span></div>';l.appendChild(e)}renderUltimate();updateMana()"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
     ("수호신 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
 ]
