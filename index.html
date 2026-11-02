@@ -1105,6 +1105,14 @@
     .skill-fx strong { inset:0 -60px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; line-height:1.15; word-break:keep-all; }
     .skill-fx strong .fx-title { font-size:20px; white-space:nowrap; }
     .skill-fx strong .fx-line { font-size:16px; font-weight:800; white-space:nowrap; padding:1px 8px; border-radius:99px; background:#0b0f16b3; }
+    /* 컬렉션 창 머리 영역: 제목은 왼쪽, 크래커 · 사운드 · 닫기는 오른쪽에 한 줄로 */
+    .collection-head { position:relative; z-index:6; gap:clamp(8px,.8vw,14px); }
+    .collection-head > div:first-child { margin-right:auto; min-width:0; }
+    .collection-head .currency, .collection-head .sound-wrap .ghost, .collection-head .modal-close { height:clamp(36px,2.6vw,44px); display:inline-flex; align-items:center; justify-content:center; }
+    .collection-head .sound-wrap .ghost { padding:0 clamp(12px,1vw,18px); font-size:clamp(12px,.9vw,15px); border-radius:99px; }
+    .collection-head .modal-close { width:clamp(36px,2.6vw,44px); }
+    .collection-head .currency { gap:.35em; }
+    .collection-head .sound-panel { top:calc(100% + 10px); }
 </style>
 </head>
 <body>
@@ -2061,6 +2069,13 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       stage.querySelector('.stage-result').innerHTML='<article class="stage-card '+rarity+'">'+(isNew?'<span class="new-badge">NEW</span>':'')+'<img src="'+card[1]+'" alt="'+card[2]+'"><h3>'+card[2]+'</h3><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+' · 비용 '+card[3]+' · ⚔ '+card[4]+' ♥ '+card[5]+'</small></article><button class="stage-close">확인</button>';
       stage.querySelector('.stage-caption').textContent=isNew?'새로운 카드를 얻었습니다!':'합성 완료';}
     addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelector('.synth-stage.revealed'))closeSynthStage();});
+
+    /* 컬렉션 창이 열려 있는 동안 사운드 버튼을 창 머리 영역(크래커 옆)으로 옮기고, 닫으면 원래 자리로 되돌린다 */
+    (function(){
+      const baseOpen=openCollection,baseClose=closeCollection;let home=null,next=null;
+      openCollection=function(...args){const result=baseOpen.apply(this,args);const wrap=document.querySelector('.sound-wrap'),head=document.querySelector('.collection-head');if(wrap&&head&&!head.contains(wrap)){home=wrap.parentElement;next=wrap.nextSibling;head.insertBefore(wrap,head.querySelector('.modal-close'));}return result;};
+      closeCollection=function(...args){const wrap=document.querySelector('.sound-wrap');if(wrap&&home&&!home.contains(wrap)){toggleSoundPanel?.(false);home.insertBefore(wrap,next&&next.parentNode===home?next:null);}return baseClose.apply(this,args);};
+    })();
 </script>
 </body>
 </html>
