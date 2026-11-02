@@ -1024,6 +1024,8 @@
     .synth-altar { gap:clamp(8px,.8vw,14px); }
     }
     @media(min-width:901px) and (max-height:1000px){ .deck-help { display:none; } .deck-curve { height:clamp(36px,3.2vw,60px); } .deck-comp { padding:8px 10px; margin-bottom:8px; } .deck-curve-label { margin:6px 0 2px; } }
+    /* 컬렉션 창(덱 편집/도감/합성/상점)은 사용자가 직접 연 창이므로 게임 오버레이(전투 소개 300, 수호신 선택 310)보다 위에 둔다. 사운드 버튼(330)은 그 위. */
+    .collection-modal { z-index:320; }
 </style>
 </head>
 <body>
