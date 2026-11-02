@@ -78,6 +78,7 @@ STATES = [
     ("다수 공격 카드", "const h=document.querySelector('.hand');['gangho.baek-yeonju','sacheon.mong-ri','bellarion.liberna','murim.mu-yeong'].forEach(id=>h.appendChild(createRuntimeBattleCard(id)));setHandFilter('champion')"),
     ("사운드 패널", "toggleSoundPanel(true)"),
     ("최후의 발악 안내", "showDesperateNotice('enemy',{instant:true})"),
+    ("최후의 발악 안내(내 쪽)", "showDesperateNotice('player',{instant:true})"),
     ("덱 편집 화면", "openCollection('deck')"),
     ("도감 화면", "openCollection('codex')"),
     ("합성 화면", "openCollection('synth')"),
@@ -86,6 +87,7 @@ STATES = [
     ("운명 걸기 마나 10", "battlePhase='setup'; fateGambleUsed=false; mana=10; updateMana()"),
     ("운명 걸기 사용함", "fateGambleUsed=true; updateFateGamble()"),
     ("혈마나 궁극기 버튼", "const c=createRuntimeBattleCard('core.seraphina');ultimateState=ultimateSpec(c);ultimateUsed=false;lastUltimateTurn=null;turnNumber=2;battlePhase='setup';mana=10;playerHp=100;const l=document.querySelector('.arena .lane:first-child');if(!l.querySelector('.unit')){const e=document.createElement('div');e.className='unit water';e.innerHTML='<div class=emoji></div><h4>t</h4><div class=stats><span>⚔ 3</span><span>♥ 9</span></div>';l.appendChild(e)}renderUltimate();updateMana()"),
+    ("숲 인물 카드", "const h=document.querySelector('.hand');h.innerHTML='';['akforest.beka','akforest.korin','akforest.rize','akforest.kamila','akforest.lucky','akforest.nemu'].forEach(id=>h.appendChild(createRuntimeBattleCard(id)));setHandFilter('champion')"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
     ("수호신 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
 ]
