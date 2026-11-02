@@ -526,3 +526,35 @@ test('배경음악: 최후의 발악이 시작되면 각성 BGM으로 크로스�
   assert.ok(require('node:fs').existsSync(require('node:path').join(__dirname, '../../dist/assets/audio/bgm-awakening.mp3')), 'Awakening mp3 must be shipped');
   assert.ok(html.includes('if(active){switchToAwakeningBgm();'), 'Desperation start must switch the BGM');
 });
+
+test('드로우: 뒷면으로 날아와 손패 자리에서 뒤집히고, 확대 배율로 일러스트를 키우지 않는다', () => {
+  const html = fs.readFileSync(path.join(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes('requestAnimationFrame(()=>drawCardFlip(card,'), 'drawCard must use the back-face flip sequence');
+  assert.ok(html.includes("back.className='card-back-face card-back-design'") && html.includes('flipReveal(card,onDone)'), 'Real hand card must show the back face before flipping');
+  assert.ok(html.includes('scale=s0+(endScale-s0)*e') && html.includes("endScale:hidden?.35:1}"), 'Flight must grow from a small scale up to 1 (no upscaling past native size)');
+  assert.ok(html.includes('img.decode()') && html.includes('ready.then(()=>{flight.remove();flipReveal(card,onDone);})'), 'Front art must be decoded before it is revealed');
+});
+
+test('소환: 손패 카드가 뒷면으로 돌아서 전장으로 날아가 그 자리에서 뒤집힌다', () => {
+  const html = fs.readFileSync(path.join(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes('summonCardFlip(from,unit,'), 'Summon must use the back-face flight + flip');
+  assert.ok(html.includes('flipReveal(unit,onDone)'), 'The field unit itself must flip to reveal');
+});
+
+test('드로우: 다른 탭으로 들어가는 카드도 그 탭으로 넘겨 손패에서 뒤집고, 여러 장은 차례로 뒤집는다', () => {
+  const html = fs.readFileSync(path.join(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes("if(card.classList.contains('hand-filtered')&&card.isConnected&&!ultimateArmed&&!document.querySelector('.hand .card.selected'))setHandFilter(cardCategory(card));"), 'Hidden-tab draws must switch to that tab so the flip is visible');
+  assert.ok(html.includes('queueDrawFlip(card,'), 'Consecutive draws must be queued one by one');
+});
+
+test('효과 표시: 돌아가는 원+글자(rush) 대신 카드 테두리 임팩트로 표시한다', () => {
+  const html = fs.readFileSync(path.join(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes("if(kind==='rush'){borderImpact(target);return;}"), 'rush skill effect must be replaced by the border impact');
+  assert.ok(html.includes('function borderImpact(target,'), 'Border impact helper must exist');
+});
+
+test('타격: 영웅을 직접 쳐도 아바타 자리에 속성 타격 이펙트가 나온다', () => {
+  const html = fs.readFileSync(path.join(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(!html.includes("if(target.classList.contains('avatar')){heroHealthImpact(target,damage);return;}"), 'impact() must not return early for hero avatars');
+  assert.ok(html.includes("const hero=target.classList.contains('avatar');if(hero)heroHealthImpact(target,damage);"), 'Hero hits keep the HP bar feedback and add hit VFX');
+});

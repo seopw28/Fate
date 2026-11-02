@@ -53,8 +53,8 @@ Constraints: no visible people, no readable text, no letters, no numbers, no log
 | 낙뢰 | `volt.lightning-strike` | `void-recall.png` (보이드 리콜·폭풍우와 공유) |
 
 ## P2 — 소환 토큰
-- `마력 늑대` (`dist/assets/tokens/mana-wolf.svg`), `되살린 사령` (`necro-spirit.svg`): 코드로 그린 SVG가 마음에 들지 않아 임시로 한글 인장(늑/령)으로 교체했다. 진지한 톤의 일러스트(PNG/WebP)로 교체하고 `TOKEN_ART` 경로를 바꾼다.
+- ~~`마력 늑대`, `되살린 사령`~~ **완료 (2026-11-03)**: 사용자 제공 일러스트로 교체 — `dist/assets/tokens/mana-wolf.webp`, `necro-spirit.webp` (`TOKEN_ART`). 예전 SVG는 삭제.
 
 ## P3 — 수호신 아이콘
-- 선택 화면 카드와 영웅 프로필의 수호신 아이콘(청룡·백호·주작·현무, 약자멸시)은 CSS로 그린 한글 인장(청·백·주·현·약)이다. 진지한 톤의 이미지로 교체. **한자·중국풍 연출과 귀여운 이모지 느낌은 금지**(사용자 선호).
+- 선택 화면 카드와 영웅 프로필의 수호신 아이콘(제우스·포세이돈·하데스·아테나, 약자멸시 — 2026-11-03 사신에서 그리스 신으로 교체)은 CSS로 그린 한글 인장(제·포·하·아·약)이다. 진지한 톤의 이미지로 교체. **한자·중국풍 연출과 귀여운 이모지 느낌은 금지**(사용자 선호).
 - 코드 위치: `dist/index.html`의 `guardianEmblem()`, `.gd-emblem`, `.avatar.gd-avatar`, `updateGuardianChips()`.

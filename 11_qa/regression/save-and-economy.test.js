@@ -102,3 +102,19 @@ test('손패: 사용 가능 여부 우선, 같은 등급 안에서는 가치(비
   assert.ok(html.includes('Number(a.dataset.usabilityRank)-Number(b.dataset.usabilityRank)||handCardValue(b)-handCardValue(a)'), 'Hand sort must rank usability first, then card value');
   assert.ok(html.includes('function handCardValue(card)'), 'Card value must be a named helper');
 });
+
+test('최후의 발악: 내 턴 시작에 덱에서 카드를 1장 더 받는다', () => {
+  assert.ok(html.includes("drawCard();/* 최후의 발악: 내 턴 시작에 덱에서 1장 더 받는다"), 'Turn start must draw an extra card while desperate');
+  assert.ok(html.includes("if(desperateActive('player')&&deck.length&&document.querySelectorAll('.hand .card').length<8){drawCard();"), 'Extra draw must respect deck and hand limits');
+});
+
+test('운명 걸기: 건 마나의 2배 피해, 50% 확률', () => {
+  assert.ok(html.includes('const FATE_GAMBLE_MULTIPLIER=2;'), 'Multiplier must be a named constant');
+  assert.ok(html.includes('damage=stake*FATE_GAMBLE_MULTIPLIER,hitEnemy=Math.random()<.5'), 'Damage must be stake x2 with a coin flip');
+});
+
+test('최후의 발악: 처음 발동된 내 턴에 한해 마법카드 1장을 즉시 발동', () => {
+  assert.ok(html.includes("desperateQuickCastTurn=battlePhase==='setup'?turnNumber:turnNumber+1"), 'Window must be the first player turn of desperation');
+  assert.ok(html.includes("return desperateQuickCastTurn===turnNumber&&!desperateQuickCastUsed&&battlePhase==='setup';"), 'Quick cast is once, only in that turn');
+  assert.ok(html.includes("if(quickCast){desperateQuickCastUsed=true;"), 'Playing a spell in the window must cast it instead of setting it');
+});
