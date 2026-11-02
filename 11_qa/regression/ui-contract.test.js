@@ -100,3 +100,10 @@ test('space bar ends the turn through the end-turn button', () => {
     assert.ok(html.includes(token), `Missing space-end-turn token: ${token}`);
   }
 });
+
+test('최후의 발악: 최대 마나가 11로 늘어나고, 발악이 풀리면 10으로 돌아간다', () => {
+  assert.ok(html.includes('const DESPERATE_MANA_CAP = 11;'), 'Desperation mana cap must be eleven');
+  assert.ok(html.includes("maxMana=playerManaCap()===DESPERATE_MANA_CAP?DESPERATE_MANA_CAP:Math.min(MANA_CAP,maxMana+1)"), 'Turn start must set max mana to eleven while desperate');
+  assert.ok(html.includes("if(side==='player')applyDesperateMana(active);"), 'Entering/leaving desperation must update max mana');
+  assert.ok(html.includes("else if(maxMana>MANA_CAP){maxMana=MANA_CAP;mana=Math.min(mana,maxMana);"), 'Leaving desperation must return max mana to ten');
+});
