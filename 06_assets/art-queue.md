@@ -2,20 +2,18 @@
 
 > **Codex(`image_gen`) 사용 한도가 회복되면 가장 먼저 이 문서의 P0부터 만든다.**
 > Claude는 이미지를 생성할 수 없다. 코드로 그린 SVG 일러스트는 품질이 낮아 쓰지 않는다.
-> 마지막 확인: 2026-11-01. 이전 기록상 Codex 한도 해제 시점은 2026-11-04 15:35.
+> 마지막 확인: 2026-11-02 (사용자가 준 이미지 14장으로 P0 마법 3장 교체, Glacial Chain 숨김, 새 마법 10장 `arcana.*` 추가). 이전 기록상 Codex 한도 해제 시점은 2026-11-04 15:35.
 > 이 큐는 `CLAUDE.md`, `06_assets/README.md`, `02_game-design/game-rules/09-decisions-and-open-issues.md`, `npm run validate:cards`의 경고에서 가리킨다.
 
-## P0 — 일러스트가 아예 없는 마법·함정 (도감에 ✦ 아이콘만 보임) · 7장
+## P0 — 일러스트가 아예 없는 함정 (도감에 ⛨ 아이콘만 보임) · 2장
+
+> 2026-11-02: 마법 4장 정리 완료 — 치유의 샘·진홍의 화염구·화염 인장은 `spells/generated/*.webp`로 교체, Glacial Chain(`core.frozen-chain`)은 맞는 그림이 없어 `releaseState: prototype`으로 숨김(그림이 생기면 되살리기).
 
 | 카드 | cardId | 종류/등급 | 비용 | 지금 assetId | 만들 파일 |
 |---|---|---|---|---|---|
-| Healing Spring | `core.spring-of-restoration` | 마법/일반 | 2 | `spells/spring-of-restoration` | `dist/assets/spells/generated/spring-of-restoration.png` |
-| Crimson Bolt | `core.crimson-bolt` | 마법/일반 | 3 | `spells/crimson-bolt` | `dist/assets/spells/generated/crimson-bolt.png` |
-| Glacial Chain | `core.frozen-chain` | 마법/희귀 | 3 | `spells/frozen-chain` | `dist/assets/spells/generated/frozen-chain.png` |
-| Flame Sigil | `core.fire-inscription` | 마법/희귀 | 2 | `spells/fire-inscription` | `dist/assets/spells/generated/fire-inscription.png` |
 | Ambush Mine | `core.ambush-mine` | 함정/희귀 | 2 | `traps/ambush-mine` | `dist/assets/traps/generated/ambush-mine.png` |
-| Counterflow Barrier | `core.counter-current` | 함정/희귀 | 2 | `traps/counter-current` | `dist/assets/traps/generated/counter-current.png` |
 | Last Stand | `core.last-stand` | 함정/희귀 | 2 | `traps/last-stand` | `dist/assets/traps/generated/last-stand.png` |
+| (숨김) Glacial Chain | `core.frozen-chain` | 마법/희귀 | 3 | `spells/frozen-chain` | `dist/assets/spells/generated/frozen-chain.webp` — 만들면 `releaseState` 제거 |
 
 (참고: 프로토타입 `prototype.comeback-flare`, `chronicle.prophecy-of-ruin`도 일러스트가 없지만 출시 전 카드라 P0 뒤로 미룬다.)
 
@@ -48,20 +46,17 @@ Constraints: no visible people, no readable text, no letters, no numbers, no log
 2. `03_card-data/sets/core-set.json`의 해당 카드 `assetId`를 `spells/generated/<이름>.png` / `traps/generated/<이름>.png`로 교체. (※ `*.json`은 `.gitignore`에 걸려 git에 안 올라간다. 빌드 결과 `dist/runtime/cards.js`가 커밋된다.)
 3. `npm run build:runtime` → `npm run validate:cards`(경고 목록이 줄어드는지) → 도감/손패에서 확인 → `npm run qa:overflow`.
 
-## P1 — 임시로 다른 카드 그림을 같이 쓰는 마법 · 10장 (전용 일러스트로 교체)
+## P1 — 임시로 다른 카드 그림을 같이 쓰는 마법 · 5장 (전용 일러스트로 교체)
+
+> 2026-11-02 2차: 사용자 이미지로 화염 폭풍·종말의 파동·연쇄 번개·천벌, 함정 역류 장벽(Counterflow Barrier → 역류 장벽) 교체 완료.
 
 | 카드 | cardId | 지금 쓰는 그림(중복) |
 |---|---|---|
 | 대지의 진동 | `storm.tremor` | `sacred-purge.png` (세이크리드 퍼지와 공유) |
-| 화염 폭풍 | `storm.firestorm` | `meteor-fall.png` (메테오 폴과 공유) |
 | 폭풍우 | `storm.tempest` | `void-recall.png` (보이드 리콜과 공유) |
-| 종말의 파동 | `storm.doom-wave` | `soul-return.png` (소울 리턴과 공유) |
 | 대재앙 | `storm.great-ruin` | `amaterasu.png` (아마테라스와 공유) |
-| 프로스트 노바 | `tower.frost-nova` | 미국 농무부 눈결정 사진(퍼블릭 도메인, 임시) |
 | 낙뢰 | `volt.lightning-strike` | `void-recall.png` (보이드 리콜·폭풍우와 공유) |
-| 연쇄 번개 | `volt.chain-lightning` | `mana-overflow.png` (마나 오버플로와 공유) |
-| 천벌 | `volt.heavenly-wrath` | `arcane-insight.png` (아케인 인사이트와 공유) |
-| 서리 감옥 | `frost.ice-prison` | `frost-nova.png` (프로스트 노바와 공유) |
+| 서리 감옥 | `frost.ice-prison` | `frost-nova.webp` (프로스트 노바와 공유) |
 
 (이 카드들은 `storm.*`가 `character-expansions.json`, `tower.frost-nova`가 `core-set.json`에 있다. 새 파일은 `dist/assets/spells/generated/`.)
 
