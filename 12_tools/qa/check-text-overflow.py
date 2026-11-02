@@ -86,6 +86,8 @@ STATES = [
     ("도감 화면", "openCollection('codex')"),
     ("합성 화면", "openCollection('synth')"),
     ("합성 재료 3장", "synthSlots=[];openCollection('synth');for(let k=0;k<3;k++)synthPick(collectionState.owned.findIndex((n,i)=>n>synthReserved(i)+synthSlots.filter(x=>x===i).length))"),
+    ("합성 결과 무대(NEW)", "closeSynthStage();revealSynthStage(collectionState.owned.findIndex(n=>n>0),true)"),
+    ("합성 결과 무대 닫기", "closeSynthStage()"),
     ("상점 화면", "openCollection('gacha')"),
     ("운명 걸기 마나 10", "battlePhase='setup'; fateGambleUsed=false; mana=10; updateMana()"),
     ("운명 걸기 사용함", "fateGambleUsed=true; updateFateGamble()"),
