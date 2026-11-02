@@ -519,3 +519,10 @@ test('바람 연출(실피드 템페스트): 칼바람 소리가 3번 연달아 
   assert.ok(index.includes("if(element==='wind'){showCinematicSkillEffect('gust','실피드 템페스트',1);fateSfx.playGust(0);}"), 'Wind cinematic must play the gust');
   assert.ok(index.includes("if(element!=='water'&&element!=='wind')sfx('attack',element,3);"), 'Wind must not also play the generic attack sound');
 });
+
+test('배경음악: 최후의 발악이 시작되면 각성 BGM으로 크로스페이드한다', () => {
+  const html = require('node:fs').readFileSync(require('node:path').join(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes("awakening:new Audio('assets/audio/bgm-awakening.mp3')"), 'Awakening track must be loaded');
+  assert.ok(require('node:fs').existsSync(require('node:path').join(__dirname, '../../dist/assets/audio/bgm-awakening.mp3')), 'Awakening mp3 must be shipped');
+  assert.ok(html.includes('if(active){switchToAwakeningBgm();'), 'Desperation start must switch the BGM');
+});
