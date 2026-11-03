@@ -55,9 +55,20 @@ test('저장: 항상 cardIds를 함께 저장하고 불러올 때 현재 목록�
   assert.ok(html.includes('remapSavedByCardIds(saved,COLLECTION_CARD_IDS)'), 'Loading must realign saved data by cardId');
 });
 
-test('경제: 수호신 선불 100, 약자멸시 패배·기권·이탈 200', () => {
-  assert.ok(html.includes('const GUARDIAN_COST=100,VICTORY_STEAL=200;'), 'Guardian cost and victory steal are tuned together');
+test('경제: 정상 수호신 선택은 무료, 약자멸시 패배·기권·이탈은 200', () => {
+  assert.ok(html.includes('const GUARDIAN_COST=0,VICTORY_STEAL=200;'), 'Guardian selection must never lock the normal battle path behind currency');
   assert.ok(html.includes('const CHALLENGE_LOSS_COST = 200;'), 'Challenge loss must be a single named constant');
+});
+
+test('수호신 선택: 최초 선택 화면과 프로필에 인물 대신 전용 문양을 표시한다', () => {
+  const sigils = ['zeus-sigil-v1.png', 'poseidon-sigil-v1.png', 'hades-sigil-v1.png', 'athena-sigil-v1.png'];
+  for (const file of sigils) {
+    assert.ok(html.includes(`assets/guardians/${file}`), `${file} must be connected`);
+    assert.ok(fs.existsSync(path.resolve(__dirname, '../../dist/assets/guardians', file)), `${file} must be shipped`);
+  }
+  assert.ok(html.includes('.gs-jujak .gs-face::before') && html.includes('.gs-baekho .gs-face::before'), 'Initial guardian choices must render sigils');
+  assert.ok(html.includes("avatar.innerHTML=challenge?'약':'<img src=\"'+GUARDIANS[id].sigil"), 'Selected guardian profile must keep the same sigil');
+  assert.ok(html.includes("ghost.innerHTML='<img src=\"'+GUARDIANS[id].sigil"), 'Selection flight must carry the sigil into the profile');
 });
 
 test('경제: 기권은 패배(finish)로 합쳐 처리하고 별도 전달분을 두지 않는다', () => {

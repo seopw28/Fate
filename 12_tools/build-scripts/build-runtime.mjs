@@ -12,7 +12,8 @@ await Promise.all([
   copyFile(resolve(root, '04_game-engine/src/effects.js'), resolve(output, 'effects.js')),
   copyFile(resolve(root, '05_game-client/battle/engine-adapter.js'), resolve(output, 'engine-adapter.js')),
   copyFile(resolve(root, '05_game-client/battle/sfx-variety.js'), resolve(output, 'sfx-variety.js')),
-  copyFile(resolve(root, '05_game-client/battle/attack-motions.js'), resolve(output, 'attack-motions.js'))
+  copyFile(resolve(root, '05_game-client/battle/attack-motions.js'), resolve(output, 'attack-motions.js')),
+  copyFile(resolve(root, '05_game-client/battle/spell-cinematics.js'), resolve(output, 'spell-cinematics.js'))
 ]);
 const cardSet = JSON.parse(await readFile(resolve(root, '03_card-data/sets/core-set.json'), 'utf8'));
 const characterExpansions = JSON.parse(await readFile(resolve(root, '03_card-data/sets/character-expansions.json'), 'utf8'));

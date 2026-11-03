@@ -61,6 +61,76 @@
       "reducedMotion": "중앙에 청백색 번개 실루엣과 피해 문구를 500ms 표시"
     },
     {
+      "effectId": "skill.fire-meteor",
+      "semantic": "damage",
+      "delivery": "hybrid",
+      "durationMs": 1650,
+      "palette": ["#fff3b0", "#ff7a32", "#c72d35"],
+      "motion": { "entry": "상단에서 운석 핵이 급강하", "peak": "중앙 충돌과 화염 충격파 발생", "exit": "불꽃 고리와 불씨가 확산하며 소멸" },
+      "performance": { "maxParticles": 18, "maxTextureSize": 2048, "maxBytes": 2097152 },
+      "reducedMotion": "중앙에 화염 운석 실루엣과 기술명을 500ms 표시"
+    },
+    {
+      "effectId": "skill.frost-nova",
+      "semantic": "status",
+      "delivery": "hybrid",
+      "durationMs": 1650,
+      "palette": ["#ffffff", "#8be8ff", "#4b83d8"],
+      "motion": { "entry": "작은 냉기 핵이 중앙에 응축", "peak": "여섯 방향 얼음창과 눈보라 고리가 폭발", "exit": "결정 파편과 서리가 바깥으로 흩어짐" },
+      "performance": { "maxParticles": 20, "maxTextureSize": 2048, "maxBytes": 2097152 },
+      "reducedMotion": "중앙에 얼음 결정 실루엣과 기술명을 500ms 표시"
+    },
+    {
+      "effectId": "skill.earth-rupture",
+      "semantic": "damage",
+      "delivery": "hybrid",
+      "durationMs": 1650,
+      "palette": ["#ffe092", "#b9823f", "#403329"],
+      "motion": { "entry": "바닥 균열에서 암석이 솟기 시작", "peak": "거석 군집과 황금 충격파가 전개", "exit": "암석이 가라앉고 먼지 고리가 소멸" },
+      "performance": { "maxParticles": 20, "maxTextureSize": 2048, "maxBytes": 2097152 },
+      "reducedMotion": "중앙에 황금 균열 실루엣과 기술명을 500ms 표시"
+    },
+    {
+      "effectId": "skill.black-eclipse",
+      "semantic": "damage",
+      "delivery": "hybrid",
+      "durationMs": 1650,
+      "palette": ["#f05acb", "#6f2b8f", "#171020"],
+      "motion": { "entry": "암흑 핵과 검은 불꽃이 중앙에 응축", "peak": "일식 고리와 일곱 갈래 불꽃이 회전", "exit": "불꽃 꼬리와 파편이 안쪽으로 붕괴" },
+      "performance": { "maxParticles": 18, "maxTextureSize": 2048, "maxBytes": 2097152 },
+      "reducedMotion": "중앙에 암흑 일식 실루엣과 기술명을 500ms 표시"
+    },
+    {
+      "effectId": "spell.life-bloom",
+      "semantic": "heal",
+      "delivery": "hybrid",
+      "durationMs": 1650,
+      "palette": ["#fff4cb", "#7dffd2", "#4bbfae"],
+      "motion": { "entry": "작은 생명 핵에서 연꽃 봉오리가 상승", "peak": "광휘 꽃잎과 물결 고리가 완전히 개화", "exit": "잎과 물방울이 위로 흩어지며 소멸" },
+      "performance": { "maxParticles": 20, "maxTextureSize": 2048, "maxBytes": 2097152 },
+      "reducedMotion": "중앙에 생명 연꽃 실루엣과 주문명을 500ms 표시"
+    },
+    {
+      "effectId": "spell.arcane-revelation",
+      "semantic": "buff",
+      "delivery": "hybrid",
+      "durationMs": 1650,
+      "palette": ["#e8d7ff", "#b98cff", "#6adfff"],
+      "motion": { "entry": "마력 결정 주위에 세 겹의 고리가 형성", "peak": "고리와 프리즘 광선이 서로 반대 방향으로 회전", "exit": "결정 파편과 고리가 빛으로 분해" },
+      "performance": { "maxParticles": 18, "maxTextureSize": 2048, "maxBytes": 2097152 },
+      "reducedMotion": "중앙에 아케인 결정과 주문명을 500ms 표시"
+    },
+    {
+      "effectId": "spell.void-gate",
+      "semantic": "status",
+      "delivery": "hybrid",
+      "durationMs": 1650,
+      "palette": ["#f25dff", "#7c35ba", "#171126"],
+      "motion": { "entry": "세로 균열이 열리며 보이드 테두리가 확장", "peak": "포털 내부와 파편이 안쪽으로 회전", "exit": "포털이 가는 균열로 닫히며 소멸" },
+      "performance": { "maxParticles": 18, "maxTextureSize": 2048, "maxBytes": 2097152 },
+      "reducedMotion": "중앙에 보이드 게이트 실루엣과 주문명을 500ms 표시"
+    },
+    {
       "effectId": "ultimate.sakura-storm",
       "semantic": "buff",
       "delivery": "hybrid",

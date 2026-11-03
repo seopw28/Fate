@@ -52,6 +52,62 @@
       "variants": ["approved/lightning-strike-v1.png", "approved/lightning-strike-v2.png", "approved/lightning-strike-v3.png"]
     },
     {
+      "effectId": "skill.fire-meteor",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showCinematicSkillEffect:fire",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/fire-meteor-v1.png"
+    },
+    {
+      "effectId": "skill.frost-nova",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showCinematicSkillEffect:frost",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/frost-nova-v1.png"
+    },
+    {
+      "effectId": "skill.earth-rupture",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showCinematicSkillEffect:earth",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/earth-rupture-v1.png"
+    },
+    {
+      "effectId": "skill.black-eclipse",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showCinematicSkillEffect:eclipse",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/black-eclipse-v1.png"
+    },
+    {
+      "effectId": "spell.life-bloom",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showSpellCinematicEffect:life",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/life-bloom-v1.png"
+    },
+    {
+      "effectId": "spell.arcane-revelation",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showSpellCinematicEffect:arcane",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/arcane-revelation-v1.png"
+    },
+    {
+      "effectId": "spell.void-gate",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showSpellCinematicEffect:void",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/void-gate-v1.png"
+    },
+    {
       "effectId": "ultimate.sakura-storm",
       "status": "approved",
       "implementation": "image+css",
