@@ -2,10 +2,39 @@
 
 > **Codex(`image_gen`) 사용 한도가 회복되면 가장 먼저 이 문서의 P0부터 만든다.**
 > Claude는 이미지를 생성할 수 없다. 코드로 그린 SVG 일러스트는 품질이 낮아 쓰지 않는다.
-> 마지막 확인: 2026-11-02 (사용자가 준 이미지 14장으로 P0 마법 3장 교체, Glacial Chain 숨김, 새 마법 10장 `arcana.*` 추가). 이전 기록상 Codex 한도 해제 시점은 2026-11-04 15:35.
+> 마지막 확인: 2026-11-03 (P0를 **보호막 이펙트**로 지정 — 사용자 요청 최우선. 그림 없는 마법·함정은 2026-11-02 사용자 제공 이미지로 완료). 이전 기록상 Codex 한도 해제 시점은 2026-11-04 15:35.
 > 이 큐는 `CLAUDE.md`, `06_assets/README.md`, `02_game-design/game-rules/09-decisions-and-open-issues.md`, `npm run validate:cards`의 경고에서 가리킨다.
 
-## P0 — 일러스트 없는 마법·함정 · 0장 (완료)
+## P0 — 보호막 이펙트 (최우선 · 2026-11-03 사용자 요청)
+
+**왜**: 챔프끼리 공격이 보호막에 막히면 화면에 아무 일도 없어 보여 "이펙트도 데미지도 안 들어간다"는 버그로 인식됐다(자동 전투 158회 중 15회). 2026-11-03에 코드로 임시 연출(카드 번쩍임·흔들림 + `보호막이 막음 · 피해 0` 글자)을 넣었지만, **보호막이 있다 / 깨졌다**가 한눈에 보이는 전용 이미지가 필요하다.
+
+| 만들 것 | 쓰임 | 만들 파일 |
+|---|---|---|
+| ① 보호막 깨짐 (메인) | 공격이 보호막에 막히는 순간 카드 위에 0.4~0.6초 겹쳐 터지는 이펙트 | `dist/assets/vfx/shield/shield-break-v1.png` (투명 배경 PNG) |
+| ② 보호막 유지 표시 | 보호막이 있는 동안 카드 테두리를 감싸는 은은한 막 — 지금은 금색 box-shadow뿐이라 잘 안 보임 | `dist/assets/vfx/shield/shield-aura-v1.png` (투명 배경, 카드 비율 세로 2:3) |
+| ③ (선택) 절대방어 | 궁극기 절대방어 발동 시 아군 전체에 씌우는 더 강한 버전 | `dist/assets/vfx/shield/shield-absolute-v1.png` |
+
+프롬프트 (①, ②·③은 Subject만 바꿔서):
+```
+Use case: game VFX sprite
+Asset type: premium fantasy TCG combat effect overlay, transparent background, centered, square
+Primary request: a magical barrier shattering as it blocks an attack
+Subject: a translucent hexagonal-cell golden-amber energy shield bursting into glowing shards at the moment of impact, bright white flash at the center, cracks radiating outward
+Style/medium: polished high-detail fantasy game VFX, painterly glow, readable at small card size (~150px)
+Composition/framing: effect centered, fills ~80% of frame, edges fade to fully transparent, no hard cutoff
+Lighting/mood: sharp, protective, satisfying impact
+Color palette: warm gold and amber with white-hot core (matches in-game shield color #d6a86a)
+Constraints: transparent background (alpha), no characters, no text, no letters, no numbers, no logos, no watermark, no card border, no UI
+```
+②: `Subject: a thin, softly glowing golden hexagon-patterned barrier wrapping the edges of a portrait card, center fully transparent so the card art shows through` (세로 2:3).
+
+반영 절차
+1. PNG를 위 경로에 저장(투명 배경 유지 — webp로 바꿀 때 `cwebp -q 88 -exact -alpha_q 100`).
+2. 코드 위치: `dist/index.html`의 `shieldBreakFx(target)`(보호막이 피해를 막을 때 호출, 지금은 `showSkillEffect('shield',…)` + 흔들림) → ① 이미지를 카드 중심에 겹쳐 scale 0.6→1.15, opacity 1→0 으로 터뜨린다. 보호막을 부여하는 곳(`dataset.shield='true'` + `boxShadow`)에 ② 오버레이를 붙이고, `damageUnit`에서 `shield='false'`가 될 때 떼어낸다.
+3. `npm run qa:battle`(보호막 연출 검사 포함) → `npm run qa:overflow` → 스크린샷으로 확인.
+
+## (완료) 일러스트 없는 마법·함정
 
 > 2026-11-02: 사용자 제공 이미지로 모두 해결 — 치유의 샘·진홍의 화염구·화염 인장·빙결 사슬(숨김 해제), 함정 매복 지뢰·역류 장벽·최후의 저항. 영문 카드명은 한글로 변경.
 
