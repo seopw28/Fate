@@ -21,6 +21,7 @@
 - Fate 작업을 시작·종료할 때 사용자에게 이 미해결 큐를 한 번 상기시킨다. Claude는 이미지를 생성할 수 없고, 코드로 그린 SVG 일러스트는 쓰지 않는다.
 
 ## 여러 세션 동시 작업 안전 규칙 (필수)
+- **저장소**: Fate는 독립 git 저장소다 (`github.com/seopw28/Fate`, private, `origin`). 2026-11-03 회사 저장소(product_analysis)에서 이력째 분리했다. 경로는 저장소 루트 기준(`dist/index.html`, `Fate/` 접두사 없음). 원격 푸시는 SSH(`git@github.com:seopw28/Fate.git`)를 쓴다 — HTTPS는 큰 팩에서 끊긴다.
 여러 Claude 세션이 같은 `dist/index.html`을 동시에 고치고 커밋한다. 한 세션의 실수가 다른 세션들의 미커밋 작업을 지운 사고가 있었다 (2026-11-03: 파일 0바이트 덮어쓰기, 남의 작업이 섞인 커밋, 이미 커밋된 수정을 되돌린 커밋).
 - **자동 보호 훅**: `.claude/settings.json`의 `12_tools/guard/index-guard.py`가 모든 도구 실행 전에 index.html을 `~/.cache/fate/index-backups/`에 백업하고, 실행 후 파일이 사라지거나·200KB 미만·직전 백업의 절반 미만·`</html>` 잘림이면 즉시 복원하고 경고한다. 경고가 뜨면 방금 명령을 멈추고 원인부터 확인한다. 일부러 크게 줄일 때만 `FATE_INDEX_GUARD=off`.
 - **파일 쓰기**: 스크립트로 고칠 때는 `cp` 백업 → 끝까지 읽기 → 메모리에서 변환 → 임시 파일에 쓰기 → `os.replace` 순서만 쓴다. `open(f,'w').write(g(open(f).read()))`처럼 같은 파일을 한 줄에서 읽고 쓰는 코드는 금지 (쓰기 열기가 먼저 실행돼 파일이 비워진다).

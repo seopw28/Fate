@@ -1,8 +1,25 @@
-# 저장소 최상위 .gitignore의 `*.json`(대용량 데이터·자격증명 차단용)이 Fate의 원본 데이터까지 막고 있었다.
-# 카드 데이터(03_card-data/sets/*.json)·스키마·package.json·효과 레지스트리는 원본이므로 Fate 안에서는 다시 추적한다.
-!*.json
-# 자격증명은 계속 제외한다
+# Fate는 독립 저장소다 (github.com/seopw28/Fate, private · 2026-11-03 회사 저장소 product_analysis에서 이력째 분리)
+# 예전에는 상위 저장소의 `*.json` 규칙 때문에 카드 원본 JSON 등이 빠졌다 — 이제 JSON은 모두 추적한다.
+
+# 자격증명은 절대 커밋하지 않는다
 *service_account*.json
 *credentials*.json
+.env
+.env.*
+
 # 로컬 전용 설정
 .claude/settings.local.json
+
+# 파이썬·OS·편집기 부산물
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+.idea/
+.vscode/settings.json
+node_modules/
+
+# 스크립트가 쓰는 임시 파일 (임시 파일 → os.replace 규칙)
+*.tmp
+*.tmp-*
