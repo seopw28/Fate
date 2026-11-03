@@ -1,0 +1,71 @@
+{
+  "registryVersion": 1,
+  "effects": [
+    {
+      "effectId": "skill.heal",
+      "status": "legacy",
+      "implementation": "css",
+      "runtimeHook": "showSkillEffect:heal",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": null
+    },
+    {
+      "effectId": "skill.shield",
+      "status": "legacy",
+      "implementation": "css",
+      "runtimeHook": "showSkillEffect:shield",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": null
+    },
+    {
+      "effectId": "skill.burn",
+      "status": "legacy",
+      "implementation": "css",
+      "runtimeHook": "showSkillEffect:burn",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": null
+    },
+    {
+      "effectId": "skill.rush",
+      "status": "legacy",
+      "implementation": "css",
+      "runtimeHook": "showSkillEffect:rush",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": null
+    },
+    {
+      "effectId": "skill.gust",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showCinematicSkillEffect:gust",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/wind-gust-v1.png",
+      "variants": ["approved/wind-gust-v1.png", "approved/wind-gust-v2.png", "approved/wind-gust-v3.png"]
+    },
+    {
+      "effectId": "skill.lightning",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showCinematicSkillEffect:lightning",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/lightning-strike-v1.png",
+      "variants": ["approved/lightning-strike-v1.png", "approved/lightning-strike-v2.png", "approved/lightning-strike-v3.png"]
+    },
+    {
+      "effectId": "ultimate.sakura-storm",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showUltimateCutscene:sakura",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/ultimate-sakura-storm-v1.png"
+    },
+    {
+      "effectId": "ultimate.lightning-flow",
+      "status": "approved",
+      "implementation": "image+css",
+      "runtimeHook": "showUltimateCutscene:lightning-flow",
+      "spec": "specs/skill-effects.json",
+      "approvedAsset": "approved/ultimate-lightning-flow-v1.png"
+    }
+  ]
+}

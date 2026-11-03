@@ -1,0 +1,84 @@
+{
+  "effects": [
+    {
+      "effectId": "skill.heal",
+      "semantic": "heal",
+      "delivery": "hybrid",
+      "durationMs": 900,
+      "palette": ["#72f4d1", "#baffea", "#ffffff"],
+      "motion": { "entry": "target center에서 작은 물방울과 링 생성", "peak": "상승하는 빛과 십자 문양으로 회복 확정", "exit": "위로 흩어지며 투명화" },
+      "performance": { "maxParticles": 16, "maxTextureSize": 512, "maxBytes": 307200 },
+      "reducedMotion": "청록색 링 1회 확대와 +HP 숫자만 표시"
+    },
+    {
+      "effectId": "skill.shield",
+      "semantic": "shield",
+      "delivery": "hybrid",
+      "durationMs": 1000,
+      "palette": ["#ffd477", "#fff0b0", "#7c5c24"],
+      "motion": { "entry": "육각 조각이 대상 앞에 모임", "peak": "방패 면이 잠기며 충격을 흡수", "exit": "금빛 선으로 수축" },
+      "performance": { "maxParticles": 18, "maxTextureSize": 512, "maxBytes": 307200 },
+      "reducedMotion": "금빛 육각 테두리와 방어 문구를 450ms 표시"
+    },
+    {
+      "effectId": "skill.burn",
+      "semantic": "status",
+      "delivery": "hybrid",
+      "durationMs": 850,
+      "palette": ["#ff713b", "#ffeb8a", "#c52c40"],
+      "motion": { "entry": "대상 하단에서 불씨 점화", "peak": "위로 휘는 불꽃 세 갈래", "exit": "작은 잿가루로 소멸" },
+      "performance": { "maxParticles": 20, "maxTextureSize": 512, "maxBytes": 358400 },
+      "reducedMotion": "주황색 외곽선과 화상 아이콘을 500ms 표시"
+    },
+    {
+      "effectId": "skill.rush",
+      "semantic": "buff",
+      "delivery": "procedural",
+      "durationMs": 700,
+      "palette": ["#86f5cb", "#caffed", "#3cae8b"],
+      "motion": { "entry": "왼쪽 뒤에서 속도선 진입", "peak": "대상 외곽을 한 바퀴 회전", "exit": "공격 방향으로 빠르게 이탈" },
+      "performance": { "maxParticles": 12, "maxTextureSize": 256, "maxBytes": 102400 },
+      "reducedMotion": "민트색 방향선과 돌진 문구를 350ms 표시"
+    },
+    {
+      "effectId": "skill.gust",
+      "semantic": "buff",
+      "delivery": "hybrid",
+      "durationMs": 1000,
+      "palette": ["#72f2bd", "#dffff4", "#42b8bc"],
+      "motion": { "entry": "화면 중앙에서 작은 바람핵이 열림", "peak": "카드 약 3배 크기의 회오리가 한 바퀴 크게 회전", "exit": "바깥 바람띠부터 흩어지며 투명화" },
+      "performance": { "maxParticles": 18, "maxTextureSize": 2048, "maxBytes": 2097152 },
+      "reducedMotion": "중앙에 민트색 회오리 실루엣과 돌풍 문구를 500ms 표시"
+    },
+    {
+      "effectId": "skill.lightning",
+      "semantic": "damage",
+      "delivery": "hybrid",
+      "durationMs": 1000,
+      "palette": ["#f4fbff", "#74c9ff", "#746cff"],
+      "motion": { "entry": "화면 상단에서 번개 줄기가 빠르게 드러남", "peak": "중앙 충돌점에서 백색 섬광과 충격파 발생", "exit": "잔광과 작은 전기 가지가 서서히 소멸" },
+      "performance": { "maxParticles": 14, "maxTextureSize": 2048, "maxBytes": 1572864 },
+      "reducedMotion": "중앙에 청백색 번개 실루엣과 피해 문구를 500ms 표시"
+    },
+    {
+      "effectId": "ultimate.sakura-storm",
+      "semantic": "buff",
+      "delivery": "hybrid",
+      "durationMs": 2200,
+      "palette": ["#fff1f6", "#ff8fbd", "#d84183"],
+      "motion": { "entry": "화면 모서리에서 꽃잎과 바람줄기가 유입", "peak": "전 화면을 감싸는 벚꽃 나선과 캐릭터 컷인", "exit": "큰 전경 꽃잎이 화면 밖으로 빠지며 소멸" },
+      "performance": { "maxParticles": 32, "maxTextureSize": 2048, "maxBytes": 2097152 },
+      "reducedMotion": "화면 테두리에 벚꽃 프레임과 궁극기 제목을 900ms 표시"
+    },
+    {
+      "effectId": "ultimate.lightning-flow",
+      "semantic": "damage",
+      "delivery": "hybrid",
+      "durationMs": 2200,
+      "palette": ["#f5fdff", "#55cfff", "#6d58ff"],
+      "motion": { "entry": "네 모서리에서 전류가 중앙으로 흐름", "peak": "전 화면 전기망과 캐릭터 컷인 뒤 백색 섬광", "exit": "가는 잔류 전류부터 순차 소멸" },
+      "performance": { "maxParticles": 28, "maxTextureSize": 2048, "maxBytes": 2097152 },
+      "reducedMotion": "화면 테두리에 청백색 전류 프레임과 궁극기 제목을 900ms 표시"
+    }
+  ]
+}

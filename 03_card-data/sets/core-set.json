@@ -1,0 +1,867 @@
+{
+  "setId": "primal-core-v1",
+  "setVersion": 1,
+  "cards": [
+    {
+      "schemaVersion": 1,
+      "cardId": "core.estelle-frostblade",
+      "nameKey": "card.estelle_frostblade",
+      "displayName": "빙결검 에스텔",
+      "cardType": "champion",
+      "cost": 3,
+      "element": "ice",
+      "rarity": "common",
+      "stats": {
+        "attack": 5,
+        "health": 3
+      },
+      "effects": [],
+      "assetId": "characters/collected/sdaca-estelle.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "character_chat"
+        ],
+        "characterId": "estelle"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.marie-waveblade",
+      "nameKey": "card.marie_waveblade",
+      "displayName": "파도검 마리",
+      "cardType": "champion",
+      "cost": 3,
+      "element": "water",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 5
+      },
+      "effects": [],
+      "assetId": "characters/collected/sdaca-marie.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "character_chat"
+        ],
+        "characterId": "marie"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.flora-fire-professor",
+      "nameKey": "card.flora_fire_professor",
+      "displayName": "화염교수 플로라",
+      "cardType": "champion",
+      "cost": 4,
+      "element": "wind",
+      "rarity": "common",
+      "stats": {
+        "attack": 6,
+        "health": 4
+      },
+      "effects": [],
+      "assetId": "characters/collected/sdaca-flora.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "character_chat"
+        ],
+        "characterId": "flora"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.noel-headmaster",
+      "nameKey": "card.noel_headmaster",
+      "displayName": "교장 노엘",
+      "cardType": "champion",
+      "cost": 6,
+      "element": "wind",
+      "rarity": "rare",
+      "stats": {
+        "attack": 7,
+        "health": 8
+      },
+      "effects": [],
+      "assetId": "characters/collected/hero-noel.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "character_chat",
+          "summon"
+        ],
+        "characterId": "noel"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.hwaran-inferno",
+      "nameKey": "card.hwaran_inferno",
+      "displayName": "폭염의 화란",
+      "cardType": "champion",
+      "cost": 4,
+      "element": "fire",
+      "rarity": "common",
+      "stats": {
+        "attack": 6,
+        "health": 3
+      },
+      "effects": [],
+      "assetId": "characters/collected/hero-hwaran.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "character_chat"
+        ],
+        "characterId": "hwaran"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.aria-siren",
+      "nameKey": "card.aria_siren",
+      "displayName": "사이렌 아리아",
+      "cardType": "champion",
+      "cost": 4,
+      "element": "neutral",
+      "rarity": "common",
+      "stats": {
+        "attack": 5,
+        "health": 5
+      },
+      "effects": [],
+      "assetId": "characters/collected/hero-aria.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "character_chat"
+        ],
+        "characterId": "aria"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.estelle-saint",
+      "nameKey": "card.estelle_saint",
+      "displayName": "성녀 에스텔",
+      "cardType": "champion",
+      "cost": 5,
+      "element": "earth",
+      "rarity": "rare",
+      "stats": {
+        "attack": 4,
+        "health": 9
+      },
+      "effects": [],
+      "assetId": "characters/collected/heliotrope-estelle.png",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "character_chat",
+          "summon"
+        ],
+        "characterId": "estelle"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.seraphina",
+      "nameKey": "card.seraphina",
+      "displayName": "세라피나",
+      "cardType": "champion",
+      "cost": 4,
+      "element": "thunder",
+      "rarity": "legendary",
+      "stats": {
+        "attack": 5,
+        "health": 6
+      },
+      "effects": [],
+      "assetId": "characters/collected/heliotrope-seraphina.png",
+      "deckLimit": 1,
+      "acquisition": {
+        "sources": [
+          "character_chat",
+          "summon"
+        ],
+        "characterId": "seraphina"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.ophelia",
+      "nameKey": "card.ophelia",
+      "displayName": "오필리아",
+      "cardType": "champion",
+      "cost": 3,
+      "element": "wind",
+      "rarity": "common",
+      "stats": {
+        "attack": 5,
+        "health": 4
+      },
+      "effects": [],
+      "assetId": "characters/collected/heliotrope-ophelia.png",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "character_chat"
+        ],
+        "characterId": "ophelia"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.spring-of-restoration",
+      "nameKey": "card.spring_of_restoration",
+      "displayName": "치유의 샘",
+      "cardType": "spell",
+      "cost": 2,
+      "element": "water",
+      "rarity": "common",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "heal",
+          "trigger": "next_round_start",
+          "target": "weakest_ally",
+          "amount": 4,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/spring-of-restoration.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.crimson-bolt",
+      "nameKey": "card.crimson_bolt",
+      "displayName": "진홍의 화염구",
+      "cardType": "spell",
+      "cost": 3,
+      "element": "fire",
+      "rarity": "common",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "damage",
+          "trigger": "next_round_start",
+          "target": "enemy_hero",
+          "amount": 6,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/crimson-bolt.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.frozen-chain",
+      "nameKey": "card.frozen_chain",
+      "displayName": "빙결 사슬",
+      "cardType": "spell",
+      "cost": 3,
+      "element": "ice",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "damage",
+          "trigger": "next_round_start",
+          "target": "strongest_enemy",
+          "amount": 3,
+          "duration": "instant"
+        },
+        {
+          "effectId": "attack_down",
+          "trigger": "next_round_start",
+          "target": "strongest_enemy",
+          "amount": 1,
+          "duration": "match"
+        }
+      ],
+      "assetId": "spells/generated/frozen-chain.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon",
+          "craft"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.fire-inscription",
+      "nameKey": "card.fire_inscription",
+      "displayName": "화염 인장",
+      "cardType": "spell",
+      "cost": 2,
+      "element": "fire",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "buff",
+          "trigger": "next_round_start",
+          "target": "weakest_ally",
+          "amount": 2,
+          "duration": "match"
+        }
+      ],
+      "assetId": "spells/generated/fire-inscription.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon",
+          "craft"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.ambush-mine",
+      "nameKey": "card.ambush_mine",
+      "displayName": "매복 지뢰",
+      "cardType": "trap",
+      "cost": 2,
+      "element": "earth",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "damage",
+          "trigger": "on_enemy_summon",
+          "target": "enemy",
+          "amount": 4,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "traps/generated/ambush-mine.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon",
+          "craft"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.counter-current",
+      "nameKey": "card.counter_current",
+      "displayName": "역류 장벽",
+      "cardType": "trap",
+      "cost": 2,
+      "element": "water",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "prevent_damage",
+          "trigger": "on_hero_attacked",
+          "target": "none",
+          "duration": "instant"
+        },
+        {
+          "effectId": "damage",
+          "trigger": "on_hero_attacked",
+          "target": "enemy",
+          "amount": 3,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "traps/generated/counter-current.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon",
+          "craft"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.last-stand",
+      "nameKey": "card.last_stand",
+      "displayName": "최후의 저항",
+      "cardType": "trap",
+      "cost": 2,
+      "element": "wind",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "buff",
+          "trigger": "on_field_disadvantage",
+          "target": "lone_ally",
+          "amount": 5,
+          "condition": {
+            "kind": "field_count",
+            "allyEquals": 1,
+            "enemyAtLeast": 3
+          },
+          "duration": "match"
+        }
+      ],
+      "assetId": "traps/generated/last-stand.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon",
+          "craft"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.meteor-fall",
+      "displayName": "메테오 폴",
+      "nameKey": "card.tower_meteor_fall",
+      "cardType": "spell",
+      "cost": 6,
+      "element": "fire",
+      "rarity": "legendary",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "board_damage",
+          "trigger": "next_round_start",
+          "target": "all_units",
+          "amount": 7,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/meteor-fall.png",
+      "deckLimit": 1,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.amaterasu",
+      "displayName": "아마테라스",
+      "nameKey": "card.tower_amaterasu",
+      "cardType": "spell",
+      "cost": 5,
+      "element": "fire",
+      "rarity": "legendary",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "black_flame",
+          "trigger": "next_round_start",
+          "target": "strongest_enemy",
+          "amount": 3,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/amaterasu.png",
+      "deckLimit": 1,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.frost-nova",
+      "displayName": "프로스트 노바",
+      "nameKey": "card.tower_frost_nova",
+      "cardType": "spell",
+      "cost": 4,
+      "element": "ice",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "frost_nova",
+          "trigger": "next_round_start",
+          "target": "all_enemies",
+          "amount": 3,
+          "duration": "round"
+        }
+      ],
+      "assetId": "spells/generated/frost-nova.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.arcane-insight",
+      "displayName": "아케인 인사이트",
+      "nameKey": "card.tower_arcane_insight",
+      "cardType": "spell",
+      "cost": 2,
+      "element": "water",
+      "rarity": "common",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "draw",
+          "trigger": "next_round_start",
+          "target": "self",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/arcane-insight.png",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.purification",
+      "displayName": "세이크리드 퍼지",
+      "nameKey": "card.tower_purification",
+      "cardType": "spell",
+      "cost": 3,
+      "element": "earth",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "cleanse",
+          "trigger": "next_round_start",
+          "target": "all_allies",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/sacred-purge.png",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.void-recall",
+      "displayName": "보이드 리콜",
+      "nameKey": "card.tower_void_recall",
+      "cardType": "spell",
+      "cost": 4,
+      "element": "wind",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "bounce",
+          "trigger": "next_round_start",
+          "target": "strongest_enemy",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/void-recall.png",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.mana-overflow",
+      "displayName": "마나 오버플로",
+      "nameKey": "card.tower_mana_overflow",
+      "cardType": "spell",
+      "cost": 2,
+      "element": "neutral",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "mana_ramp",
+          "trigger": "next_round_start",
+          "target": "self",
+          "amount": 2,
+          "duration": "match"
+        }
+      ],
+      "assetId": "spells/generated/mana-overflow.png",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.soul-return",
+      "displayName": "소울 리턴",
+      "nameKey": "card.tower_soul_return",
+      "cardType": "spell",
+      "cost": 5,
+      "element": "neutral",
+      "rarity": "legendary",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "resurrect",
+          "trigger": "next_round_start",
+          "target": "last_destroyed_ally",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/soul-return.png",
+      "deckLimit": 1,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.summon-nullifier",
+      "displayName": "서먼 널리파이어",
+      "nameKey": "card.tower_summon_nullifier",
+      "cardType": "trap",
+      "cost": 4,
+      "element": "water",
+      "rarity": "legendary",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "negate_summon",
+          "trigger": "on_enemy_summon",
+          "target": "enemy",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "traps/generated/summon-nullifier.png",
+      "deckLimit": 1,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "chronicle.time-warden",
+      "releaseState": "prototype",
+      "nameKey": "card.time_warden",
+      "displayName": "시간의 수호자",
+      "cardType": "champion",
+      "cost": 4,
+      "element": "earth",
+      "rarity": "rare",
+      "collectible": true,
+      "variantOf": null,
+      "stats": {
+        "attack": 3,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "add_counter",
+          "trigger": "round_start",
+          "target": "self",
+          "counterId": "time",
+          "amount": 1,
+          "duration": "match"
+        },
+        {
+          "effectId": "transform",
+          "trigger": "round_start",
+          "target": "self",
+          "cardRef": "chronicle.time-warden-awakened",
+          "condition": {
+            "kind": "counter_at_least",
+            "counterId": "time",
+            "value": 3
+          },
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/prototype/time-warden",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "character_chat",
+          "event"
+        ],
+        "characterId": "time-warden"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "chronicle.time-warden-awakened",
+      "releaseState": "prototype",
+      "nameKey": "card.time_warden_awakened",
+      "displayName": "영겁의 수호자",
+      "cardType": "champion",
+      "cost": 4,
+      "element": "earth",
+      "rarity": "rare",
+      "collectible": false,
+      "variantOf": "chronicle.time-warden",
+      "stats": {
+        "attack": 7,
+        "health": 9
+      },
+      "effects": [],
+      "assetId": "characters/prototype/time-warden-awakened",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "event"
+        ],
+        "characterId": "time-warden"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "chronicle.bloodbound-heroine",
+      "releaseState": "prototype",
+      "nameKey": "card.bloodbound_heroine",
+      "displayName": "피의 서약자",
+      "cardType": "champion",
+      "cost": 3,
+      "element": "fire",
+      "rarity": "rare",
+      "collectible": true,
+      "variantOf": null,
+      "stats": {
+        "attack": 4,
+        "health": 10
+      },
+      "effects": [
+        {
+          "effectId": "transform",
+          "trigger": "after_damage",
+          "target": "self",
+          "cardRef": "chronicle.bloodbound-heroine-awakened",
+          "condition": {
+            "kind": "health_at_most_ratio",
+            "value": 0.5
+          },
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/prototype/bloodbound-heroine",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "character_chat",
+          "event"
+        ],
+        "characterId": "bloodbound-heroine"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "chronicle.bloodbound-heroine-awakened",
+      "releaseState": "prototype",
+      "nameKey": "card.bloodbound_heroine_awakened",
+      "displayName": "각성한 피의 서약자",
+      "cardType": "champion",
+      "cost": 3,
+      "element": "fire",
+      "rarity": "rare",
+      "collectible": false,
+      "variantOf": "chronicle.bloodbound-heroine",
+      "stats": {
+        "attack": 8,
+        "health": 6
+      },
+      "effects": [],
+      "assetId": "characters/prototype/bloodbound-heroine-awakened",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "event"
+        ],
+        "characterId": "bloodbound-heroine"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "chronicle.prophecy-of-ruin",
+      "releaseState": "prototype",
+      "nameKey": "card.prophecy_of_ruin",
+      "displayName": "Omen of Ruin",
+      "cardType": "spell",
+      "cost": 7,
+      "element": "neutral",
+      "rarity": "legendary",
+      "collectible": true,
+      "variantOf": null,
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "global_destroy",
+          "trigger": "next_round_start",
+          "target": "all_champions",
+          "excludeSource": false,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/prototype/prophecy-of-ruin",
+      "deckLimit": 1,
+      "acquisition": {
+        "sources": [
+          "event",
+          "craft"
+        ],
+        "characterId": null
+      }
+    }
+  ]
+}

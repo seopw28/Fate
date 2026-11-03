@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://primal.local/schemas/card.schema.json",
+  "title": "Primal TCG Card",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "cardId", "nameKey", "displayName", "cardType", "cost", "element", "rarity", "effects", "assetId", "deckLimit", "acquisition"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "cardId": { "type": "string", "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$" },
+    "nameKey": { "type": "string", "minLength": 1 },
+    "displayName": { "type": "string", "minLength": 1 },
+    "cardType": { "enum": ["champion", "spell", "trap"] },
+    "cost": { "type": "integer", "minimum": 0, "maximum": 20 },
+    "element": { "enum": ["fire", "water", "ice", "wind", "thunder", "earth", "neutral"] },
+    "rarity": { "enum": ["common", "rare", "legendary"] },
+    "collectible": { "type": "boolean", "default": true },
+    "releaseState": { "enum": ["live", "prototype", "retired"], "default": "live" },
+    "variantOf": { "type": ["string", "null"] },
+    "stats": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["attack", "health"],
+      "properties": {
+        "attack": { "type": "integer", "minimum": 0 },
+        "health": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["effectId", "trigger", "target"],
+        "properties": {
+          "effectId": { "type": "string", "minLength": 1 },
+          "trigger": { "enum": ["on_play", "on_attack", "on_enemy_summon", "on_hero_attacked", "after_damage", "round_start", "next_round_start", "passive"] },
+          "target": { "enum": ["none", "self", "ally", "enemy", "all_allies", "all_champions", "enemy_hero", "weakest_ally", "strongest_enemy"] },
+          "amount": { "type": "integer" },
+          "duration": { "enum": ["instant", "round", "match"] },
+          "counterId": { "type": "string", "minLength": 1 },
+          "cardRef": { "type": "string", "minLength": 1 },
+          "excludeSource": { "type": "boolean" },
+          "condition": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "value"],
+            "properties": {
+              "kind": { "enum": ["counter_at_least", "health_at_most_ratio"] },
+              "counterId": { "type": "string", "minLength": 1 },
+              "value": { "type": "number", "minimum": 0 }
+            }
+          }
+        }
+      }
+    },
+    "assetId": { "type": "string", "minLength": 1 },
+    "deckLimit": { "type": "integer", "minimum": 1, "maximum": 3 },
+    "acquisition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sources"],
+      "properties": {
+        "sources": { "type": "array", "minItems": 1, "items": { "enum": ["starter", "character_chat", "summon", "event", "craft"] } },
+        "characterId": { "type": ["string", "null"] }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "cardType": { "const": "champion" } } },
+      "then": { "required": ["stats"], "properties": { "stats": { "type": "object" } } },
+      "else": { "properties": { "stats": { "type": "null" } } }
+    }
+  ]
+}

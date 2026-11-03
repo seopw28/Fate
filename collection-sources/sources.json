@@ -1,0 +1,38 @@
+{
+  "collected_at": "2026-10-30",
+  "usage_note": "Prototype assets. Verify redistribution and commercial-use rights before release.",
+  "sources": [
+    {
+      "page": "https://sdaca.pages.dev/characters",
+      "characters": [
+        {"name": "에스텔", "url": "https://mku1.uk/CC/%EC%97%90%EC%8A%A4%ED%85%94/01.webp", "file": "sdaca-estelle.webp"},
+        {"name": "마리", "url": "https://mku1.uk/CC/%EB%A7%88%EB%A6%AC/01.webp", "file": "sdaca-marie.webp"},
+        {"name": "플로라", "url": "https://mku1.uk/CC/%ED%94%8C%EB%A1%9C%EB%9D%BC/01.webp", "file": "sdaca-flora.webp"}
+      ]
+    },
+    {
+      "page": "https://housezero.knotwrtn.workers.dev/",
+      "characters": [
+        {"name": "헤이즐", "url": "https://housezero.knotwrtn.workers.dev/assets/characters/hazel-card.webp", "file": "housezero-hazel.webp"},
+        {"name": "아리아", "url": "https://housezero.knotwrtn.workers.dev/assets/characters/aria-card.webp", "file": "housezero-aria.webp"},
+        {"name": "유나", "url": "https://housezero.knotwrtn.workers.dev/assets/characters/yuna-card.webp", "file": "housezero-yuna.webp"}
+      ]
+    },
+    {
+      "page": "https://duckmon2-hero-academia.acrrodiiing.workers.dev/",
+      "characters": [
+        {"name": "노엘", "url": "https://duckmon2-hero-academia.acrrodiiing.workers.dev/images/%EB%85%B8%EC%97%98.webp", "file": "hero-noel.webp"},
+        {"name": "화란", "url": "https://duckmon2-hero-academia.acrrodiiing.workers.dev/images/%ED%99%94%EB%9E%80.webp", "file": "hero-hwaran.webp"},
+        {"name": "아리아", "url": "https://duckmon2-hero-academia.acrrodiiing.workers.dev/images/%EC%95%84%EB%A6%AC%EC%95%84.webp", "file": "hero-aria.webp"}
+      ]
+    },
+    {
+      "page": "https://fanciful-heliotrope-89c7c8.netlify.app/#people",
+      "characters": [
+        {"name": "에스텔", "url": "https://cogi7o.com/ASB/%EC%97%90%EC%8A%A4%ED%85%94/9.png", "file": "heliotrope-estelle.png"},
+        {"name": "세라피나", "url": "https://cogi7o.com/ASB/%EC%84%B8%EB%9D%BC%ED%94%BC%EB%82%98/9.png", "file": "heliotrope-seraphina.png"},
+        {"name": "오필리아", "url": "https://cogi7o.com/ASB/%EC%98%A4%ED%95%84%EB%A6%AC%EC%95%84/9.png", "file": "heliotrope-ophelia.png"}
+      ]
+    }
+  ]
+}

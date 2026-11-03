@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://primal.local/schemas/reward-granted.schema.json",
+  "title": "Character Chat Card Reward",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["eventVersion", "rewardEventId", "userId", "characterId", "conversationId", "achievementId", "cardId", "quantity", "grantedAt", "sourceVersion"],
+  "properties": {
+    "eventVersion": { "const": 1 },
+    "rewardEventId": { "type": "string", "minLength": 1 },
+    "userId": { "type": "string", "minLength": 1 },
+    "characterId": { "type": "string", "minLength": 1 },
+    "conversationId": { "type": "string", "minLength": 1 },
+    "achievementId": { "type": "string", "minLength": 1 },
+    "cardId": { "type": "string", "minLength": 1 },
+    "quantity": { "type": "integer", "minimum": 1 },
+    "grantedAt": { "type": "string", "format": "date-time" },
+    "claimedAt": { "type": ["string", "null"], "format": "date-time" },
+    "sourceVersion": { "type": "string", "minLength": 1 }
+  }
+}

@@ -1,0 +1,8 @@
+# 저장소 최상위 .gitignore의 `*.json`(대용량 데이터·자격증명 차단용)이 Fate의 원본 데이터까지 막고 있었다.
+# 카드 데이터(03_card-data/sets/*.json)·스키마·package.json·효과 레지스트리는 원본이므로 Fate 안에서는 다시 추적한다.
+!*.json
+# 자격증명은 계속 제외한다
+*service_account*.json
+*credentials*.json
+# 로컬 전용 설정
+.claude/settings.local.json

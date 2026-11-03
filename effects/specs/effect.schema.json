@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://primal.local/effects/effect.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["effectId", "semantic", "delivery", "durationMs", "palette", "motion", "performance", "reducedMotion"],
+  "properties": {
+    "effectId": { "type": "string", "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$" },
+    "semantic": { "enum": ["damage", "heal", "shield", "buff", "debuff", "status", "summon", "ultimate"] },
+    "delivery": { "enum": ["procedural", "texture", "sprite_sheet", "hybrid"] },
+    "durationMs": { "type": "integer", "minimum": 100, "maximum": 2500 },
+    "palette": { "type": "array", "minItems": 2, "maxItems": 5, "items": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" } },
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entry", "peak", "exit"],
+      "properties": {
+        "entry": { "type": "string", "minLength": 1 },
+        "peak": { "type": "string", "minLength": 1 },
+        "exit": { "type": "string", "minLength": 1 }
+      }
+    },
+    "performance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxParticles", "maxTextureSize", "maxBytes"],
+      "properties": {
+        "maxParticles": { "type": "integer", "minimum": 0, "maximum": 48 },
+        "maxTextureSize": { "type": "integer", "enum": [256, 512, 1024, 2048] },
+        "maxBytes": { "type": "integer", "minimum": 1024, "maximum": 2097152 }
+      }
+    },
+    "reducedMotion": { "type": "string", "minLength": 1 },
+    "notes": { "type": "string" }
+  }
+}
