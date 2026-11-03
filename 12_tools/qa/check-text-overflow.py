@@ -104,6 +104,7 @@ STATES = [
 
 def main():
     fails = 0
+    prep_fails = 0  # 상태 준비 실패도 실패로 센다 — 조용히 건너뛰면 그 상태는 검사되지 않은 채 'OK'가 나온다
     with sync_playwright() as p:
         br = p.chromium.launch()
         for w, h in VIEWPORTS:
@@ -114,7 +115,8 @@ def main():
                 try:
                     pg.evaluate(setup)
                 except Exception as e:
-                    print(f"[{w}x{h}] 상태 '{name}' 준비 실패: {str(e)[:80]}")
+                    prep_fails += 1
+                    print(f"[{w}x{h}] 상태 '{name}' 준비 실패 (검사 못 함): {str(e)[:120]}")
                     continue
                 pg.wait_for_timeout(150)
                 res = pg.evaluate(JS)
@@ -125,7 +127,10 @@ def main():
                 pg.screenshot(path=f"/tmp/fate-overflow-{w}x{h}.png")
             pg.close()
         br.close()
-    print("OK: 넘침 없음" if not fails else f"FAIL: {fails}건")
-    sys.exit(1 if fails else 0)
+    if fails or prep_fails:
+        print(f"FAIL: 넘침 {fails}건, 상태 준비 실패 {prep_fails}건" + (" — STATES의 준비 코드가 지금 index.html과 맞는지 확인" if prep_fails else ""))
+    else:
+        print("OK: 넘침 없음")
+    sys.exit(1 if fails or prep_fails else 0)
 
 main()
