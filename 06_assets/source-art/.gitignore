@@ -1,0 +1,2 @@
+# 원본 PNG는 용량이 커서(장당 2MB 안팎) git에 올리지 않는다. 게임에는 dist/assets/**의 webp 사본을 쓴다.
+*.png
