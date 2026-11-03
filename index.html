@@ -694,6 +694,9 @@
     .border-impact { position:fixed; z-index:12; pointer-events:none; border:3px solid var(--impact-color,#7cf0c4); box-shadow:0 0 18px var(--impact-color,#7cf0c4),inset 0 0 14px color-mix(in srgb,var(--impact-color,#7cf0c4) 55%,transparent); animation:border-impact .74s cubic-bezier(.2,.75,.3,1) forwards; }
     @keyframes border-impact { 0% { opacity:0; transform:scale(.96); } 14% { opacity:1; transform:scale(1); } 100% { opacity:0; transform:scale(1.14); } }
     @media (prefers-reduced-motion: reduce) { .border-impact { animation:none; opacity:.9; } }
+    /* 수호신을 고르는 동안: 선택 창 바깥(HUD·손패·상단 등)을 검은 반투명으로 어둡게 깐다. 선택 창(310)과 사운드 버튼(330)은 그 위 */
+    body:has(.guardian-select)::after { content:''; position:fixed; inset:0; z-index:309; background:#000000b3; pointer-events:none; animation:guardian-dim-in .3s ease both; }
+    @keyframes guardian-dim-in { from { opacity:0; } to { opacity:1; } }
     /* 수호신 선택(올림포스): 십자형 대신 2×2 사분면 + 아래 약자멸시 띠. 카드 안은 가운데 정렬(인장 → 이름 → 별칭 → 능력 → 설명) */
     .guardian-select.gs-olympus { display:flex; flex-direction:column; align-items:stretch; gap:12px; }
     .guardian-select.gs-olympus .gs-heading { position:static; flex-direction:row; flex-wrap:wrap; align-items:baseline; gap:4px 14px; max-width:none; }
@@ -715,7 +718,7 @@
     .guardian-select.gs-olympus .gs-card em { display:flex; align-items:center; gap:8px; margin:0; font-size:clamp(11px,calc(var(--field-height) * .022),13px); font-weight:700; letter-spacing:.18em; color:color-mix(in srgb,var(--gc) 75%,#fff); }
     .guardian-select.gs-olympus .gs-card em::before,.guardian-select.gs-olympus .gs-card em::after { content:''; width:22px; height:1px; background:linear-gradient(90deg,transparent,var(--gc)); }
     .guardian-select.gs-olympus .gs-card em::after { transform:scaleX(-1); }
-    .guardian-select.gs-olympus .gs-power { margin-top:2px; padding:3px 12px; border:1px solid color-mix(in srgb,var(--gc) 50%,transparent); border-radius:999px; background:color-mix(in srgb,var(--gc) 14%,#0b0f16); color:color-mix(in srgb,var(--gc) 60%,#fff); font-size:clamp(11px,calc(var(--field-height) * .022),13px); font-weight:800; }
+    .guardian-select.gs-olympus .gs-power { margin-top:clamp(5px,calc(var(--field-height) * .014),10px);/* 별칭(천공의 왕)과 능력 배지 사이 작은 여백 */ padding:3px 12px; border:1px solid color-mix(in srgb,var(--gc) 50%,transparent); border-radius:999px; background:color-mix(in srgb,var(--gc) 14%,#0b0f16); color:color-mix(in srgb,var(--gc) 60%,#fff); font-size:clamp(11px,calc(var(--field-height) * .022),13px); font-weight:800; }
     .guardian-select.gs-olympus .gs-card > * { align-self:center; }
     .guardian-select.gs-olympus .gs-card .gs-desc { max-width:30em; margin:0; font-size:clamp(12px,calc(var(--field-height) * .024),15px); line-height:1.4; color:#c3ccd9; word-break:keep-all; }
     .guardian-select.gs-olympus .gs-card .gs-cost { position:absolute; top:14px; right:16px; margin:0; }
@@ -732,7 +735,7 @@
       .guardian-select.gs-olympus .gs-face { gap:2px; }
       .guardian-select.gs-olympus .gs-face em::before, .guardian-select.gs-olympus .gs-face em::after { width:14px; }
     }
-    .guardian-select.gs-olympus .gs-skip { grid-area:skip; flex-direction:row; flex-wrap:wrap; gap:6px 14px; padding:10px 18px; border-radius:14px; }
+    .guardian-select.gs-olympus .gs-skip { grid-area:skip; flex-direction:row; flex-wrap:wrap; gap:6px 14px; min-height:70px; padding:10px 18px; border-radius:14px; }/* 약자멸시 띠: 예전(47px)의 1.5배. 위 신 카드 4장이 그만큼 낮아진다 */
     .guardian-select.gs-olympus .gs-skip strong { font-size:20px; }
     /* 혈마나 궁극기: 잠긴 궁극기 버튼 옆(왼쪽)에 놓이는, 체력을 바치는 붉은 버튼 */
     .field-ultimate-blood { position:absolute; z-index:12; left:50%; top:104px; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:2px; width:min(260px,48%); padding:9px 18px 10px; border:1px solid #d6465a; border-radius:16px; background:linear-gradient(135deg,#4a1220f0,#2a0a14f0); color:#ffd3d9; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 0 22px #d6465a66; }
