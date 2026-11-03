@@ -30,5 +30,9 @@
 | `spells/firestorm-v2.png` | `crack-261102-6ae8808eb23a01c20b81fa44.png` | `dist/assets/spells/generated/firestorm-v2.webp` |
 | `tokens/necro-spirit.png` | `crack-261103-6ae8b6142f43fed049c538b9.png` | `dist/assets/tokens/necro-spirit.webp` |
 | `tokens/mana-wolf.png` | `crack-261103-6ae8b645ca4019e4becbd05c.png` | `dist/assets/tokens/mana-wolf.webp` |
+| `spells/lightning-strike.png` | `crack-261103-6ae943c25fef22e898555df9.png` | `dist/assets/spells/generated/lightning-strike.webp` |
+| `spells/tremor.png` | `crack-261103-6ae943c64bf1b3e9a0a3c26e.png` | `dist/assets/spells/generated/tremor.webp` |
+| `spells/great-ruin.png` | `crack-261103-6ae943d95bb9a62dcb98bc53.png` | `dist/assets/spells/generated/great-ruin.webp` |
+| `spells/tempest.png` | `crack-261103-6ae943e68bb79dbec79826b5.png` | `dist/assets/spells/generated/tempest.webp` |
 
-메모: 매복 지뢰·최후의 저항은 손패의 가로 띠에서 피사체가 보이도록 정사각형(1024×1024)으로 잘라 변환했다.
+메모: 매복 지뢰·최후의 저항·낙뢰·대지의 진동·폭풍우는 손패의 가로 띠에서 피사체가 보이도록 정사각형(1024×1024)으로 잘라 변환했다.

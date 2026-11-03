@@ -2222,7 +2222,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/sacred-purge.png",
+      "assetId": "spells/generated/tremor.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -2278,7 +2278,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/void-recall.png",
+      "assetId": "spells/generated/tempest.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -2335,7 +2335,7 @@
           "delay": 5
         }
       ],
-      "assetId": "spells/generated/amaterasu.png",
+      "assetId": "spells/generated/great-ruin.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -3324,7 +3324,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/void-recall.png",
+      "assetId": "spells/generated/lightning-strike.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -4558,7 +4558,7 @@
           "effectId": "cleanse",
           "trigger": "next_round_start",
           "target": "all_allies",
-          "amount": 1,
+          "amount": 3,
           "duration": "instant"
         }
       ],

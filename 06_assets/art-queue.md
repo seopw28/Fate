@@ -69,17 +69,9 @@ Constraints: no visible people, no readable text, no letters, no numbers, no log
 2. `03_card-data/sets/core-set.json`의 해당 카드 `assetId`를 `spells/generated/<이름>.png` / `traps/generated/<이름>.png`로 교체. (※ `*.json`은 `.gitignore`에 걸려 git에 안 올라간다. 빌드 결과 `dist/runtime/cards.js`가 커밋된다.)
 3. `npm run build:runtime` → `npm run validate:cards`(경고 목록이 줄어드는지) → 도감/손패에서 확인 → `npm run qa:overflow`.
 
-## P1 — 임시로 다른 카드 그림을 같이 쓰는 마법 · 4장 (전용 일러스트로 교체)
+## (완료) P1 — 다른 카드 그림을 같이 쓰던 마법
 
-> 2026-11-02: 화염 폭풍(배경 있는 불기둥 `firestorm-v2.webp`)·종말의 파동·연쇄 번개·천벌·서리 감옥 교체 완료.
-> 같은 파일 이름으로 그림을 덮어쓰면 브라우저 캐시 때문에 옛 그림이 보일 수 있다 → 교체할 때는 `-v2`처럼 새 파일 이름을 쓴다.
-
-| 카드 | cardId | 지금 쓰는 그림(중복) |
-|---|---|---|
-| 대지의 진동 | `storm.tremor` | `sacred-purge.png` (세이크리드 퍼지와 공유) |
-| 폭풍우 | `storm.tempest` | `void-recall.png` (보이드 리콜과 공유) |
-| 대재앙 | `storm.great-ruin` | `amaterasu.png` (아마테라스와 공유) |
-| 낙뢰 | `volt.lightning-strike` | `void-recall.png` (보이드 리콜·폭풍우와 공유) |
+> 2026-11-03: 사용자 제공 이미지로 마지막 4장(낙뢰·대지의 진동·폭풍우·대재앙)까지 교체 — 이제 그림을 공유하는 마법·함정은 없다. 원본은 `06_assets/source-art/spells/`.
 
 ## P2 — 소환 토큰
 - ~~`마력 늑대`, `되살린 사령`~~ **완료 (2026-11-03)**: 사용자 제공 일러스트로 교체 — `dist/assets/tokens/mana-wolf.webp`, `necro-spirit.webp` (`TOKEN_ART`). 예전 SVG는 삭제.

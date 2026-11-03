@@ -233,7 +233,7 @@
           "effectId": "heal",
           "trigger": "next_round_start",
           "target": "weakest_ally",
-          "amount": 4,
+          "amount": 6,
           "duration": "instant"
         }
       ],
@@ -567,7 +567,7 @@
           "effectId": "cleanse",
           "trigger": "next_round_start",
           "target": "all_allies",
-          "amount": 1,
+          "amount": 3,
           "duration": "instant"
         }
       ],
