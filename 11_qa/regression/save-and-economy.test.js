@@ -90,6 +90,11 @@ test('보안: 크래커/수호신 URL 옵션은 개발 환경에서만 동작한
   assert.ok(html.includes("preset=DEV_MODE?params.get('guardian'):null"), '?guardian must be gated by DEV_MODE');
 });
 
+test('개발 환경: 상점·소환 시연은 크래커 부족으로 막히지 않는다', () => {
+  assert.ok(html.includes('const DEV_CRACKER_FLOOR=999999;'), 'Local demo balance must have a generous named floor');
+  assert.ok(html.includes('if(DEV_MODE&&collectionState.crackers<DEV_CRACKER_FLOOR)'), 'The refill must be restricted to development hosts');
+});
+
 test('궁극기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤에 적용한다', () => {
   assert.ok(html.includes('ULTIMATE_EFFECT_DELAY=ULTIMATE_OVERLAY_MS+30'), 'Effect delay must exceed the overlay duration');
   assert.ok(html.includes('},ULTIMATE_EFFECT_DELAY);setTimeout(()=>overlay.remove(),ULTIMATE_OVERLAY_MS);'), 'Effects must be scheduled with the named delay, not a fixed 900ms');
