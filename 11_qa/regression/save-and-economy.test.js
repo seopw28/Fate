@@ -102,6 +102,13 @@ test('PRD: 티어·배치·시즌 현황과 PvP 승패 점수 정산을 제공�
   assert.ok(html.includes('시즌 리더보드 <small>· 목업 데이터</small>'), 'Simulated leaderboard data must be disclosed');
 });
 
+test('승패 연출: 2초 뒤 티어 화면으로 전환하고 점수를 굴려 정산한다', () => {
+  assert.ok(html.includes("setTimeout(()=>{resultNode.classList.remove('show','auto-transition');openTierStatus(rank);},2000)"), 'Result alert must hand off to rank status after two seconds');
+  assert.ok(html.includes('function animateTierScore(rank)'), 'Rank settlement must have a named score animation');
+  assert.ok(html.includes("value.classList.add('rolling')"), 'Score must visibly roll before settling');
+  assert.ok(html.includes("value.classList.add('settled')"), 'Score animation must land on the final value');
+});
+
 test('PRD: 카드 소환 가격은 1회 200, 10회 2,000이다', () => {
   assert.ok(html.includes('const GACHA_SINGLE_COST=200,GACHA_TEN_COST=2000;'), 'Gacha costs must use named PRD values');
   assert.ok(html.includes('count===10?GACHA_TEN_COST:GACHA_SINGLE_COST'), 'Pull settlement must use the PRD costs');
