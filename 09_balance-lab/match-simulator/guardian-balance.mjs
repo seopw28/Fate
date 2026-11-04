@@ -104,6 +104,8 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
       damageUnit(attackerSide, unit, counterDamage);
     }
   }
+  // 나무의 오로라: 자기 턴 시작에 필드의 카드마다 독립적으로 chance 확률로 체력 +1
+  function growNamu(side) { if (side.guardian !== 'namu' || !GUARDIANS.namu) return; side.field.forEach(u => { if (rnd() < GUARDIANS.namu.chance) u.hp += 1; }); }
   function healHero(side) { const before = side.hp; side.hp = Math.min(HERO_HP, side.hp + GUARDIANS.hyeonmu.amount); side.healed += side.hp - before; }
 
   // ── 대칭 모드: 한 쪽의 한 턴 ──
@@ -113,6 +115,7 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
       const card = S.deck.shift(); if (S.hand.length < HAND_LIMIT) S.hand.push(card);
       if (GUARDIANS.hyeonmu.amount > 0 && proc(S, 'hyeonmu')) healHero(S);
     }
+    growNamu(S);
     let mana = maxMana;
     for (let guard = 0; guard < 12; guard++) {
       const picks = plan(S.hand, mana, FIELD_LIMIT - S.field.length);
@@ -136,6 +139,7 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
       P.field.forEach(u => { u.exhausted = false; });
       if (GUARDIANS.hyeonmu.amount > 0 && proc(P, 'hyeonmu')) healHero(P);
     }
+    growNamu(P);
     let mana = maxMana;
     for (let guard = 0; guard < 12; guard++) {
       const picks = plan(P.hand, mana, FIELD_LIMIT - P.field.length);
@@ -153,6 +157,7 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
   function enemyHalf(maxMana) {
     if (E.deck.length) { const card = E.deck.shift(); if (E.hand.length < HAND_LIMIT) E.hand.push(card); }
     if (GUARDIANS.hyeonmu.amount > 0 && proc(E, 'hyeonmu')) healHero(E);
+    growNamu(E);
     let mana = Math.min(MANA_CAP, maxMana);
     if (maxMana < MANA_CAP && proc(E, 'cheongryong')) mana = Math.min(MANA_CAP, maxMana + poseidonMana());
     const picks = plan(E.hand, mana, FIELD_LIMIT - E.field.length);

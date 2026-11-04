@@ -60,15 +60,14 @@ test('경제: 정상 수호신은 100, 약자멸시 패배·기권·이탈은 20
   assert.ok(html.includes('const CHALLENGE_LOSS_COST = 200;'), 'Challenge loss must be a single named constant');
 });
 
-test('수호신 선택: 최초 선택 화면과 프로필에 인물 대신 전용 문양을 표시한다', () => {
-  const sigils = ['zeus-sigil-v1.png', 'poseidon-sigil-v1.png', 'hades-sigil-v1.png', 'athena-sigil-v1.png'];
-  for (const file of sigils) {
-    assert.ok(html.includes(`assets/guardians/${file}`), `${file} must be connected`);
-    assert.ok(fs.existsSync(path.resolve(__dirname, '../../dist/assets/guardians', file)), `${file} must be shipped`);
+test('오로라 선택: 최초 화면은 성격 오로라 5종을 1행 5열 문양으로, 프로필에도 같은 문양을 표시한다', () => {
+  for (const [id, label] of [['cheongryong', '물'], ['jujak', '불'], ['namu', '나무'], ['baekho', '금속'], ['hyeonmu', '대지']]) {
+    assert.ok(html.includes(id + ":{name:'" + label + "의 오로라',label:'" + label + "'"), `${label} aura must exist`);
   }
-  assert.ok(html.includes('.gs-jujak .gs-face::before') && html.includes('.gs-baekho .gs-face::before'), 'Initial guardian choices must render sigils');
-  assert.ok(html.includes("avatar.innerHTML=challenge?'약':'<img src=\"'+GUARDIANS[id].sigil"), 'Selected guardian profile must keep the same sigil');
-  assert.ok(html.includes("ghost.innerHTML='<img src=\"'+GUARDIANS[id].sigil"), 'Selection flight must carry the sigil into the profile');
+  assert.ok(html.includes("['cheongryong','jujak','namu','baekho','hyeonmu'].map(card)"), 'Aura choices must be listed in one row of five');
+  assert.ok(html.includes('grid-template-columns:repeat(5,minmax(0,1fr))'), 'Aura board must be a 1x5 grid');
+  assert.ok(html.includes("avatar.innerHTML=challenge?'약':auraMark(id);"), 'Selected aura profile must keep the same mark');
+  assert.ok(html.includes('ghost.innerHTML=auraMark(id);'), 'Selection flight must carry the mark into the profile');
 });
 
 test('아테나: 낮은 피해로 자주 반격하며 고공격력 폭주를 제한한다', () => {
@@ -77,9 +76,12 @@ test('아테나: 낮은 피해로 자주 반격하며 고공격력 폭주를 제
   assert.ok(html.includes("athena.name+' · 연속 반격 '+power"), 'Frequent counters must have an explicit combat cue');
 });
 
-test('수호신 밸런스: 제우스 S급 25%, 하데스 치명타 생존 5%', () => {
-  assert.ok(html.includes("jujak:{name:'제우스',title:'천공의 왕',seal:'제',sigil:'assets/guardians/zeus-sigil-v1.png',chance:.25"), 'Zeus proc rate must be 25%');
-  assert.ok(html.includes("hyeonmu:{name:'하데스',title:'저승의 왕',seal:'하',sigil:'assets/guardians/hades-sigil-v1.png',chance:.05,maxProcs:1"), 'Hades survival rate must be 5% with one proc per battle');
+test('오로라 밸런스: 불 S급 25%, 대지 치명타 생존 5%, 나무 필드 카드마다 체력 +1 60%', () => {
+  assert.ok(html.includes("jujak:{name:'불의 오로라',label:'불',title:'열정',seal:'불',color:'#ff6a4a',sigil:'',chance:.25"), 'Fire proc rate must be 25%');
+  assert.ok(html.includes("hyeonmu:{name:'대지의 오로라',label:'대지',title:'인내',seal:'땅',color:'#d9a35b',sigil:'',chance:.05,maxProcs:1"), 'Earth survival rate must be 5% with one proc per battle');
+  assert.ok(html.includes("namu:{name:'나무의 오로라',label:'나무',title:'성장',seal:'목',color:'#5fd38a',sigil:'',chance:.60,short:'체력 성장'"), 'Wood: each field card independently gains +1 HP at 60% on its turn start');
+  assert.ok(html.includes("growNamuField('player')") && html.includes("growNamuField('enemy')"), 'Wood growth must work for both sides');
+  assert.ok(html.includes("if(!guardianProc(side,'namu'))return;grown++"), 'Each field card must roll independently');
 });
 
 test('포세이돈: 60% 확률로 마나 1~2를 회복한다', () => {
