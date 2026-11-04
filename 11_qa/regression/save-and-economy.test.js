@@ -55,8 +55,8 @@ test('저장: 항상 cardIds를 함께 저장하고 불러올 때 현재 목록�
   assert.ok(html.includes('remapSavedByCardIds(saved,COLLECTION_CARD_IDS)'), 'Loading must realign saved data by cardId');
 });
 
-test('경제: 정상 수호신 선택은 무료, 약자멸시 패배·기권·이탈은 200', () => {
-  assert.ok(html.includes('const GUARDIAN_COST=0,VICTORY_STEAL=200;'), 'Guardian selection must never lock the normal battle path behind currency');
+test('경제: 정상 수호신은 100, 약자멸시 패배·기권·이탈은 200', () => {
+  assert.ok(html.includes('const GUARDIAN_COST=100,VICTORY_STEAL=200;'), 'Guardian selection must follow the PRD price');
   assert.ok(html.includes('const CHALLENGE_LOSS_COST = 200;'), 'Challenge loss must be a single named constant');
 });
 
@@ -93,6 +93,18 @@ test('보안: 크래커/수호신 URL 옵션은 개발 환경에서만 동작한
 test('개발 환경: 상점·소환 시연은 크래커 부족으로 막히지 않는다', () => {
   assert.ok(html.includes('const DEV_CRACKER_FLOOR=999999;'), 'Local demo balance must have a generous named floor');
   assert.ok(html.includes('if(DEV_MODE&&collectionState.crackers<DEV_CRACKER_FLOOR)'), 'The refill must be restricted to development hosts');
+});
+
+test('PRD: 티어·배치·시즌 현황과 PvP 승패 점수 정산을 제공한다', () => {
+  assert.ok(html.includes("const RANK_KEY='fate-rank-v1'"), 'Rank progression must persist independently');
+  assert.ok(html.includes("delta=ranked?(win?20:-20):0"), 'PvP wins and losses must change score by 20');
+  assert.ok(html.includes("rankState.placementPlayed=Math.min(5,rankState.placementPlayed+1)"), 'Placement must complete after five ranked matches');
+  assert.ok(html.includes('시즌 리더보드 <small>· 목업 데이터</small>'), 'Simulated leaderboard data must be disclosed');
+});
+
+test('PRD: 카드 소환 가격은 1회 200, 10회 2,000이다', () => {
+  assert.ok(html.includes('const GACHA_SINGLE_COST=200,GACHA_TEN_COST=2000;'), 'Gacha costs must use named PRD values');
+  assert.ok(html.includes('count===10?GACHA_TEN_COST:GACHA_SINGLE_COST'), 'Pull settlement must use the PRD costs');
 });
 
 test('궁극기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤에 적용한다', () => {
