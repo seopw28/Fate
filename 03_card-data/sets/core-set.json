@@ -10,6 +10,7 @@
       "cardType": "champion",
       "cost": 3,
       "element": "ice",
+      "personality": "metal",
       "rarity": "common",
       "stats": {
         "attack": 5,
@@ -34,6 +35,7 @@
       "cardType": "champion",
       "cost": 3,
       "element": "water",
+      "personality": "fire",
       "rarity": "common",
       "stats": {
         "attack": 4,
@@ -58,6 +60,7 @@
       "cardType": "champion",
       "cost": 4,
       "element": "wind",
+      "personality": "fire",
       "rarity": "common",
       "stats": {
         "attack": 6,
@@ -82,6 +85,7 @@
       "cardType": "champion",
       "cost": 6,
       "element": "wind",
+      "personality": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 7,
@@ -106,6 +110,7 @@
       "cardType": "champion",
       "cost": 4,
       "element": "fire",
+      "personality": "fire",
       "rarity": "common",
       "stats": {
         "attack": 6,
@@ -130,6 +135,7 @@
       "cardType": "champion",
       "cost": 4,
       "element": "neutral",
+      "personality": "fire",
       "rarity": "common",
       "stats": {
         "attack": 5,
@@ -154,6 +160,7 @@
       "cardType": "champion",
       "cost": 5,
       "element": "earth",
+      "personality": "water",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -178,6 +185,7 @@
       "cardType": "champion",
       "cost": 4,
       "element": "thunder",
+      "personality": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 5,
@@ -202,6 +210,7 @@
       "cardType": "champion",
       "cost": 3,
       "element": "wind",
+      "personality": "water",
       "rarity": "common",
       "stats": {
         "attack": 5,

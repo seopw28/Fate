@@ -14,6 +14,7 @@ const cardsById = new Map(cards.map(card => [card.cardId, card]));
 const allowedTypes = new Set(['champion', 'spell', 'trap']);
 const allowedElements = new Set(['fire', 'water', 'ice', 'wind', 'thunder', 'earth', 'neutral']);
 const allowedRarities = new Set(['common', 'rare', 'legendary']);
+const allowedPersonalities = new Set(['fire', 'water', 'wood', 'metal', 'earth']);
 const allowedSources = new Set(['starter', 'character_chat', 'summon', 'event', 'craft']);
 const allowedReleaseStates = new Set(['live', 'prototype', 'retired']);
 const allowedEffects = new Set(['burn', 'heal', 'damage', 'attack_down', 'buff', 'prevent_damage', 'lone_wolf', 'comeback', 'add_counter', 'transform', 'global_destroy', 'freeze_strongest', 'weaken_all', 'shock_storage', 'explosive_mark', 'blink_shield', 'armor_pierce', 'arcane_arrow', 'mass_heal', 'heal_bless', 'piercing_shot', 'battle_enhance', 'summon_wolf', 'sword_aura', 'necromancy', 'board_damage', 'draw', 'cleanse', 'bounce', 'mana_ramp', 'resurrect', 'negate_summon', 'self_replicate', 'black_flame', 'turn_invulnerable', 'frost_nova', 'swarm_fury', 'swarm_bulwark', 'lightning_strike', 'chain_lightning', 'summon_barrage', 'sweep_attack']);
@@ -27,6 +28,8 @@ for (const [index, card] of cards.entries()) {
   if (!allowedTypes.has(card.cardType)) errors.push(`${at}: invalid cardType`);
   if (!allowedElements.has(card.element)) errors.push(`${at}: invalid element`);
   if (!allowedRarities.has(card.rarity)) errors.push(`${at}: invalid rarity`);
+  if (card.personality !== undefined && !allowedPersonalities.has(card.personality)) errors.push(`${at}: invalid personality`);
+  if (card.cardType === 'champion' && card.collectible !== false && card.releaseState !== 'prototype' && !card.personality) errors.push(`${at}: champion needs a personality`);
   if (card.releaseState !== undefined && !allowedReleaseStates.has(card.releaseState)) errors.push(`${at}: invalid releaseState`);
   if (!Number.isInteger(card.cost) || card.cost < 0 || card.cost > 20) errors.push(`${at}: invalid cost`);
   if (!Number.isInteger(card.deckLimit) || card.deckLimit < 1 || card.deckLimit > 3) errors.push(`${at}: invalid deckLimit`);

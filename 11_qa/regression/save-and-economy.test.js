@@ -60,26 +60,29 @@ test('경제: 정상 수호신은 100, 약자멸시 패배·기권·이탈은 20
   assert.ok(html.includes('const CHALLENGE_LOSS_COST = 200;'), 'Challenge loss must be a single named constant');
 });
 
-test('오로라 선택: 최초 화면은 성격 오로라 5종을 1행 5열 문양으로, 프로필에도 같은 문양을 표시한다', () => {
+test('오로라 선택: 최초 화면은 성격의 오로라 5종을 화수목금토 순 가로 5줄로, 프로필에도 같은 문양을 표시한다', () => {
   for (const [id, label] of [['cheongryong', '물'], ['jujak', '불'], ['namu', '나무'], ['baekho', '금속'], ['hyeonmu', '대지']]) {
     assert.ok(html.includes(id + ":{name:'" + label + "의 오로라',label:'" + label + "'"), `${label} aura must exist`);
   }
-  assert.ok(html.includes("['cheongryong','jujak','namu','baekho','hyeonmu'].map(card)"), 'Aura choices must be listed in one row of five');
-  assert.ok(html.includes('grid-template-columns:repeat(5,minmax(0,1fr))'), 'Aura board must be a 1x5 grid');
+  assert.ok(html.includes("['jujak','cheongryong','namu','baekho','hyeonmu'].map(card)"), 'Aura choices must follow 화·수·목·금·토 order');
+  assert.ok(html.includes('grid-template-rows:repeat(5,minmax(0,1fr)); gap:8px;'), 'Aura board must be five horizontal rows');
+  assert.ok(!html.includes('<button class="gs-skip" data-guardian="none">'), 'The challenge (no aura) option must not be offered on the aura screen');
+  assert.ok(html.includes('<h2>성격의 오로라</h2>'), 'Aura screen title must be 성격의 오로라');
+  for (const child of ['열정의 아이', '포용의 아이', '발전의 아이', '냉철의 아이', '무던의 아이']) assert.ok(html.includes("child:'" + child + "'"), `${child} must be the aura persona name`);
   assert.ok(html.includes("avatar.innerHTML=challenge?'약':auraMark(id);"), 'Selected aura profile must keep the same mark');
   assert.ok(html.includes('ghost.innerHTML=auraMark(id);'), 'Selection flight must carry the mark into the profile');
 });
 
 test('아테나: 낮은 피해로 자주 반격하며 고공격력 폭주를 제한한다', () => {
-  assert.ok(html.includes("chance:.60,ratio:.15,maxDamage:2,short:'연속 반격'"), 'Athena must trade damage for a 60% proc rate');
+  assert.ok(html.includes("chance:.60,ratio:.15,maxDamage:2,short:'허점 반격'"), 'Metal aura must trade damage for a 60% proc rate');
   assert.ok(html.includes('Math.max(1,Math.min(athena.maxDamage,Math.ceil(attack*athena.ratio)))'), 'Counter damage must scale down and stay between 1 and 2');
-  assert.ok(html.includes("athena.name+' · 연속 반격 '+power"), 'Frequent counters must have an explicit combat cue');
+  assert.ok(html.includes("athena.name+' · 허점 반격 '+power"), 'Frequent counters must have an explicit combat cue');
 });
 
 test('오로라 밸런스: 불 S급 25%, 대지 치명타 생존 5%, 나무 필드 카드마다 체력 +1 60%', () => {
   assert.ok(html.includes("jujak:{name:'불의 오로라',label:'불',title:'열정',seal:'불',color:'#ff6a4a',sigil:'',chance:.25"), 'Fire proc rate must be 25%');
-  assert.ok(html.includes("hyeonmu:{name:'대지의 오로라',label:'대지',title:'인내',seal:'땅',color:'#d9a35b',sigil:'',chance:.05,maxProcs:1"), 'Earth survival rate must be 5% with one proc per battle');
-  assert.ok(html.includes("namu:{name:'나무의 오로라',label:'나무',title:'성장',seal:'목',color:'#5fd38a',sigil:'',chance:.60,short:'체력 성장'"), 'Wood: each field card independently gains +1 HP at 60% on its turn start');
+  assert.ok(html.includes("hyeonmu:{name:'대지의 오로라',label:'대지',title:'무던',seal:'땅',color:'#d9a35b',sigil:'',chance:.05,maxProcs:1"), 'Earth survival rate must be 5% with one proc per battle');
+  assert.ok(html.includes("namu:{name:'나무의 오로라',label:'나무',title:'발전',seal:'목',color:'#5fd38a',sigil:'',chance:.60,short:'체력 성장'"), 'Wood: each field card independently gains +1 HP at 60% on its turn start');
   assert.ok(html.includes("growNamuField('player')") && html.includes("growNamuField('enemy')"), 'Wood growth must work for both sides');
   assert.ok(html.includes("if(!guardianProc(side,'namu'))return;grown++"), 'Each field card must roll independently');
 });
