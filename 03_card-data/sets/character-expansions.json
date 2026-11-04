@@ -296,9 +296,9 @@
       },
       "effects": [
         {
-          "effectId": "weaken_all",
-          "trigger": "on_summon",
-          "target": "all_enemies",
+          "effectId": "swarm_fury",
+          "trigger": "passive",
+          "target": "self",
           "amount": 1,
           "duration": "match"
         }
@@ -761,7 +761,7 @@
       },
       "effects": [
         {
-          "effectId": "weaken_all",
+          "effectId": "summon_barrage",
           "trigger": "on_summon",
           "target": "all_enemies",
           "amount": 1,
@@ -854,7 +854,7 @@
       },
       "effects": [
         {
-          "effectId": "lone_wolf",
+          "effectId": "swarm_fury",
           "trigger": "passive",
           "target": "self",
           "amount": 3,
@@ -1009,9 +1009,9 @@
       },
       "effects": [
         {
-          "effectId": "weaken_all",
-          "trigger": "on_summon",
-          "target": "all_enemies",
+          "effectId": "swarm_fury",
+          "trigger": "passive",
+          "target": "self",
           "amount": 1,
           "duration": "match"
         }
@@ -1381,7 +1381,7 @@
       },
       "effects": [
         {
-          "effectId": "weaken_all",
+          "effectId": "summon_barrage",
           "trigger": "on_summon",
           "target": "all_enemies",
           "amount": 1,

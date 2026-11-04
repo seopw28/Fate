@@ -71,6 +71,29 @@ test('수호신 선택: 최초 선택 화면과 프로필에 인물 대신 전�
   assert.ok(html.includes("ghost.innerHTML='<img src=\"'+GUARDIANS[id].sigil"), 'Selection flight must carry the sigil into the profile');
 });
 
+test('아테나: 낮은 피해로 자주 반격하며 고공격력 폭주를 제한한다', () => {
+  assert.ok(html.includes("chance:.60,ratio:.15,maxDamage:2,short:'연속 반격'"), 'Athena must trade damage for a 60% proc rate');
+  assert.ok(html.includes('Math.max(1,Math.min(athena.maxDamage,Math.ceil(attack*athena.ratio)))'), 'Counter damage must scale down and stay between 1 and 2');
+  assert.ok(html.includes("athena.name+' · 연속 반격 '+power"), 'Frequent counters must have an explicit combat cue');
+});
+
+test('수호신 밸런스: 제우스 S급 25%, 하데스 치명타 생존 5%', () => {
+  assert.ok(html.includes("jujak:{name:'제우스',title:'천공의 왕',seal:'제',sigil:'assets/guardians/zeus-sigil-v1.png',chance:.25"), 'Zeus proc rate must be 25%');
+  assert.ok(html.includes("hyeonmu:{name:'하데스',title:'저승의 왕',seal:'하',sigil:'assets/guardians/hades-sigil-v1.png',chance:.05,maxProcs:1"), 'Hades survival rate must be 5% with one proc per battle');
+});
+
+test('포세이돈: 60% 확률로 마나 1~2를 회복한다', () => {
+  assert.ok(html.includes("chance:.60,manaMin:1,manaMax:2,short:'마나 회복'"), 'Poseidon must proc at 60% with a 1-2 mana range');
+  assert.ok(html.includes('const rollPoseidonMana=()=>engineAdapter.randomInt(GUARDIANS.cheongryong.manaMin,GUARDIANS.cheongryong.manaMax)'), 'Runtime recovery must roll the configured range');
+});
+
+test('수호신 궁극기: 5턴부터 마나 7로 3턴간 발동 확률을 1.5배 강화한다', () => {
+  assert.ok(html.includes('GUARDIAN_AWAKEN_COST=7,GUARDIAN_AWAKEN_MIN_TURN=5,GUARDIAN_AWAKEN_DURATION=3,GUARDIAN_AWAKEN_MULTIPLIER=1.5'), 'Guardian awakening constants must stay explicit');
+  assert.ok(html.includes("Math.min(1,GUARDIANS[id].chance*(guardianAwakenActive(side)?GUARDIAN_AWAKEN_MULTIPLIER:1))"), 'Awakening must boost and cap proc chance');
+  assert.ok(html.includes('guardianAwakenUntil=turnNumber+GUARDIAN_AWAKEN_DURATION'), 'Awakening must expire after its configured turns');
+  assert.ok(html.includes("if(!playerGuardian)return '수호신 필요'"), 'Challenge mode must not receive a guardian ultimate');
+});
+
 test('경제: 기권은 패배(finish)로 합쳐 처리하고 별도 전달분을 두지 않는다', () => {
   const surrender = html.slice(html.indexOf('function surrenderBattle('), html.indexOf('function finish('));
   assert.ok(surrender.includes("finish(false,'기권했습니다. 기권은 패배로 계산됩니다.',true)"), 'Surrender must finish as a defeat with the forfeit flag');

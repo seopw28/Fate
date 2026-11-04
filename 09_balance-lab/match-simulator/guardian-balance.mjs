@@ -7,7 +7,7 @@
  *   - 수호신 수치: dist/index.html 의 `const GUARDIANS={...}` 를 직접 읽는다 (단일 출처)
  *
  * 모델링한 규칙: 영웅 체력 100, 마나 3→10(+1/라운드), 등급 롤(A 15% +2 / B 35% +1 / C 50%), 선공권(체력↓ → 필드 카드↓ → 나),
- *   소환 직후 공격 불가(플레이어) / 즉시 공격(상대), 가장 왼쪽 카드 공격, 반격 없음, 
+ *   소환 직후 공격 불가(플레이어) / 즉시 공격(상대), 가장 왼쪽 카드 공격,
  *   수호신 4종(청룡=마나 회복·백호=살아남으면 즉시 반격·주작=뽑을 때 S급 +3·현무=치명타 생존)과 상대 수호신 무작위 배정(내가 고른 것 제외).
  * 모델링하지 않은 것: 마법/함정/궁극기, 챔피언 개별 능력, 혈마나, 추가 드로우. (모든 카드를 바닐라 능력치로 취급)
  *
@@ -80,6 +80,7 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
   const P = mkSide(playerGuardian), E = mkSide(enemyGuardian);
   P.hand = P.deck.splice(0, 5); E.hand = E.deck.splice(0, 5);
   const proc = (side, id) => side.guardian === id && rnd() < GUARDIANS[id].chance;
+  const poseidonMana = () => GUARDIANS.cheongryong.manaMin + Math.floor(rnd() * (GUARDIANS.cheongryong.manaMax - GUARDIANS.cheongryong.manaMin + 1));
   const alive = side => side.field.filter(u => u.hp > 0);
   let winner = null;
 
@@ -96,8 +97,12 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
     if (!targets.length) { hitHero(defenderSide, unit.atk); return; }
     const target = targets[0];
     damageUnit(defenderSide, target, unit.atk);
-    // 백호: 공격을 받고 살아남으면 chance 확률로 즉시 반격(자기 공격력만큼 공격자에게 피해)
-    if (target.hp > 0 && proc(defenderSide, 'baekho')) damageUnit(attackerSide, unit, target.atk);
+    // 아테나: 공격을 받고 살아남으면 chance 확률로 저위력 반격(실게임과 동일한 ratio·최소 1·maxDamage 상한)
+    if (target.hp > 0 && proc(defenderSide, 'baekho')) {
+      const athena = GUARDIANS.baekho;
+      const counterDamage = Math.max(1, Math.min(athena.maxDamage || Infinity, Math.ceil(target.atk * (athena.ratio || 1))));
+      damageUnit(attackerSide, unit, counterDamage);
+    }
   }
   function healHero(side) { const before = side.hp; side.hp = Math.min(HERO_HP, side.hp + GUARDIANS.hyeonmu.amount); side.healed += side.hp - before; }
 
@@ -115,7 +120,7 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
       const card = S.hand.splice(picks[0], 1)[0];
       mana -= card.cost;
       S.field.push({ ...card });
-      if (card.cost >= 2 && proc(S, 'cheongryong')) mana = Math.min(maxMana, mana + (GUARDIANS.cheongryong.mana || 1));
+      if (card.cost >= 2 && proc(S, 'cheongryong')) mana = Math.min(maxMana, mana + poseidonMana());
     }
     S.field.sort((a, b) => (a.atk - a.hp * 0.5) - (b.atk - b.hp * 0.5));
     S.field.slice().forEach(u => attack(S, F, u));
@@ -138,7 +143,7 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
       const card = P.hand.splice(picks[0], 1)[0];
       mana -= card.cost;
       P.field.push({ ...card, exhausted: true });
-      if (card.cost >= 2 && proc(P, 'cheongryong')) mana = Math.min(maxMana, mana + (GUARDIANS.cheongryong.mana || 1));
+      if (card.cost >= 2 && proc(P, 'cheongryong')) mana = Math.min(maxMana, mana + poseidonMana());
     }
     P.field.filter(u => !u.exhausted).forEach(u => attack(P, E, u));
     if (winner) return;
@@ -149,7 +154,7 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
     if (E.deck.length) { const card = E.deck.shift(); if (E.hand.length < HAND_LIMIT) E.hand.push(card); }
     if (GUARDIANS.hyeonmu.amount > 0 && proc(E, 'hyeonmu')) healHero(E);
     let mana = Math.min(MANA_CAP, maxMana);
-    if (maxMana < MANA_CAP && proc(E, 'cheongryong')) mana = Math.min(MANA_CAP, maxMana + (GUARDIANS.cheongryong.mana || 1));
+    if (maxMana < MANA_CAP && proc(E, 'cheongryong')) mana = Math.min(MANA_CAP, maxMana + poseidonMana());
     const picks = plan(E.hand, mana, FIELD_LIMIT - E.field.length);
     picks.slice().sort((a, b) => b - a).map(i => E.hand.splice(i, 1)[0]).reverse().forEach(card => E.field.push({ ...card }));
     E.field.sort((a, b) => (a.atk - a.hp * 0.5) - (b.atk - b.hp * 0.5));

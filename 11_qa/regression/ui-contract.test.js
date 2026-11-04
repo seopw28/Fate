@@ -5,6 +5,7 @@ const path = require('node:path');
 
 const htmlPath = path.resolve(__dirname, '../../dist/index.html');
 const html = fs.readFileSync(htmlPath, 'utf8');
+const expansionCards = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../03_card-data/sets/character-expansions.json'), 'utf8')).cards;
 
 test('battle UI keeps the approved layout anchors', () => {
   for (const token of ['class="duel-hud"', 'class="arena"', 'class="command-rail"', 'id="player-health"', 'mana-hud', 'id="draw-action"', 'class="end"']) {
@@ -114,6 +115,14 @@ test('self replication stays conditional and linear', () => {
     'setTimeout(resolveSelfReplication',
     'fieldCount<FIELD_CARD_LIMIT'
   ]) assert.ok(html.includes(token), `Missing bounded replication token: ${token}`);
+});
+
+test('군세 대응 카드와 저위력 광역 공격 기회가 충분히 분포한다', () => {
+  const effectCount = id => expansionCards.filter(card => card.effects.some(effect => effect.effectId === id)).length;
+  assert.ok(effectCount('swarm_fury') >= 6, 'At least six champions must punish crowded enemy fields');
+  assert.ok(effectCount('summon_barrage') >= 13, 'Low-damage summon barrages must be available beyond legendary finishers');
+  assert.ok(html.includes('count<3?0:Math.pow(2,count-2)-1'), 'Crowd scaling must accelerate at 3/4/5/6 enemies');
+  assert.ok(html.includes('SWARM_FURY_CAP=12'), 'Accelerating attack must retain a hard safety cap');
 });
 
 test('set magic and equipped ultimate can be cancelled back to hand before ending the turn', () => {
