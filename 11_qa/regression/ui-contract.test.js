@@ -94,9 +94,16 @@ test('opening fields are dealt from the shuffled decks', () => {
 });
 
 test('equipped ultimate remains visible when temporarily locked', () => {
-  assert.ok(html.includes('button.hidden=!ultimateState||ultimateUsed'), 'Equipped ultimate action must only disappear before equip or after use');
+  assert.ok(html.includes('button.hidden=ultimateUsed'), 'Ultimate action slot must remain visible before equip and while temporarily locked');
+  assert.ok(html.includes("ultimateState?ultimateState.name:'궁극기'"), 'An unequipped ultimate slot must keep the bottom action row aligned');
   assert.ok(html.includes('<span class="ult-reason">\'+reason'), 'Locked ultimate action must explain why it cannot fire');
   assert.ok(html.includes("button.classList.toggle('locked'"), 'Locked ultimate action must keep a persistent field state');
+});
+
+test('ready ultimate action uses a compact two-line cost layout', () => {
+  assert.ok(html.includes('ult-ready-label">궁극기 발동'), 'Ready action must use one clear Korean action label');
+  assert.ok(html.includes("ult-ready-meta\">마나 '+ultimateState.cost+' 소모 · '+ultimateState.title"), 'Second line must show mana cost and ultimate title');
+  assert.ok(html.includes('.field-ultimate-action:not(.locked)::before{display:none}'), 'Ready action must hide the duplicated English ULTIMATE label');
 });
 
 test('mana curve starts low and grows into the mid game', () => {
@@ -105,6 +112,11 @@ test('mana curve starts low and grows into the mid game', () => {
   assert.ok(html.includes('let turnNumber = 1'), 'Battle must start on turn one');
   assert.ok(html.includes('Math.min(MANA_CAP,maxMana+1)'), 'Maximum mana must grow by one each turn');
   assert.ok(html.includes('const BLOOD_MANA_UNLOCK_TURN = 3'), 'Blood mana must not bypass the opening curve');
+});
+
+test('freshly drawn cards obey the same global hand sorting', () => {
+  assert.ok(html.includes('cards.sort((a,b)=>Number(a.dataset.usabilityRank)-Number(b.dataset.usabilityRank)||handCardValue(b)-handCardValue(a))'), 'Draw timing must not override usability and value sorting');
+  assert.ok(!html.includes('freshDrawOrder(a,b)||'), 'Fresh cards must not form an unsorted priority block');
 });
 
 test('self replication stays conditional and linear', () => {

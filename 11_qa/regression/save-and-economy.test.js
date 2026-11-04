@@ -87,11 +87,24 @@ test('포세이돈: 60% 확률로 마나 1~2를 회복한다', () => {
   assert.ok(html.includes('const rollPoseidonMana=()=>engineAdapter.randomInt(GUARDIANS.cheongryong.manaMin,GUARDIANS.cheongryong.manaMax)'), 'Runtime recovery must roll the configured range');
 });
 
-test('수호신 궁극기: 5턴부터 마나 7로 3턴간 발동 확률을 1.5배 강화한다', () => {
-  assert.ok(html.includes('GUARDIAN_AWAKEN_COST=7,GUARDIAN_AWAKEN_MIN_TURN=5,GUARDIAN_AWAKEN_DURATION=3,GUARDIAN_AWAKEN_MULTIPLIER=1.5'), 'Guardian awakening constants must stay explicit');
-  assert.ok(html.includes("Math.min(1,GUARDIANS[id].chance*(guardianAwakenActive(side)?GUARDIAN_AWAKEN_MULTIPLIER:1))"), 'Awakening must boost and cap proc chance');
+test('수호신 궁극기: 1턴 동안 수호신별 강력한 전용 각성을 부여한다', () => {
+  assert.ok(html.includes('GUARDIAN_AWAKEN_COST=0,GUARDIAN_AWAKEN_REQUIRED_ULTIMATE_USES=1'), 'Awakening must be free and depend on one completed normal ultimate');
+  assert.ok(html.includes("ultimateUses<GUARDIAN_AWAKEN_REQUIRED_ULTIMATE_USES||firstUltimateTurn===null"), 'Awakening must require a completed first ultimate');
+  assert.ok(html.includes("if(turnNumber<=firstUltimateTurn)return '첫 궁극기 다음 턴 해금'"), 'Awakening must stay locked for the rest of the first ultimate turn');
+  assert.ok(html.includes('if(firstUltimateTurn===null)firstUltimateTurn=turnNumber'), 'Only the first ultimate turn must determine the awakening unlock timing');
+  assert.ok(!html.includes('mana-=GUARDIAN_AWAKEN_COST'), 'Awakening must never spend mana');
+  assert.ok(html.includes('GUARDIAN_AWAKEN_DURATION=1'), 'Guardian awakening must be a short one-turn power spike');
+  assert.ok(html.includes("guardianAwakenActive(side)?1:GUARDIANS[id].chance"), 'Awakening guardian effects must trigger reliably');
+  assert.ok(html.includes("athena.name+' · 전역 반격 '"), 'Athena awakening must counter the whole enemy field');
+  assert.ok(html.includes("awaken?Math.min(7,3+guardianAwakenPower()):rollPoseidonMana()"), 'Poseidon awakening must restore much more mana');
+  assert.ok(html.includes("playerGuardian==='hyeonmu'&&guardianAwakenActive('player')&&!guardianAwakenSpecialUsed"), 'Hades awakening must revive the first dying ally');
+  assert.ok(html.includes("label:'신화급',bonus"), 'Zeus awakening must grant a mythic draw bonus');
+  assert.ok(html.includes('Math.max(0,counts.enemy-counts.player)'), 'Enemy field advantage must still strengthen the awakening payload');
   assert.ok(html.includes('guardianAwakenUntil=turnNumber+GUARDIAN_AWAKEN_DURATION'), 'Awakening must expire after its configured turns');
+  assert.ok(html.includes("arena.classList.add('guardian-awakened','guardian-awakened-'+playerGuardian)"), 'Awakening must add a guardian-specific field aura');
+  assert.ok(html.includes('.arena.guardian-awakened.guardian-awakened-cheongryong'), 'Guardian field aura must provide guardian-specific colors');
   assert.ok(html.includes("if(!playerGuardian)return '수호신 필요'"), 'Challenge mode must not receive a guardian ultimate');
+  assert.ok(html.includes("fieldGuardianUltimate.id='field-guardian-ultimate'"), 'Guardian awakening must render beside the field ultimate condition');
 });
 
 test('경제: 기권은 패배(finish)로 합쳐 처리하고 별도 전달분을 두지 않는다', () => {
@@ -143,6 +156,8 @@ test('궁극기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤�
 });
 
 test('궁극기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다시 쓸 수 있다', () => {
+  assert.ok(html.includes('ULTIMATE_BASE_MIN_TURN=5,ULTIMATE_STRONG_TURN_DELAY=2'), 'First ultimate timing must be turn 5 normally and turn 7 for strong cards');
+  assert.ok(html.includes('minTurn=ULTIMATE_BASE_MIN_TURN+(strong?ULTIMATE_STRONG_TURN_DELAY:0)'), 'Ultimate specs must use the balanced named turn thresholds');
   assert.ok(html.includes('const ULTIMATE_COOLDOWN_TURNS=3;'), 'Cooldown must be a single named constant');
   assert.ok(html.includes('turnNumber<lastUltimateTurn+ULTIMATE_COOLDOWN_TURNS'), 'Lock reason must enforce the cooldown');
   assert.ok(html.includes('lastUltimateTurn=turnNumber;'), 'Activation must record the turn it was used');
@@ -154,6 +169,12 @@ test('궁극기: 땅 궁극기는 회복이 아니라 절대방어(+강한 카�
   assert.ok(!html.includes("showSkillEffect('shield',unit,'성역 +'+heal)"), 'Earth ultimate must no longer heal allies');
   assert.ok(html.includes('if(absoluteDefense&&target.closest&&sideOfUnit(target)===\'player\')'), 'Allied champions must take no damage during absolute defense');
   assert.ok(html.includes("absoluteDefense=false;turnNumber++;"), 'Absolute defense must expire when the next player turn starts');
+});
+
+test('궁극기: 화염은 상대 마무리 조건이 아니라 내 열세에서 열린다', () => {
+  assert.ok(html.includes("conditions={fire:'내 영웅 체력 '"), 'Fire ultimate UI must describe the player health comeback condition');
+  assert.ok(html.includes("if(spec.element==='fire')return playerHp<=Math.round(HERO_MAX_HP*.75)"), 'Fire ultimate must unlock from low player health');
+  assert.ok(!html.includes("if(spec.element==='fire')return enemyHp<="), 'Fire ultimate must never depend on lowering the enemy hero first');
 });
 
 test('손패: 사용 가능 여부 우선, 같은 등급 안에서는 가치(비용>공격력>체력) 높은 카드가 위', () => {
