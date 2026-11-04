@@ -54,6 +54,32 @@ test('initial battle hand is generated from validated card data', () => {
   assert.ok(html.includes('cardDefinitionById'), 'Battle cards must resolve through stable cardIds');
 });
 
+test('basic deck and opening hand follow the PRD composition', () => {
+  assert.ok(html.includes('BASIC_CHAMPION_COUNT=45,BASIC_SPELL_COUNT=9,BASIC_TRAP_COUNT=6,OPENING_HAND_SIZE=7'), 'Basic deck must be 45 champions, 9 spells, 6 traps with a seven-card opening hand');
+  assert.ok(html.includes("fill('spell',BASIC_SPELL_COUNT)||!fill('trap',BASIC_TRAP_COUNT)||!fill('champion',BASIC_CHAMPION_COUNT)"), 'Basic deck builder must enforce all three card counts');
+  assert.ok(html.includes('cheap.length<2') && html.includes('cheap.length+rest.length<OPENING_HAND_SIZE'), 'Opening hand must guarantee two low-cost champions');
+  assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(buildBasicDeck(starterOwnedCards())).map(deckEntry)'), 'Computer opponent must use the basic deck');
+});
+
+test('battle deck editing is blocked after the guardian choice starts the battle', () => {
+  assert.ok(html.includes("if(view==='deck'&&guardianChosen)"), 'Deck view must redirect after battle start');
+  assert.ok(html.includes("function saveBattleDeck(){ if(guardianChosen)"), 'Deck save must reject changes after battle start');
+});
+
+test('deck exhaustion and computer disclosure follow the PRD', () => {
+  assert.ok(html.includes("<strong>덱 소진:</strong> 더 뽑지 않고 현재 손패와 전장으로 계속 싸웁니다."), 'An empty deck must skip drawing instead of ending the battle');
+  assert.ok(!html.includes("finish(false,'덱이 비어 더 이상 카드를 뽑을 수 없습니다.')"), 'Deck exhaustion must not be a defeat condition');
+  assert.ok(html.includes("reason+' · 이번 상대는 컴퓨터였습니다.'"), 'Computer identity must be disclosed on the result screen');
+});
+
+test('initiative uses health, field, tier, then random order', () => {
+  const health = html.indexOf('if(playerHp!==enemyHp)');
+  const field = html.indexOf('if(playerUnits!==enemyUnits)');
+  const tier = html.indexOf('if(playerTierScore!==enemyTierScore)');
+  const random = html.indexOf("engineAdapter.random()<.5?'player':'enemy'");
+  assert.ok(health >= 0 && health < field && field < tier && tier < random, 'Initiative priority must match the PRD');
+});
+
 test('opening fields are dealt from the shuffled decks', () => {
   assert.ok(html.includes('takeCards(enemyDeck,'), 'Enemy opening field must be drawn from the shuffled enemy deck');
   assert.ok(html.includes('playerOpeningField=takeCards(deck,'), 'Player opening field must be drawn from the shuffled player deck');
