@@ -62,9 +62,10 @@ test('basic deck and opening hand follow the PRD composition', () => {
   assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(buildBasicDeck(starterOwnedCards())).map(deckEntry)'), 'Computer opponent must use the basic deck');
 });
 
-test('battle deck editing is blocked after the guardian choice starts the battle', () => {
-  assert.ok(html.includes("if(view==='deck'&&guardianChosen)"), 'Deck view must redirect after battle start');
-  assert.ok(html.includes("function saveBattleDeck(){ if(guardianChosen)"), 'Deck save must reject changes after battle start');
+test('deck editing stays open during a battle but never changes the current battle deck', () => {
+  assert.ok(!html.includes("if(view==='deck'&&guardianChosen)"), 'Deck view must open during a battle');
+  assert.ok(html.includes("if(guardianChosen){/* 대전 중: 이번 판 덱은 그대로, 다음 판부터 이 덱을 쓴다 */collectionState.deck=[...draftDeck];persistCollection();"), 'Saving during a battle stores the deck for the next battle only');
+  assert.ok(html.includes('지금 고친 덱은 다음 판부터 적용됩니다'), 'Deck editor must tell the player when changes apply');
 });
 
 test('deck exhaustion and opponent-type disclosure follow the PRD', () => {

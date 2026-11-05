@@ -1377,6 +1377,7 @@
     .deck-manage button { padding:7px 12px; border:1px solid #465365; border-radius:8px; background:#171e28; color:#b8c2d0; font-size:clamp(11px,.85vw,14px); }
     .deck-manage button:disabled { opacity:.4; cursor:not-allowed; }
     .deck-view { flex-direction:column; }
+    .deck-battle-note { flex:none; margin:0 0 12px; padding:9px 14px; border:1px solid #8c6d3f; border-radius:10px; background:#2b241a; color:#ffd77f; font-size:clamp(12px,.9vw,14px); font-weight:700; }
 </style>
 </head>
 <body>
@@ -1547,10 +1548,10 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function closeTierStatus(){document.querySelector('#tier-modal').classList.remove('show');}
     updateTierHud();document.querySelector('#tier-modal').addEventListener('click',event=>{if(event.target.id==='tier-modal')closeTierStatus();});
     function updateCrackerHud(){const balance=(collectionState.crackers||0).toLocaleString('ko-KR');const node=document.querySelector('#cracker-count'),modalNode=document.querySelector('#collection-cracker-count');if(node)node.textContent=balance;if(modalNode)modalNode.textContent=balance;const enemyLabel=document.querySelector('#enemy-deck-label');if(enemyLabel)enemyLabel.textContent=enemyLabel.textContent.includes('크래커')?enemyLabel.textContent.replace(/크래커\s+\d+/,'크래커 '+enemyCrackers):enemyLabel.textContent+' · 크래커 '+enemyCrackers;}
-    function openCollection(view='deck'){if(view==='deck'&&guardianChosen){writeLog('대전이 시작된 뒤에는 덱을 편집할 수 없습니다.');view='codex';}draftDeck=collectionState.decks?draftOfDeck(editingDeck=collectionState.activeDeck||0):[...collectionState.deck];document.querySelector('#collection-modal').classList.add('show');document.body.style.overflow='hidden';switchCollectionView(view);renderCollection(); }
+    function openCollection(view='deck'){draftDeck=collectionState.decks?draftOfDeck(editingDeck=collectionState.activeDeck||0):[...collectionState.deck];document.querySelector('#collection-modal').classList.add('show');document.body.style.overflow='hidden';switchCollectionView(view);renderCollection(); }
     function closeCollection(){ document.querySelector('#collection-modal').classList.remove('show');document.body.style.overflow=''; }
     const COLLECTION_SUBTITLE={deck:'내가 쓸 60장 덱을 속성·비용·희귀도별로 살펴보며 편성하세요.',codex:'모든 카드의 수집 현황을 확인하세요. 캐릭터는 소환으로, 마법·함정은 전투에서 발견하면 등록됩니다.',synth:'여분 캐릭터 카드 3장을 합쳐 무작위 새 카드를 만들어 보세요. 덱에 편성된 카드는 재료로 쓰이지 않습니다.',gacha:'크래커로 새로운 캐릭터 카드를 소환해 컬렉션을 늘리세요.'};
-    function switchCollectionView(view){if(view==='deck'&&guardianChosen){writeLog('대전이 시작된 뒤에는 덱을 편집할 수 없습니다.');view='codex';}document.querySelector('#collection-sub').textContent=COLLECTION_SUBTITLE[view]||''; document.querySelectorAll('.collection-tab').forEach(button=>button.classList.toggle('active',button.dataset.view===view));document.querySelectorAll('.collection-view').forEach(panel=>panel.classList.toggle('active',panel.id===view+'-view'));if(view==='deck')renderDeckBuilder();if(view==='codex')renderCodex();if(view==='synth')renderSynthesis(); }
+    function switchCollectionView(view){document.querySelector('#collection-sub').textContent=COLLECTION_SUBTITLE[view]||''; document.querySelectorAll('.collection-tab').forEach(button=>button.classList.toggle('active',button.dataset.view===view));document.querySelectorAll('.collection-view').forEach(panel=>panel.classList.toggle('active',panel.id===view+'-view'));if(view==='deck')renderDeckBuilder();if(view==='codex')renderCodex();if(view==='synth')renderSynthesis(); }
     const GACHA_SINGLE_COST=200,GACHA_TEN_COST=2000;
     function renderCollection(){updateCrackerHud();document.querySelectorAll('.gacha-actions button').forEach((button,i)=>{const cost=i?GACHA_TEN_COST:GACHA_SINGLE_COST;button.disabled=gachaPulling||collectionState.crackers<cost;button.innerHTML=(i?'10회':'1회')+'<br><small>◆ '+cost.toLocaleString('ko-KR')+'</small>';});renderDeckBuilder();renderCodex();renderSynthesis();}
     function pickCard(forceRare=false){ const roll=Math.random(),rarity=forceRare?(roll<.18?'legendary':'rare'):(roll<.05?'legendary':roll<.25?'rare':'common');const pool=collectionCards.map((_,i)=>i).filter(i=>rarityByCard[i]===rarity);return pool[Math.floor(Math.random()*pool.length)]; }
@@ -1582,7 +1583,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       document.querySelector('#deck-rows').innerHTML=deckPanelMarkup();
       document.querySelector('#build-count').textContent=draftDeck.length;const save=document.querySelector('#deck-save');save.disabled=draftDeck.length!==60;save.textContent=draftDeck.length===60?'셔플하여 60장 덱 저장':'카드 '+(60-draftDeck.length)+'장 더 필요';
     }
-    function saveBattleDeck(){ if(guardianChosen){writeLog('대전이 시작된 뒤에는 덱을 편집할 수 없습니다.');return;}if(draftDeck.length!==60)return;collectionState.deck=[...draftDeck];persistCollection();deck=shuffleBattleDeck(collectionState.deck).map(deckEntry);updateMana();writeLog('<strong>덱 편집 완료:</strong> 새 60장 덱을 셔플했습니다.');closeCollection(); }
+    function saveBattleDeck(){ if(draftDeck.length!==60)return;if(guardianChosen){/* 대전 중: 이번 판 덱은 그대로, 다음 판부터 이 덱을 쓴다 */collectionState.deck=[...draftDeck];persistCollection();writeLog('<strong>덱 편집 완료:</strong> 다음 판부터 이 덱으로 싸웁니다.');closeCollection();return;}collectionState.deck=[...draftDeck];persistCollection();deck=shuffleBattleDeck(collectionState.deck).map(deckEntry);updateMana();writeLog('<strong>덱 편집 완료:</strong> 새 60장 덱을 셔플했습니다.');closeCollection(); }
     let enemyDeck = shuffleBattleDeck(buildBasicDeck(starterOwnedCards())).map(deckEntry);
     let enemyOpeningField = [];
     let enemyHand = enemyDeck.splice(0,5).map(gradeCardData);
@@ -2492,8 +2493,11 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     (function(){
       const baseRender=renderDeckBuilder,baseSave=saveBattleDeck;
       renderDeckBuilder=function(...args){const result=baseRender.apply(this,args);if(collectionState.decks){storeDraft();renderDeckBar();const save=document.querySelector('#deck-save');if(save&&draftDeck.length===60&&editingDeck!==collectionState.activeDeck)save.textContent='이 덱으로 전투 (셔플하여 저장)';}return result;};
-      saveBattleDeck=function(...args){if(collectionState.decks&&!guardianChosen&&draftDeck.length===60){collectionState.decks[editingDeck].ids=deckIdsOf(draftDeck);collectionState.activeDeck=editingDeck;}return baseSave.apply(this,args);};
+      saveBattleDeck=function(...args){if(collectionState.decks&&draftDeck.length===60){collectionState.decks[editingDeck].ids=deckIdsOf(draftDeck);collectionState.activeDeck=editingDeck;}return baseSave.apply(this,args);};
     })();
+
+    /* 대전 중 덱 편집: 편집은 허용하고, 저장한 덱은 다음 판부터 적용된다는 안내를 덱 편집 안에 보여준다 */
+    (function(){const base=renderDeckBuilder;renderDeckBuilder=function(...a){const r=base.apply(this,a);const view=document.querySelector('#deck-view');if(!view)return r;let note=view.querySelector('.deck-battle-note');if(guardianChosen){if(!note){note=document.createElement('div');note.className='deck-battle-note';view.insertBefore(note,view.firstChild);}note.textContent='대전이 진행 중입니다 · 지금 고친 덱은 다음 판부터 적용됩니다';const save=document.querySelector('#deck-save');if(save&&draftDeck.length===60)save.textContent='다음 판 전투 덱으로 저장';}else note?.remove();return r;};})();
 </script>
 </body>
 </html>
