@@ -1555,11 +1555,21 @@
     .top-collection b { font-size:clamp(16px,1.25vw,21px); font-weight:900; letter-spacing:.02em; }
     .top-collection small { color:#d9bf8a; font-size:clamp(10px,.75vw,12px); font-weight:600; }
     .top-collection:hover { transform:translateY(-1px); filter:brightness(1.12); box-shadow:0 0 32px #f3bd6877,inset 0 1px 0 #ffe9a855; }
+    /* 강화·상점 버튼: 전투 UI(금색)와 구분되는 보라 계열. 전투 중엔 작게, 오로라 선택(대전 시작 전)엔 크게 강조 */
+    .top-collection { min-height:0; padding:7px 14px; border:1px solid #6d4fa0; border-radius:10px; background:linear-gradient(135deg,#2a1f40,#1a1626); color:#e2d2ff; box-shadow:none; }
+    .top-collection b { font-size:clamp(12px,.9vw,14px); font-weight:800; }
+    .top-collection small { display:none; }
+    .top-collection:hover { filter:brightness(1.15); box-shadow:0 0 14px #9b6bff44; }
+    body:has(.guardian-select) .top-collection, body:has(.battle-intro) .top-collection { position:relative; z-index:330; min-height:clamp(52px,4vw,64px); padding:clamp(10px,.8vw,14px) clamp(20px,1.8vw,30px); border:2px solid #b48cff; border-radius:14px; background:linear-gradient(135deg,#4b2f7a,#2a1a48); color:#f3e9ff; box-shadow:0 0 26px #9b6bff77,inset 0 1px 0 #e3d0ff44; animation:top-collection-glow 2.2s ease-in-out infinite; }
+    body:has(.guardian-select) .top-collection b, body:has(.battle-intro) .top-collection b { font-size:clamp(17px,1.35vw,22px); font-weight:900; }
+    body:has(.guardian-select) .top-collection small, body:has(.battle-intro) .top-collection small { display:block; color:#cdb6f5; }
+    @keyframes top-collection-glow { 50% { box-shadow:0 0 40px #9b6bffaa,inset 0 1px 0 #e3d0ff66; } }
+    @media(prefers-reduced-motion:reduce){ .top-collection { animation:none!important; } }
 </style>
 </head>
 <body>
   <main class="app">
-    <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><b class="hand-guide" id="hand-guide" role="status" aria-live="polite">카드를 선택하세요</b><div class="top-actions"><span class="ghost cracker-wallet" hidden>◆ 크래커 <strong id="cracker-count">0</strong></span><div class="sound-wrap"><button class="ghost" id="sound-toggle" onclick="toggleSoundPanel()" aria-haspopup="true" aria-expanded="false">🔊 사운드</button><div class="sound-panel" id="sound-panel" hidden><label><span>배경음악</span><output id="bgm-value">45%</output><input type="range" id="bgm-slider" min="0" max="100" step="1" aria-label="배경음악 볼륨"></label><label><span>효과음</span><output id="sfx-value">35%</output><input type="range" id="sfx-slider" min="0" max="100" step="1" aria-label="효과음 볼륨"></label><button class="sound-mute" id="sound-mute" onclick="toggleMute()">🔇 전체 음소거</button></div></div><button class="top-collection" onclick="openCollection('enhance')" title="컬렉션 · 강화 · 합성 · 상점"><b>✦ 강화 · 상점</b><small>컬렉션 · 합성 · 덱 편집</small></button></div></header>
+    <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><b class="hand-guide" id="hand-guide" role="status" aria-live="polite">카드를 선택하세요</b><div class="top-actions"><span class="ghost cracker-wallet" hidden>◆ 크래커 <strong id="cracker-count">0</strong></span><div class="sound-wrap"><button class="ghost" id="sound-toggle" onclick="toggleSoundPanel()" aria-haspopup="true" aria-expanded="false">🔊 사운드</button><div class="sound-panel" id="sound-panel" hidden><label><span>배경음악</span><output id="bgm-value">45%</output><input type="range" id="bgm-slider" min="0" max="100" step="1" aria-label="배경음악 볼륨"></label><label><span>효과음</span><output id="sfx-value">35%</output><input type="range" id="sfx-slider" min="0" max="100" step="1" aria-label="효과음 볼륨"></label><button class="sound-mute" id="sound-mute" onclick="toggleMute()">🔇 전체 음소거</button></div></div><button class="top-collection" onclick="openCollection('enhance')"><b>✦ 강화 · 상점</b><small>컬렉션 · 합성 · 덱 편집</small></button></div></header>
     <div class="layout">
       <section class="battle">
         <div class="status"><span>캐릭터 체험전 · 오로라 역전</span><span>연쇄 <strong id="combo-count">0</strong> · 전투 기록 <strong>03:42</strong></span></div>
