@@ -375,6 +375,8 @@
     .command-rail .card { width:100%; height:auto; min-height:0; aspect-ratio:5/7; padding:8px; }
     /* 카드가 많아도 행이 컨테이너 높이에 맞춰 압축되지 않게: 행은 카드 본래 높이(5:7)를 유지하고 넘치면 손패 영역이 스크롤한다. */
     .command-rail .hand { grid-auto-rows:max-content; align-content:start; }
+    /* 고른 카드는 3px 뜨고 1.5% 커지며 2px 빛 테두리가 생긴다 — 맨 윗줄·양옆 카드의 테두리가 손패 영역(스크롤) 경계에 잘리지 않게 그만큼 여백을 둔다 */
+    .command-rail .hand { padding:12px 4px 10px 3px; }/* 좌우 합계는 예전(7px)과 같게 — 카드 폭이 줄면 종류 배지가 넘친다 */
     .command-rail .hand > .card { align-self:start; }
     .command-rail .card .art,.command-rail .card.summon-card .art,.command-rail .card.spell-card .art,.command-rail .card.trap-card .art { width:100%; height:auto; min-height:0; aspect-ratio:4/3; margin:17px 0 7px; border-radius:9px; }
     .card:hover,.card.selected,.command-rail .card:hover,.command-rail .card.selected { transform:translateY(-3px) scale(1.015); }
@@ -835,6 +837,40 @@
       #codex-view .codex-stat small { font-size:clamp(10px,.75vw,12px); white-space:normal; word-break:keep-all; }
       #codex-view .codex-stat b { font-size:clamp(16px,1.25vw,22px); }
     }
+    /* 강화 왼쪽 패널 정리: 같은 모양 상자가 줄지어 있던 것을 위계 있게 — 대화 버튼은 카드 위 작은 칩, 성공 확률은 카드에 걸친 원형 게이지,
+       재료는 칸 5개, 결과는 성공/실패 두 칸, 실행은 금색 주 버튼 하나. 규칙 문단과 오른쪽 위 중복 문구는 숨김(확률 게이지 툴팁으로) */
+    #enhance-view .synth-altar > #enhance-gate { order:-1; width:min(100%,360px); margin:0; padding:clamp(10px,1.2vh,14px) 22px; border:1px solid #c9a35a99; border-radius:999px; background:linear-gradient(135deg,#3a2d1ccc,#2a2116cc); color:#ffe0a0; font-size:clamp(13px,1vw,16px); font-weight:800; box-shadow:0 4px 14px #0006; }
+    /* 남는 세로 공간을 카드가 채운다: 결과 칸이 남은 높이를 차지하고, 카드 폭은 그 높이에 맞춰(그림 3:4 + 이름·재료 줄) 정한다 */
+    #enhance-view .synth-altar { gap:clamp(14px,2vh,24px); }
+    #enhance-view .synth-altar > #enhance-result { flex:1 1 0; min-height:0; width:100%; container-type:size; display:grid; place-items:center; }
+    #enhance-view #enhance-result .synth-card { width:min(80cqw, calc((100cqh - 84px) * .75 + 16px), 400px); }
+    #enhance-view .synth-altar > .synth-odds, #enhance-view .synth-altar > #enhance-go, #enhance-view .synth-altar > .enhance-acquire { flex:none; }
+    #enhance-view .synth-altar > #enhance-gate:hover { background:#3a2d1c; border-color:#e6c27a; }
+    #enhance-view .synth-help, #enhance-view #enhance-count { display:none; }
+    #enhance-result .synth-card.enh-slot { position:relative; overflow:visible; }
+    #enhance-result .enh-chance { position:absolute; left:-16px; top:-16px; z-index:3; display:grid; place-items:center; align-content:center; width:clamp(58px,4.6vw,72px); aspect-ratio:1; border-radius:50%; background:radial-gradient(circle,#141019 58%,transparent 59%),conic-gradient(#ffd477 calc(var(--p) * 1%),#3a3348 0); box-shadow:0 6px 18px #000a,0 0 18px #f3bd6844; cursor:help; }
+    #enhance-result .enh-chance b { font-size:clamp(15px,1.25vw,19px); line-height:1; color:#ffe3a8; }
+    #enhance-result .enh-chance small { margin-top:2px; font-size:10px; color:#b9a88a; }
+    #enhance-result .enh-mats { display:flex; align-items:center; justify-content:center; gap:4px; color:#8993a7; }
+    #enhance-result .enh-mats i { width:12px; height:16px; border:1px solid #5b6b80; border-radius:3px; background:#10151c; }
+    #enhance-result .enh-mats i.on { border-color:#e6c27a; background:linear-gradient(160deg,#ffd477,#a8873a); box-shadow:0 0 6px #f3bd6866; }
+    #enhance-result .enh-mats em { margin-left:2px; font-style:normal; font-weight:800; color:#ffd477; }
+    #enhance-view .synth-odds { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    #enhance-view .enh-outcome { display:flex; flex-direction:column; gap:2px; padding:9px 10px; border-radius:10px; text-align:center; }
+    #enhance-view .enh-outcome small { font-size:clamp(10px,.75vw,12px); font-weight:700; letter-spacing:.06em; }
+    #enhance-view .enh-outcome b { font-size:clamp(14px,1.1vw,18px); word-break:keep-all; }
+    #enhance-view .enh-outcome span { font-size:clamp(10px,.75vw,12px); color:#9aa4b4; word-break:keep-all; }
+    #enhance-view .enh-outcome.ok { background:#13241b; border:1px solid #2f6b47; }
+    #enhance-view .enh-outcome.ok small, #enhance-view .enh-outcome.ok b { color:#8be0ab; }
+    #enhance-view .enh-outcome.ng { background:#24141a; border:1px solid #6b2f3a; }
+    #enhance-view .enh-outcome.ng small, #enhance-view .enh-outcome.ng b { color:#ff9a9a; }
+    #enhance-view #enhance-go { display:flex; flex-direction:column; align-items:center; gap:2px; padding:clamp(12px,1vw,16px); border:0; border-radius:12px; background:linear-gradient(135deg,#ffd477,#e0a53a 55%,#b9822a); color:#2a1a04; box-shadow:0 8px 24px #f3bd6844,inset 0 1px 0 #fff6; }
+    #enhance-view #enhance-go:not(:disabled):hover { filter:brightness(1.08); transform:translateY(-1px); }
+    #enhance-view #enhance-go:disabled { background:#1d2230; color:#8993a7; box-shadow:none; border:1px dashed #3a4455; }
+    #enhance-view #enhance-go .eg-main { font-size:clamp(16px,1.25vw,20px); font-weight:900; }
+    #enhance-view #enhance-go .eg-sub { font-size:clamp(11px,.8vw,13px); font-weight:700; opacity:.8; }
+    #enhance-view .enhance-acquire { width:auto; padding:4px 8px; border:0; background:none; color:#cf9bf0; font-size:clamp(11px,.85vw,13px); font-weight:700; text-decoration:underline; text-underline-offset:3px; }
+    #enhance-view .enhance-acquire:hover { color:#e9c8ff; }
     /* 혈마나 궁극기: 잠긴 궁극기 버튼 옆(왼쪽)에 놓이는, 체력을 바치는 붉은 버튼 */
     .field-ultimate-blood { position:absolute; z-index:12; left:50%; top:104px; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:2px; width:min(260px,48%); padding:9px 18px 10px; border:1px solid #d6465a; border-radius:16px; background:linear-gradient(135deg,#4a1220f0,#2a0a14f0); color:#ffd3d9; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 0 22px #d6465a66; }
     .field-ultimate-blood small { font-size:11px; font-weight:600; color:#ffa3b0; }
@@ -1074,10 +1110,10 @@
     .guardian-select.gs-aura .gs-card .gs-power{grid-area:power;align-self:center;justify-self:end;font-size:clamp(9px,calc(var(--field-height) * .019),11px);white-space:nowrap}
     .guardian-select.gs-aura .gs-card .gs-desc{grid-area:desc;align-self:start;max-height:4.1em/* 3줄까지 — 2.8em이면 작은 화면에서 셋째 줄이 잘렸다 */;overflow:hidden;margin-top:3px;font-size:clamp(9px,calc(var(--field-height) * .018),11px);line-height:1.35;text-align:left;color:#aeb9c9}
     .guardian-select.gs-aura .gs-card:hover,.guardian-select.gs-aura .gs-card:focus-visible{z-index:4;transform:translateY(-4px) scale(1.025)}
-    .aura-pentagon-core{position:absolute;z-index:1;left:50%;top:55%;display:grid;place-items:center;width:clamp(92px,13%,144px);aspect-ratio:1;transform:translate(-50%,-50%);clip-path:polygon(50% 0,98% 35%,80% 94%,20% 94%,2% 35%);background:radial-gradient(circle at 50% 38%,#273650,#111925 65%,#080c13);box-shadow:0 0 28px #83a8d633;color:#eaf2ff;text-align:center;pointer-events:none}
+    .aura-pentagon-core{position:absolute;z-index:1;left:50%;top:55%;display:grid;place-items:center;width:clamp(120px,17%,188px)/* 가운데 오각형: 예전 92~144px에서 키움 (위 카드에 닿지 않는 상한) */;aspect-ratio:1;transform:translate(-50%,-50%);clip-path:polygon(50% 0,98% 35%,80% 94%,20% 94%,2% 35%);background:radial-gradient(circle at 50% 38%,#273650,#111925 65%,#080c13);box-shadow:0 0 28px #83a8d633;color:#eaf2ff;text-align:center;pointer-events:none}
     .aura-pentagon-core::before{content:'';position:absolute;inset:5px;clip-path:inherit;border:1px solid #a9c9ee88;background:linear-gradient(145deg,#ffffff12,transparent 60%)}
-    .aura-pentagon-core span{position:relative;padding:0 15px;font-size:clamp(10px,calc(var(--field-height) * .02),13px);font-weight:800;line-height:1.35;letter-spacing:.08em;text-shadow:0 0 12px #8abaff}
-    @container (max-height:520px){.guardian-select.gs-aura .gs-board{padding-top:52px}.guardian-select.gs-aura .gs-card{height:25%;padding:7px 10px}.guardian-select.gs-aura .gs-jujak{top:11%}.guardian-select.gs-aura .gs-namu,.guardian-select.gs-aura .gs-baekho{top:72%}.guardian-select.gs-aura .gs-card .gs-desc{display:none}.aura-pentagon-core{width:88px}}
+    .aura-pentagon-core span{position:relative;padding:0 15px;font-size:clamp(13px,calc(var(--field-height) * .028),19px);font-weight:800;line-height:1.35;letter-spacing:.08em;text-shadow:0 0 12px #8abaff}
+    @container (max-height:520px){.guardian-select.gs-aura .gs-board{padding-top:52px}.guardian-select.gs-aura .gs-card{height:25%;padding:7px 10px}.guardian-select.gs-aura .gs-jujak{top:11%}.guardian-select.gs-aura .gs-namu,.guardian-select.gs-aura .gs-baekho{top:72%}.guardian-select.gs-aura .gs-card .gs-desc{display:none}.aura-pentagon-core{width:110px}}
     /* 앞면: 바탕은 거의 같은 어두운 색(성격 색을 아주 살짝만), 성격 구분은 테두리 색으로. 테두리 모양은 모든 등급이 같다.
        등급 표시는 오른쪽 위: 일반 = 없음 · 희귀 = 색칠된 동그라미 · 전설 = 색칠된 별. 뒷면은 성격 색과 성격 글자(불·물·목·금·땅)로 구분한다 */
     :where(.card.summon-card[data-persona], .arena .unit[data-persona]) { --pc:#9aa3b2; }
@@ -1212,6 +1248,16 @@
     .synth-slot b { font-size:11px; line-height:1.2; text-align:center; word-break:keep-all; } .synth-slot small { font-size:9px; }
     .synth-slot.filled::after { content:'✕'; position:absolute; top:4px; right:5px; z-index:2; color:#fff; font-size:11px; opacity:.7; text-shadow:0 1px 3px #000; }
     .synth-arrow { color:#8c6d3f; font-size:16px; }
+    /* 합성: 결과 카드 칸 없이 재료 10칸만 가지런히 (결과는 합성 연출 무대에서) */
+    #synth-view .synth-arrow, #synth-view #synth-result { display:none; }
+    #synth-view .synth-slots { gap:clamp(6px,.7vw,12px); }
+    .synth-slots-head { grid-column:1/-1; display:flex; align-items:baseline; justify-content:space-between; gap:8px; padding:0 2px; }
+    .synth-slots-head b { color:#e8d3a6; font-size:clamp(13px,1vw,16px); }
+    .synth-slots-head small { color:#8993a7; font-size:clamp(10px,.8vw,13px); text-align:right; }
+    #synth-view .synth-slot.filled b { display:none; }/* 칸이 작아 이름이 단어 중간에서 끊겨 그림을 덮는다 — 이름은 마우스를 올리면(title) */
+    #synth-view .synth-slot.filled small { position:absolute; left:4px; bottom:4px; z-index:1; min-width:18px; padding:1px 5px; border-radius:99px; background:#000000b0; color:#e8edf4; font-size:clamp(10px,.75vw,12px); font-weight:800; text-align:center; }
+    .synth-slot.vacant { border-style:dashed; border-color:#3a4455; background:#0e131a; justify-content:center; }
+    .synth-slot.vacant span { color:#3f4a5a; font-size:clamp(18px,1.6vw,28px); font-weight:800; }
     .synth-result { width:100%; display:grid; place-items:center; }
     .synth-card { position:relative; width:150px; aspect-ratio:3/4.4; padding:6px; display:flex; flex-direction:column; gap:3px; border:2px solid #394454; border-radius:12px; background:#1a212b; }
     .synth-card.rare { border-color:#b078d4; box-shadow:0 0 18px #a85cdb44; } .synth-card.legendary { border-color:#ffd477; box-shadow:0 0 26px #f3bd6877; }
@@ -1540,11 +1586,18 @@
     .codex-card .tier-pick b.on:hover { border-color:#b68a4d; color:#ffd77f; }
     .codex-card .tier-pick b.sel { border-color:#b68a4d; background:#2b241a; color:#ffd77f; box-shadow:inset 0 0 0 1px #b68a4d; }
     .codex-detail-art { position:relative; }
-    /* 합성 재료 슬롯: 5열×2줄 → 4열×3줄, 패널의 남는 높이까지 슬롯이 늘어나 채운다 */
+    /* 합성 재료 슬롯: 4열×3줄(최대 10칸), 카드 비율(3:4) 유지 — 왼쪽 패널을 좁혀 오른쪽 카드 목록(브라우징)을 넓힌다 */
     @media(min-width:901px){
       #synth-view .synth-altar { overflow:hidden; }
-      #synth-view .synth-slots { flex:1 1 auto; min-height:0; grid-template-columns:repeat(4,minmax(0,1fr)); grid-template-rows:auto; grid-auto-rows:minmax(0,1fr); align-content:stretch; }
-      #synth-view .synth-slots > .synth-slot:not(.empty) { aspect-ratio:auto; height:100%; min-height:0; }
+      #synth-view .synth-altar { width:clamp(270px,20vw,400px); }
+      /* 재료 칸 영역이 패널의 남는 높이를 차지하고, 칸은 그 높이 안에 3줄이 들어가는 크기(카드 비율 3:4)로 — 합성 버튼이 항상 보인다 */
+      #synth-view .synth-slots { flex:1 1 0; min-height:220px; container-type:size; grid-template-columns:repeat(4,minmax(0,1fr)); grid-template-rows:auto repeat(3,auto); grid-auto-rows:auto; align-content:center; align-items:center; justify-items:center; }
+      #synth-view .synth-slots > .synth-slot { width:min(100%,calc((100cqh - 30px - 3 * clamp(6px,.7vw,12px)) / 3 * .75)); }
+      #synth-view .synth-altar { overflow-y:auto; overflow-x:hidden; }/* 좁아진 패널이 넘쳐도 합성 버튼이 잘리지 않게 스크롤 */
+      #synth-view .synth-help { display:none; }/* 위 안내 줄과 내용이 겹친다 */
+      #synth-view .synth-odds-hint { word-break:keep-all; }/* '최종 상/한'처럼 단어 중간에서 끊기지 않게 */
+      #synth-view .synth-grid { grid-template-columns:repeat(auto-fill,minmax(clamp(132px,8.6vw,200px),1fr)); }/* 넓어진 오른쪽 목록에 열을 더 */
+      #synth-view .synth-slots > .synth-slot:not(.empty) { aspect-ratio:3/4; height:auto; min-height:0; }
       #synth-view .synth-slots > .synth-slot b { font-size:clamp(13px,1vw,16px); }
       #synth-view .synth-altar > :not(.synth-slots) { flex:none; }
     }
@@ -2561,20 +2614,20 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     })();
 
     /* ===== 합성: 서로 다른 카드와 중복 카드를 자유롭게 섞어 다른 카드 생성 ===== */
-    const SYNTH_BASE_CHANCE=[0,10,18,25,31,36,40,43,46,48,49],SYNTH_MAX_CHANCE=49;
+    const SYNTH_BASE_CHANCE=[0,10,18,25,31,36,40,43,46,48,49],SYNTH_MAX_CHANCE=49,SYNTH_MAX_MATERIALS=10;/* 재료 2~10장. 기본 확률 2장 18% … 10장 49%, 연속 실패 보정 포함 최종 상한 49% */
     var synthSlots=[],synthBusy=false,synthFilter='all',synthSort='default',synthDupOnly=false,synthLast=null,synthFailureStreak=0;
     function synthReserved(){return 1;}/* 합성 대상 원본 1장은 항상 남긴다. */
     function synthSpare(index){return Math.max(0,collectionState.owned[index]-1-synthSlots.filter(value=>value===index).length);}
     function synthChance(count=synthSlots.length){return Math.min(SYNTH_MAX_CHANCE,(SYNTH_BASE_CHANCE[count]||0)+synthFailureStreak*5);}
-    function synthPick(index){if(synthBusy||synthSlots.length>=10||synthSpare(index)<=0)return;synthSlots.push(index);synthLast=null;sfx('ui-select');renderSynthesis();}
+    function synthPick(index){if(synthBusy||synthSlots.length>=SYNTH_MAX_MATERIALS||synthSpare(index)<=0)return;synthSlots.push(index);synthLast=null;sfx('ui-select');renderSynthesis();}
     function synthRemove(position){if(synthBusy)return;synthSlots.splice(position,1);renderSynthesis();}
     function setSynthFilter(value){synthFilter=value;renderSynthesis();}
     function renderSynthesis(){
       const slotsEl=document.querySelector('#synth-slots');if(!slotsEl)return;
       document.querySelector('.synth-altar').classList.toggle('busy',synthBusy);
-      slotsEl.innerHTML=synthSlots.length?synthSlots.map((index,pos)=>{const card=collectionCards[index],rarity=rarityByCard[index];return '<button class="synth-slot filled '+rarity+'" onclick="synthRemove('+pos+')" title="눌러서 빼기"><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>재료 '+(pos+1)+'</small></button>';}).join(''):'<button class="synth-slot empty" disabled><span>＋</span><small>합칠 카드 2~10장을 선택하세요</small></button>';
+      slotsEl.innerHTML='<div class="synth-slots-head"><b>재료 '+synthSlots.length+' / '+SYNTH_MAX_MATERIALS+'</b><small>'+(synthSlots.length<2?'카드를 2장 이상 넣으면 합성할 수 있습니다':'칸을 누르면 재료에서 뺍니다')+'</small></div>'+Array.from({length:SYNTH_MAX_MATERIALS},(_,pos)=>{const index=synthSlots[pos];if(index===undefined)return '<div class="synth-slot vacant" aria-hidden="true"><span>'+(pos+1)+'</span></div>';const card=collectionCards[index],rarity=rarityByCard[index];return '<button class="synth-slot filled '+rarity+'" onclick="synthRemove('+pos+')" title="'+card[2]+' · 눌러서 빼기"><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>'+(pos+1)+'</small></button>';}).join('');/* 재료 칸은 항상 SYNTH_MAX_MATERIALS(10)칸 */
       const ready=synthSlots.length>=2,chance=synthChance();
-      document.querySelector('#synth-odds').innerHTML=synthBusy?'<div class="synth-odds-hint">합성 결과를 확인하고 있습니다…</div>':ready?'<div class="synth-odd rare"><small>성공 확률</small><b>'+chance+'%</b></div>'+(()=>{const g=synthGuaranteeRarity(synthSlots);return '<div class="synth-odd '+g+'" title="성공하면 재료 중 가장 높은 등급 이상의 카드가 나옵니다"><small>성공 시 최소 등급</small><b>'+rarityLabel[g]+'</b></div>';})()+'<div class="synth-odds-hint">재료 '+synthSlots.length+'장 · 연속 실패 보정 +'+(synthFailureStreak*5)+'%p · 최종 상한 49%</div>':'<div class="synth-odds-hint">재료 수에 따라 성공 확률이 10%에서 49%까지 높아집니다.</div>';
+      document.querySelector('#synth-odds').innerHTML=synthBusy?'<div class="synth-odds-hint">합성 결과를 확인하고 있습니다…</div>':ready?'<div class="synth-odd rare"><small>성공 확률</small><b>'+chance+'%</b></div>'+(()=>{const g=synthGuaranteeRarity(synthSlots);return '<div class="synth-odd '+g+'" title="성공하면 재료 중 가장 높은 등급 이상의 카드가 나옵니다"><small>성공 시 최소 등급</small><b>'+rarityLabel[g]+'</b></div>';})()+'<div class="synth-odds-hint">재료 '+synthSlots.length+'장 · 연속 실패 보정 +'+(synthFailureStreak*5)+'%p · 최종 상한 49%</div>':'<div class="synth-odds-hint">재료 2~'+SYNTH_MAX_MATERIALS+'장에 따라 성공 확률이 '+SYNTH_BASE_CHANCE[2]+'%에서 '+SYNTH_BASE_CHANCE[SYNTH_MAX_MATERIALS]+'%까지 높아집니다.</div>';
       const go=document.querySelector('#synth-go');go.disabled=!ready||synthBusy;go.textContent=synthBusy?'합성 중…':ready?'⚗ '+chance+'% 확률로 합성':'카드를 2장 이상 골라주세요';
       const result=document.querySelector('#synth-result');
       if(synthBusy)result.innerHTML='<div class="synth-card unknown synth-wait"><span>⚗</span><small>합성 중</small></div>';
@@ -2589,18 +2642,18 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       document.querySelector('#synth-sort').innerHTML=[['default','기본 순'],['spare','여분 많은 순']].map(([key,label])=>'<button class="'+(synthSort===key?'active':'')+'" onclick="setSynthSort(\''+key+'\')">'+label+'</button>').join('')+'<button class="synth-dup '+(synthDupOnly?'active':'')+'" onclick="toggleSynthDup()" aria-pressed="'+synthDupOnly+'">여분 2장+만</button>';
       const total=collectionCards.reduce((sum,_,i)=>sum+Math.max(0,collectionState.owned[i]-synthReserved(i)),0);
       document.querySelector('#synth-count').textContent='합성 가능한 여분 '+total+'장';
-      const tile=c=>{const card=collectionCards[c.index],rarity=rarityByCard[c.index],isBlocked=c.free<=0,canAdd=!synthBusy&&synthSlots.length<10&&c.left>0;
-        return '<div class="synth-pick '+rarity+(isBlocked?' locked':'')+(c.picked?' picked':'')+'">'+(c.picked?'<span class="synth-picked">선택 '+c.picked+'</span>':'')+'<button class="synth-pick-main" '+(canAdd?'':'disabled')+' onclick="synthPick('+c.index+')" aria-label="'+card[2]+' 재료로 추가"><span class="synth-spare">중복 '+c.left+'</span><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+'</small></button><div class="synth-have"><span>보유 <b>'+c.owned+'</b></span><span class="free on">보존 <b>1</b></span><span class="free '+(c.free>0?'on':'')+'">재료 <b>'+c.free+'</b></span></div><div class="synth-stepper"><button onclick="synthStep('+c.index+',-1)" '+(c.picked&&!synthBusy?'':'disabled')+' aria-label="하나 빼기">−</button><b>'+c.picked+'</b><button onclick="synthStep('+c.index+',1)" '+(canAdd?'':'disabled')+' aria-label="하나 더하기">＋</button><button class="max" onclick="synthStep('+c.index+',10)" '+(canAdd&&c.left>=2?'':'disabled')+' title="최대 10장 선택">MAX</button></div></div>';};
+      const tile=c=>{const card=collectionCards[c.index],rarity=rarityByCard[c.index],isBlocked=c.free<=0,canAdd=!synthBusy&&synthSlots.length<SYNTH_MAX_MATERIALS&&c.left>0;
+        return '<div class="synth-pick '+rarity+(isBlocked?' locked':'')+(c.picked?' picked':'')+'">'+(c.picked?'<span class="synth-picked">선택 '+c.picked+'</span>':'')+'<button class="synth-pick-main" '+(canAdd?'':'disabled')+' onclick="synthPick('+c.index+')" aria-label="'+card[2]+' 재료로 추가"><span class="synth-spare">중복 '+c.left+'</span><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+'</small></button><div class="synth-have"><span>보유 <b>'+c.owned+'</b></span><span class="free on">보존 <b>1</b></span><span class="free '+(c.free>0?'on':'')+'">재료 <b>'+c.free+'</b></span></div><div class="synth-stepper"><button onclick="synthStep('+c.index+',-1)" '+(c.picked&&!synthBusy?'':'disabled')+' aria-label="하나 빼기">−</button><b>'+c.picked+'</b><button onclick="synthStep('+c.index+',1)" '+(canAdd?'':'disabled')+' aria-label="하나 더하기">＋</button><button class="max" onclick="synthStep('+c.index+','+SYNTH_MAX_MATERIALS+')" '+(canAdd&&c.left>=2?'':'disabled')+' title="최대 '+SYNTH_MAX_MATERIALS+'장 선택">MAX</button></div></div>';};
       document.querySelector('#synth-grid').innerHTML=(usable.length?'<div class="synth-section">합성에 쓸 수 있는 카드 <b>'+usable.length+'</b></div>'+usable.map(tile).join(''):'')+(blocked.length?'<div class="synth-section blocked">덱에 편성된 카드 · 재료로 쓸 수 없음 <b>'+blocked.length+'</b></div>'+blocked.map(tile).join(''):'')||'<div class="gacha-empty">조건에 맞는 카드가 없습니다.</div>';
     }
     function setSynthSort(value){synthSort=value;renderSynthesis();}
     function toggleSynthDup(){synthDupOnly=!synthDupOnly;renderSynthesis();}
-    function synthStep(index,delta){if(synthBusy)return;if(delta<0){const at=synthSlots.lastIndexOf(index);if(at>=0)synthSlots.splice(at,1);renderSynthesis();return;}let n=Math.min(delta,10-synthSlots.length);while(n-->0&&synthSpare(index)>0)synthSlots.push(index);synthLast=null;sfx('ui-select');renderSynthesis();}
-    function synthAuto(){if(synthBusy)return;const order=collectionCards.map((_,i)=>i).filter(i=>collectionState.owned[i]>1).sort((x,y)=>collectionState.owned[y]-collectionState.owned[x]);synthSlots=[];for(const index of order){let count=Math.min(10-synthSlots.length,collectionState.owned[index]-1);while(count-->0)synthSlots.push(index);if(synthSlots.length>=10)break;}synthLast=null;sfx('ui-select');renderSynthesis();}
+    function synthStep(index,delta){if(synthBusy)return;if(delta<0){const at=synthSlots.lastIndexOf(index);if(at>=0)synthSlots.splice(at,1);renderSynthesis();return;}let n=Math.min(delta,SYNTH_MAX_MATERIALS-synthSlots.length);while(n-->0&&synthSpare(index)>0)synthSlots.push(index);synthLast=null;sfx('ui-select');renderSynthesis();}
+    function synthAuto(){if(synthBusy)return;const order=collectionCards.map((_,i)=>i).filter(i=>collectionState.owned[i]>1).sort((x,y)=>collectionState.owned[y]-collectionState.owned[x]);synthSlots=[];for(const index of order){let count=Math.min(SYNTH_MAX_MATERIALS-synthSlots.length,collectionState.owned[index]-1);while(count-->0)synthSlots.push(index);if(synthSlots.length>=SYNTH_MAX_MATERIALS)break;}synthLast=null;sfx('ui-select');renderSynthesis();}
     /* 합성 성공 시 최소 보장 등급 = 재료 중 가장 높은 등급 */
     function synthGuaranteeRarity(slots){const rank={common:0,rare:1,legendary:2};return (slots||[]).map(i=>rarityByCard[i]).filter(Boolean).sort((a,b)=>rank[b]-rank[a])[0]||'common';}
     function runSynthesis(){
-      if(synthBusy||synthSlots.length<2||synthSlots.length>10)return;
+      if(synthBusy||synthSlots.length<2||synthSlots.length>SYNTH_MAX_MATERIALS)return;
       const slots=[...synthSlots],count=slots.length,used=new Map();slots.forEach(index=>used.set(index,(used.get(index)||0)+1));if([...used].some(([index,amount])=>collectionState.owned[index]-1<amount)){synthSlots=[];renderSynthesis();return;}
       const success=Math.random()*100<synthChance(count),rarityRank={common:0,rare:1,legendary:2},targetRarity=slots.map(index=>rarityByCard[index]).sort((a,b)=>rarityRank[b]-rarityRank[a])[0];
       used.forEach((amount,index)=>collectionState.owned[index]-=amount);if(success){const materialIds=new Set(slots),preferred=collectionCards.map((_,i)=>i).filter(i=>rarityByCard[i]===targetRarity&&!materialIds.has(i)),fallback=collectionCards.map((_,i)=>i).filter(i=>!materialIds.has(i)&&rarityRank[rarityByCard[i]]>=rarityRank[targetRarity]),pool=preferred.length?preferred:fallback,result=pool[Math.floor(Math.random()*pool.length)];collectionState.owned[result]++;synthLast={index:result,success:true,rarity:rarityByCard[result]};synthFailureStreak=0;}else{synthLast={index:slots[0],success:false,rarity:targetRarity};synthFailureStreak++;}persistCollection();
@@ -2617,15 +2670,16 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function rollEnhanceBonus(max){if(max<=0)return 0;const roll=Math.random()*100;if(max===1)return roll<60?0:1;return roll<60?0:roll<90?1:2;}
     function selectEnhancement(index){enhanceSelected=index;enhanceLast=null;renderEnhancement();sfx('ui-select');}
     function setEnhanceLevel(level){enhanceLevel=level;enhanceSelected=null;enhanceLast=null;renderEnhancement();}
-    /* 작품 게이트: 실제 작품 페이지(characterId 기준)로 보낼 자리. 지금은 목업이라 안내만 잠깐 보여 준다 */
-    function openWorkGate(button){if(!button||button.classList.contains('notice'))return;button.classList.add('notice');button.textContent='준비 중 · 실제 작품 페이지는 아직 연결되지 않았습니다';clearTimeout(button._noticeTimer);button._noticeTimer=setTimeout(()=>{button.classList.remove('notice');button.textContent=button.dataset.label||'';},1800);}
+    /* 대화 게이트: 이 캐릭터와 대화하는 페이지(characterId 기준)로 보낼 자리. 지금은 목업이라 안내만 잠깐 보여 준다 */
+    function withAndParticle(name){const last=String(name).trim().slice(-1),code=last.charCodeAt(0)-0xAC00;return name+(code>=0&&code<11172&&code%28!==0?'과':'와');}/* 받침 있으면 '과', 없으면 '와' */
+    function openWorkGate(button){if(!button||button.classList.contains('notice'))return;button.classList.add('notice');button.textContent='준비 중 · 대화 페이지는 아직 연결되지 않았습니다';clearTimeout(button._noticeTimer);button._noticeTimer=setTimeout(()=>{button.classList.remove('notice');button.textContent=button.dataset.label||'';},1800);}
     function renderEnhancement(){
       const grid=document.querySelector('#enhance-grid');if(!grid)return;const rule=ENHANCE_RULES[enhanceLevel],eligible=collectionCards.map((_,index)=>index).filter(index=>!collectionIsSpell[index]&&enhancementCount(index)>0);
       document.querySelector('#enhance-level').innerHTML=[0,1,2,3].map(level=>'<button class="'+(enhanceLevel===level?'active':'')+'" onclick="setEnhanceLevel('+level+')">'+level+'차 → '+(level+1)+'차</button>').join('');
       document.querySelector('#enhance-count').textContent='동일 카드 5장 필요 · 성공률 '+rule.chance+'%';
       grid.innerHTML=eligible.map(index=>{const card=collectionCards[index],count=enhancementCount(index),rarity=rarityByCard[index];return '<button class="synth-pick '+rarity+(enhanceSelected===index?' picked':'')+'" onclick="selectEnhancement('+index+')"><span class="synth-spare">'+enhanceLevel+'차 '+count+'장</span><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>비용 '+card[3]+' · ⚔ '+card[4]+' · ♥ '+card[5]+'</small></button>';}).join('')||'<div class="gacha-empty">이 단계에서 강화할 수 있는 챔프 카드가 없습니다.</div>';
-      const ready=enhanceSelected!==null&&enhancementCount(enhanceSelected)>=ENHANCE_MATERIAL_COUNT,go=document.querySelector('#enhance-go');go.disabled=!ready;go.textContent=ready?'✦ '+rule.chance+'% 확률로 '+rule.label:'같은 단계 카드 5장이 필요합니다';{/* 고른 카드의 원작으로 가는 게이트 버튼 (목업: 링크는 아직 동작하지 않는다) */const gate=document.querySelector('#enhance-gate'),def=enhanceSelected!==null?collectionCardDefs[enhanceSelected]:null;if(gate){gate.hidden=!def;if(def){gate.dataset.characterId=def.acquisition?.characterId||def.cardId;gate.dataset.label=collectionCards[enhanceSelected][2]+' 작품 젠돈하러 가기 ↗';if(!gate.classList.contains('notice'))gate.textContent=gate.dataset.label;}}}
-      const attack='공격력 +0~'+rule.attackMax,health=rule.healthMax?' · 체력 +0~'+rule.healthMax:'',bonusOdds=rule.attackMax===1&&rule.healthMax===0?'+0 60% · +1 40%':'+0 60% · +1 30% · +2 10%';document.querySelector('#enhance-odds').innerHTML='<div class="synth-odd rare"><small>성공 확률</small><b>'+rule.chance+'%</b></div><div class="synth-odds-hint">성공: '+attack+health+'<br>능력치 확률: '+bonusOdds+'<br>실패: 4장 소멸 · '+enhanceLevel+'차 카드 1장 유지</div>';
+      const ready=enhanceSelected!==null&&enhancementCount(enhanceSelected)>=ENHANCE_MATERIAL_COUNT,go=document.querySelector('#enhance-go');go.disabled=!ready;if(ready)go.innerHTML='<span class="eg-main">✦ 강화하기</span><span class="eg-sub">성공 '+rule.chance+'% · 재료 '+ENHANCE_MATERIAL_COUNT+'장 · '+rule.label+'</span>';else go.textContent='같은 단계 카드 '+ENHANCE_MATERIAL_COUNT+'장을 고르세요';document.querySelector('#enhance-view .enhance-acquire')?.toggleAttribute('hidden',ready);/* 재료가 충분하면 '부족한 카드 얻기'는 숨긴다 */{/* 고른 카드의 원작으로 가는 게이트 버튼 (목업: 링크는 아직 동작하지 않는다) */const gate=document.querySelector('#enhance-gate'),def=enhanceSelected!==null?collectionCardDefs[enhanceSelected]:null;if(gate){gate.hidden=!def;if(def){gate.dataset.characterId=def.acquisition?.characterId||def.cardId;gate.dataset.label=withAndParticle(collectionCards[enhanceSelected][2])+' 대화하러 가기 ↗';if(!gate.classList.contains('notice'))gate.textContent=gate.dataset.label;}}}
+      const attack='공격력 +0~'+rule.attackMax,health=rule.healthMax?' · 체력 +0~'+rule.healthMax:'',bonusOdds=rule.attackMax===1&&rule.healthMax===0?'+0 60% · +1 40%':'+0 60% · +1 30% · +2 10%';document.querySelector('#enhance-odds').innerHTML='<div class="enh-outcome ok"><small>성공 시</small><b>'+attack.replace('공격력 ','⚔ ')+health.replace(' · 체력 ',' · ♥ ')+'</b><span>'+bonusOdds+'</span></div><div class="enh-outcome ng"><small>실패 시</small><b>4장 소멸</b><span>'+enhanceLevel+'차 카드 1장 유지</span></div>';/* 성공/실패 결과를 두 칸으로. 성공 확률은 슬롯 카드의 원형 게이지에 표시 */
       const result=document.querySelector('#enhance-result');if(enhanceLast){const card=collectionCards[enhanceLast.index],bonus='⚔ +'+enhanceLast.attack+' · ♥ +'+enhanceLast.health;result.innerHTML='<article class="synth-card '+(enhanceLast.success?'synth-pop ':'')+rarityByCard[enhanceLast.index]+'"><span class="new-badge">'+(enhanceLast.success?'성공':'실패')+'</span><img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+' · '+enhanceLast.level+'차</h4><small>'+(enhanceLast.success?bonus:'4장 소멸 · 단계 유지')+'</small></article>';}else result.innerHTML='<div class="synth-card unknown"><span>✦</span><small>'+rule.label+' 결과</small></div>';
     }
     function runEnhancement(){
@@ -2779,7 +2833,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         if(ready.length){grid.appendChild(head('강화할 수 있는 카드',ready.length));ready.forEach(b=>grid.appendChild(b));}
         if(short.length){grid.appendChild(head(need+'장 미만 · 강화 불가',short.length,'blocked'));short.forEach(b=>grid.appendChild(b));}
         if(!ready.length&&short.length)grid.insertBefore(Object.assign(document.createElement('div'),{className:'gacha-empty enh-none',textContent:'이 단계에서 '+need+'장 이상 모은 카드가 없습니다.'}),grid.firstChild);
-        const slot=document.querySelector('#enhance-result');if(slot&&!enhanceLast&&enhanceSelected!==null){const card=collectionCards[enhanceSelected],n=enhancementCount(enhanceSelected);slot.innerHTML='<article class="synth-card enh-slot '+rarityByCard[enhanceSelected]+'"><span class="new-badge">'+n+'장 보유</span><img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+' · '+enhanceLevel+'차</h4><small>재료 '+need+'장 소모</small></article>';}
+        const slot=document.querySelector('#enhance-result');if(slot&&!enhanceLast&&enhanceSelected!==null){const card=collectionCards[enhanceSelected],n=enhancementCount(enhanceSelected);slot.innerHTML='<article class="synth-card enh-slot '+rarityByCard[enhanceSelected]+'"><span class="new-badge">'+n+'장 보유</span><img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+' · '+enhanceLevel+'차</h4><small class="enh-mats" title="재료 '+need+'장 소모">재료 '+Array.from({length:need},(_,k)=>'<i class="'+(k<n?'on':'')+'"></i>').join('')+(n>need?'<em>+'+(n-need)+'</em>':'')+'</small><span class="enh-chance" style="--p:'+ENHANCE_RULES[enhanceLevel].chance+'" title="같은 단계의 같은 카드 '+need+'장을 다음 단계 카드 1장으로 강화합니다. 실패하면 '+(need-1)+'장이 소멸하고 같은 단계 카드 1장만 남습니다."><b>'+ENHANCE_RULES[enhanceLevel].chance+'%</b><small>성공</small></span></article>';}
         return r;};
       document.addEventListener('dblclick',e=>{const btn=e.target.closest?.('#enhance-grid button.synth-pick');if(!btn||btn.disabled)return;e.preventDefault();getSelection?.().removeAllRanges();
         const i=Number(btn.dataset.index),img=btn.querySelector('img'),from=(img||btn).getBoundingClientRect(),src=img?.getAttribute('src');selectEnhancement(i);
