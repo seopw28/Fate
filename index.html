@@ -1626,9 +1626,20 @@
     body:has(#collection-modal.show) .top-nav { visibility:hidden; animation:none; }
     /* 대전 시작 전 어두운 덮개(z 309) 위로 바로가기를 띄워, 크기는 그대로 두고 선명하게·누를 수 있게 보이게 한다 */
     body:has(.guardian-select) .top-nav, body:has(.battle-intro) .top-nav { position:relative; z-index:330; }
+    /* === 화면 배율 (2026-11-05, 사용자 요청: 브라우저 90% 축소로 보던 작은 화면을 기본으로) ===
+       브라우저 확대 비율은 사이트별로 저장돼(로컬 75%·배포 100% 등) 같은 게임이 다르게 보였다. 게임 안에서 배율을 고정한다.
+       배율은 게임 본체(.app)와 창들에만 건다 — 연출 효과는 body에 화면 좌표(getBoundingClientRect)로 붙으므로 body에는 걸지 않는다(걸면 효과 위치가 배율만큼 어긋난다).
+       화면 높이(vh)로 정해지는 큰 틀은 배율로 나눠 아래가 비지 않게 한다. ?scale=1 로 예전 크기를 볼 수 있다. */
+    :root { --ui-scale:.9; }
+    main.app, #collection-modal, #result, #tier-modal { zoom:var(--ui-scale); }
+    main.app { min-height:calc(100vh / var(--ui-scale)); }
+    .side { height:calc(100vh / var(--ui-scale) - 160px); max-height:calc(100vh / var(--ui-scale) - 160px); }
+    .command-rail, .stage-column { height:calc(100vh / var(--ui-scale) - 158px); }
+    @media(min-width:1101px) and (max-height:760px){ .stage-column,.command-rail{ height:calc(100vh / var(--ui-scale) - 138px); } }
+    .collection-shell { width:calc(100vw / var(--ui-scale) - 32px); height:calc(100vh / var(--ui-scale) - 32px); }
 </style>
 </head>
-<body>
+<body><script data-ui-scale>/* ?scale=0.6~1.2 로 화면 배율 변경 (기본 .9, CSS --ui-scale) */(function(){var v=parseFloat(new URLSearchParams(location.search).get('scale'));if(v>=.6&&v<=1.2)document.documentElement.style.setProperty('--ui-scale',String(v));})();</script>
   <main class="app">
     <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><b class="hand-guide" id="hand-guide" role="status" aria-live="polite">카드를 선택하세요</b><div class="top-actions"><span class="ghost cracker-wallet" hidden>◆ 크래커 <strong id="cracker-count">0</strong></span><nav class="top-nav" aria-label="컬렉션 바로가기"><a class="top-nav-btn" href="#덱편집" data-view="deck" onclick="event.preventDefault();openCollectionDirect('deck')">덱 편집</a><a class="top-nav-btn" href="#도감" data-view="codex" onclick="event.preventDefault();openCollectionDirect('codex')">도감</a><a class="top-nav-btn" href="#합성" data-view="synth" onclick="event.preventDefault();openCollectionDirect('synth')">합성</a><a class="top-nav-btn main" href="#강화" data-view="enhance" onclick="event.preventDefault();openCollectionDirect('enhance')">강화</a><a class="top-nav-btn main" href="#상점" data-view="gacha" onclick="event.preventDefault();openCollectionDirect('gacha')">상점</a></nav><div class="sound-wrap"><button class="ghost" id="sound-toggle" onclick="toggleSoundPanel()" aria-haspopup="true" aria-expanded="false">🔊 사운드</button><div class="sound-panel" id="sound-panel" hidden><label><span>배경음악</span><output id="bgm-value">45%</output><input type="range" id="bgm-slider" min="0" max="100" step="1" aria-label="배경음악 볼륨"></label><label><span>효과음</span><output id="sfx-value">35%</output><input type="range" id="sfx-slider" min="0" max="100" step="1" aria-label="효과음 볼륨"></label><button class="sound-mute" id="sound-mute" onclick="toggleMute()">🔇 전체 음소거</button></div></div></div></header>
     <div class="layout">
@@ -1782,6 +1793,8 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     collectionState.cardEnhancements=collectionState.cardEnhancements&&typeof collectionState.cardEnhancements==='object'?collectionState.cardEnhancements:{};
     const DEV_CRACKER_FLOOR=999999;/* 로컬 시연·QA에서는 소환/합성/상점 테스트가 재화 부족으로 막히지 않게 한다. 배포 호스트에는 적용하지 않는다. */
     if(DEV_MODE&&collectionState.crackers<DEV_CRACKER_FLOOR){collectionState.crackers=DEV_CRACKER_FLOOR;persistCollection();}
+    const DEMO_COOKIE_FLOOR=500;/* 쿠키조각 체험용(목업): 접속할 때 500개보다 적으면 500개로 채운다 — 쿠키 보상 뽑기(1회 10·10회 100)를 바로 해 볼 수 있게. 크래커와 달리 배포 주소에도 적용한다 (2026-11-05 사용자 요청) */
+    if(collectionState.cookieFragments<DEMO_COOKIE_FLOOR){collectionState.cookieFragments=DEMO_COOKIE_FLOOR;persistCollection();}
     /* 테스트용: 주소에 ?crackers=10000 을 붙여 열면 크래커를 그 값으로 맞추고 저장한 뒤, 주소에서 옵션을 지운다 (새로고침해도 다시 덮어쓰지 않음) */
     {const params=new URLSearchParams(location.search),requested=DEV_MODE?params.get('crackers'):null;if(requested!==null&&Number.isFinite(Number(requested))&&Number(requested)>=0){collectionState.crackers=Math.floor(Number(requested));persistCollection();params.delete('crackers');history.replaceState(null,'',location.pathname+(params.toString()?'?'+params:'')+location.hash);}}
     function persistCollection(){ try{localStorage.setItem('primal-collection-v1',JSON.stringify({...collectionState,cardIds:COLLECTION_CARD_IDS}));}catch(e){} }
