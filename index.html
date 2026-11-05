@@ -1509,6 +1509,7 @@
     .enh-tier .tier-spark { position:relative; justify-self:center; align-self:center; width:56px; height:56px; margin:0; border:2px solid var(--tier-c,#ffe9a8); border-radius:50%; opacity:0; box-shadow:0 0 18px var(--tier-c,#ffd477); animation:tier-spark .8s ease-out 1.6s both; }
     @media(prefers-reduced-motion:reduce){ .enh-tier.rewrite * { animation:none!important; clip-path:none!important; } .enh-tier.rewrite .enh-roman.old { display:none; } }
     .codex-card .enh-tier, .owned-card .enh-tier, .synth-pick .enh-tier { opacity:.95; }
+    #enhance-result .synth-card .enh-tier { display:none; }/* 슬롯·결과 카드는 이름에 로마 숫자가 붙어 있어 배지 생략 */
 </style>
 </head>
 <body>
@@ -1686,7 +1687,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function updateCrackerHud(){const balance=(collectionState.crackers||0).toLocaleString('ko-KR');const node=document.querySelector('#cracker-count'),modalNode=document.querySelector('#collection-cracker-count');if(node)node.textContent=balance;if(modalNode)modalNode.textContent=balance;const enemyLabel=document.querySelector('#enemy-deck-label');if(enemyLabel)enemyLabel.textContent=enemyLabel.textContent.includes('크래커')?enemyLabel.textContent.replace(/크래커\s+\d+/,'크래커 '+enemyCrackers):enemyLabel.textContent+' · 크래커 '+enemyCrackers;}
     function openCollection(view='deck'){draftDeck=collectionState.decks?draftOfDeck(editingDeck=collectionState.activeDeck||0):[...collectionState.deck];document.querySelector('#collection-modal').classList.add('show');document.body.style.overflow='hidden';switchCollectionView(view);renderCollection(); }
     function closeCollection(){ document.querySelector('#collection-modal').classList.remove('show');document.body.style.overflow=''; }
-    const COLLECTION_SUBTITLE={deck:'내가 쓸 60장 덱을 성격·비용·희귀도별로 살펴보며 편성하세요.',codex:'모든 카드의 수집 현황을 확인하세요.',synth:'여러 카드를 모아 재료와 다른 카드로 합성하세요.',enhance:'같은 단계의 같은 카드 5장을 합쳐 0차부터 4차까지 강화하세요.',gacha:'챔프·마법·함정 카드를 뽑아 컬렉션을 늘리세요.'};
+    const COLLECTION_SUBTITLE={deck:'내가 쓸 60장 덱을 성격·비용·희귀도별로 살펴보며 편성하세요.',codex:'모든 카드의 수집 현황을 확인하세요.',synth:'여러 카드를 모아 재료와 다른 카드로 합성하세요.',enhance:'같은 등급의 같은 카드 5장을 합쳐 I부터 V까지 강화하세요.',gacha:'챔프·마법·함정 카드를 뽑아 컬렉션을 늘리세요.'};
     function switchCollectionView(view){document.querySelector('#collection-sub').textContent=COLLECTION_SUBTITLE[view]||''; document.querySelectorAll('.collection-tab').forEach(button=>button.classList.toggle('active',button.dataset.view===view));document.querySelectorAll('.collection-view').forEach(panel=>panel.classList.toggle('active',panel.id===view+'-view'));if(view==='deck')renderDeckBuilder();if(view==='codex')renderCodex();if(view==='synth')renderSynthesis();if(view==='enhance')renderEnhancement(); }
     const GACHA_SINGLE_COST=200,GACHA_TEN_COST=2000;
     function renderCollection(){updateCrackerHud();document.querySelectorAll('.gacha-actions button').forEach((button,i)=>{const cost=i?GACHA_TEN_COST:GACHA_SINGLE_COST;button.disabled=gachaPulling||collectionState.crackers<cost;button.innerHTML=(i?'10회':'1회')+'<br><small>◆ '+cost.toLocaleString('ko-KR')+'</small>';});renderDeckBuilder();renderCodex();renderSynthesis();renderEnhancement();}
@@ -2712,7 +2713,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         const buttons=[...grid.querySelectorAll('button.synth-pick')];if(!buttons.length)return r;const need=NEED();
         if(enhanceSelected!==null&&enhancementCount(enhanceSelected)<need&&!enhanceLast){enhanceSelected=null;}
         const ready=[],short=[];buttons.forEach(btn=>{const i=idxOf(btn),n=enhancementCount(i);btn.dataset.index=i;btn.title=n>=need?'더블클릭하면 강화 슬롯에 들어갑니다':'같은 단계 카드가 '+need+'장 있어야 강화할 수 있습니다';
-          const tag=btn.querySelector('.synth-spare');if(tag)tag.textContent=enhanceLevel+'차 '+n+' / '+need+'장';
+          const tag=btn.querySelector('.synth-spare');if(tag)tag.textContent=n+' / '+need+'장';
           if(n>=need){btn.disabled=false;btn.classList.remove('enh-short');ready.push(btn);}else{btn.disabled=true;btn.classList.add('enh-short');btn.classList.remove('picked');short.push(btn);}});
         grid.innerHTML='';const head=(text,cnt,cls)=>{const h=document.createElement('div');h.className='synth-section'+(cls?' '+cls:'');h.innerHTML=text+' <b>'+cnt+'</b>';return h;};
         if(ready.length){grid.appendChild(head('강화할 수 있는 카드',ready.length));ready.forEach(b=>grid.appendChild(b));}
@@ -2800,6 +2801,16 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         const used=e.levels.slice(1).reduce((sum,cards)=>sum+cards.length,0);collectionState.owned[i]=Math.max(collectionState.owned[i]||0,used+per);});
       persistCollection();params.delete('enhanceTest');history.replaceState(null,'',location.pathname+(params.toString()?'?'+params:'')+location.hash);
       setTimeout(()=>writeLog?.('<strong>개발용</strong> 강화 재료를 채웠습니다: 챔프 '+picks.length+'종(메인 덱 '+inDeck.length+'종 포함) × 0~3차 각 '+per+'장, 메인 덱 카드는 4차 1장 추가. 다음 판부터 전투 카드에 I~IV가 표시됩니다.'),0);
+    })();
+
+    /* 강화 화면 표기 통일: 'N차'(0~4) → 로마 숫자 I~V. 강화 화면과 강화 결과 무대 안의 글자만 바꾼다 */
+    (function(){
+      if(typeof renderEnhancement!=='function')return;
+      const R=['I','II','III','IV','V'],conv=t=>t.replace(/([0-4])\s*차/g,(_,n)=>R[Number(n)]).replace(/같은 단계/g,'같은 등급').replace(/단계 유지/g,'등급 유지');
+      function romanize(root){if(!root)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode())){if(/[0-4]\s*차|같은 단계|단계 유지/.test(n.nodeValue))n.nodeValue=conv(n.nodeValue);}root.querySelectorAll('[title],[aria-label]').forEach(el=>{['title','aria-label'].forEach(a=>{const v=el.getAttribute(a);if(v&&/[0-4]\s*차/.test(v))el.setAttribute(a,conv(v));});});}
+      const base=renderEnhancement;renderEnhancement=function(...a){const r=base.apply(this,a);romanize(document.querySelector('#enhance-view'));return r;};
+      new MutationObserver(list=>{for(const m of list){const t=m.target.nodeType===1?m.target:m.target.parentElement;const stage=t?.closest?.('.enh-stage')||[...m.addedNodes].find(n=>n.nodeType===1&&n.classList?.contains('enh-stage'));if(stage){romanize(stage);break;}}}).observe(document.body,{childList:true,subtree:true,characterData:true});
+      renderEnhancement();
     })();
 </script>
 </body>
