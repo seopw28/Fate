@@ -1532,6 +1532,14 @@
     .synth-odds { display:flex; flex-wrap:wrap; }
     .synth-odds > .synth-odd { flex:1 1 0; min-width:0; }
     .synth-odds > .synth-odds-hint { flex:1 1 100%; }
+    /* 도감: 카드 하단 강화 단계별 일러스트 선택 (I~V, 도달한 단계만 활성) */
+    .codex-card .completion-chip { display:none!important; }
+    .codex-card .tier-pick { display:flex; gap:4px; margin-top:6px; }
+    .codex-card .tier-pick b { flex:1; padding:4px 0; border:1px solid #303847; border-radius:7px; background:#10151c; color:#4d5766; font-family:Georgia,'Times New Roman',serif; font-size:clamp(10px,.8vw,13px); text-align:center; cursor:default; }
+    .codex-card .tier-pick b.on { color:#c9d2df; border-color:#465365; cursor:pointer; }
+    .codex-card .tier-pick b.on:hover { border-color:#b68a4d; color:#ffd77f; }
+    .codex-card .tier-pick b.sel { border-color:#b68a4d; background:#2b241a; color:#ffd77f; box-shadow:inset 0 0 0 1px #b68a4d; }
+    .codex-detail-art { position:relative; }
 </style>
 </head>
 <body>
@@ -2793,14 +2801,21 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       function auraColorOf(index){const def=typeof cardDefinitionById!=='undefined'?cardDefinitionById.get(ids()[index]):null;return AURA_HEX[def?.aura]||AURA_HEX[collectionCards[index]?.[0]]||'';}
       function topTier(index){const e=collectionState.cardEnhancements?.[ids()[index]],lv=e&&Array.isArray(e.levels)?e.levels:[];for(let t=4;t>=1;t--)if(Array.isArray(lv[t])&&lv[t].length)return t;return 0;}
       function mark(el,tier,index){if(!el)return;tier=Math.max(0,Math.min(4,Number(tier)||0));const prev=el.querySelector(':scope > .enh-tier');if(prev&&prev.dataset.t===String(tier)&&!prev.classList.contains('rewrite'))return;prev?.remove();const m=document.createElement('span');m.className='enh-tier';const col=index!==undefined&&index!==null?auraColorOf(index):'';if(col)m.style.setProperty('--tier-c',col);m.dataset.t=String(tier);m.setAttribute('aria-label','강화 '+ROMAN[tier]);m.innerHTML='<b class="enh-roman">'+ROMAN[tier]+'</b>';el.appendChild(m);}
-      const ROMAN=['I','II','III','IV','V'];/* 0차(강화 전)=I … 4차=V */
+      const ROMAN=['I','II','III','IV','V'];const codexTierView=new Map();/* 0차(강화 전)=I … 4차=V */
       const baseEnh=renderEnhancement;renderEnhancement=function(...a){const r=baseEnh.apply(this,a);
         document.querySelectorAll('#enhance-grid button.synth-pick').forEach(b=>mark(b,enhanceLevel,b.dataset.index!==undefined?Number(b.dataset.index):undefined));
         const slot=document.querySelector('#enhance-result .synth-card:not(.unknown)');if(slot)mark(slot,enhanceLast?enhanceLast.level:enhanceLevel,enhanceLast?enhanceLast.index:enhanceSelected);return r;};
       if(typeof renderSynthesis==='function'){const baseSynth=renderSynthesis;renderSynthesis=function(...a){const r=baseSynth.apply(this,a);document.querySelectorAll('#synth-grid .synth-pick').forEach(t=>{const i=Number((/synthPick\((\d+)\)/.exec(t.querySelector('[onclick*="synthPick"]')?.getAttribute('onclick')||'')||[])[1]);if(Number.isFinite(i))mark(t,topTier(i),i);});return r;};}
       if(typeof renderDeckBuilder==='function'){const baseDeck=renderDeckBuilder;renderDeckBuilder=function(...a){const r=baseDeck.apply(this,a);document.querySelectorAll('#owned-grid .owned-card[data-index]').forEach(c=>mark(c,topTier(Number(c.dataset.index)),Number(c.dataset.index)));return r;};}
       if(typeof renderCodex==='function'&&typeof codexEntries==='function'){const baseCodex=renderCodex;renderCodex=function(...a){const r=baseCodex.apply(this,a);const byNo=new Map(codexEntries().map(e=>[e.no,e]));const at=new Map(ids().map((id,i)=>[id,i]));
-        document.querySelectorAll('#codex-grid .codex-card').forEach(c=>{const no=Number((/selectCodex\((\d+)\)/.exec(c.getAttribute('onclick')||'')||[])[1]),e=byNo.get(no);if(e&&e.collected&&e.type==='champion')mark(c,topTier(at.get(e.def.cardId)),at.get(e.def.cardId));});return r;};}
+        document.querySelectorAll('#codex-grid .codex-card').forEach(c=>{const no=Number((/selectCodex\((\d+)\)/.exec(c.getAttribute('onclick')||'')||[])[1]),e=byNo.get(no);if(e&&e.collected&&e.type==='champion'){const idx=at.get(e.def.cardId),top=topTier(idx),view=Math.min(top,codexTierView.get(e.def.cardId)??top);mark(c,view,idx);c.querySelector('.completion-chip')?.remove();c.querySelector(':scope > .tier-pick')?.remove();
+          const img=c.querySelector('.codex-art img');if(img)img.src=tierArtOf(e.def,view);
+          const pick=document.createElement('span');pick.className='tier-pick';pick.setAttribute('role','group');pick.setAttribute('aria-label','강화 단계별 일러스트 보기');pick.innerHTML=ROMAN.map((r,t)=>'<b role="button" tabindex="'+(t<=top?0:-1)+'" class="'+(t<=top?'on':'off')+(t===view?' sel':'')+'" data-t="'+t+'" title="'+(t<=top?r+' 일러스트 보기':r+' 미달성')+'">'+r+'</b>').join('');c.appendChild(pick);}});
+        const sel=byNo.get(codexSelected);if(sel&&sel.collected&&sel.type==='champion'){const idx=at.get(sel.def.cardId),view=Math.min(topTier(idx),codexTierView.get(sel.def.cardId)??topTier(idx)),art=document.querySelector('#codex-detail .codex-detail-art img');if(art)art.src=tierArtOf(sel.def,view);const box=document.querySelector('#codex-detail .codex-detail-art');if(box)mark(box,view,idx);}
+        return r;};}
+      /* 단계별 일러스트: 카드 데이터에 tierAssets:[I,II,III,IV,V]가 있으면 그 단계 그림, 없으면 기본 그림 */
+      function tierArtOf(def,t){const list=Array.isArray(def?.tierAssets)?def.tierAssets:null;const own=list&&list[t];return own?(/^(assets|https?:)/.test(own)?own:'assets/'+own):'assets/'+def.assetId;}
+      document.addEventListener('click',ev=>{const b=ev.target.closest?.('#codex-grid .tier-pick b');if(!b)return;ev.stopPropagation();ev.preventDefault();if(!b.classList.contains('on'))return;const card=b.closest('.codex-card'),no=Number((/selectCodex\((\d+)\)/.exec(card.getAttribute('onclick')||'')||[])[1]),e=codexEntries().find(x=>x.no===no);if(!e)return;codexTierView.set(e.def.cardId,Number(b.dataset.t));codexSelected=no;renderCodex();},true);
       new MutationObserver(()=>{const card=document.querySelector('.synth-stage.enh-stage.revealed .stage-card');if(card&&!card.querySelector('.enh-tier')&&enhanceLast){mark(card,enhanceLast.level,enhanceLast.index);if(enhanceLast.success&&enhanceLast.level>0){card.querySelector('.enh-tier')?.classList.add('rewrite');animateNewTier(card,enhanceLast.level);}}}).observe(document.body,{childList:true,subtree:true});
       /* 전투: 덱을 만들 때 그 카드로 가진 강화 단계를 높은 것부터 배정하고(장수만큼), 손패 카드·필드 유닛 귀퉁이에 오로라 색으로 표시한다. 능력치 보너스는 아직 적용하지 않는다 */
       function tierPoolFor(cardId){const lv=collectionState.cardEnhancements?.[cardId]?.levels;const out=[];if(Array.isArray(lv))for(let t=4;t>=1;t--)(Array.isArray(lv[t])?lv[t]:[]).forEach(()=>out.push(t));return out;}
