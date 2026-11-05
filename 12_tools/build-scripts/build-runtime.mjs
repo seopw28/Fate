@@ -18,15 +18,10 @@ await Promise.all([
 const cardSet = JSON.parse(await readFile(resolve(root, '03_card-data/sets/core-set.json'), 'utf8'));
 const characterExpansions = JSON.parse(await readFile(resolve(root, '03_card-data/sets/character-expansions.json'), 'utf8'));
 cardSet.cards.push(...characterExpansions.cards);
-// 성격 오로라 5종으로 통합 (2026-11-05): 게임은 element 대신 personality(불·물·나무·금속·대지)를 쓴다.
-// 기존 연출·소리·궁극기 코드가 element 키로 짜여 있어, 런타임 element를 성격의 내부 키로 바꿔 넣는다(원래 값은 legacyElement).
+// 카드 데이터는 성격 오로라 5종만 저장한다. 런타임의 옛 키는 CSS·연출 호환용 표현 계층이다.
 const AURA_KEY = { fire: 'fire', water: 'water', wood: 'wind', metal: 'neutral', earth: 'earth' };
-const LEGACY_TO_AURA = { fire: 'fire', water: 'water', ice: 'water', wind: 'wood', thunder: 'metal', neutral: 'metal', earth: 'earth' };
 for (const card of cardSet.cards) {
-  const aura = card.personality || LEGACY_TO_AURA[card.element];
-  card.legacyElement = card.element;
-  card.personality = aura;
-  card.element = AURA_KEY[aura];
+  card.auraKey = AURA_KEY[card.aura];
 }
 const battleStarter = JSON.parse(await readFile(resolve(root, '03_card-data/sets/battle-starter.json'), 'utf8'));
 const cardsJs = `globalThis.PrimalCardSet = Object.freeze(${JSON.stringify(cardSet)});\nglobalThis.PrimalBattleStarter = Object.freeze(${JSON.stringify(battleStarter)});\n`;

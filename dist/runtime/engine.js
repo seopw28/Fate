@@ -52,7 +52,7 @@
     });
   }
 
-  /* 속성 상성은 폐지: 피해량은 속성과 무관하다. (시그니처는 어댑터 호환을 위해 유지) */
+  /* 오로라 상성은 폐지: 피해량은 오로라과 무관하다. (시그니처는 어댑터 호환을 위해 유지) */
   function calculateDamage(base) {
     return { damage: Math.max(0, Number(base) || 0), modifier: 1, label: '' };
   }

@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 /**
- * 수호신 밸런스 시뮬레이터 (헤드리스).
+ * 성격 오로라 밸런스 시뮬레이터 (헤드리스).
  *
  * dist/index.html 의 전투 규칙을 그대로 옮겨 수천 판을 자동 대전시킨다.
  *   - 카드 능력치: dist/runtime/cards.js (챔피언 풀)
- *   - 수호신 수치: dist/index.html 의 `const GUARDIANS={...}` 를 직접 읽는다 (단일 출처)
+ *   - 성격 오로라 수치: dist/index.html 의 `const GUARDIANS={...}` 를 직접 읽는다 (단일 출처)
  *
  * 모델링한 규칙: 영웅 체력 100, 마나 3→10(+1/라운드), 등급 롤(A 15% +2 / B 35% +1 / C 50%), 선공권(체력↓ → 필드 카드↓ → 나),
  *   소환 직후 공격 불가(플레이어) / 즉시 공격(상대), 가장 왼쪽 카드 공격,
- *   수호신 4종(청룡=마나 회복·백호=살아남으면 즉시 반격·주작=뽑을 때 S급 +3·현무=치명타 생존)과 상대 수호신 무작위 배정(내가 고른 것 제외).
+ *   성격 오로라 4종(청룡=마나 회복·백호=살아남으면 즉시 반격·주작=뽑을 때 S급 +3·현무=치명타 생존)과 상대 성격 오로라 무작위 배정(내가 고른 것 제외).
  * 모델링하지 않은 것: 마법/함정/궁극기, 챔피언 개별 능력, 혈마나, 추가 드로우. (모든 카드를 바닐라 능력치로 취급)
  *
  * 모드:
- *   --mode symmetric (기본) 양쪽이 동일한 규칙·동일한 봇을 쓰는 대칭 대전. 기본 승률이 50%라서 '수호신 자체의 힘'을 비교할 수 있다.
+ *   --mode symmetric (기본) 양쪽이 동일한 규칙·동일한 봇을 쓰는 대칭 대전. 기본 승률이 50%라서 '성격 오로라 자체의 힘'을 비교할 수 있다.
  *       (소환 즉시 공격, 마나 환급 후 재계획, 앞줄은 공격-체력/2가 낮은 카드, 화상은 공격 턴 직후 정산)
  *   --mode game  실제 게임의 비대칭을 그대로 재현(상대는 소환 즉시 공격, 내 유닛은 한 턴 대기). 마법·궁극기·혈마나가 빠져 있어
  *       내 승률이 거의 0%로 나오므로 절대 승률 용도로는 쓸 수 없다.
@@ -55,7 +55,7 @@ const shuffle = (arr, rnd) => { const a = arr.slice(); for (let i = a.length - 1
 const HERO_HP = 100, MANA_CAP = 10, START_MANA = 3, FIELD_LIMIT = 6, HAND_LIMIT = 8, ROUND_CAP = 40;
 const AI = { atkWeight: 1, hpWeight: 0.7, manaWeight: 0.35 };
 const grade = rnd => { const r = rnd(); return r < 0.15 ? 2 : r < 0.5 ? 1 : 0; };
-// 주작: 카드를 뽑을 때 chance 확률로 S급(+3). 시작 손패 5장은 수호신 선택 전에 정해지므로 제외.
+// 주작: 카드를 뽑을 때 chance 확률로 S급(+3). 시작 손패 5장은 성격 오로라 선택 전에 정해지므로 제외.
 const mkCard = (base, rnd, jujak = false) => ({ cost: base.cost, atk: base.atk + (jujak && rnd() < GUARDIANS.jujak.chance ? 3 : grade(rnd)), hp: base.hp });
 const value = c => c.atk * AI.atkWeight + c.hp * AI.hpWeight;
 
@@ -200,9 +200,9 @@ function batch(playerGuardian, enemyPicker, games) {
 }
 
 if (args.sweep) {
-  // 수호신 하나의 수치를 바꿔가며 '수호신 없는 상대'에 대한 승률 곡선을 그린다. (--sweep 청룡id 예: --sweep cheongryong)
+  // 성격 오로라 하나의 수치를 바꿔가며 '성격 오로라 없는 상대'에 대한 승률 곡선을 그린다. (--sweep 청룡id 예: --sweep cheongryong)
   const id = String(args.sweep), keys = id === 'hyeonmu' && (GUARDIANS.hyeonmu.unitRatio || GUARDIANS.hyeonmu.unitFlat) ? [['unitChance', [0.03, 0.05, 0.08, 0.1, 0.15, 0.25, 0.35, 0.5, 0.7, 1]]] : id === 'hyeonmu' && !GUARDIANS.hyeonmu.ratio ? [['amount', [2, 3, 4, 5, 6, 8, 10, 12, 15]], ['chance', [0.4, 0.6, 0.8, 1]]] : [['chance', [0.02, 0.03, 0.04, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.45, 0.6, 0.8, 1]]];
-  console.log(`[스윕] ${GUARDIANS[id].name} vs 수호신 없음 (판수 ${GAMES})`);
+  console.log(`[스윕] ${GUARDIANS[id].name} vs 성격 오로라 없음 (판수 ${GAMES})`);
   for (const [key, values] of keys) {
     const original = GUARDIANS[id][key];
     for (const v of values) { GUARDIANS[id][key] = v; const r = batch(id, () => null, GAMES); console.log(`  ${key}=${v}`.padEnd(16) + pct(r.rate) + ` ±${ci(r.win, r.games).toFixed(1)}`); }
@@ -212,22 +212,22 @@ if (args.sweep) {
 }
 
 console.log(`카드 풀 ${POOL.length}장 · 판수 ${GAMES}/항목 · seed ${SEED} · 모드 ${SYM ? 'symmetric(대칭)' : 'game(실제 비대칭)'}`);
-console.log('수호신 수치:', IDS.map(id => `${GUARDIANS[id].name} ${Math.round(GUARDIANS[id].chance * 100)}%${GUARDIANS[id].amount ? '×' + GUARDIANS[id].amount : ''}`).join(' · '));
+console.log('성격 오로라 수치:', IDS.map(id => `${GUARDIANS[id].name} ${Math.round(GUARDIANS[id].chance * 100)}%${GUARDIANS[id].amount ? '×' + GUARDIANS[id].amount : ''}`).join(' · '));
 
-console.log('\n[1] 실제 게임 조건: 내가 고른 수호신 vs 상대(나머지 3종 중 무작위)  → 내 승률');
+console.log('\n[1] 실제 게임 조건: 내가 고른 성격 오로라 vs 상대(나머지 3종 중 무작위)  → 내 승률');
 const real = {};
 for (const id of [...IDS, null]) {
   const others = id ? IDS.filter(x => x !== id) : IDS;
   const r = batch(id, () => others[Math.floor(rnd() * others.length)], GAMES);
   real[id || 'none'] = r;
-  console.log(`  ${(id ? GUARDIANS[id].name : '수호신 없음').padEnd(8)} ${pct(r.rate)} ±${ci(r.win, r.games).toFixed(1)}  (평균 ${r.rounds.toFixed(1)}라운드)`);
+  console.log(`  ${(id ? GUARDIANS[id].name : '성격 오로라 없음').padEnd(8)} ${pct(r.rate)} ±${ci(r.win, r.games).toFixed(1)}  (평균 ${r.rounds.toFixed(1)}라운드)`);
 }
 
-console.log('\n[2] 1:1 상성표 (행 = 내 수호신, 열 = 상대 수호신, 값 = 내 승률)');
-console.log('          ' + IDS.map(id => GUARDIANS[id].name.padStart(6)).join(' ') + '   수호신없음');
+console.log('\n[2] 1:1 상성표 (행 = 내 성격 오로라, 열 = 상대 성격 오로라, 값 = 내 승률)');
+console.log('          ' + IDS.map(id => GUARDIANS[id].name.padStart(6)).join(' ') + '   성격 오로라없음');
 for (const a of IDS) {
   const cells = [...IDS, null].map(b => (a === b ? '   -  ' : pct(batch(a, () => b, Math.round(GAMES / 2)).rate)));
   console.log('  ' + GUARDIANS[a].name.padEnd(8) + cells.join(' '));
 }
 const rates = IDS.map(id => real[id].rate);
-console.log(`\n수호신 간 승률 격차(최대−최소): ${((Math.max(...rates) - Math.min(...rates)) * 100).toFixed(1)}%p`);
+console.log(`\n성격 오로라 간 승률 격차(최대−최소): ${((Math.max(...rates) - Math.min(...rates)) * 100).toFixed(1)}%p`);

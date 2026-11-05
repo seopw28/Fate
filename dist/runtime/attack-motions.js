@@ -1,11 +1,11 @@
 /* 평타 모션 변주.
- * 속성별 기본 스타일 + 공격력(power)이 높을수록 크고 강한 동작, 같은 공격자가 연속으로 같은 동작을 하지 않는다.
+ * 오로라별 기본 스타일 + 공격력(power)이 높을수록 크고 강한 동작, 같은 공격자가 연속으로 같은 동작을 하지 않는다.
  * 순수 함수만 있어 브라우저 없이 테스트할 수 있다. (사용: FateMotions.pick / FateMotions.build)
  */
 (function (root) {
   'use strict';
 
-  // 속성별 모션 가중치 (클수록 자주 나옴)
+  // 오로라별 모션 가중치 (클수록 자주 나옴)
   const WEIGHTS = {
     fire: { slam: 5, bash: 2, lunge: 1.5, spin: 1.5 },
     water: { swoop: 4.5, spin: 2.5, lunge: 2, jab: 1 },

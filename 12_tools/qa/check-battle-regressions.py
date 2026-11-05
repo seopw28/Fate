@@ -35,9 +35,9 @@ CHECKS = [
     ("__RELOAD__", ""),
     ("합성에 쓴 시작 카드가 새로고침해도 되살아나지 않는다 (2단계: 새로고침 뒤)",
      "(()=>{const {i,saved}=JSON.parse(localStorage.getItem('__qa_synth'));return {ok:collectionState.owned[i]===saved,i,saved,afterReload:collectionState.owned[i]};})()"),
-    ("약자멸시 패배 정산은 연출을 기다리지 않고 즉시 저장된다 (연출 중 새로고침으로 피할 수 없음)",
-     "(()=>{challengeMode=true;collectionState.pendingChallenge=true;collectionState.crackers=500;persistCollection();finish(false,'qa');"
-     "const s=JSON.parse(localStorage.getItem('primal-collection-v1'));return {ok:s.crackers===300&&s.pendingChallenge===false,crackers:s.crackers,pending:s.pendingChallenge};})()"),
+    ("성격 오로라 선택과 패배에는 별도 크래커 차감이 없다",
+     "(()=>{collectionState.crackers=500;persistCollection();finish(false,'qa');"
+     "const s=JSON.parse(localStorage.getItem('primal-collection-v1'));return {ok:s.crackers===500,crackers:s.crackers};})()"),
     ("챔프 공격이 보호막에 막히면 '보호막이 막음' 연출이 보인다 (효과·피해 없이 끝나 보이지 않음)",
      "(async()=>{const lane=document.querySelector('.arena .lane:first-child');enemySummonUnit(lane,{el:'fire',name:'적',atk:5,hp:9,cost:3});"
      "const e=lane.querySelector('.unit');e.dataset.shield='true';const a=summonBattleToken('나',3,9,'water');a.classList.remove('exhausted');"

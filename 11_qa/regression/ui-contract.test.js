@@ -57,7 +57,9 @@ test('initial battle hand is generated from validated card data', () => {
 
 test('basic deck and opening hand follow the PRD composition', () => {
   assert.ok(html.includes('BASIC_CHAMPION_COUNT=45,BASIC_SPELL_COUNT=9,BASIC_TRAP_COUNT=6,OPENING_HAND_SIZE=7'), 'Basic deck must be 45 champions, 9 spells, 6 traps with a seven-card opening hand');
-  assert.ok(html.includes("fill('spell',BASIC_SPELL_COUNT)||!fill('trap',BASIC_TRAP_COUNT)||!fill('champion',BASIC_CHAMPION_COUNT)"), 'Basic deck builder must enforce all three card counts');
+  assert.ok(html.includes("fill('spell',BASIC_SPELL_COUNT,FEATURED_REVERSAL_IDS)||!fill('trap',BASIC_TRAP_COUNT)||!fill('champion',BASIC_CHAMPION_COUNT)"), 'Basic deck builder must enforce all three card counts');
+  assert.ok(html.includes("const FEATURED_REVERSAL_IDS=['reversal.judgment','reversal.bulwark','reversal.giant-hunt','reversal.weight-toll','reversal.life-siphon','reversal.insight']"), 'Basic and demo decks must feature all six reversal spells');
+  assert.ok(html.includes('역전 체험덱 자동편성'), 'Deck editor must expose the featured reversal deck preset');
   assert.ok(html.includes('cheap.length<2') && html.includes('cheap.length+rest.length<OPENING_HAND_SIZE'), 'Opening hand must guarantee two low-cost champions');
   assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(buildBasicDeck(starterOwnedCards())).map(deckEntry)'), 'Computer opponent must use the basic deck');
 });
@@ -112,17 +114,40 @@ test('ready ultimate action uses a compact two-line cost layout', () => {
   assert.ok(html.includes('.field-ultimate-action:not(.locked)::before{display:none}'), 'Ready action must hide the duplicated English ULTIMATE label');
 });
 
+test('궁극기 선택은 현재 성격 오로라와 같은 계열 카드를 시각적으로 추천한다', () => {
+  assert.ok(html.includes('function syncAuraUltimateCandidates(arming)'), 'Ultimate selection must synchronize aura recommendations');
+  assert.ok(html.includes('card.dataset.persona===persona'), 'Recommendation must compare card personality with the selected aura');
+  assert.ok(html.includes("card.classList.toggle('aura-ultimate-match',match)"), 'Matching cards must receive a dedicated highlight class');
+  assert.ok(html.includes("card.classList.toggle('aura-ultimate-mismatch',Boolean(persona&&!match))"), 'Non-matching cards must be visually subdued');
+  assert.ok(html.includes("cards.sort((a,b)=>Number(b.dataset.persona===persona)-Number(a.dataset.persona===persona))"), 'Matching aura cards must be sorted above the other ultimate candidates');
+  assert.ok(html.includes("content:'오로라 공명'"), 'Matching cards must explain why they are highlighted');
+  assert.ok(html.includes('오로라 공명 추천'), 'Matching cards must expose an accessible recommendation description');
+});
+
 test('mana curve starts low and grows into the mid game', () => {
   assert.ok(html.includes('const STARTING_MANA = 3'), 'Battle must start at three maximum mana');
   assert.ok(html.includes('const MANA_CAP = 10'), 'Mana cap must remain ten');
   assert.ok(html.includes('let turnNumber = 1'), 'Battle must start on turn one');
   assert.ok(html.includes('Math.min(MANA_CAP,maxMana+1)'), 'Maximum mana must grow by one each turn');
   assert.ok(html.includes('const BLOOD_MANA_UNLOCK_TURN = 3'), 'Blood mana must not bypass the opening curve');
+  assert.ok(html.includes('＋ 카드 뽑기 <small>· 비용 2마나</small>'), 'Initial draw UI must show the actual two-mana base cost');
+  assert.ok(html.includes("'비용 '+cost+' · 마나 '+paidMana+' + 혈마나 '+quote.shortage"), 'Blood-mana UI must distinguish total cost, paid mana, and converted mana');
+  assert.ok(html.includes("' 다음 비용은 마나 '+(cost*2)+'입니다.'"), 'Draw log must follow the exponential 2, 4, 8 cost curve');
+  assert.ok(!html.includes("' 다음 비용은 마나 '+(cost+1)+'입니다.'"), 'Draw log must not describe a linear cost curve');
 });
 
 test('freshly drawn cards obey the same global hand sorting', () => {
   assert.ok(html.includes('cards.sort((a,b)=>Number(a.dataset.usabilityRank)-Number(b.dataset.usabilityRank)||handCardValue(b)-handCardValue(a))'), 'Draw timing must not override usability and value sorting');
   assert.ok(!html.includes('freshDrawOrder(a,b)||'), 'Fresh cards must not form an unsorted priority block');
+});
+
+test('덱은 같은 성격 오로라 카드를 최대 30장까지만 허용한다', () => {
+  assert.ok(html.includes('AURA_DECK_LIMIT=30'), 'Aura deck limit must be thirty');
+  assert.ok(html.includes('auraCountInDeck(cards,personality)>AURA_DECK_LIMIT'), 'Deck validation must detect an aura over the limit');
+  assert.ok(html.includes('canAddAuraToDeck(draftDeck,index)'), 'Button and drag additions must share the aura limit guard');
+  assert.ok(html.includes('deckAuraLimitExceeded(validDeck)'), 'Loaded legacy decks over the aura limit must be repaired');
+  assert.ok(html.includes('deckAuraLimitExceeded(draftDeck)'), 'Deck saving must reject an over-limit draft');
+  assert.ok(html.includes('같은 성격 오로라는 최대 30장입니다.'), 'Deck editor must disclose the aura limit');
 });
 
 test('self replication stays conditional and linear', () => {
@@ -149,9 +174,9 @@ test('set magic and equipped ultimate can be cancelled back to hand before endin
   }
 });
 
-test('space bar ends the turn through the end-turn button', () => {
-  for (const token of ["event.code!=='Space'", "'.turn-actions .end'", "battlePhase!=='setup'"]) {
-    assert.ok(html.includes(token), `Missing space-end-turn token: ${token}`);
+test('space switches hand tabs and Enter ends the turn', () => {
+  for (const token of ["event.code==='Space'?'toggle-tab':'end-turn'", "'.turn-actions .end'", "battlePhase!=='setup'"]) {
+    assert.ok(html.includes(token), `Missing keyboard shortcut token: ${token}`);
   }
 });
 

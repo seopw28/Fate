@@ -86,6 +86,8 @@ STATES = [
     ("도감 화면", "openCollection('codex')"),
     ("합성 화면", "openCollection('synth')"),
     ("합성 재료 3장", "synthSlots=[];openCollection('synth');for(let k=0;k<3;k++)synthPick(collectionState.owned.findIndex((n,i)=>n>synthReserved(i)+synthSlots.filter(x=>x===i).length))"),
+    ("0차→1차 강화 화면", "const i=collectionIsSpell.findIndex(v=>!v);collectionState.owned[i]=Math.max(5,collectionState.owned[i]);openCollection('enhance');setEnhanceLevel(0);selectEnhancement(i)"),
+    ("3차→4차 강화 화면", "const i=collectionIsSpell.findIndex(v=>!v),e=enhancementEntry(i);while(e.levels[3].length<5)e.levels[3].push({attack:2,health:1});openCollection('enhance');setEnhanceLevel(3);selectEnhancement(i)"),
     ("합성 결과 무대(NEW)", "closeSynthStage();revealSynthStage(collectionState.owned.findIndex(n=>n>0),true)"),
     ("합성 결과 무대 닫기", "closeSynthStage()"),
     ("상점 화면", "openCollection('gacha')"),
@@ -98,7 +100,7 @@ STATES = [
     ("챔프 소환 설명 닫기", "document.querySelectorAll('.effect-narration').forEach(n=>n.remove())"),
     ("역전 마법 카드", "const h=document.querySelector('.hand');h.innerHTML='';['reversal.judgment','reversal.bulwark','reversal.giant-hunt','reversal.weight-toll','reversal.life-siphon','reversal.insight'].forEach(id=>h.appendChild(createRuntimeBattleCard(id)));setHandFilter('spell')"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
-    ("수호신 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
+    ("성격 오로라 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
 ]
 
 def main():

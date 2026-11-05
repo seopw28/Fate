@@ -22,4 +22,4 @@ Claude와 Codex가 서로 다른 작업 레인을 병렬로 개발할 수 있도
 각 작업 레인의 목표와 첫 산출물은 해당 폴더의 `README.md`를 참고합니다.
 
 ## 미해결 TODO
-- **이미지 큐**: 보호막 깨짐·유지 표시와 수호신 문양까지 2026-11-03 완료 → [06_assets/art-queue.md](06_assets/art-queue.md)
+- **이미지 큐**: 보호막 깨짐·유지 표시와 성격 오로라 문양까지 2026-11-03 완료 → [06_assets/art-queue.md](06_assets/art-queue.md)

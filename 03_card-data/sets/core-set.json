@@ -9,8 +9,7 @@
       "displayName": "빙결검 에스텔",
       "cardType": "champion",
       "cost": 3,
-      "element": "ice",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "common",
       "stats": {
         "attack": 5,
@@ -34,8 +33,7 @@
       "displayName": "파도검 마리",
       "cardType": "champion",
       "cost": 3,
-      "element": "water",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "common",
       "stats": {
         "attack": 4,
@@ -59,8 +57,7 @@
       "displayName": "화염교수 플로라",
       "cardType": "champion",
       "cost": 4,
-      "element": "wind",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "common",
       "stats": {
         "attack": 6,
@@ -84,8 +81,7 @@
       "displayName": "교장 노엘",
       "cardType": "champion",
       "cost": 6,
-      "element": "wind",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 7,
@@ -109,8 +105,7 @@
       "displayName": "폭염의 화란",
       "cardType": "champion",
       "cost": 4,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "common",
       "stats": {
         "attack": 6,
@@ -134,8 +129,7 @@
       "displayName": "사이렌 아리아",
       "cardType": "champion",
       "cost": 4,
-      "element": "neutral",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "common",
       "stats": {
         "attack": 5,
@@ -159,8 +153,7 @@
       "displayName": "성녀 에스텔",
       "cardType": "champion",
       "cost": 5,
-      "element": "earth",
-      "personality": "water",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -184,8 +177,7 @@
       "displayName": "세라피나",
       "cardType": "champion",
       "cost": 4,
-      "element": "thunder",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 5,
@@ -209,8 +201,7 @@
       "displayName": "오필리아",
       "cardType": "champion",
       "cost": 3,
-      "element": "wind",
-      "personality": "water",
+      "aura": "water",
       "rarity": "common",
       "stats": {
         "attack": 5,
@@ -234,7 +225,6 @@
       "displayName": "치유의 샘",
       "cardType": "spell",
       "cost": 2,
-      "element": "water",
       "rarity": "common",
       "stats": null,
       "effects": [
@@ -255,7 +245,7 @@
         ],
         "characterId": null
       },
-      "personality": "water"
+      "aura": "water"
     },
     {
       "schemaVersion": 1,
@@ -264,7 +254,6 @@
       "displayName": "진홍의 화염구",
       "cardType": "spell",
       "cost": 3,
-      "element": "fire",
       "rarity": "common",
       "stats": null,
       "effects": [
@@ -285,7 +274,7 @@
         ],
         "characterId": null
       },
-      "personality": "fire"
+      "aura": "fire"
     },
     {
       "schemaVersion": 1,
@@ -294,7 +283,6 @@
       "displayName": "빙결 사슬",
       "cardType": "spell",
       "cost": 3,
-      "element": "ice",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -322,7 +310,7 @@
         ],
         "characterId": null
       },
-      "personality": "water"
+      "aura": "water"
     },
     {
       "schemaVersion": 1,
@@ -331,7 +319,6 @@
       "displayName": "화염 인장",
       "cardType": "spell",
       "cost": 2,
-      "element": "fire",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -352,7 +339,7 @@
         ],
         "characterId": null
       },
-      "personality": "fire"
+      "aura": "fire"
     },
     {
       "schemaVersion": 1,
@@ -361,7 +348,6 @@
       "displayName": "매복 지뢰",
       "cardType": "trap",
       "cost": 2,
-      "element": "earth",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -382,7 +368,7 @@
         ],
         "characterId": null
       },
-      "personality": "earth"
+      "aura": "earth"
     },
     {
       "schemaVersion": 1,
@@ -391,7 +377,6 @@
       "displayName": "역류 장벽",
       "cardType": "trap",
       "cost": 2,
-      "element": "water",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -418,7 +403,7 @@
         ],
         "characterId": null
       },
-      "personality": "water"
+      "aura": "water"
     },
     {
       "schemaVersion": 1,
@@ -427,7 +412,6 @@
       "displayName": "최후의 저항",
       "cardType": "trap",
       "cost": 2,
-      "element": "wind",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -454,7 +438,7 @@
         ],
         "characterId": null
       },
-      "personality": "wood"
+      "aura": "wood"
     },
     {
       "schemaVersion": 1,
@@ -463,7 +447,6 @@
       "nameKey": "card.tower_meteor_fall",
       "cardType": "spell",
       "cost": 6,
-      "element": "fire",
       "rarity": "legendary",
       "stats": null,
       "effects": [
@@ -483,7 +466,7 @@
         ],
         "characterId": null
       },
-      "personality": "fire"
+      "aura": "fire"
     },
     {
       "schemaVersion": 1,
@@ -492,7 +475,6 @@
       "nameKey": "card.tower_amaterasu",
       "cardType": "spell",
       "cost": 5,
-      "element": "fire",
       "rarity": "legendary",
       "stats": null,
       "effects": [
@@ -512,7 +494,7 @@
         ],
         "characterId": null
       },
-      "personality": "fire"
+      "aura": "fire"
     },
     {
       "schemaVersion": 1,
@@ -521,7 +503,6 @@
       "nameKey": "card.tower_frost_nova",
       "cardType": "spell",
       "cost": 4,
-      "element": "ice",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -541,7 +522,7 @@
         ],
         "characterId": null
       },
-      "personality": "water"
+      "aura": "water"
     },
     {
       "schemaVersion": 1,
@@ -550,7 +531,6 @@
       "nameKey": "card.tower_arcane_insight",
       "cardType": "spell",
       "cost": 2,
-      "element": "water",
       "rarity": "common",
       "stats": null,
       "effects": [
@@ -570,7 +550,7 @@
         ],
         "characterId": null
       },
-      "personality": "water"
+      "aura": "water"
     },
     {
       "schemaVersion": 1,
@@ -579,7 +559,6 @@
       "nameKey": "card.tower_purification",
       "cardType": "spell",
       "cost": 3,
-      "element": "earth",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -599,7 +578,7 @@
         ],
         "characterId": null
       },
-      "personality": "earth"
+      "aura": "earth"
     },
     {
       "schemaVersion": 1,
@@ -608,7 +587,6 @@
       "nameKey": "card.tower_void_recall",
       "cardType": "spell",
       "cost": 4,
-      "element": "wind",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -628,7 +606,7 @@
         ],
         "characterId": null
       },
-      "personality": "wood"
+      "aura": "wood"
     },
     {
       "schemaVersion": 1,
@@ -637,7 +615,6 @@
       "nameKey": "card.tower_mana_overflow",
       "cardType": "spell",
       "cost": 2,
-      "element": "neutral",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -657,7 +634,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -666,7 +643,6 @@
       "nameKey": "card.tower_soul_return",
       "cardType": "spell",
       "cost": 5,
-      "element": "neutral",
       "rarity": "legendary",
       "stats": null,
       "effects": [
@@ -686,7 +662,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -695,7 +671,6 @@
       "nameKey": "card.tower_summon_nullifier",
       "cardType": "trap",
       "cost": 4,
-      "element": "water",
       "rarity": "legendary",
       "stats": null,
       "effects": [
@@ -715,7 +690,7 @@
         ],
         "characterId": null
       },
-      "personality": "water"
+      "aura": "water"
     },
     {
       "schemaVersion": 1,
@@ -725,7 +700,6 @@
       "displayName": "시간의 수호자",
       "cardType": "champion",
       "cost": 4,
-      "element": "earth",
       "rarity": "rare",
       "collectible": true,
       "variantOf": null,
@@ -764,7 +738,7 @@
         ],
         "characterId": "time-warden"
       },
-      "personality": "earth"
+      "aura": "earth"
     },
     {
       "schemaVersion": 1,
@@ -774,7 +748,6 @@
       "displayName": "영겁의 수호자",
       "cardType": "champion",
       "cost": 4,
-      "element": "earth",
       "rarity": "rare",
       "collectible": false,
       "variantOf": "chronicle.time-warden",
@@ -791,7 +764,7 @@
         ],
         "characterId": "time-warden"
       },
-      "personality": "earth"
+      "aura": "earth"
     },
     {
       "schemaVersion": 1,
@@ -801,7 +774,6 @@
       "displayName": "피의 서약자",
       "cardType": "champion",
       "cost": 3,
-      "element": "fire",
       "rarity": "rare",
       "collectible": true,
       "variantOf": null,
@@ -831,7 +803,7 @@
         ],
         "characterId": "bloodbound-heroine"
       },
-      "personality": "fire"
+      "aura": "fire"
     },
     {
       "schemaVersion": 1,
@@ -841,7 +813,6 @@
       "displayName": "각성한 피의 서약자",
       "cardType": "champion",
       "cost": 3,
-      "element": "fire",
       "rarity": "rare",
       "collectible": false,
       "variantOf": "chronicle.bloodbound-heroine",
@@ -858,7 +829,7 @@
         ],
         "characterId": "bloodbound-heroine"
       },
-      "personality": "fire"
+      "aura": "fire"
     },
     {
       "schemaVersion": 1,
@@ -868,7 +839,6 @@
       "displayName": "Omen of Ruin",
       "cardType": "spell",
       "cost": 7,
-      "element": "neutral",
       "rarity": "legendary",
       "collectible": true,
       "variantOf": null,
@@ -891,7 +861,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     }
   ]
 }

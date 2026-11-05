@@ -2,12 +2,12 @@
   "starterId": "battle-starter-v1",
   "cardIds": [
     "core.estelle-frostblade",
-    "tower.amaterasu",
-    "tower.frost-nova",
-    "tower.arcane-insight",
-    "tower.purification",
-    "tower.mana-overflow",
-    "tower.soul-return",
-    "tower.summon-nullifier"
+    "reversal.judgment",
+    "reversal.bulwark",
+    "reversal.giant-hunt",
+    "reversal.weight-toll",
+    "reversal.life-siphon",
+    "reversal.insight",
+    "tower.mana-overflow"
   ]
 }

@@ -23,14 +23,13 @@
 
 | 옵션 | 효과 |
 |---|---|
-| `?skipIntro` | 전투 시작 연출 생략 (수호신 선택 화면은 그대로 표시) |
-| `?guardian=수호신id` | 선택 화면 없이 **무료로** 해당 수호신으로 시작. 값: `cheongryong` `baekho` `jujak` `hyeonmu` `none`(약자멸시). **개발 환경 전용** |
+| `?skipIntro` | 전투 시작 연출 생략 (성격 오로라 선택 화면은 그대로 표시) |
 | `?crackers=10000` | 보유 크래커를 그 값으로 맞추고 저장. 적용 후 주소에서 옵션이 사라져 새로고침해도 다시 덮어쓰지 않음. **개발 환경 전용** |
 | `?tab=spell` | 손패를 마법카드 탭으로 시작 |
 | `?fixedStarter` | 시작 손패를 `battle-starter.json`의 고정 8장으로 (재현용) |
 | `?seed=문자열` | 덱 셔플 시드 고정 (결정적 재현용) |
 
-> **개발 환경 전용** 옵션(`?crackers`, `?guardian`)은 주소의 호스트가 `localhost`, `127.0.0.1`, `[::1]`, 또는 `file://`일 때만 동작합니다(`DEV_MODE`). 배포 주소에서는 무시되어 재화를 만들거나 수호신을 공짜로 받는 우회로가 막혀 있습니다.
+> **개발 환경 전용** 옵션(`?crackers`, `?guardian`)은 주소의 호스트가 `localhost`, `127.0.0.1`, `[::1]`, 또는 `file://`일 때만 동작합니다(`DEV_MODE`). 배포 주소에서는 무시되어 재화를 만들거나 성격 오로라을 공짜로 받는 우회로가 막혀 있습니다.
 > 빈 전장으로 시작하는 현재 방침 때문에 `skipIntro` 사용 시에도 초기 전장은 비어 있습니다.
 
 ## 3. 로컬 실행
@@ -39,16 +38,30 @@
 cd dist && python3 -m http.server 8765      # http://localhost:8765/index.html
 ```
 
+### ngrok 외부 공개
+
+공식 Node SDK를 사용하므로 별도 ngrok CLI가 필요하지 않습니다. 인증 토큰은 저장소나 `.env`에 커밋하지 않고 현재 터미널 환경변수로만 전달합니다.
+
+```bash
+export NGROK_AUTHTOKEN="ngrok 대시보드에서 복사한 토큰"
+npm run ngrok
+```
+
+- 기본 로컬 주소: `http://127.0.0.1:8080`
+- 기본 공개 주소: `https://flagstick-cubical-pungent.ngrok-free.dev`
+- 다른 고정 도메인이나 포트는 `NGROK_DOMAIN`, `FATE_PORT` 환경변수로 덮어쓸 수 있습니다.
+- 실행을 종료하면 공개 연결도 함께 닫힙니다.
+
 ## 4. 개발·QA 명령 (프로젝트 루트에서)
 
 | 명령 | 용도 |
 |---|---|
 | `npm run build:runtime` | 카드 JSON → `dist/runtime/cards.js` 생성 (카드 데이터 수정 후 필수) |
+| `npm run ngrok` | 게임 정적 서버(8080)와 ngrok 고정 도메인 터널을 함께 실행 |
 | `npm run validate:cards` | 카드 데이터 검증 (허용되지 않은 효과 ID, 스타터 8장 등) |
 | `npm test` | 카드 검증 + 효과 검증 + 엔진 + 플랫폼 + UI 계약 테스트 |
 | `npm run qa:overflow` | **UI 글자 넘침 검사** (서버 8765 기동 필요). `OK: 넘침 없음`이어야 통과 |
-| `npm run qa:economy` | **크래커 경제 흐름 검사** (서버 8765 기동 필요): 약자멸시 기권·이탈, 수호신 선불, 개발 옵션 차단 등 9개 시나리오 |
-| `node 09_balance-lab/match-simulator/guardian-balance.mjs --games 20000` | 수호신 밸런스 시뮬레이션 |
+| `node 09_balance-lab/match-simulator/guardian-balance.mjs --games 20000` | 성격 오로라 밸런스 시뮬레이션 |
 
 ## 5. 개발 규칙 (루트 `CLAUDE.md` 요약)
 

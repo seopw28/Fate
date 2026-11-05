@@ -14,7 +14,7 @@
 
 `dist/vfx-lab.html`에서 전투와 분리된 프리셋 실험실을 실행합니다.
 
-- `presets/vfx-presets.js`: 속성·행동·강도·자산을 선언하는 프리셋 레지스트리
+- `presets/vfx-presets.js`: 오로라·행동·강도·자산을 선언하는 프리셋 레지스트리
 - `lab/vfx-engine.js`: 궤적, 충돌, 파티클, 스프라이트, 카메라 반응 조합 엔진
 - `lab/vfx-lab.js`: 필터, 재생, 프리셋 비교 UI
 

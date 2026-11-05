@@ -55,44 +55,52 @@ test('저장: 항상 cardIds를 함께 저장하고 불러올 때 현재 목록�
   assert.ok(html.includes('remapSavedByCardIds(saved,COLLECTION_CARD_IDS)'), 'Loading must realign saved data by cardId');
 });
 
-test('경제: 정상 수호신은 100, 약자멸시 패배·기권·이탈은 200', () => {
-  assert.ok(html.includes('const GUARDIAN_COST=100,VICTORY_STEAL=200;'), 'Guardian selection must follow the PRD price');
-  assert.ok(html.includes('const CHALLENGE_LOSS_COST = 200;'), 'Challenge loss must be a single named constant');
+test('경제: 성격 오로라는 재화 비용 없이 선택한다', () => {
+  assert.ok(!html.includes('GUARDIAN_COST'), 'Guardian selection must not have a currency price');
+  assert.ok(!html.includes('CHALLENGE_LOSS_COST'), 'Challenge mode must not have a separate defeat penalty');
+  assert.ok(html.includes('별도 재화 비용 없이'), 'Guardian selection must explain that it is free');
 });
 
-test('오로라 선택: 최초 화면은 성격의 오로라 5종을 화수목금토 순 가로 5줄로, 프로필에도 같은 문양을 표시한다', () => {
+test('오로라 선택: 성격의 오로라 5종을 오각형 꼭짓점에 배치하고 프로필에도 같은 문양을 표시한다', () => {
   for (const [id, label] of [['cheongryong', '물'], ['jujak', '불'], ['namu', '나무'], ['baekho', '금속'], ['hyeonmu', '대지']]) {
     assert.ok(html.includes(id + ":{name:'" + label + "의 오로라',label:'" + label + "'"), `${label} aura must exist`);
   }
   assert.ok(html.includes("['jujak','cheongryong','namu','baekho','hyeonmu'].map(card)"), 'Aura choices must follow 화·수·목·금·토 order');
-  assert.ok(html.includes('grid-template-rows:repeat(5,minmax(0,1fr)); gap:8px;'), 'Aura board must be five horizontal rows');
+  assert.ok(html.includes(".guardian-select.gs-aura .gs-jujak{left:35%;top:12%}"), 'Fire aura must anchor the top vertex');
+  assert.ok(html.includes(".guardian-select.gs-aura .gs-cheongryong{left:68%;top:34%}"), 'Water aura must anchor the upper-right vertex');
+  assert.ok(html.includes(".guardian-select.gs-aura .gs-namu{left:56%;top:70%}"), 'Wood aura must anchor the lower-right vertex');
+  assert.ok(html.includes(".guardian-select.gs-aura .gs-baekho{left:14%;top:70%}"), 'Metal aura must anchor the lower-left vertex');
+  assert.ok(html.includes(".guardian-select.gs-aura .gs-hyeonmu{left:2%;top:34%}"), 'Earth aura must anchor the upper-left vertex');
+  assert.ok(html.includes('class="aura-pentagon-core"'), 'Aura choice must include a central pentagon core');
   assert.ok(!html.includes('<button class="gs-skip" data-guardian="none">'), 'The challenge (no aura) option must not be offered on the aura screen');
   assert.ok(html.includes('<h2>성격의 오로라</h2>'), 'Aura screen title must be 성격의 오로라');
-  for (const child of ['열정의 아이', '포용의 아이', '발전의 아이', '냉철의 아이', '무던의 아이']) assert.ok(html.includes("child:'" + child + "'"), `${child} must be the aura persona name`);
-  assert.ok(html.includes("avatar.innerHTML=challenge?'약':auraMark(id);"), 'Selected aura profile must keep the same mark');
+  for (const child of ['열정의 아이', '포용의 아이', '성장의 아이', '냉철의 아이', '무던의 아이']) assert.ok(html.includes("child:'" + child + "'"), `${child} must be the aura persona name`);
+  assert.ok(html.includes('avatar.innerHTML=auraMark(id);'), 'Selected aura profile must keep the same mark');
   assert.ok(html.includes('ghost.innerHTML=auraMark(id);'), 'Selection flight must carry the mark into the profile');
+  for (const asset of ['fire-sigil.svg', 'water-sigil.svg', 'wood-sigil.svg', 'metal-sigil.svg', 'earth-sigil.svg']) assert.ok(html.includes('assets/auras/' + asset), `${asset} must be wired into the aura model`);
+  assert.ok(html.includes("<img src=\"'+aura.sigil+'\" alt=\"'+aura.name+' 문양\">"), 'Aura marks must use images instead of letter glyphs');
 });
 
-test('아테나: 낮은 피해로 자주 반격하며 고공격력 폭주를 제한한다', () => {
+test('금속의 오로라: 낮은 피해로 자주 반격하며 고공격력 폭주를 제한한다', () => {
   assert.ok(html.includes("chance:.60,ratio:.15,maxDamage:2,short:'허점 반격'"), 'Metal aura must trade damage for a 60% proc rate');
-  assert.ok(html.includes('Math.max(1,Math.min(athena.maxDamage,Math.ceil(attack*athena.ratio)))'), 'Counter damage must scale down and stay between 1 and 2');
-  assert.ok(html.includes("athena.name+' · 허점 반격 '+power"), 'Frequent counters must have an explicit combat cue');
+  assert.ok(html.includes('Math.max(1,Math.min(metalAura.maxDamage,Math.ceil(attack*metalAura.ratio)))'), 'Counter damage must scale down and stay between 1 and 2');
+  assert.ok(html.includes("metalAura.name+' · 허점 반격 '+power"), 'Frequent counters must have an explicit combat cue');
 });
 
 test('오로라 밸런스: 불 S급 25%, 대지 치명타 생존 5%, 나무 필드 카드마다 체력 +1 60%', () => {
-  assert.ok(html.includes("jujak:{name:'불의 오로라',label:'불',title:'열정',seal:'불',color:'#ff6a4a',sigil:'',chance:.25"), 'Fire proc rate must be 25%');
-  assert.ok(html.includes("hyeonmu:{name:'대지의 오로라',label:'대지',title:'무던',seal:'땅',color:'#d9a35b',sigil:'',chance:.05,maxProcs:1"), 'Earth survival rate must be 5% with one proc per battle');
-  assert.ok(html.includes("namu:{name:'나무의 오로라',label:'나무',title:'발전',seal:'목',color:'#5fd38a',sigil:'',chance:.60,short:'체력 성장'"), 'Wood: each field card independently gains +1 HP at 60% on its turn start');
+  assert.ok(html.includes("jujak:{name:'불의 오로라',label:'불',title:'열정',seal:'불',color:'#ff6a4a',sigil:'assets/auras/fire-sigil.svg',chance:.25"), 'Fire proc rate must be 25%');
+  assert.ok(html.includes("hyeonmu:{name:'대지의 오로라',label:'대지',title:'무던',seal:'땅',color:'#d9a35b',sigil:'assets/auras/earth-sigil.svg',chance:.05,maxProcs:1"), 'Earth survival rate must be 5% with one proc per battle');
+  assert.ok(html.includes("namu:{name:'나무의 오로라',label:'나무',title:'발전',seal:'목',color:'#5fd38a',sigil:'assets/auras/wood-sigil.svg',chance:.60,short:'체력 성장'"), 'Wood: each field card independently gains +1 HP at 60% on its turn start');
   assert.ok(html.includes("growNamuField('player')") && html.includes("growNamuField('enemy')"), 'Wood growth must work for both sides');
   assert.ok(html.includes("if(!guardianProc(side,'namu'))return;grown++"), 'Each field card must roll independently');
 });
 
-test('포세이돈: 60% 확률로 마나 1~2를 회복한다', () => {
+test('물의 오로라: 60% 확률로 마나 1~2를 회복한다', () => {
   assert.ok(html.includes("chance:.60,manaMin:1,manaMax:2,short:'마나 회복'"), 'Poseidon must proc at 60% with a 1-2 mana range');
   assert.ok(html.includes('const rollPoseidonMana=()=>engineAdapter.randomInt(GUARDIANS.cheongryong.manaMin,GUARDIANS.cheongryong.manaMax)'), 'Runtime recovery must roll the configured range');
 });
 
-test('수호신 궁극기: 1턴 동안 수호신별 강력한 전용 각성을 부여한다', () => {
+test('오로라 각성: 1턴 동안 성격별 강력한 전용 각성을 부여한다', () => {
   assert.ok(html.includes('GUARDIAN_AWAKEN_COST=0,GUARDIAN_AWAKEN_REQUIRED_ULTIMATE_USES=1'), 'Awakening must be free and depend on one completed normal ultimate');
   assert.ok(html.includes("ultimateUses<GUARDIAN_AWAKEN_REQUIRED_ULTIMATE_USES||firstUltimateTurn===null"), 'Awakening must require a completed first ultimate');
   assert.ok(html.includes("if(turnNumber<=firstUltimateTurn)return '첫 궁극기 다음 턴 해금'"), 'Awakening must stay locked for the rest of the first ultimate turn');
@@ -100,7 +108,7 @@ test('수호신 궁극기: 1턴 동안 수호신별 강력한 전용 각성을 �
   assert.ok(!html.includes('mana-=GUARDIAN_AWAKEN_COST'), 'Awakening must never spend mana');
   assert.ok(html.includes('GUARDIAN_AWAKEN_DURATION=1'), 'Guardian awakening must be a short one-turn power spike');
   assert.ok(html.includes("guardianAwakenActive(side)?1:GUARDIANS[id].chance"), 'Awakening guardian effects must trigger reliably');
-  assert.ok(html.includes("athena.name+' · 전역 반격 '"), 'Athena awakening must counter the whole enemy field');
+  assert.ok(html.includes("metalAura.name+' · 전역 반격 '"), 'Metal aura awakening must counter the whole enemy field');
   assert.ok(html.includes("awaken?Math.min(7,3+guardianAwakenPower()):rollPoseidonMana()"), 'Poseidon awakening must restore much more mana');
   assert.ok(html.includes("playerGuardian==='hyeonmu'&&guardianAwakenActive('player')&&!guardianAwakenSpecialUsed"), 'Hades awakening must revive the first dying ally');
   assert.ok(html.includes("label:'신화급',bonus"), 'Zeus awakening must grant a mythic draw bonus');
@@ -108,24 +116,30 @@ test('수호신 궁극기: 1턴 동안 수호신별 강력한 전용 각성을 �
   assert.ok(html.includes('guardianAwakenUntil=turnNumber+GUARDIAN_AWAKEN_DURATION'), 'Awakening must expire after its configured turns');
   assert.ok(html.includes("arena.classList.add('guardian-awakened','guardian-awakened-'+playerGuardian)"), 'Awakening must add a guardian-specific field aura');
   assert.ok(html.includes('.arena.guardian-awakened.guardian-awakened-cheongryong'), 'Guardian field aura must provide guardian-specific colors');
-  assert.ok(html.includes("if(!playerGuardian)return '수호신 필요'"), 'Challenge mode must not receive a guardian ultimate');
+  assert.ok(html.includes("if(!playerGuardian)return '성격 오로라 필요'"), 'No-aura mode must not receive an aura awakening');
   assert.ok(html.includes("fieldGuardianUltimate.id='field-guardian-ultimate'"), 'Guardian awakening must render beside the field ultimate condition');
+  assert.ok(html.includes("AURA_PERSONALITY_BY_GUARDIAN={jujak:'fire',cheongryong:'water',namu:'wood',baekho:'metal',hyeonmu:'earth'}"), 'Each aura must map to its matching ultimate personality lineage');
+  assert.ok(html.includes('AURA_ULTIMATE_COST_REDUCTION=2,AURA_ULTIMATE_TURN_REDUCTION=1'), 'Aura resonance must reduce matching ultimate mana and minimum turn');
+  assert.ok(html.includes("!ultimateBloodOverride&&!resonance&&lastUltimateTurn!==null"), 'Aura resonance must bypass the normal ultimate cooldown');
+  assert.ok(html.includes("ultimateState.personality=card.dataset.persona||''"), 'Equipped ultimates must preserve their personality lineage');
+  assert.ok(html.includes("return base+' · 같은 계열 궁극기 공명'"), 'Awakening summary must explain the resonance benefit');
+  assert.ok(html.includes('.arena.guardian-awakened.guardian-awakened-namu'), 'Wood awakening must have its own field aura color');
 });
 
-test('경제: 기권은 패배(finish)로 합쳐 처리하고 별도 전달분을 두지 않는다', () => {
+test('경제: 기권은 패배로 처리하되 성격 오로라 선택에 따른 별도 재화 차감은 없다', () => {
   const surrender = html.slice(html.indexOf('function surrenderBattle('), html.indexOf('function finish('));
   assert.ok(surrender.includes("finish(false,'기권했습니다. 기권은 패배로 계산됩니다.',true)"), 'Surrender must finish as a defeat with the forfeit flag');
   assert.ok(!surrender.includes('animateCrackerTransfer'), 'Surrender must not run its own cracker transfer');
-  assert.ok(html.includes('if(!win&&(challengeMode||forfeit))'), 'Defeat penalty must cover both challenge mode and forfeit');
+  assert.ok(!html.includes('if(!win&&(challengeMode||forfeit))'), 'Guardian choice and surrender must not add a defeat currency penalty');
 });
 
-test('경제: 약자멸시를 끝내지 않고 떠나면 다음 접속에서 패배로 정산한다', () => {
-  assert.ok(html.includes('collectionState.pendingChallenge=true;persistCollection();'), 'Picking the challenge must persist an in-progress marker');
-  assert.ok(html.includes('if(collectionState.pendingChallenge){collectionState.pendingChallenge=false;persistCollection();}'), 'Finishing the battle must clear the marker');
-  assert.ok(html.includes('saved.pendingChallenge===true'), 'Loading must settle an abandoned challenge');
+test('오로라 선택: 오로라 미선택 경로를 제공하지 않는다', () => {
+  assert.ok(!html.includes("id==='none'"), 'Aura selection must not accept a no-aura value');
+  assert.ok(!html.includes("preset==='none'"), 'Development preset must not restore a no-aura mode');
+  assert.ok(!html.includes('challengeMode'), 'Removed no-aura mode must not remain in runtime state');
 });
 
-test('보안: 크래커/수호신 URL 옵션은 개발 환경에서만 동작한다', () => {
+test('보안: 크래커/오로라 URL 옵션은 개발 환경에서만 동작한다', () => {
   assert.ok(html.includes("const DEV_MODE = ['localhost','127.0.0.1','[::1]',''].includes(location.hostname);"), 'DEV_MODE must be derived from the host');
   assert.ok(html.includes("requested=DEV_MODE?params.get('crackers'):null"), '?crackers must be gated by DEV_MODE');
   assert.ok(html.includes("preset=DEV_MODE?params.get('guardian'):null"), '?guardian must be gated by DEV_MODE');
@@ -153,6 +167,28 @@ test('승패 연출: 2초 뒤 티어 화면으로 전환하고 점수를 굴려 
 test('PRD: 카드 소환 가격은 1회 200, 10회 2,000이다', () => {
   assert.ok(html.includes('const GACHA_SINGLE_COST=200,GACHA_TEN_COST=2000;'), 'Gacha costs must use named PRD values');
   assert.ok(html.includes('count===10?GACHA_TEN_COST:GACHA_SINGLE_COST'), 'Pull settlement must use the PRD costs');
+});
+
+test('PRD: 카드 뽑기는 전체 카드 풀·10회 보장·51번째 전설 보장을 적용한다', () => {
+  assert.ok(html.includes("forceRare?(roll<.10?'legendary':'rare')"), 'Guaranteed slot must be 90% rare and 10% legendary');
+  assert.ok(html.includes('Number(collectionState.legendaryMisses||0)>=50'), 'The 51st consecutive miss must force a legendary');
+  assert.ok(html.includes('collectionState.legendaryMisses=isLegendary?0:'), 'A legendary result must reset the miss counter');
+  assert.ok(html.includes('챔프·마법·함정 카드를 획득합니다.'), 'The shop must disclose the complete card pool');
+});
+
+test('PRD: 합성은 서로 다른 카드와 같은 카드 중복을 모두 허용한다', () => {
+  assert.ok(html.includes('const SYNTH_BASE_CHANCE=[0,10,18,25,31,36,40,43,46,48,49]'), 'Material count must use the PRD probability table');
+  assert.ok(html.includes('Math.min(SYNTH_MAX_CHANCE,(SYNTH_BASE_CHANCE[count]||0)+synthFailureStreak*5)'), 'Failure compensation must add 5%p and cap at 49%');
+  assert.ok(html.includes('const slots=[...synthSlots],count=slots.length,used=new Map()'), 'A synthesis attempt must aggregate mixed materials');
+  assert.ok(html.includes('used.forEach((amount,index)=>collectionState.owned[index]-=amount)'), 'Materials must be consumed regardless of success');
+});
+
+test('PRD: 강화는 0~4차, 재료 5장, 단계별 50%·40%·30%·20%를 적용한다', () => {
+  assert.ok(html.includes("const ENHANCE_MATERIAL_COUNT=5,ENHANCE_RULES={0:{chance:50,label:'0차 → 1차',attackMax:1,healthMax:0},1:{chance:40,label:'1차 → 2차',attackMax:2,healthMax:0},2:{chance:30,label:'2차 → 3차',attackMax:2,healthMax:1},3:{chance:20,label:'3차 → 4차',attackMax:2,healthMax:2}}"), 'Enhancement stages and chances must match the PRD');
+  assert.ok(html.includes('enhancementCount(index,level)<ENHANCE_MATERIAL_COUNT'), 'An enhancement attempt must require five matching-stage cards');
+  assert.ok(html.includes('collectionState.owned[index]-=ENHANCE_MATERIAL_COUNT-1'), 'Five input cards must consume four and leave one result card');
+  assert.ok(html.includes('return roll<60?0:roll<90?1:2'), 'A +0~2 bonus must use the 60%·30%·10% distribution');
+  assert.ok(html.includes('if(max===1)return roll<60?0:1'), 'A +0~1 bonus must use the 60%·40% distribution');
 });
 
 test('궁극기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤에 적용한다', () => {

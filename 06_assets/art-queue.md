@@ -36,19 +36,21 @@ Constraints: transparent background (alpha), no characters, no text, no letters,
 2. 코드 위치: `dist/index.html`의 `shieldBreakFx(target)`(보호막이 피해를 막을 때 호출, 지금은 `showSkillEffect('shield',…)` + 흔들림) → ① 이미지를 카드 중심에 겹쳐 scale 0.6→1.15, opacity 1→0 으로 터뜨린다. 보호막을 부여하는 곳(`dataset.shield='true'` + `boxShadow`)에 ② 오버레이를 붙이고, `damageUnit`에서 `shield='false'`가 될 때 떼어낸다.
 3. `npm run qa:battle`(보호막 연출 검사 포함) → `npm run qa:overflow` → 스크린샷으로 확인.
 
-## P0 — 역전 마법 6장 (2026-11-05 추가, 지금은 ✦ 자리표시)
+## (완료) P0 — 역전 마법 6장 (2026-11-05 생성·반영)
 
 상대 필드의 공격력 합·체력 합에 비례해 강해지는 마법(`reversal.*`, `03_card-data/sets/character-expansions.json`). 이미지를 받으면 `dist/assets/spells/generated/<이름>.webp`로 넣고 `assetId`를 `spells/generated/<이름>.webp`로 바꾼다. 원본은 `06_assets/source-art/spells/`.
 공통: 세로 2:3, 어두운 배경, 핵심 피사체는 세로 가운데(손패는 가운데 가로 띠만 보임), 사람·글자·카드 테두리·중국풍 금지. 주제는 "강한 상대의 힘을 되돌려 역전한다".
 
 | 카드 | 파일 이름 | 그림 방향 |
 |---|---|---|
-| 되돌리는 심판 (무속성·전설) | `reversal-judgment` | 적들이 쏟아낸 무수한 칼날·화살·불꽃이 거대한 빛의 거울에 부딪혀 그대로 되돌아 날아가는 장면, 금빛과 흰빛 |
+| 되돌리는 심판 (무오로라·전설) | `reversal-judgment` | 적들이 쏟아낸 무수한 칼날·화살·불꽃이 거대한 빛의 거울에 부딪혀 그대로 되돌아 날아가는 장면, 금빛과 흰빛 |
 | 반격의 방벽 (대지·희귀) | `reversal-bulwark` | 쏟아지는 공격을 받아내며 빛나는 거대한 고대 돌 방벽, 막아낸 힘이 금빛 생명력으로 흘러드는 장면, 호박색·금색 |
 | 거인 사냥 (바람·희귀) | `reversal-giant-hunt` | 폭풍 속에 우뚝 선 거대한 바위 거인의 실루엣을 수많은 청록빛 바람 칼날이 사방에서 깎아내는 장면 |
 | 무게의 대가 (화염·희귀) | `reversal-weight-toll` | 무거운 쇳덩이 저울이 한쪽으로 기울며 그 무게만큼 붉은 불길이 터져 나오는 장면, 붉은색·주황·쇠빛 |
 | 생명 강탈 (물·희귀) | `reversal-life-siphon` | 적진의 붉은 생명 기운이 푸른 물줄기 소용돌이에 빨려 들어 한 점으로 모이는 장면, 심해 남색·청록·붉은 빛 |
-| 역전의 지혜 (무속성·희귀) | `reversal-insight` | 어둠 속에서 펼쳐진 고서 위로 빛나는 카드들이 떠올라 부채꼴로 펼쳐지는 장면, 보라·금빛 |
+| 역전의 지혜 (무오로라·희귀) | `reversal-insight` | 어둠 속에서 펼쳐진 고서 위로 빛나는 카드들이 떠올라 부채꼴로 펼쳐지는 장면, 보라·금빛 |
+
+완료 기록: Codex 이미지 생성 도구로 세로 2:3 원본 PNG 6장을 생성해 `06_assets/source-art/spells/`에 보존하고, 게임용 WebP를 `dist/assets/spells/generated/`에 연결했다. 실제 생성 프롬프트는 `06_assets/source-art/spells/reversal-prompts.md`에 기록했다.
 
 ## (완료) 일러스트 없는 마법·함정
 
@@ -92,7 +94,6 @@ Constraints: no visible people, no readable text, no letters, no numbers, no log
 ## P2 — 소환 토큰
 - ~~`마력 늑대`, `되살린 사령`~~ **완료 (2026-11-03)**: 사용자 제공 일러스트로 교체 — `dist/assets/tokens/mana-wolf.webp`, `necro-spirit.webp` (`TOKEN_ART`). 예전 SVG는 삭제.
 
-## (완료) P3 — 수호신 문양
+## (완료) P3 — 성격 오로라 문양
 - 제우스·포세이돈·하데스·아테나를 인물 형상 대신 번개 왕관·삼지창과 파도·명계의 문·아이기스 방패 문양으로 제작했다. 한자·중국풍·이모지 표현은 사용하지 않았다.
-- 최초 수호신 선택 화면에서 문양을 크게 보여주고, 선택 후 영웅 프로필과 선택 비행 연출에도 같은 문양을 유지한다. 약자멸시는 수호신이 없는 선택이므로 별도 신 문양 없이 텍스트 표식을 유지한다.
 - 파일: `dist/assets/guardians/{zeus,poseidon,hades,athena}-sigil-v1.png`.

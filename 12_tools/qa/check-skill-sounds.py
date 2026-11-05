@@ -5,7 +5,7 @@
 전제: dist를 http.server로 띄운 상태 (기본 http://localhost:8765). 실패하면 exit 1.
 
 규칙
-  - 아주르 썬더폴(내 물 속성 공격의 번개 연출): 번개 소리만. 물 피격음·일반 공격음·휘두르는 소리가 섞이면 안 된다.
+  - 아주르 썬더폴(내 물 오로라 공격의 번개 연출): 번개 소리만. 물 피격음·일반 공격음·휘두르는 소리가 섞이면 안 된다.
   - 빙결 계열(프로스트 노바·빙결 사슬): 빙결(얼음) 소리만. 번개·물 피격음·일반 마법 시전음이 섞이면 안 된다.
   - 바람 연출(실피드 템페스트): 칼바람이 \"슈류륙\" 3연속으로 지나가는 소리(playGust)만 난다.
   - 그 외 공격(불 공격, 상대의 물 공격)은 평소 소리가 그대로 나야 하고, 스킬이 끝나면 음소거가 풀려야 한다.
@@ -90,7 +90,7 @@ with sync_playwright() as p:
     c = counts(pg)
     check("썬더폴 뒤 1.2초가 지나면 물 피격음이 다시 난다 (음소거 해제)", c.get("playHit:water", 0) == 1, c)
 
-    # 3. 불 속성 공격: 평소 소리 그대로
+    # 3. 불 오로라 공격: 평소 소리 그대로
     reset(pg)
     pg.evaluate("""() => { const f = document.querySelector('.summon-zone .unit.fire'), e = document.querySelector('.arena .lane:first-child > .unit'); f.classList.remove('exhausted'); resolveDuel(f, e, { playerAttack: true }); }""")
     pg.wait_for_timeout(1700)

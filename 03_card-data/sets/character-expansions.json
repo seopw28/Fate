@@ -9,8 +9,7 @@
       "displayName": "천신 릴리",
       "cardType": "champion",
       "cost": 8,
-      "element": "earth",
-      "personality": "water",
+      "aura": "earth",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -41,8 +40,7 @@
       "displayName": "악신 바알",
       "cardType": "champion",
       "cost": 9,
-      "element": "fire",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 9,
@@ -73,8 +71,7 @@
       "displayName": "S급 세리아",
       "cardType": "champion",
       "cost": 6,
-      "element": "wind",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 8,
@@ -105,8 +102,7 @@
       "displayName": "엘프 모험가 엘리나",
       "cardType": "champion",
       "cost": 3,
-      "element": "wind",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "common",
       "stats": {
         "attack": 4,
@@ -137,8 +133,7 @@
       "displayName": "상단주 에밀리",
       "cardType": "champion",
       "cost": 3,
-      "element": "neutral",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 2,
@@ -169,8 +164,7 @@
       "displayName": "제2황녀 아리샤",
       "cardType": "champion",
       "cost": 5,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -201,8 +195,7 @@
       "displayName": "제1황녀 루시아",
       "cardType": "champion",
       "cost": 6,
-      "element": "water",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -233,8 +226,7 @@
       "displayName": "길드마스터 칼리나",
       "cardType": "champion",
       "cost": 5,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -265,8 +257,7 @@
       "displayName": "폰티에 세실리",
       "cardType": "champion",
       "cost": 4,
-      "element": "water",
-      "personality": "fire",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -297,8 +288,7 @@
       "displayName": "루벨 리브레",
       "cardType": "champion",
       "cost": 4,
-      "element": "neutral",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -329,8 +319,7 @@
       "displayName": "블러디로즈 이레나",
       "cardType": "champion",
       "cost": 5,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 7,
@@ -361,8 +350,7 @@
       "displayName": "여우검 페르시",
       "cardType": "champion",
       "cost": 4,
-      "element": "wind",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "common",
       "stats": {
         "attack": 6,
@@ -393,8 +381,7 @@
       "displayName": "성녀 셀리나",
       "cardType": "champion",
       "cost": 5,
-      "element": "earth",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 3,
@@ -425,8 +412,7 @@
       "displayName": "8써클 시엘라",
       "cardType": "champion",
       "cost": 7,
-      "element": "ice",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -457,8 +443,7 @@
       "displayName": "진조 리리엘",
       "cardType": "champion",
       "cost": 7,
-      "element": "fire",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -489,8 +474,7 @@
       "displayName": "족장 리뉴아",
       "cardType": "champion",
       "cost": 6,
-      "element": "earth",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -521,8 +505,7 @@
       "displayName": "정보수장 마레나",
       "cardType": "champion",
       "cost": 4,
-      "element": "neutral",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -553,8 +536,7 @@
       "displayName": "황제 시에라",
       "cardType": "champion",
       "cost": 7,
-      "element": "neutral",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -585,8 +567,7 @@
       "displayName": "9써클 리제엘",
       "cardType": "champion",
       "cost": 8,
-      "element": "water",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -617,8 +598,7 @@
       "displayName": "기사단장 아리엘",
       "cardType": "champion",
       "cost": 7,
-      "element": "wind",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -649,8 +629,7 @@
       "displayName": "바알계약 유리아",
       "cardType": "champion",
       "cost": 8,
-      "element": "fire",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -681,8 +660,7 @@
       "displayName": "드워프 피에르",
       "cardType": "champion",
       "cost": 4,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 4,
@@ -713,8 +691,7 @@
       "displayName": "인어족 네이리아",
       "cardType": "champion",
       "cost": 6,
-      "element": "water",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -745,8 +722,7 @@
       "displayName": "용인 이그나",
       "cardType": "champion",
       "cost": 6,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 8,
@@ -777,8 +753,7 @@
       "displayName": "타락자 카르미",
       "cardType": "champion",
       "cost": 5,
-      "element": "neutral",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 7,
@@ -809,8 +784,7 @@
       "displayName": "대언자 헬레나",
       "cardType": "champion",
       "cost": 8,
-      "element": "neutral",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "legendary",
       "stats": {
         "attack": 9,
@@ -841,8 +815,7 @@
       "displayName": "낙인자 클로에",
       "cardType": "champion",
       "cost": 7,
-      "element": "fire",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -873,8 +846,7 @@
       "displayName": "미소환 에스텔",
       "cardType": "champion",
       "cost": 2,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "water",
       "rarity": "common",
       "stats": {
         "attack": 3,
@@ -905,8 +877,7 @@
       "displayName": "레오닌의 비앙카",
       "cardType": "champion",
       "cost": 5,
-      "element": "fire",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -937,8 +908,7 @@
       "displayName": "뮤테의 세라피나",
       "cardType": "champion",
       "cost": 4,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 4,
@@ -969,8 +939,7 @@
       "displayName": "파벨의 로잘린드",
       "cardType": "champion",
       "cost": 4,
-      "element": "wind",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "common",
       "stats": {
         "attack": 5,
@@ -1001,8 +970,7 @@
       "displayName": "운디네의 오필리아",
       "cardType": "champion",
       "cost": 7,
-      "element": "water",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -1033,8 +1001,7 @@
       "displayName": "카산드라의 유디트",
       "cardType": "champion",
       "cost": 5,
-      "element": "water",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -1065,8 +1032,7 @@
       "displayName": "레저의 미란다",
       "cardType": "champion",
       "cost": 4,
-      "element": "water",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "common",
       "stats": {
         "attack": 4,
@@ -1097,8 +1063,7 @@
       "displayName": "트리아의 베라",
       "cardType": "champion",
       "cost": 5,
-      "element": "neutral",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -1129,8 +1094,7 @@
       "displayName": "파지날의 헤스터",
       "cardType": "champion",
       "cost": 5,
-      "element": "neutral",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -1161,8 +1125,7 @@
       "displayName": "스티치의 노엘",
       "cardType": "champion",
       "cost": 4,
-      "element": "earth",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "common",
       "stats": {
         "attack": 4,
@@ -1193,8 +1156,7 @@
       "displayName": "가루의 오드리",
       "cardType": "champion",
       "cost": 3,
-      "element": "earth",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "common",
       "stats": {
         "attack": 3,
@@ -1225,8 +1187,7 @@
       "displayName": "볼프의 브리다",
       "cardType": "champion",
       "cost": 4,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "common",
       "stats": {
         "attack": 6,
@@ -1257,8 +1218,7 @@
       "displayName": "유키의 타냐",
       "cardType": "champion",
       "cost": 4,
-      "element": "ice",
-      "personality": "metal",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 5,
@@ -1289,8 +1249,7 @@
       "displayName": "모프의 위니프레드",
       "cardType": "champion",
       "cost": 3,
-      "element": "wind",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 4,
@@ -1321,8 +1280,7 @@
       "displayName": "팬드럴의 이졸데",
       "cardType": "champion",
       "cost": 7,
-      "element": "water",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -1353,8 +1311,7 @@
       "displayName": "에리니에스의 라비니아",
       "cardType": "champion",
       "cost": 7,
-      "element": "neutral",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -1385,8 +1342,7 @@
       "displayName": "연소휘",
       "cardType": "champion",
       "cost": 5,
-      "element": "earth",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -1417,8 +1373,7 @@
       "displayName": "진소운",
       "cardType": "champion",
       "cost": 5,
-      "element": "water",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -1449,8 +1404,7 @@
       "displayName": "백청연",
       "cardType": "champion",
       "cost": 5,
-      "element": "wind",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -1481,8 +1435,7 @@
       "displayName": "설아린",
       "cardType": "champion",
       "cost": 6,
-      "element": "ice",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -1513,8 +1466,7 @@
       "displayName": "주연화",
       "cardType": "champion",
       "cost": 4,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 3,
@@ -1545,8 +1497,7 @@
       "displayName": "계설아",
       "cardType": "champion",
       "cost": 5,
-      "element": "ice",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -1577,8 +1528,7 @@
       "displayName": "은비주",
       "cardType": "champion",
       "cost": 4,
-      "element": "wind",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 3,
@@ -1609,8 +1559,7 @@
       "displayName": "해비설",
       "cardType": "champion",
       "cost": 4,
-      "element": "water",
-      "personality": "water",
+      "aura": "water",
       "rarity": "common",
       "stats": {
         "attack": 4,
@@ -1641,8 +1590,7 @@
       "displayName": "하미주",
       "cardType": "champion",
       "cost": 4,
-      "element": "earth",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "common",
       "stats": {
         "attack": 3,
@@ -1673,8 +1621,7 @@
       "displayName": "홍소월",
       "cardType": "champion",
       "cost": 5,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -1705,8 +1652,7 @@
       "displayName": "남궁연",
       "cardType": "champion",
       "cost": 6,
-      "element": "wind",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 7,
@@ -1737,8 +1683,7 @@
       "displayName": "당소소",
       "cardType": "champion",
       "cost": 4,
-      "element": "neutral",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -1769,8 +1714,7 @@
       "displayName": "팽여란",
       "cardType": "champion",
       "cost": 5,
-      "element": "fire",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -1801,8 +1745,7 @@
       "displayName": "제갈희",
       "cardType": "champion",
       "cost": 4,
-      "element": "neutral",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "common",
       "stats": {
         "attack": 3,
@@ -1833,8 +1776,7 @@
       "displayName": "모용비",
       "cardType": "champion",
       "cost": 5,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -1865,8 +1807,7 @@
       "displayName": "주혜령",
       "cardType": "champion",
       "cost": 8,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -1897,8 +1838,7 @@
       "displayName": "설연화",
       "cardType": "champion",
       "cost": 6,
-      "element": "ice",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -1929,8 +1869,7 @@
       "displayName": "표야란",
       "cardType": "champion",
       "cost": 6,
-      "element": "earth",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -1961,8 +1900,7 @@
       "displayName": "맹호란",
       "cardType": "champion",
       "cost": 7,
-      "element": "fire",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "legendary",
       "stats": {
         "attack": 5,
@@ -1993,8 +1931,7 @@
       "displayName": "수령",
       "cardType": "champion",
       "cost": 7,
-      "element": "water",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -2025,8 +1962,7 @@
       "displayName": "설미향",
       "cardType": "champion",
       "cost": 7,
-      "element": "neutral",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -2057,8 +1993,7 @@
       "displayName": "무영",
       "cardType": "champion",
       "cost": 7,
-      "element": "wind",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -2089,8 +2024,7 @@
       "displayName": "천희령",
       "cardType": "champion",
       "cost": 9,
-      "element": "neutral",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 9,
@@ -2121,8 +2055,7 @@
       "displayName": "설유화",
       "cardType": "champion",
       "cost": 7,
-      "element": "fire",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -2153,8 +2086,7 @@
       "displayName": "적하륜",
       "cardType": "champion",
       "cost": 8,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -2185,8 +2117,7 @@
       "displayName": "천소하",
       "cardType": "champion",
       "cost": 7,
-      "element": "neutral",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -2217,8 +2148,7 @@
       "displayName": "목련비",
       "cardType": "champion",
       "cost": 8,
-      "element": "earth",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -2249,8 +2179,7 @@
       "displayName": "위홍련",
       "cardType": "champion",
       "cost": 7,
-      "element": "wind",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -2281,7 +2210,6 @@
       "displayName": "대지의 진동",
       "cardType": "spell",
       "cost": 2,
-      "element": "earth",
       "rarity": "common",
       "stats": null,
       "effects": [
@@ -2301,7 +2229,7 @@
         ],
         "characterId": null
       },
-      "personality": "earth"
+      "aura": "earth"
     },
     {
       "schemaVersion": 1,
@@ -2310,7 +2238,6 @@
       "displayName": "화염 폭풍",
       "cardType": "spell",
       "cost": 3,
-      "element": "fire",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -2330,7 +2257,7 @@
         ],
         "characterId": null
       },
-      "personality": "fire"
+      "aura": "fire"
     },
     {
       "schemaVersion": 1,
@@ -2339,7 +2266,6 @@
       "displayName": "폭풍우",
       "cardType": "spell",
       "cost": 4,
-      "element": "wind",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -2359,7 +2285,7 @@
         ],
         "characterId": null
       },
-      "personality": "wood"
+      "aura": "wood"
     },
     {
       "schemaVersion": 1,
@@ -2368,7 +2294,6 @@
       "displayName": "종말의 파동",
       "cardType": "spell",
       "cost": 5,
-      "element": "neutral",
       "rarity": "legendary",
       "stats": null,
       "effects": [
@@ -2388,7 +2313,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -2397,7 +2322,6 @@
       "displayName": "대재앙",
       "cardType": "spell",
       "cost": 3,
-      "element": "neutral",
       "rarity": "legendary",
       "stats": null,
       "effects": [
@@ -2418,7 +2342,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -2427,8 +2351,7 @@
       "displayName": "단화",
       "cardType": "champion",
       "cost": 2,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 1,
@@ -2459,8 +2382,7 @@
       "displayName": "금서린",
       "cardType": "champion",
       "cost": 5,
-      "element": "wind",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -2491,8 +2413,7 @@
       "displayName": "도하연",
       "cardType": "champion",
       "cost": 6,
-      "element": "fire",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 7,
@@ -2523,8 +2444,7 @@
       "displayName": "주란",
       "cardType": "champion",
       "cost": 5,
-      "element": "earth",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -2555,8 +2475,7 @@
       "displayName": "설백련",
       "cardType": "champion",
       "cost": 7,
-      "element": "water",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -2587,8 +2506,7 @@
       "displayName": "백연화",
       "cardType": "champion",
       "cost": 8,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -2619,8 +2537,7 @@
       "displayName": "적화린",
       "cardType": "champion",
       "cost": 8,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 9,
@@ -2651,8 +2568,7 @@
       "displayName": "소연",
       "cardType": "champion",
       "cost": 8,
-      "element": "ice",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "legendary",
       "stats": {
         "attack": 9,
@@ -2683,8 +2599,7 @@
       "displayName": "서한설",
       "cardType": "champion",
       "cost": 6,
-      "element": "ice",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -2715,8 +2630,7 @@
       "displayName": "모용청아",
       "cardType": "champion",
       "cost": 7,
-      "element": "wind",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -2747,8 +2661,7 @@
       "displayName": "단목령",
       "cardType": "champion",
       "cost": 5,
-      "element": "thunder",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -2779,8 +2692,7 @@
       "displayName": "연시아",
       "cardType": "champion",
       "cost": 3,
-      "element": "thunder",
-      "personality": "water",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 3,
@@ -2811,8 +2723,7 @@
       "displayName": "진소소",
       "cardType": "champion",
       "cost": 5,
-      "element": "thunder",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -2843,8 +2754,7 @@
       "displayName": "도홍",
       "cardType": "champion",
       "cost": 8,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -2875,8 +2785,7 @@
       "displayName": "갈여상",
       "cardType": "champion",
       "cost": 5,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -2907,8 +2816,7 @@
       "displayName": "무상",
       "cardType": "champion",
       "cost": 8,
-      "element": "neutral",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -2939,8 +2847,7 @@
       "displayName": "사명희",
       "cardType": "champion",
       "cost": 6,
-      "element": "neutral",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -2971,8 +2878,7 @@
       "displayName": "백유",
       "cardType": "champion",
       "cost": 6,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -3003,8 +2909,7 @@
       "displayName": "연라",
       "cardType": "champion",
       "cost": 4,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "common",
       "stats": {
         "attack": 3,
@@ -3035,8 +2940,7 @@
       "displayName": "몽리",
       "cardType": "champion",
       "cost": 9,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -3067,8 +2971,7 @@
       "displayName": "서리몽",
       "cardType": "champion",
       "cost": 5,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -3099,8 +3002,7 @@
       "displayName": "가월",
       "cardType": "champion",
       "cost": 7,
-      "element": "neutral",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -3131,8 +3033,7 @@
       "displayName": "소몽",
       "cardType": "champion",
       "cost": 3,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "water",
       "rarity": "common",
       "stats": {
         "attack": 2,
@@ -3163,8 +3064,7 @@
       "displayName": "설리",
       "cardType": "champion",
       "cost": 6,
-      "element": "thunder",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 7,
@@ -3195,8 +3095,7 @@
       "displayName": "한소려",
       "cardType": "champion",
       "cost": 4,
-      "element": "thunder",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "common",
       "stats": {
         "attack": 4,
@@ -3227,8 +3126,7 @@
       "displayName": "전여옥",
       "cardType": "champion",
       "cost": 8,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -3259,8 +3157,7 @@
       "displayName": "하은",
       "cardType": "champion",
       "cost": 4,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -3291,8 +3188,7 @@
       "displayName": "유하",
       "cardType": "champion",
       "cost": 8,
-      "element": "wind",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -3323,8 +3219,7 @@
       "displayName": "하연",
       "cardType": "champion",
       "cost": 6,
-      "element": "earth",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -3355,8 +3250,7 @@
       "displayName": "소약",
       "cardType": "champion",
       "cost": 3,
-      "element": "earth",
-      "personality": "wood",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 2,
@@ -3387,8 +3281,7 @@
       "displayName": "소소",
       "cardType": "champion",
       "cost": 5,
-      "element": "wind",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -3419,7 +3312,6 @@
       "displayName": "낙뢰",
       "cardType": "spell",
       "cost": 3,
-      "element": "thunder",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -3439,7 +3331,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -3448,7 +3340,6 @@
       "displayName": "연쇄 번개",
       "cardType": "spell",
       "cost": 4,
-      "element": "thunder",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -3468,7 +3359,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -3477,7 +3368,6 @@
       "displayName": "천벌",
       "cardType": "spell",
       "cost": 6,
-      "element": "thunder",
       "rarity": "legendary",
       "stats": null,
       "effects": [
@@ -3497,7 +3387,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -3506,7 +3396,6 @@
       "displayName": "서리 감옥",
       "cardType": "spell",
       "cost": 3,
-      "element": "ice",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -3526,7 +3415,7 @@
         ],
         "characterId": null
       },
-      "personality": "water"
+      "aura": "water"
     },
     {
       "schemaVersion": 1,
@@ -3535,8 +3424,7 @@
       "displayName": "시엘라",
       "cardType": "champion",
       "cost": 9,
-      "element": "thunder",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "legendary",
       "stats": {
         "attack": 10,
@@ -3567,8 +3455,7 @@
       "displayName": "리베르나",
       "cardType": "champion",
       "cost": 9,
-      "element": "neutral",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -3599,8 +3486,7 @@
       "displayName": "카일라",
       "cardType": "champion",
       "cost": 5,
-      "element": "thunder",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -3631,8 +3517,7 @@
       "displayName": "스테리아",
       "cardType": "champion",
       "cost": 6,
-      "element": "ice",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -3663,8 +3548,7 @@
       "displayName": "모르카",
       "cardType": "champion",
       "cost": 5,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -3695,8 +3579,7 @@
       "displayName": "셀리아 루미니스",
       "cardType": "champion",
       "cost": 5,
-      "element": "water",
-      "personality": "water",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -3727,8 +3610,7 @@
       "displayName": "아델린 오르웰",
       "cardType": "champion",
       "cost": 6,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -3759,8 +3641,7 @@
       "displayName": "엘리시아 오르웰",
       "cardType": "champion",
       "cost": 6,
-      "element": "thunder",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 7,
@@ -3791,8 +3672,7 @@
       "displayName": "네실라 아릴라인",
       "cardType": "champion",
       "cost": 7,
-      "element": "wind",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -3823,8 +3703,7 @@
       "displayName": "메르시아 벨리온",
       "cardType": "champion",
       "cost": 5,
-      "element": "earth",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -3855,8 +3734,7 @@
       "displayName": "아르모니 로젠벨",
       "cardType": "champion",
       "cost": 5,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -3887,8 +3765,7 @@
       "displayName": "아스테라",
       "cardType": "champion",
       "cost": 8,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 9,
@@ -3919,8 +3796,7 @@
       "displayName": "리시라",
       "cardType": "champion",
       "cost": 8,
-      "element": "ice",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -3951,8 +3827,7 @@
       "displayName": "벨로사 나가르",
       "cardType": "champion",
       "cost": 7,
-      "element": "earth",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -3983,8 +3858,7 @@
       "displayName": "티에나 글림",
       "cardType": "champion",
       "cost": 4,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 3,
@@ -4015,8 +3889,7 @@
       "displayName": "딘테아 마르셀라",
       "cardType": "champion",
       "cost": 6,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -4047,8 +3920,7 @@
       "displayName": "이레온 세피아",
       "cardType": "champion",
       "cost": 5,
-      "element": "wind",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -4079,8 +3951,7 @@
       "displayName": "페이라",
       "cardType": "champion",
       "cost": 8,
-      "element": "wind",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -4111,8 +3982,7 @@
       "displayName": "미엘란",
       "cardType": "champion",
       "cost": 3,
-      "element": "wind",
-      "personality": "wood",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 3,
@@ -4143,8 +4013,7 @@
       "displayName": "세르나",
       "cardType": "champion",
       "cost": 3,
-      "element": "water",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "common",
       "stats": {
         "attack": 2,
@@ -4175,8 +4044,7 @@
       "displayName": "백연주",
       "cardType": "champion",
       "cost": 9,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 9,
@@ -4207,8 +4075,7 @@
       "displayName": "홍설",
       "cardType": "champion",
       "cost": 7,
-      "element": "thunder",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -4239,8 +4106,7 @@
       "displayName": "연적아",
       "cardType": "champion",
       "cost": 7,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -4271,8 +4137,7 @@
       "displayName": "도화린",
       "cardType": "champion",
       "cost": 5,
-      "element": "thunder",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -4303,8 +4168,7 @@
       "displayName": "청아",
       "cardType": "champion",
       "cost": 5,
-      "element": "ice",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -4335,8 +4199,7 @@
       "displayName": "유아란",
       "cardType": "champion",
       "cost": 5,
-      "element": "wind",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -4367,8 +4230,7 @@
       "displayName": "유설란",
       "cardType": "champion",
       "cost": 6,
-      "element": "water",
-      "personality": "water",
+      "aura": "water",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -4399,8 +4261,7 @@
       "displayName": "진유련",
       "cardType": "champion",
       "cost": 6,
-      "element": "ice",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -4431,8 +4292,7 @@
       "displayName": "초아",
       "cardType": "champion",
       "cost": 3,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 2,
@@ -4463,8 +4323,7 @@
       "displayName": "위소소",
       "cardType": "champion",
       "cost": 4,
-      "element": "neutral",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "common",
       "stats": {
         "attack": 3,
@@ -4495,7 +4354,6 @@
       "displayName": "뇌명의 마법진",
       "cardType": "spell",
       "cost": 4,
-      "element": "thunder",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -4515,7 +4373,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -4524,7 +4382,6 @@
       "displayName": "질풍 회오리",
       "cardType": "spell",
       "cost": 4,
-      "element": "wind",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -4544,7 +4401,7 @@
         ],
         "characterId": null
       },
-      "personality": "wood"
+      "aura": "wood"
     },
     {
       "schemaVersion": 1,
@@ -4553,7 +4410,6 @@
       "displayName": "룬석 결정",
       "cardType": "spell",
       "cost": 2,
-      "element": "earth",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -4573,7 +4429,7 @@
         ],
         "characterId": null
       },
-      "personality": "earth"
+      "aura": "earth"
     },
     {
       "schemaVersion": 1,
@@ -4582,7 +4438,6 @@
       "displayName": "대지 균열",
       "cardType": "spell",
       "cost": 4,
-      "element": "earth",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -4602,7 +4457,7 @@
         ],
         "characterId": null
       },
-      "personality": "earth"
+      "aura": "earth"
     },
     {
       "schemaVersion": 1,
@@ -4611,7 +4466,6 @@
       "displayName": "불사조의 제단",
       "cardType": "spell",
       "cost": 5,
-      "element": "fire",
       "rarity": "legendary",
       "stats": null,
       "effects": [
@@ -4631,7 +4485,7 @@
         ],
         "characterId": null
       },
-      "personality": "fire"
+      "aura": "fire"
     },
     {
       "schemaVersion": 1,
@@ -4640,7 +4494,6 @@
       "displayName": "화염 정령",
       "cardType": "spell",
       "cost": 3,
-      "element": "fire",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -4660,7 +4513,7 @@
         ],
         "characterId": null
       },
-      "personality": "fire"
+      "aura": "fire"
     },
     {
       "schemaVersion": 1,
@@ -4669,7 +4522,6 @@
       "displayName": "프리즘 계시",
       "cardType": "spell",
       "cost": 2,
-      "element": "neutral",
       "rarity": "common",
       "stats": null,
       "effects": [
@@ -4689,7 +4541,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -4698,7 +4550,6 @@
       "displayName": "생명의 회오리",
       "cardType": "spell",
       "cost": 3,
-      "element": "wind",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -4718,7 +4569,7 @@
         ],
         "characterId": null
       },
-      "personality": "wood"
+      "aura": "wood"
     },
     {
       "schemaVersion": 1,
@@ -4727,7 +4578,6 @@
       "displayName": "심연의 독사",
       "cardType": "spell",
       "cost": 3,
-      "element": "neutral",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -4747,7 +4597,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -4756,7 +4606,6 @@
       "displayName": "공허의 번개기둥",
       "cardType": "spell",
       "cost": 5,
-      "element": "thunder",
       "rarity": "legendary",
       "stats": null,
       "effects": [
@@ -4776,7 +4625,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -4785,8 +4634,7 @@
       "displayName": "세라핌 에린",
       "cardType": "champion",
       "cost": 8,
-      "element": "neutral",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -4817,8 +4665,7 @@
       "displayName": "불사조 리코",
       "cardType": "champion",
       "cost": 8,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -4849,8 +4696,7 @@
       "displayName": "크라켄 카밀라",
       "cardType": "champion",
       "cost": 9,
-      "element": "water",
-      "personality": "water",
+      "aura": "water",
       "rarity": "legendary",
       "stats": {
         "attack": 9,
@@ -4881,8 +4727,7 @@
       "displayName": "대정령 모리",
       "cardType": "champion",
       "cost": 8,
-      "element": "earth",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -4913,8 +4758,7 @@
       "displayName": "펜리르 루네",
       "cardType": "champion",
       "cost": 8,
-      "element": "ice",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "legendary",
       "stats": {
         "attack": 8,
@@ -4945,8 +4789,7 @@
       "displayName": "폭격마법사 리제",
       "cardType": "champion",
       "cost": 7,
-      "element": "fire",
-      "personality": "fire",
+      "aura": "fire",
       "rarity": "legendary",
       "stats": {
         "attack": 7,
@@ -4977,8 +4820,7 @@
       "displayName": "소환사 나디아",
       "cardType": "champion",
       "cost": 6,
-      "element": "wind",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -5009,8 +4851,7 @@
       "displayName": "격투가 모카",
       "cardType": "champion",
       "cost": 5,
-      "element": "earth",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 5,
@@ -5041,8 +4882,7 @@
       "displayName": "리트리버 러키",
       "cardType": "champion",
       "cost": 4,
-      "element": "wind",
-      "personality": "fire",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -5073,8 +4913,7 @@
       "displayName": "성기사 루시아",
       "cardType": "champion",
       "cost": 6,
-      "element": "fire",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -5105,8 +4944,7 @@
       "displayName": "성녀 리아나",
       "cardType": "champion",
       "cost": 5,
-      "element": "water",
-      "personality": "water",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -5137,8 +4975,7 @@
       "displayName": "보좌관 이네스",
       "cardType": "champion",
       "cost": 6,
-      "element": "thunder",
-      "personality": "metal",
+      "aura": "metal",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -5169,8 +5006,7 @@
       "displayName": "병기발명가 베카",
       "cardType": "champion",
       "cost": 6,
-      "element": "thunder",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "rare",
       "stats": {
         "attack": 6,
@@ -5201,8 +5037,7 @@
       "displayName": "지도제작자 코린",
       "cardType": "champion",
       "cost": 3,
-      "element": "earth",
-      "personality": "wood",
+      "aura": "wood",
       "rarity": "common",
       "stats": {
         "attack": 2,
@@ -5233,8 +5068,7 @@
       "displayName": "잠든 소녀 네무",
       "cardType": "champion",
       "cost": 5,
-      "element": "neutral",
-      "personality": "earth",
+      "aura": "earth",
       "rarity": "rare",
       "stats": {
         "attack": 4,
@@ -5265,7 +5099,6 @@
       "displayName": "되돌리는 심판",
       "cardType": "spell",
       "cost": 6,
-      "element": "neutral",
       "rarity": "legendary",
       "stats": null,
       "effects": [
@@ -5277,7 +5110,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/pending/judgment",
+      "assetId": "spells/generated/reversal-judgment-v1.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -5285,7 +5118,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     },
     {
       "schemaVersion": 1,
@@ -5294,7 +5127,6 @@
       "displayName": "반격의 방벽",
       "cardType": "spell",
       "cost": 3,
-      "element": "earth",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -5306,7 +5138,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/pending/bulwark",
+      "assetId": "spells/generated/reversal-bulwark-v1.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -5314,7 +5146,7 @@
         ],
         "characterId": null
       },
-      "personality": "earth"
+      "aura": "earth"
     },
     {
       "schemaVersion": 1,
@@ -5323,7 +5155,6 @@
       "displayName": "거인 사냥",
       "cardType": "spell",
       "cost": 4,
-      "element": "wind",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -5335,7 +5166,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/pending/giant-hunt",
+      "assetId": "spells/generated/reversal-giant-hunt-v1.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -5343,7 +5174,7 @@
         ],
         "characterId": null
       },
-      "personality": "wood"
+      "aura": "wood"
     },
     {
       "schemaVersion": 1,
@@ -5352,7 +5183,6 @@
       "displayName": "무게의 대가",
       "cardType": "spell",
       "cost": 8,
-      "element": "fire",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -5364,7 +5194,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/pending/weight-toll",
+      "assetId": "spells/generated/reversal-weight-toll-v1.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -5372,7 +5202,7 @@
         ],
         "characterId": null
       },
-      "personality": "fire"
+      "aura": "fire"
     },
     {
       "schemaVersion": 1,
@@ -5381,7 +5211,6 @@
       "displayName": "생명 강탈",
       "cardType": "spell",
       "cost": 4,
-      "element": "water",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -5393,7 +5222,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/pending/life-siphon",
+      "assetId": "spells/generated/reversal-life-siphon-v1.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -5401,7 +5230,7 @@
         ],
         "characterId": null
       },
-      "personality": "water"
+      "aura": "water"
     },
     {
       "schemaVersion": 1,
@@ -5410,7 +5239,6 @@
       "displayName": "역전의 지혜",
       "cardType": "spell",
       "cost": 3,
-      "element": "neutral",
       "rarity": "rare",
       "stats": null,
       "effects": [
@@ -5422,7 +5250,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/pending/insight",
+      "assetId": "spells/generated/reversal-insight-v1.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -5430,7 +5258,7 @@
         ],
         "characterId": null
       },
-      "personality": "metal"
+      "aura": "metal"
     }
   ]
 }
