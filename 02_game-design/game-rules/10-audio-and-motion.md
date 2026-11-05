@@ -149,6 +149,6 @@
 | 기본 | Vex - 최후 결전 (BPM 125) | `dist/assets/audio/bgm-final-battle.mp3` |
 | 최후의 발악 시작 후 | Vex - 각성 (BPM 145) | `dist/assets/audio/bgm-awakening.mp3` |
 
-- 어느 편이든 영웅 체력이 최대치의 40% 밑으로 처음 떨어지면 각성 곡으로 **1.6초 크로스페이드**합니다 (`switchToAwakeningBgm`, `BGM_CROSSFADE_MS`).
+- 어느 편이든 영웅 체력이 최대치의 30% 이하가 되면 각성 곡으로 **1.6초 크로스페이드**합니다 (`switchToAwakeningBgm`, `BGM_CROSSFADE_MS`).
 - 체력을 회복해 최후의 발악이 풀려도 그 배틀이 끝날 때까지 각성 곡을 유지합니다. 곡이 왔다 갔다 하지 않게 하기 위해서입니다. 다시 시작(새로고침)하면 기본 곡으로 돌아갑니다.
 - 두 곡의 평균 음량은 비슷하므로(−14.4 dB / −13.9 dB) 볼륨 보정은 하지 않습니다. 사운드 패널의 배경음악 슬라이더가 두 곡에 똑같이 적용됩니다.

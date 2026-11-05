@@ -81,6 +81,12 @@ test('deck exhaustion and result handoff follow the PRD', () => {
   assert.ok(html.includes("openCollection('codex');},2000)"), 'Battle results must hand off to character completion, not rank progression');
 });
 
+test('battle result copy is explicit and the result surface fully covers battle UI', () => {
+  assert.ok(html.includes("textContent=win?'승리':'패배'"), 'Result title must say 승리 or 패배 directly');
+  assert.ok(html.includes('background:radial-gradient(circle at 50% 45%,#211b12 0,#0b0d13 52%,#05070b 100%)'), 'Result overlay must have an opaque full-screen background');
+  assert.ok(!html.includes("textContent=win?'캐릭터와 만든 역전':'완결을 향해'"), 'Narrative copy must not replace the win/loss label');
+});
+
 test('initiative uses health, field, then random order', () => {
   const health = html.indexOf('if(playerHp!==enemyHp)');
   const field = html.indexOf('if(playerUnits!==enemyUnits)');
@@ -180,6 +186,8 @@ test('space switches hand tabs and Enter ends the turn', () => {
 });
 
 test('최후의 발악: 최대 마나가 11로 늘어나고, 발악이 풀리면 10으로 돌아간다', () => {
+  assert.ok(html.includes('const DESPERATE_HP_RATIO=.3'), 'Desperation must start at thirty percent');
+  assert.ok(html.includes('hp>0&&hp<=DESPERATE_HP'), 'Exactly thirty percent health must activate desperation');
   assert.ok(html.includes('const DESPERATE_MANA_CAP = 11;'), 'Desperation mana cap must be eleven');
   assert.ok(html.includes("maxMana=playerManaCap()===DESPERATE_MANA_CAP?DESPERATE_MANA_CAP:Math.min(MANA_CAP,maxMana+1)"), 'Turn start must set max mana to eleven while desperate');
   assert.ok(html.includes("if(side==='player')applyDesperateMana(active);"), 'Entering/leaving desperation must update max mana');

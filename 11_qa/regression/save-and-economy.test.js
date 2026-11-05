@@ -131,6 +131,8 @@ test('경제: 기권은 패배로 처리하되 성격 오로라 선택에 따른
   assert.ok(surrender.includes("finish(false,'기권했습니다. 기권은 패배로 계산됩니다.',true)"), 'Surrender must finish as a defeat with the forfeit flag');
   assert.ok(!surrender.includes('animateCrackerTransfer'), 'Surrender must not run its own cracker transfer');
   assert.ok(!html.includes('if(!win&&(challengeMode||forfeit))'), 'Guardian choice and surrender must not add a defeat currency penalty');
+  assert.ok(html.includes('showBattleResult(win,reason,Boolean(forfeit))'), 'A surrender result must use the new-game return path');
+  assert.ok(html.includes('setTimeout(()=>location.reload(),1600)'), 'A surrender must return to the new-game start screen');
 });
 
 test('오로라 선택: 오로라 미선택 경로를 제공하지 않는다', () => {

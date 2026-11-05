@@ -578,6 +578,9 @@ test('소환: 손패 카드가 뒷면으로 돌아서 전장으로 날아가 그
   const html = fs.readFileSync(path.join(__dirname, '../../dist/index.html'), 'utf8');
   assert.ok(html.includes('summonCardFlip(from,unit,'), 'Summon must use the back-face flight + flip');
   assert.ok(html.includes('flipReveal(unit,onDone)'), 'The field unit itself must flip to reveal');
+  assert.ok(html.includes('summonLandingImpact(unit)'), 'Summon arrival must trigger the heavy ground impact');
+  assert.ok(html.includes("playAudio('metal'") && html.includes("tone(54,.42,'sine'"), 'Summon landing must combine a metal hit with a low-frequency thump');
+  assert.ok(html.includes("unit.dataset.cost=String(cost)"), 'Summon impact strength must scale with card cost');
 });
 
 test('드로우: 다른 탭으로 들어가는 카드도 그 탭으로 넘겨 손패에서 뒤집고, 여러 장은 차례로 뒤집는다', () => {
