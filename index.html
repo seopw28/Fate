@@ -1426,6 +1426,31 @@
     #enhance-result .synth-card h4 { word-break:keep-all; overflow-wrap:break-word; }
     #enhance-result .synth-card.enh-land { animation:enh-land .5s cubic-bezier(.2,1.4,.4,1); }
     @keyframes enh-land { 0% { transform:scale(1.12); filter:brightness(1.8); } 100% { transform:none; filter:none; } }
+    /* === 강화 성공·실패 연출 === */
+    .synth-stage.enh-stage .stage-mat { width:min(14vmin,140px); }
+    .synth-stage.enh-stage.casting .stage-circle { animation-duration:1.75s; }
+    .synth-stage .enh-banner { padding:6px 26px; border-radius:99px; font-size:clamp(22px,3vmin,34px); font-weight:900; letter-spacing:.08em; animation:enh-banner .6s cubic-bezier(.2,1.5,.4,1) both; }
+    @keyframes enh-banner { 0% { transform:scale(.3); opacity:0; } 100% { transform:none; opacity:1; } }
+    .synth-stage.enh-success { background:radial-gradient(circle at 50% 50%,#5a4214e6 0,#1a1206f0 55%,#07050af7 100%); }
+    .synth-stage.enh-success .enh-banner { color:#2a1a04; background:linear-gradient(90deg,#ffd477,#fff3c8,#ffd477); box-shadow:0 0 40px #ffd477aa; }
+    .synth-stage.enh-success .stage-flash { background:radial-gradient(circle,#fff 0,#ffe9a8 22%,transparent 60%); }
+    .synth-stage.enh-success .stage-circle .synth-circle { filter:drop-shadow(0 0 22px #ffd477) drop-shadow(0 0 70px #f3bd68cc) sepia(.6) saturate(2) hue-rotate(-15deg); }
+    .synth-stage.enh-success .stage-card { border-color:#ffd477; box-shadow:0 0 70px #f3bd68cc,0 30px 80px #000c; }
+    .synth-stage.enh-success .stage-card small { color:#ffe3a8; font-size:clamp(15px,1.9vmin,20px); font-weight:800; }
+    .synth-stage.enh-success .stage-caption { color:#ffe3a8; }
+    .synth-stage.enh-fail { background:radial-gradient(circle at 50% 50%,#3a0f14e6 0,#12070af0 55%,#050306f7 100%); animation:enh-shake .5s ease both; }
+    @keyframes enh-shake { 15%,45%,75% { transform:translateX(-10px); } 30%,60%,90% { transform:translateX(10px); } }
+    .synth-stage.enh-fail .stage-flash { background:radial-gradient(circle,#ff6a5c 0,#a3182588 25%,transparent 60%); }
+    .synth-stage.enh-fail .stage-circle { opacity:.5!important; filter:grayscale(.6) brightness(.7) blur(1px)!important; }
+    .synth-stage.enh-fail .stage-circle .synth-circle { filter:drop-shadow(0 0 18px #ff4a3c) hue-rotate(-120deg) saturate(1.6); }
+    .synth-stage.enh-fail .enh-banner { color:#ffd8d4; background:linear-gradient(90deg,#7a1a22,#c43a40,#7a1a22); box-shadow:0 0 30px #ff4a3c88; }
+    .synth-stage.enh-fail .stage-card { border-color:#7a4048; filter:grayscale(.65) brightness(.75); animation:enh-fail-card .7s ease both; }
+    @keyframes enh-fail-card { 0% { transform:scale(1.1); filter:brightness(2); } 30% { transform:rotate(-3deg); } 55% { transform:rotate(2deg); } 100% { transform:none; filter:grayscale(.65) brightness(.75); } }
+    .synth-stage.enh-fail .stage-caption { color:#ffb3ad; }
+    .synth-stage .enh-shards { width:0; height:0; position:relative; pointer-events:none; }
+    .synth-stage .enh-shards i { position:absolute; left:0; top:0; width:10px; height:24px; background:linear-gradient(#ff8a7a,#7a1a22); clip-path:polygon(50% 0,100% 40%,60% 100%,0 60%); transform:rotate(var(--a)); animation:enh-shard .9s ease-out both; }
+    @keyframes enh-shard { 0% { transform:rotate(var(--a)) translateY(0) scale(1.4); opacity:1; } 100% { transform:rotate(var(--a)) translateY(calc(var(--d) * -1)) scale(.4); opacity:0; } }
+    @media(prefers-reduced-motion:reduce){ .synth-stage.enh-stage, .synth-stage.enh-stage * { animation:none!important; } }
 </style>
 </head>
 <body>
@@ -2632,6 +2657,34 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         const sx=to.width/from.width,dx=to.left-from.left,dy=to.top-from.top;slot.style.visibility='hidden';
         g.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate('+dx*.5+'px,'+(dy*.5-50)+'px) scale('+((1+sx)/2)+') rotate(-6deg)',offset:.5},{transform:'translate('+dx+'px,'+dy+'px) scale('+sx+')'}],{duration:480,easing:'cubic-bezier(.3,.7,.3,1)'}).onfinish=()=>{g.remove();slot.style.visibility='';slot.classList.remove('enh-land');void slot.offsetWidth;slot.classList.add('enh-land');};});
       renderEnhancement();
+    })();
+
+    /* 강화 연출: 화면 중앙 무대에서 재료 5장이 마법진으로 빨려 들어간 뒤 성공(금빛 폭발)·실패(균열·붉은 파편)를 보여준다 */
+    (function(){
+      if(typeof runEnhancement!=='function'||typeof SYNTH_STAGE_SVG!=='string')return;
+      const base=runEnhancement;let busy=false;
+      function close(){document.querySelector('.synth-stage.enh-stage')?.remove();}
+      runEnhancement=function(...a){if(busy)return;const index=enhanceSelected,level=enhanceLevel,before=enhanceLast;
+        if(index===null||enhancementCount(index,level)<(typeof ENHANCE_MATERIAL_COUNT==='number'?ENHANCE_MATERIAL_COUNT:5))return base.apply(this,a);
+        const card=collectionCards[index];close();busy=true;
+        const stage=document.createElement('div');stage.className='synth-stage enh-stage casting';stage.setAttribute('role','dialog');stage.setAttribute('aria-label','강화 연출');
+        const mats=Array.from({length:5},(_,i)=>{const ang=(-90+i*72)*Math.PI/180;return '<div class="stage-mat '+rarityByCard[index]+'" style="--x:'+(Math.cos(ang)*36).toFixed(1)+'vmin;--y:'+(Math.sin(ang)*36).toFixed(1)+'vmin;--d:'+(i*.09)+'s"><img src="'+card[1]+'" alt=""></div>';}).join('');
+        stage.innerHTML='<div class="stage-circle">'+SYNTH_STAGE_SVG+'</div>'+mats+'<div class="stage-flash"></div><div class="enh-shards"></div><div class="stage-result"></div><p class="stage-caption">'+level+'차 → '+(level+1)+'차 강화 중…</p>';
+        stage.addEventListener('click',e=>{if(stage.classList.contains('revealed')&&(e.target===stage||e.target.closest('.stage-close')))close();});
+        document.body.appendChild(stage);
+        [262,330,392,524,660].forEach((f,k)=>tone(f,.24,'triangle',.05,f*1.35,k*.2));
+        const result=base.apply(this,a);const out=enhanceLast&&enhanceLast!==before?enhanceLast:null;
+        const slot=document.querySelector('#enhance-result');if(slot)slot.style.visibility='hidden';
+        setTimeout(()=>{busy=false;if(slot)slot.style.visibility='';if(!out){close();return;}
+          const ok=out.success,r=rarityByCard[out.index],c=collectionCards[out.index];
+          stage.classList.remove('casting');stage.classList.add('revealed',ok?'enh-success':'enh-fail');
+          if(!ok){const sh=stage.querySelector('.enh-shards');sh.innerHTML=Array.from({length:14},(_,i)=>'<i style="--a:'+(i*360/14)+'deg;--d:'+(140+(i%3)*60)+'px"></i>').join('');}
+          stage.querySelector('.stage-result').innerHTML='<div class="enh-banner">'+(ok?'강화 성공':'강화 실패')+'</div><article class="stage-card '+r+'"><span class="new-badge">'+(ok?out.level+'차':'단계 유지')+'</span><img src="'+c[1]+'" alt="'+c[2]+'"><h3>'+c[2]+' · '+out.level+'차</h3><small>'+(ok?'⚔ +'+out.attack+' · ♥ +'+out.health:'재료 4장 소멸 · '+out.level+'차 카드 1장 유지')+'</small></article><button class="stage-close">확인</button>';
+          stage.querySelector('.stage-caption').textContent=ok?'카드가 한 단계 강해졌습니다!':'아쉽게도 강화에 실패했습니다';
+          if(ok){tone(784,.3,'triangle',.08);tone(1047,.45,'triangle',.09,1568,.12);}else{noise(.35,.06,260);tone(220,.4,'sawtooth',.05,90);tone(147,.5,'sine',.07,70,.15);}
+        },1750);
+        return result;};
+      addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelector('.synth-stage.enh-stage.revealed'))close();});
     })();
 </script>
 </body>
