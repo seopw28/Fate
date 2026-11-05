@@ -597,3 +597,9 @@ test('타격: 영웅을 직접 쳐도 아바타 자리에 오로라 타격 이�
   assert.ok(!html.includes("if(target.classList.contains('avatar')){heroHealthImpact(target,damage);return;}"), 'impact() must not return early for hero avatars');
   assert.ok(html.includes("const hero=target.classList.contains('avatar');if(hero)heroHealthImpact(target,damage);"), 'Hero hits keep the HP bar feedback and add hit VFX');
 });
+
+test('합성 실패: 마법진이 무너지는 실패 연출과 잃은 재료·다음 확률 안내를 보여 준다', () => {
+  const html = fs.readFileSync(path.join(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes('revealSynthStage(outcome.index,true);}else{renderCollection();revealSynthFail(slots,count);}'), 'Synthesis failure must show the fail stage instead of closing silently');
+  assert.ok(html.includes('function revealSynthFail(slots,count)'), 'Fail stage helper must exist');
+});

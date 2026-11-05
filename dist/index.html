@@ -344,7 +344,7 @@
     .command-rail .card.hand-filtered { display:none; }
     .command-rail .card.unaffordable { opacity:.36; filter:grayscale(.72) brightness(.72); cursor:not-allowed; border-color:#343b46; box-shadow:none; }
     .command-rail .card.unaffordable:hover { transform:none; border-color:#343b46; box-shadow:none; }
-    .command-rail .card.unaffordable::after { content:'체력 부족'; position:absolute; z-index:5; inset:auto 8px 8px; padding:5px 7px; border:1px solid #78829155; border-radius:7px; background:#0b1017e6; color:#b5bfcc; text-align:center; font-size:9px; font-weight:850; letter-spacing:.05em; }
+    /* 낼 수 없는 카드는 흐림만 표시한다. 예전 '체력 부족' 글자 띠는 요청 없이 남아 있던 것으로, 마나 부족(혈마나 잠김)에도 같은 문구가 떠 오해를 주고 공격력·체력 숫자를 가려 제거했다 (2026-11-05) */
     .command-rail .card.unaffordable .cost { border-color:#8993a0; background:#555e69; color:#dce2e9; box-shadow:none; }
     .command-rail .card.blood-option { opacity:.92; border-color:#a9475e; box-shadow:inset 0 0 22px #a51f3b22; }
     .command-rail .card.blood-option::after { content:attr(data-blood-payment); position:absolute; z-index:5; right:8px; bottom:8px; padding:5px 8px; border:1px solid #d65b7488; border-radius:7px; background:#2a1019ed; color:#ff9bae; font-size:9px; font-weight:900; letter-spacing:.04em; }
@@ -806,6 +806,21 @@
       .guardian-select.gs-olympus .gs-face em::before, .guardian-select.gs-olympus .gs-face em::after { width:14px; }
     }
     .guardian-select.gs-olympus .gs-skip strong { font-size:20px; }
+    /* 합성 실패 연출: 강화 실패(.enh-fail)의 붉은 배경·흔들림·파편을 함께 쓰고, 재료 카드가 부서져 떨어지며 사라진다 */
+    .synth-stage.synth-fail.revealed .stage-mat { display:block; animation:synth-mat-crumble .9s cubic-bezier(.5,0,.9,.6) var(--d) forwards; }
+    @keyframes synth-mat-crumble { 0% { transform:translate(var(--x),var(--y)); filter:none; opacity:1; } 25% { transform:translate(calc(var(--x) + 6px),var(--y)) rotate(4deg); filter:grayscale(1) brightness(1.4) sepia(.4) hue-rotate(-30deg); } 100% { transform:translate(var(--x),calc(var(--y) + 18vmin)) rotate(-14deg) scale(.7); filter:grayscale(1) brightness(.4); opacity:0; } }
+    .synth-stage.synth-fail .synth-fail-box { width:min(560px,86vw); padding:clamp(14px,2vmin,22px) clamp(16px,2.4vmin,28px); border:1px solid #7a3a42; border-radius:16px; background:linear-gradient(160deg,#2a0f14f2,#120709f2); box-shadow:0 0 40px #ff4a3c33,0 24px 60px #000c; text-align:center; animation:enh-fail-card .7s ease both; }
+    .synth-stage.synth-fail .sf-lost-title { margin:0 0 12px; color:#ffd8d4; font-size:clamp(14px,1.8vmin,18px); font-weight:700; word-break:keep-all; }
+    .synth-stage.synth-fail .sf-lost-title b { color:#ff8a7a; }
+    .synth-stage.synth-fail .sf-lost { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:14px; }
+    .synth-stage.synth-fail .synth-lost { position:relative; width:clamp(40px,6vmin,58px); aspect-ratio:3/4; border:1px solid #5b4048; border-radius:7px; overflow:hidden; filter:grayscale(1) brightness(.55); }
+    .synth-stage.synth-fail .synth-lost img { width:100%; height:100%; object-fit:cover; object-position:center 18%; }
+    .synth-stage.synth-fail .synth-lost::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,transparent 46%,#ff6a5ccc 48%,#ff6a5ccc 52%,transparent 54%),linear-gradient(45deg,transparent 60%,#ff6a5c88 61%,transparent 63%); }
+    .synth-stage.synth-fail .sf-chance { display:grid; grid-template-columns:auto auto; justify-content:center; align-items:baseline; gap:2px 12px; padding:10px 14px; border-radius:12px; background:#ffd4770f; border:1px solid #9b754555; }
+    .synth-stage.synth-fail .sf-chance span { color:#e8d6b0; font-size:clamp(13px,1.6vmin,16px); }
+    .synth-stage.synth-fail .sf-chance strong { color:#ffd477; font-size:clamp(22px,3vmin,32px); font-weight:900; text-shadow:0 0 16px #f3bd6888; }
+    .synth-stage.synth-fail .sf-chance small { grid-column:1 / -1; color:#b9a88a; font-size:clamp(11px,1.3vmin,13px); }
+    @media (prefers-reduced-motion: reduce) { .synth-stage.synth-fail.revealed .stage-mat { display:none; } }
     /* 혈마나 궁극기: 잠긴 궁극기 버튼 옆(왼쪽)에 놓이는, 체력을 바치는 붉은 버튼 */
     .field-ultimate-blood { position:absolute; z-index:12; left:50%; top:104px; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:2px; width:min(260px,48%); padding:9px 18px 10px; border:1px solid #d6465a; border-radius:16px; background:linear-gradient(135deg,#4a1220f0,#2a0a14f0); color:#ffd3d9; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 0 22px #d6465a66; }
     .field-ultimate-blood small { font-size:11px; font-weight:600; color:#ffa3b0; }
@@ -2532,7 +2547,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       used.forEach((amount,index)=>collectionState.owned[index]-=amount);if(success){const materialIds=new Set(slots),preferred=collectionCards.map((_,i)=>i).filter(i=>rarityByCard[i]===targetRarity&&!materialIds.has(i)),fallback=collectionCards.map((_,i)=>i).filter(i=>!materialIds.has(i)&&rarityRank[rarityByCard[i]]>=rarityRank[targetRarity]),pool=preferred.length?preferred:fallback,result=pool[Math.floor(Math.random()*pool.length)];collectionState.owned[result]++;synthLast={index:result,success:true,rarity:rarityByCard[result]};synthFailureStreak=0;}else{synthLast={index:slots[0],success:false,rarity:targetRarity};synthFailureStreak++;}persistCollection();
       const outcome=synthLast;synthBusy=true;synthSlots=[];synthLast=null;renderSynthesis();playSynthStage(slots);
       [196,262,330,392,524,660,784,1047].forEach((f,k)=>tone(f,.26,'triangle',.05,f*1.4,k*.17));
-      setTimeout(()=>{synthBusy=false;synthLast=outcome;if(outcome.success){tone(outcome.rarity==='legendary'?1040:820,.4,'triangle',.09);renderCollection();revealSynthStage(outcome.index,true);}else{renderCollection();closeSynthStage();}},1900);
+      setTimeout(()=>{synthBusy=false;synthLast=outcome;if(outcome.success){tone(outcome.rarity==='legendary'?1040:820,.4,'triangle',.09);renderCollection();revealSynthStage(outcome.index,true);}else{renderCollection();revealSynthFail(slots,count);}},1900);
     }
 
     /* ===== 강화: 같은 단계의 같은 챔프 카드 5장 → 다음 단계 카드 1장 ===== */
@@ -2570,6 +2585,14 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       stage.classList.remove('casting');stage.classList.add('revealed',rarity);
       stage.querySelector('.stage-result').innerHTML='<article class="stage-card '+rarity+'">'+(isNew?'<span class="new-badge">NEW</span>':'')+'<img src="'+card[1]+'" alt="'+card[2]+'"><h3>'+card[2]+'</h3><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+' · 비용 '+card[3]+' · ⚔ '+card[4]+' ♥ '+card[5]+'</small></article><button class="stage-close">확인</button>';
       stage.querySelector('.stage-caption').textContent=isNew?'새로운 카드를 얻었습니다!':'합성 완료';}
+    /* 합성 실패 연출: 마법진이 붉게 무너지고 재료 카드가 부서져 흩어진 뒤, 잃은 재료와 다음 시도 확률 상승을 안내한다 */
+    function revealSynthFail(slots,count){let stage=document.querySelector('.synth-stage');if(!stage){playSynthStage(slots);stage=document.querySelector('.synth-stage');}
+      stage.classList.remove('casting');stage.classList.add('revealed','enh-fail','synth-fail');
+      const shards=document.createElement('div');shards.className='enh-shards';shards.innerHTML=Array.from({length:18},(_,i)=>'<i style="--a:'+(i*20)+'deg;--d:'+(150+(i%3)*70)+'px"></i>').join('');stage.insertBefore(shards,stage.querySelector('.stage-result'));
+      const next=synthChance(count),capped=next>=SYNTH_MAX_CHANCE,lost=slots.map(index=>'<span class="synth-lost '+rarityByCard[index]+'"><img src="'+collectionCards[index][1]+'" alt="'+collectionCards[index][2]+'"></span>').join('');
+      stage.querySelector('.stage-result').innerHTML='<div class="enh-banner">합성 실패</div><div class="synth-fail-box"><p class="sf-lost-title">재료 <b>'+slots.length+'장</b>이 마법진에 흡수되어 사라졌습니다</p><div class="sf-lost">'+lost+'</div><div class="sf-chance"><span>다음 합성 성공 확률</span><strong>+5%p</strong><small>연속 실패 '+synthFailureStreak+'회 · 같은 '+count+'장 합성 시 '+next+'%'+(capped?' (최대)':'')+'</small></div></div><button class="stage-close">확인</button>';
+      stage.querySelector('.stage-caption').textContent='마법진이 무너졌습니다… 실패할수록 다음 성공 확률이 오릅니다';
+      noise(.4,.07,240);tone(330,.22,'sawtooth',.05,160);tone(220,.42,'sawtooth',.05,90,.14);tone(147,.6,'sine',.08,62,.3);}
     addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelector('.synth-stage.revealed'))closeSynthStage();});
 
     /* 컬렉션 창이 열려 있는 동안 사운드 버튼을 창 머리 영역(크래커 옆)으로 옮기고, 닫으면 원래 자리로 되돌린다 */
