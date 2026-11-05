@@ -190,10 +190,10 @@ test('PRD: 합성은 서로 다른 카드와 같은 카드 중복을 모두 허�
   assert.ok(html.includes('used.forEach((amount,index)=>collectionState.owned[index]-=amount)'), 'Materials must be consumed regardless of success');
 });
 
-test('PRD: 강화는 0~4차, 재료 5장, 단계별 50%·40%·30%·20%를 적용한다', () => {
-  assert.ok(html.includes("const ENHANCE_MATERIAL_COUNT=5,ENHANCE_RULES={0:{chance:50,label:'0차 → 1차',attackMax:1,healthMax:0},1:{chance:40,label:'1차 → 2차',attackMax:2,healthMax:0},2:{chance:30,label:'2차 → 3차',attackMax:2,healthMax:1},3:{chance:20,label:'3차 → 4차',attackMax:2,healthMax:2}}"), 'Enhancement stages and chances must match the PRD');
-  assert.ok(html.includes('enhancementCount(index,level)<ENHANCE_MATERIAL_COUNT'), 'An enhancement attempt must require five matching-stage cards');
-  assert.ok(html.includes('collectionState.owned[index]-=ENHANCE_MATERIAL_COUNT-1'), 'Five input cards must consume four and leave one result card');
+test('PRD: 강화는 0~4차, 재료 3장, 단계별 50%·45%·40%·35%를 적용한다', () => {
+  assert.ok(html.includes("const ENHANCE_MATERIAL_COUNT=3,ENHANCE_RULES={0:{chance:50,label:'0차 → 1차',attackMax:1,healthMax:0},1:{chance:45,label:'1차 → 2차',attackMax:2,healthMax:0},2:{chance:40,label:'2차 → 3차',attackMax:2,healthMax:1},3:{chance:35,label:'3차 → 4차',attackMax:2,healthMax:2}}"), 'Enhancement stages and chances must match the PRD');
+  assert.ok(html.includes('enhancementCount(index,level)<ENHANCE_MATERIAL_COUNT'), 'An enhancement attempt must require three matching-stage cards');
+  assert.ok(html.includes('collectionState.owned[index]-=ENHANCE_MATERIAL_COUNT-1'), 'Three input cards must consume two and leave one result card');
   assert.ok(html.includes('return roll<60?0:roll<90?1:2'), 'A +0~2 bonus must use the 60%·30%·10% distribution');
   assert.ok(html.includes('if(max===1)return roll<60?0:1'), 'A +0~1 bonus must use the 60%·40% distribution');
 });
