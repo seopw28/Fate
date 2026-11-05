@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 /**
- * 성격 오로라 밸런스 시뮬레이터 (헤드리스).
+ * 성격 오라 밸런스 시뮬레이터 (헤드리스).
  *
  * dist/index.html 의 전투 규칙을 그대로 옮겨 수천 판을 자동 대전시킨다.
  *   - 카드 능력치: dist/runtime/cards.js (챔피언 풀)
- *   - 성격 오로라 수치: dist/index.html 의 `const GUARDIANS={...}` 를 직접 읽는다 (단일 출처)
+ *   - 성격 오라 수치: dist/index.html 의 `const GUARDIANS={...}` 를 직접 읽는다 (단일 출처)
  *
  * 모델링한 규칙: 영웅 체력 100, 마나 3→10(+1/라운드), 등급 롤(A 15% +2 / B 35% +1 / C 50%), 선공권(체력↓ → 필드 카드↓ → 나),
  *   소환 직후 공격 불가(플레이어) / 즉시 공격(상대), 가장 왼쪽 카드 공격,
- *   성격 오로라 4종(청룡=마나 회복·백호=살아남으면 즉시 반격·주작=뽑을 때 S급 +3·현무=치명타 생존)과 상대 성격 오로라 무작위 배정(내가 고른 것 제외).
+ *   성격 오라 5종(물=마나 회복·금속=살아남으면 즉시 반격·불=공격 시 확률 추가 공격·대지=치명타 생존·나무=체력 성장)과 상대 성격 오라 무작위 배정(내가 고른 것 제외).
  * 모델링하지 않은 것: 마법/함정/궁극기, 챔피언 개별 능력, 혈마나, 추가 드로우. (모든 카드를 바닐라 능력치로 취급)
  *
  * 모드:
- *   --mode symmetric (기본) 양쪽이 동일한 규칙·동일한 봇을 쓰는 대칭 대전. 기본 승률이 50%라서 '성격 오로라 자체의 힘'을 비교할 수 있다.
+ *   --mode symmetric (기본) 양쪽이 동일한 규칙·동일한 봇을 쓰는 대칭 대전. 기본 승률이 50%라서 '성격 오라 자체의 힘'을 비교할 수 있다.
  *       (소환 즉시 공격, 마나 환급 후 재계획, 앞줄은 공격-체력/2가 낮은 카드, 화상은 공격 턴 직후 정산)
  *   --mode game  실제 게임의 비대칭을 그대로 재현(상대는 소환 즉시 공격, 내 유닛은 한 턴 대기). 마법·궁극기·혈마나가 빠져 있어
  *       내 승률이 거의 0%로 나오므로 절대 승률 용도로는 쓸 수 없다.
@@ -31,6 +31,7 @@ const SEED = Number(args.seed) || 1;
 const SYM = (args.mode || 'symmetric') !== 'game';
 const INITIATIVE = !args['no-initiative'];
 const HEAL_COUNTS_FOR_INITIATIVE = !!args['heal-counts'];/* 기본: 현무 회복분은 선공권 판정에서 제외(게임과 동일). --heal-counts 로 회복분도 포함 *//* --no-initiative: 선공권 규칙을 끄고 항상 내가 선공(상호 교대 없음) */
+const AWAKENING_SIM = !!args.awakening;
 
 // ── 데이터 로드 ──────────────────────────────────────────────
 const sandbox = { globalThis: {} };
@@ -39,7 +40,9 @@ const POOL = sandbox.globalThis.PrimalCardSet.cards
   .filter(c => c.cardType === 'champion' && c.collectible !== false && c.releaseState !== 'prototype')
   .map(c => ({ cost: c.cost, atk: c.stats.attack, hp: c.stats.health }));
 const html = readFileSync(resolve(root, 'dist/index.html'), 'utf8');
-const GUARDIANS = vm.runInNewContext('(' + html.match(/const GUARDIANS=(\{[\s\S]*?\n    \});/)[1] + ')');
+const auraSource = html.match(/const PERSONALITY_AURAS=(\{[\s\S]*?\n    \});/);
+if (!auraSource) throw new Error('dist/index.html에서 PERSONALITY_AURAS 정의를 찾지 못했습니다.');
+const GUARDIANS = vm.runInNewContext('(' + auraSource[1] + ')');
 for (const override of String(args.override || '').split(',').filter(Boolean)) {
   const [path, value] = override.split('=');
   const [id, key] = path.split('.');
@@ -53,10 +56,32 @@ const shuffle = (arr, rnd) => { const a = arr.slice(); for (let i = a.length - 1
 
 // ── 규칙 상수 (dist/index.html 과 동일) ─────────────────────
 const HERO_HP = 100, MANA_CAP = 10, START_MANA = 3, FIELD_LIMIT = 6, HAND_LIMIT = 8, ROUND_CAP = 40;
+const AWAKEN_HP = 70;
+const AWAKENING_OPTIONS = {
+  jujak: {
+    A: { label: '폭열', chance: 0.045, extraStrikes: 2 },
+    B: { label: '연격', chance: 0.075, extraStrikes: 1 },
+  },
+  cheongryong: {
+    A: { label: '범람', chance: 0.285, manaMin: 4, manaMax: 5 },
+    B: { label: '순환', chance: 0.95, manaMin: 2, manaMax: 2 },
+  },
+  namu: {
+    A: { label: '거목', chance: 0.325, hpGain: 3 },
+    B: { label: '숲의 생명', chance: 1.00, hpGain: 1 },
+  },
+  baekho: {
+    A: { label: '절단 반격', chance: 0.50, ratio: 0.40, minDamage: 2, maxDamage: 5 },
+    B: { label: '연속 응수', chance: 1.00, ratio: 0.20, minDamage: 1, maxDamage: 3 },
+  },
+  hyeonmu: {
+    A: { label: '불굴', chance: 0.09, maxProcs: 2, reviveRatio: 0 },
+    B: { label: '대지의 귀환', chance: 0.08, maxProcs: 2, reviveRatio: 0.50 },
+  },
+};
 const AI = { atkWeight: 1, hpWeight: 0.7, manaWeight: 0.35 };
 const grade = rnd => { const r = rnd(); return r < 0.15 ? 2 : r < 0.5 ? 1 : 0; };
-// 주작: 카드를 뽑을 때 chance 확률로 S급(+3). 시작 손패 5장은 성격 오로라 선택 전에 정해지므로 제외.
-const mkCard = (base, rnd, jujak = false) => ({ cost: base.cost, atk: base.atk + (jujak && rnd() < GUARDIANS.jujak.chance ? 3 : grade(rnd)), hp: base.hp });
+const mkCard = (base, rnd) => ({ cost: base.cost, atk: base.atk + grade(rnd), hp: base.hp });
 const value = c => c.atk * AI.atkWeight + c.hp * AI.hpWeight;
 
 function plan(hand, mana, slots) {
@@ -71,27 +96,36 @@ function plan(hand, mana, slots) {
   return best ? hand.slice(0, n).map((_, i) => i).filter(i => best.mask & (1 << i)) : [];
 }
 
-function playGame(playerGuardian, enemyGuardian, rnd) {
-  const mkSide = (guardian) => ({
+function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, enemyAwakening = null) {
+  const mkSide = (guardian, awakeningChoice) => ({
     guardian, hp: HERO_HP, healed: 0, prevented: 0, procs: 0,
-    deck: shuffle(POOL, rnd).slice(0, 60).map((b, i) => mkCard(b, rnd, guardian === 'jujak' && i >= 5)),
+    awakeningChoice, awakened: false,
+    deck: shuffle(POOL, rnd).slice(0, 60).map(b => mkCard(b, rnd)),
     hand: [], field: [],
   });
-  const P = mkSide(playerGuardian), E = mkSide(enemyGuardian);
+  const P = mkSide(playerGuardian, playerAwakening), E = mkSide(enemyGuardian, enemyAwakening);
   P.hand = P.deck.splice(0, 5); E.hand = E.deck.splice(0, 5);
-  const proc = (side, id) => side.guardian === id && rnd() < GUARDIANS[id].chance;
-  const poseidonMana = () => GUARDIANS.cheongryong.manaMin + Math.floor(rnd() * (GUARDIANS.cheongryong.manaMax - GUARDIANS.cheongryong.manaMin + 1));
+  const auraConfig = (side, id) => side.awakened && side.guardian === id && AWAKENING_OPTIONS[id]?.[side.awakeningChoice] ? AWAKENING_OPTIONS[id][side.awakeningChoice] : GUARDIANS[id];
+  const proc = (side, id) => side.guardian === id && rnd() < auraConfig(side, id).chance;
+  const poseidonMana = side => { const cfg = auraConfig(side, 'cheongryong'); return cfg.manaMin + Math.floor(rnd() * (cfg.manaMax - cfg.manaMin + 1)); };
   const alive = side => side.field.filter(u => u.hp > 0);
   let winner = null;
 
   function damageUnit(side, unit, dmg) {
-    if (dmg >= unit.hp && !unit.saved && (!GUARDIANS.hyeonmu.maxProcs || side.procs < GUARDIANS.hyeonmu.maxProcs) && proc(side, 'hyeonmu')) { unit.saved = true; side.procs++; dmg = unit.hp - 1; }
+    const earth = auraConfig(side, 'hyeonmu');
+    if (dmg >= unit.hp && (!earth.maxProcs || side.procs < earth.maxProcs) && proc(side, 'hyeonmu')) {
+      side.procs++;
+      if (earth.reviveRatio) { unit.hp = Math.max(1, Math.ceil(unit.maxHp * earth.reviveRatio)); return; }
+      unit.saved = true; dmg = unit.hp - 1;
+    }
     unit.hp -= dmg;
     if (unit.hp <= 0) side.field = side.field.filter(u => u !== unit);
   }
   function hitHero(side, dmg) {
-    side.hp -= dmg; if (side.hp <= 0 && !winner) winner = side === P ? 'enemy' : 'player'; }
-  function attack(attackerSide, defenderSide, unit) {
+    side.hp -= dmg;
+    if (AWAKENING_SIM && !side.awakened && side.awakeningChoice && side.hp <= AWAKEN_HP && side.hp > 0) side.awakened = true;
+    if (side.hp <= 0 && !winner) winner = side === P ? 'enemy' : 'player'; }
+  function strike(attackerSide, defenderSide, unit) {
     if (winner || unit.hp <= 0) return;
     const targets = alive(defenderSide);
     if (!targets.length) { hitHero(defenderSide, unit.atk); return; }
@@ -99,13 +133,22 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
     damageUnit(defenderSide, target, unit.atk);
     // 아테나: 공격을 받고 살아남으면 chance 확률로 저위력 반격(실게임과 동일한 ratio·최소 1·maxDamage 상한)
     if (target.hp > 0 && proc(defenderSide, 'baekho')) {
-      const athena = GUARDIANS.baekho;
-      const counterDamage = Math.max(1, Math.min(athena.maxDamage || Infinity, Math.ceil(target.atk * (athena.ratio || 1))));
+      const athena = auraConfig(defenderSide, 'baekho');
+      const counterDamage = Math.max(athena.minDamage || 1, Math.min(athena.maxDamage || Infinity, Math.ceil(target.atk * (athena.ratio || 1))));
       damageUnit(attackerSide, unit, counterDamage);
     }
   }
-  // 나무의 오로라: 자기 턴 시작에 필드의 카드마다 독립적으로 chance 확률로 체력 +1
-  function growNamu(side) { if (side.guardian !== 'namu' || !GUARDIANS.namu) return; side.field.forEach(u => { if (rnd() < GUARDIANS.namu.chance) u.hp += 1; }); }
+  function attack(attackerSide, defenderSide, unit) {
+    strike(attackerSide, defenderSide, unit);
+    // 불의 오라: 첫 공격 뒤 공격자가 살아 있으면 확률적으로 즉시 한 번 더 공격한다.
+    // 첫 대상이 쓰러졌다면 두 번째 타격은 새 앞줄(없으면 영웅)을 다시 지정한다.
+    if (!winner && unit.hp > 0 && proc(attackerSide, 'jujak')) {
+      const extraStrikes = auraConfig(attackerSide, 'jujak').extraStrikes || 1;
+      for (let i = 0; i < extraStrikes && !winner && unit.hp > 0; i++) strike(attackerSide, defenderSide, unit);
+    }
+  }
+  // 나무의 오라: 자기 턴 시작에 필드의 카드마다 독립적으로 chance 확률로 체력 +1
+  function growNamu(side) { if (side.guardian !== 'namu' || !GUARDIANS.namu) return; const cfg = auraConfig(side, 'namu'); side.field.forEach(u => { if (rnd() < cfg.chance) { const gain = cfg.hpGain || 1; u.hp += gain; u.maxHp += gain; } }); }
   function healHero(side) { const before = side.hp; side.hp = Math.min(HERO_HP, side.hp + GUARDIANS.hyeonmu.amount); side.healed += side.hp - before; }
 
   // ── 대칭 모드: 한 쪽의 한 턴 ──
@@ -122,8 +165,8 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
       if (!picks.length) break;
       const card = S.hand.splice(picks[0], 1)[0];
       mana -= card.cost;
-      S.field.push({ ...card });
-      if (card.cost >= 2 && proc(S, 'cheongryong')) mana = Math.min(maxMana, mana + poseidonMana());
+      S.field.push({ ...card, maxHp: card.hp });
+      if (card.cost >= 2 && proc(S, 'cheongryong')) mana = Math.min(maxMana, mana + poseidonMana(S));
     }
     S.field.sort((a, b) => (a.atk - a.hp * 0.5) - (b.atk - b.hp * 0.5));
     S.field.slice().forEach(u => attack(S, F, u));
@@ -146,8 +189,8 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
       if (!picks.length) break;
       const card = P.hand.splice(picks[0], 1)[0];
       mana -= card.cost;
-      P.field.push({ ...card, exhausted: true });
-      if (card.cost >= 2 && proc(P, 'cheongryong')) mana = Math.min(maxMana, mana + poseidonMana());
+      P.field.push({ ...card, maxHp: card.hp, exhausted: true });
+      if (card.cost >= 2 && proc(P, 'cheongryong')) mana = Math.min(maxMana, mana + poseidonMana(P));
     }
     P.field.filter(u => !u.exhausted).forEach(u => attack(P, E, u));
     if (winner) return;
@@ -159,9 +202,9 @@ function playGame(playerGuardian, enemyGuardian, rnd) {
     if (GUARDIANS.hyeonmu.amount > 0 && proc(E, 'hyeonmu')) healHero(E);
     growNamu(E);
     let mana = Math.min(MANA_CAP, maxMana);
-    if (maxMana < MANA_CAP && proc(E, 'cheongryong')) mana = Math.min(MANA_CAP, maxMana + poseidonMana());
+    if (maxMana < MANA_CAP && proc(E, 'cheongryong')) mana = Math.min(MANA_CAP, maxMana + poseidonMana(E));
     const picks = plan(E.hand, mana, FIELD_LIMIT - E.field.length);
-    picks.slice().sort((a, b) => b - a).map(i => E.hand.splice(i, 1)[0]).reverse().forEach(card => E.field.push({ ...card }));
+    picks.slice().sort((a, b) => b - a).map(i => E.hand.splice(i, 1)[0]).reverse().forEach(card => E.field.push({ ...card, maxHp: card.hp }));
     E.field.sort((a, b) => (a.atk - a.hp * 0.5) - (b.atk - b.hp * 0.5));
     E.field.slice().forEach(u => attack(E, P, u));
   }
@@ -189,45 +232,72 @@ const rnd = makeRng(SEED);
 const pct = x => (x * 100).toFixed(1).padStart(5) + '%';
 const ci = (w, n) => 1.96 * Math.sqrt((w / n) * (1 - w / n) / n) * 100;
 
-function batch(playerGuardian, enemyPicker, games) {
+function batch(playerGuardian, enemyPicker, games, playerAwakening = null, enemyAwakeningPicker = () => null) {
   let win = 0, draw = 0, rounds = 0;
   for (let i = 0; i < games; i++) {
-    const r = playGame(playerGuardian, enemyPicker(), rnd);
+    const r = playGame(playerGuardian, enemyPicker(), rnd, playerAwakening, enemyAwakeningPicker());
     if (r.winner === 'player') win++; else if (r.winner === 'draw') draw++;
     rounds += r.rounds;
   }
   return { rate: (win + draw * 0.5) / games, win, games, rounds: rounds / games };
 }
 
+if (AWAKENING_SIM) {
+  console.log(`[오라 지속 각성] 영웅 체력 ${AWAKEN_HP} 이하 자동 발동 · 판수 ${GAMES}/선택지 · seed ${SEED} · ${SYM ? '대칭 모드' : '게임 모드'}`);
+  console.log('상대: 나머지 4개 오라 무작위 · 상대 A/B 균등 선택');
+  const awakeningResults = {};
+  for (const id of IDS) {
+    awakeningResults[id] = {};
+    const others = IDS.filter(x => x !== id);
+    for (const option of ['A', 'B']) {
+      let pendingEnemy = null;
+      const enemyPicker = () => { pendingEnemy = others[Math.floor(rnd() * others.length)]; return pendingEnemy; };
+      const enemyAwakeningPicker = () => rnd() < 0.5 ? 'A' : 'B';
+      const result = batch(id, enemyPicker, GAMES, option, enemyAwakeningPicker);
+      awakeningResults[id][option] = result;
+      console.log(`  ${GUARDIANS[id].name.padEnd(8)} ${option} ${AWAKENING_OPTIONS[id][option].label.padEnd(8)} ${pct(result.rate)} ±${ci(result.win, result.games).toFixed(2)}  (평균 ${result.rounds.toFixed(1)}라운드)`);
+    }
+  }
+  console.log('\n[같은 오라 A vs B 직접 대결]');
+  for (const id of IDS) {
+    const aFirst = batch(id, () => id, GAMES, 'A', () => 'B');
+    const bFirst = batch(id, () => id, GAMES, 'B', () => 'A');
+    const seatAdjustedA = (aFirst.rate + (1 - bFirst.rate)) / 2;
+    console.log(`  ${GUARDIANS[id].name.padEnd(8)} A ${AWAKENING_OPTIONS[id].A.label} vs B ${AWAKENING_OPTIONS[id].B.label}: A ${pct(seatAdjustedA)} (A가 플레이어 ${pct(aFirst.rate)} · B가 플레이어 ${pct(bFirst.rate)})`);
+  }
+  process.exit(0);
+}
+
 if (args.sweep) {
-  // 성격 오로라 하나의 수치를 바꿔가며 '성격 오로라 없는 상대'에 대한 승률 곡선을 그린다. (--sweep 청룡id 예: --sweep cheongryong)
-  const id = String(args.sweep), keys = id === 'hyeonmu' && (GUARDIANS.hyeonmu.unitRatio || GUARDIANS.hyeonmu.unitFlat) ? [['unitChance', [0.03, 0.05, 0.08, 0.1, 0.15, 0.25, 0.35, 0.5, 0.7, 1]]] : id === 'hyeonmu' && !GUARDIANS.hyeonmu.ratio ? [['amount', [2, 3, 4, 5, 6, 8, 10, 12, 15]], ['chance', [0.4, 0.6, 0.8, 1]]] : [['chance', [0.02, 0.03, 0.04, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.45, 0.6, 0.8, 1]]];
-  console.log(`[스윕] ${GUARDIANS[id].name} vs 성격 오로라 없음 (판수 ${GAMES})`);
+  // 성격 오라 하나의 수치를 바꿔가며 나머지 오라 4종을 무작위로 만났을 때의 승률 곡선을 그린다.
+  const id = String(args.sweep), keys = id === 'jujak' ? [['chance', [0.04, 0.045, 0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.08]]] : id === 'hyeonmu' && (GUARDIANS.hyeonmu.unitRatio || GUARDIANS.hyeonmu.unitFlat) ? [['unitChance', [0.03, 0.05, 0.08, 0.1, 0.15, 0.25, 0.35, 0.5, 0.7, 1]]] : id === 'hyeonmu' && !GUARDIANS.hyeonmu.ratio ? [['amount', [2, 3, 4, 5, 6, 8, 10, 12, 15]], ['chance', [0.4, 0.6, 0.8, 1]]] : [['chance', [0.02, 0.03, 0.04, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.45, 0.6, 0.8, 1]]];
+  const opponents = IDS.filter(other => other !== id);
+  console.log(`[스윕] ${GUARDIANS[id].name} vs 나머지 오라 4종 무작위 (판수 ${GAMES})`);
   for (const [key, values] of keys) {
     const original = GUARDIANS[id][key];
-    for (const v of values) { GUARDIANS[id][key] = v; const r = batch(id, () => null, GAMES); console.log(`  ${key}=${v}`.padEnd(16) + pct(r.rate) + ` ±${ci(r.win, r.games).toFixed(1)}`); }
+    for (const v of values) { GUARDIANS[id][key] = v; const r = batch(id, () => opponents[Math.floor(rnd() * opponents.length)], GAMES); console.log(`  ${key}=${v}`.padEnd(16) + pct(r.rate) + ` ±${ci(r.win, r.games).toFixed(1)}`); }
     GUARDIANS[id][key] = original;
   }
   process.exit(0);
 }
 
 console.log(`카드 풀 ${POOL.length}장 · 판수 ${GAMES}/항목 · seed ${SEED} · 모드 ${SYM ? 'symmetric(대칭)' : 'game(실제 비대칭)'}`);
-console.log('성격 오로라 수치:', IDS.map(id => `${GUARDIANS[id].name} ${Math.round(GUARDIANS[id].chance * 100)}%${GUARDIANS[id].amount ? '×' + GUARDIANS[id].amount : ''}`).join(' · '));
+console.log('성격 오라 수치:', IDS.map(id => `${GUARDIANS[id].name} ${Math.round(GUARDIANS[id].chance * 100)}%${GUARDIANS[id].amount ? '×' + GUARDIANS[id].amount : ''}`).join(' · '));
 
-console.log('\n[1] 실제 게임 조건: 내가 고른 성격 오로라 vs 상대(나머지 3종 중 무작위)  → 내 승률');
+console.log('\n[1] 실제 게임 조건: 내가 고른 성격 오라 vs 상대(나머지 4종 중 무작위)  → 내 승률');
 const real = {};
-for (const id of [...IDS, null]) {
-  const others = id ? IDS.filter(x => x !== id) : IDS;
+for (const id of IDS) {
+  const others = IDS.filter(x => x !== id);
   const r = batch(id, () => others[Math.floor(rnd() * others.length)], GAMES);
-  real[id || 'none'] = r;
-  console.log(`  ${(id ? GUARDIANS[id].name : '성격 오로라 없음').padEnd(8)} ${pct(r.rate)} ±${ci(r.win, r.games).toFixed(1)}  (평균 ${r.rounds.toFixed(1)}라운드)`);
+  real[id] = r;
+  console.log(`  ${GUARDIANS[id].name.padEnd(8)} ${pct(r.rate)} ±${ci(r.win, r.games).toFixed(1)}  (평균 ${r.rounds.toFixed(1)}라운드)`);
 }
 
-console.log('\n[2] 1:1 상성표 (행 = 내 성격 오로라, 열 = 상대 성격 오로라, 값 = 내 승률)');
-console.log('          ' + IDS.map(id => GUARDIANS[id].name.padStart(6)).join(' ') + '   성격 오로라없음');
+console.log('\n[2] 1:1 상성표 (행 = 내 성격 오라, 열 = 상대 성격 오라, 값 = 내 승률)');
+console.log('          ' + IDS.map(id => GUARDIANS[id].name.padStart(6)).join(' '));
 for (const a of IDS) {
-  const cells = [...IDS, null].map(b => (a === b ? '   -  ' : pct(batch(a, () => b, Math.round(GAMES / 2)).rate)));
+  const cells = IDS.map(b => (a === b ? '   -  ' : pct(batch(a, () => b, Math.round(GAMES / 2)).rate)));
   console.log('  ' + GUARDIANS[a].name.padEnd(8) + cells.join(' '));
 }
 const rates = IDS.map(id => real[id].rate);
-console.log(`\n성격 오로라 간 승률 격차(최대−최소): ${((Math.max(...rates) - Math.min(...rates)) * 100).toFixed(1)}%p`);
+console.log(`\n성격 오라 간 승률 격차(최대−최소): ${((Math.max(...rates) - Math.min(...rates)) * 100).toFixed(1)}%p`);
