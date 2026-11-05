@@ -110,7 +110,7 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("jujak:{A:{name:'폭열',chance:.045,extraStrikes:2"), 'Fire must offer the balanced triple-strike branch');
   assert.ok(html.includes("B:{name:'순환',chance:.95,manaMin:2,manaMax:2"), 'Water must offer the reliable mana branch');
   assert.ok(html.includes("B:{name:'숲의 생명',chance:1,hpGain:1"), 'Wood must offer guaranteed steady growth');
-  assert.ok(html.includes("B:{name:'연속 응수',chance:1,ratio:.2,minDamage:1,maxDamage:3"), 'Metal must offer guaranteed low-damage counters');
+  assert.ok(html.includes("B:{name:'공진 반격',chance:.4,aoeDamage:1"), 'Metal must offer a low-damage whole-field counter distinct from its single-target branch');
   assert.ok(html.includes("A:{name:'절대방어',chance:.035,avoidDamage:true"), 'Earth must offer a very-low-chance absolute defense');
   assert.ok(html.includes("B:{name:'불굴',chance:.09,maxProcs:2,reviveRatio:0"), 'Earth must offer a stronger version of its base lethal survival');
   assert.ok(!html.includes('GUARDIAN_AWAKEN_DURATION=1'), 'Persistent awakening must not retain the old one-turn duration');

@@ -72,7 +72,7 @@ const AWAKENING_OPTIONS = {
   },
   baekho: {
     A: { label: '절단 반격', chance: 0.50, ratio: 0.40, minDamage: 2, maxDamage: 5 },
-    B: { label: '연속 응수', chance: 1.00, ratio: 0.20, minDamage: 1, maxDamage: 3 },
+    B: { label: '공진 반격', chance: 0.40, aoeDamage: 1 },
   },
   hyeonmu: {
     A: { label: '절대방어', chance: 0.035, avoidDamage: true },
@@ -135,8 +135,11 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
     // 아테나: 공격을 받고 살아남으면 chance 확률로 저위력 반격(실게임과 동일한 ratio·최소 1·maxDamage 상한)
     if (target.hp > 0 && proc(defenderSide, 'baekho')) {
       const athena = auraConfig(defenderSide, 'baekho');
-      const counterDamage = Math.max(athena.minDamage || 1, Math.min(athena.maxDamage || Infinity, Math.ceil(target.atk * (athena.ratio || 1))));
-      damageUnit(attackerSide, unit, counterDamage);
+      if (athena.aoeDamage) alive(attackerSide).slice().forEach(enemy => damageUnit(attackerSide, enemy, athena.aoeDamage));
+      else {
+        const counterDamage = Math.max(athena.minDamage || 1, Math.min(athena.maxDamage || Infinity, Math.ceil(target.atk * (athena.ratio || 1))));
+        damageUnit(attackerSide, unit, counterDamage);
+      }
     }
   }
   function attack(attackerSide, defenderSide, unit) {
