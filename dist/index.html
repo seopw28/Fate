@@ -1510,6 +1510,10 @@
     @media(prefers-reduced-motion:reduce){ .enh-tier.rewrite * { animation:none!important; clip-path:none!important; } .enh-tier.rewrite .enh-roman.old { display:none; } }
     .codex-card .enh-tier, .owned-card .enh-tier, .synth-pick .enh-tier { opacity:.95; }
     #enhance-result .synth-card .enh-tier { display:none; }/* 슬롯·결과 카드는 이름에 로마 숫자가 붙어 있어 배지 생략 */
+    /* 합성·강화 확률 칸: 들어 있는 항목 수만큼 칸을 나눈다 (2개면 반반, 3개면 3등분) */
+    .synth-odds { display:flex; flex-wrap:wrap; }
+    .synth-odds > .synth-odd { flex:1 1 0; min-width:0; }
+    .synth-odds > .synth-odds-hint { flex:1 1 100%; }
 </style>
 </head>
 <body>
