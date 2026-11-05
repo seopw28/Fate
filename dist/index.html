@@ -1465,6 +1465,15 @@
     .stage-card .enh-tier i { --o:clamp(6px,.8vmin,10px); width:clamp(16px,1.8vmin,22px); height:clamp(16px,1.8vmin,22px); }
     #enhance-grid .synth-pick .synth-spare { left:calc(10px + clamp(12px,1vw,16px)); }
     .owned-card:has(.enh-tier i.on) .owned-count, .codex-card:has(.enh-tier i.on) .codex-no { margin-left:clamp(12px,1vw,16px); }
+    /* 강화 성공 시 새 귀퉁이 칠해지는 연출 */
+    .enh-tier i.fresh { animation:tier-fill .75s cubic-bezier(.2,1.6,.4,1) .7s both; transform-origin:var(--tx,0) var(--ty,0); }
+    .enh-tier .c0.fresh { --tx:0%; --ty:0%; } .enh-tier .c1.fresh { --tx:100%; --ty:0%; } .enh-tier .c2.fresh { --tx:100%; --ty:100%; } .enh-tier .c3.fresh { --tx:0%; --ty:100%; }
+    @keyframes tier-fill { 0% { transform:scale(0); opacity:0; background:#fff; } 45% { transform:scale(2.2); opacity:1; background:#fff; filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 22px #ffd477); } 100% { transform:scale(1); background:#fff1b8; } }
+    .enh-tier .tier-spark { position:absolute; width:64px; height:64px; margin:-32px; border:2px solid #ffe9a8; border-radius:50%; opacity:0; box-shadow:0 0 18px #ffd477,inset 0 0 12px #ffd47788; animation:tier-spark .8s ease-out .78s both; }
+    .enh-tier .tier-spark.c0 { top:calc(var(--o,8px) + 8px); left:calc(var(--o,8px) + 8px); } .enh-tier .tier-spark.c1 { top:calc(var(--o,8px) + 8px); right:calc(var(--o,8px) + 8px); left:auto; margin:-32px -32px 0 0; }
+    .enh-tier .tier-spark.c2 { bottom:calc(var(--o,8px) + 8px); right:calc(var(--o,8px) + 8px); margin:0 -32px -32px 0; } .enh-tier .tier-spark.c3 { bottom:calc(var(--o,8px) + 8px); left:calc(var(--o,8px) + 8px); margin:0 0 -32px -32px; }
+    @keyframes tier-spark { 0% { transform:scale(.2); opacity:1; } 100% { transform:scale(1.6); opacity:0; } }
+    @media(prefers-reduced-motion:reduce){ .enh-tier i.fresh, .enh-tier .tier-spark { animation:none; } }
 </style>
 </head>
 <body>
@@ -2717,7 +2726,9 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       if(typeof renderDeckBuilder==='function'){const baseDeck=renderDeckBuilder;renderDeckBuilder=function(...a){const r=baseDeck.apply(this,a);document.querySelectorAll('#owned-grid .owned-card[data-index]').forEach(c=>mark(c,topTier(Number(c.dataset.index))));return r;};}
       if(typeof renderCodex==='function'&&typeof codexEntries==='function'){const baseCodex=renderCodex;renderCodex=function(...a){const r=baseCodex.apply(this,a);const byNo=new Map(codexEntries().map(e=>[e.no,e]));const at=new Map(ids().map((id,i)=>[id,i]));
         document.querySelectorAll('#codex-grid .codex-card').forEach(c=>{const no=Number((/selectCodex\((\d+)\)/.exec(c.getAttribute('onclick')||'')||[])[1]),e=byNo.get(no);if(e&&e.collected&&e.type==='champion')mark(c,topTier(at.get(e.def.cardId)));});return r;};}
-      new MutationObserver(()=>{const card=document.querySelector('.synth-stage.enh-stage.revealed .stage-card');if(card&&!card.querySelector('.enh-tier')&&enhanceLast)mark(card,enhanceLast.level);}).observe(document.body,{childList:true,subtree:true});
+      new MutationObserver(()=>{const card=document.querySelector('.synth-stage.enh-stage.revealed .stage-card');if(card&&!card.querySelector('.enh-tier')&&enhanceLast){mark(card,enhanceLast.level);if(enhanceLast.success&&enhanceLast.level>0)animateNewTier(card,enhanceLast.level);}}).observe(document.body,{childList:true,subtree:true});
+      /* 강화 성공: 새로 얻은 단계의 귀퉁이 하나가 카드가 자리 잡은 뒤 빛나며 칠해진다 */
+      function animateNewTier(card,level){const corner=card.querySelector('.enh-tier .c'+(level-1));if(!corner)return;corner.classList.add('fresh');const spark=document.createElement('b');spark.className='tier-spark c'+(level-1);card.querySelector('.enh-tier').appendChild(spark);setTimeout(()=>{tone(1319,.18,'triangle',.06,1760);tone(1976,.22,'sine',.035,2637,.06);},720);}
     })();
 </script>
 </body>
