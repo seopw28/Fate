@@ -75,7 +75,7 @@ const AWAKENING_OPTIONS = {
     B: { label: '연속 응수', chance: 1.00, ratio: 0.20, minDamage: 1, maxDamage: 3 },
   },
   hyeonmu: {
-    A: { label: '지각 회피', chance: 0.035, avoidDamage: true },
+    A: { label: '절대방어', chance: 0.035, avoidDamage: true },
     B: { label: '불굴', chance: 0.09, maxProcs: 2, reviveRatio: 0 },
   },
 };
