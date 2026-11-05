@@ -1360,6 +1360,23 @@
     .collection-head .modal-close { width:clamp(36px,2.6vw,44px); }
     .collection-head .currency { gap:.35em; }
     .collection-head .sound-panel { top:calc(100% + 10px); }
+    /* === 덱 여러 개: 덱 편집 상단 덱 목록 === */
+    .deck-switcher { flex:none; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 18px; margin:0 0 clamp(12px,1vw,16px); padding:0 0 clamp(12px,1vw,16px); border-bottom:1px solid #2b3440; }
+    .deck-tabs { display:flex; flex-wrap:wrap; gap:8px; }
+    .deck-tab { min-width:clamp(110px,8vw,150px); display:flex; flex-direction:column; align-items:flex-start; gap:2px; padding:clamp(7px,.6vw,10px) clamp(12px,1vw,16px); border:1px solid #3a4455; border-radius:10px; background:#141a23; color:#b9c2cf; text-align:left; }
+    .deck-tab b { font-size:clamp(12px,.95vw,15px); max-width:16ch; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .deck-tab small { color:#748195; font-size:clamp(10px,.75vw,12px); } .deck-tab small em { color:#8be0ab; font-style:normal; font-weight:800; }
+    .deck-tab.complete small { color:#9aa6b8; }
+    .deck-tab.editing { border-color:#b68a4d; background:#2b241a; color:#ffd77f; box-shadow:inset 0 0 0 1px #b68a4d; }
+    .deck-tab.active { border-left:4px solid #3f8a5a; }
+    .deck-tab.add { align-items:center; justify-content:center; border-style:dashed; color:#ffd77f; font-weight:800; font-size:clamp(12px,.95vw,15px); }
+    .deck-manage { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+    .deck-manage label { display:flex; align-items:center; gap:8px; color:#8993a7; font-size:clamp(11px,.85vw,14px); }
+    .deck-manage input { width:clamp(140px,11vw,190px); padding:7px 10px; border:1px solid #3a4455; border-radius:8px; background:#10151c; color:#e8edf4; font:inherit; font-size:clamp(12px,.95vw,15px); }
+    .deck-manage input:focus { outline:none; border-color:#b68a4d; }
+    .deck-manage button { padding:7px 12px; border:1px solid #465365; border-radius:8px; background:#171e28; color:#b8c2d0; font-size:clamp(11px,.85vw,14px); }
+    .deck-manage button:disabled { opacity:.4; cursor:not-allowed; }
+    .deck-view { flex-direction:column; }
 </style>
 </head>
 <body>
@@ -1385,7 +1402,7 @@
     <section class="collection-view gacha-view" id="gacha-view"><div class="gacha-banner"><small class="shop-tag">상점 · 카드 소환</small><div class="gacha-orb">◆</div><h3>원소의 계약</h3><p>크래커로 캐릭터 카드를 획득합니다.<br>10회 소환에서는 희귀 이상 1장이 확정됩니다.</p><div class="gacha-actions"><button onclick="pullCards(1)">1회<br><small>◆ 30</small></button><button onclick="pullCards(10)">10회<br><small>◆ 270</small></button></div></div><div class="gacha-results" id="gacha-results"><div class="gacha-placeholder"><div class="ghosts"><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div><div class="ghost"><span>?</span></div></div><p>아직 소환 결과가 없습니다.<br>원소의 계약을 시작해 보세요.</p></div></div></section>
     <section class="collection-view synth-view" id="synth-view"><div class="synth-altar"><div class="synth-slots" id="synth-slots"></div><div class="synth-arrow" aria-hidden="true">▼</div><div class="synth-result" id="synth-result"></div><div class="synth-odds" id="synth-odds"></div><button class="synth-go" id="synth-go" onclick="runSynthesis()">합성하기</button><p class="synth-help">재료 3장은 사라지고 무작위 캐릭터 카드 1장이 만들어집니다. 높은 등급 재료일수록 높은 등급이 나오기 쉽고, 아직 없는 카드가 우선적으로 나옵니다.</p></div><div class="synth-pool"><div class="synth-pool-head"><div class="codex-seg" id="synth-filter"></div><div class="codex-seg" id="synth-sort"></div><button class="synth-auto" onclick="synthAuto()" title="여분이 가장 많은 카드부터 3장을 자동으로 고릅니다">⚡ 여분 많은 카드로 자동 선택</button><span class="synth-count" id="synth-count"></span></div><div class="synth-grid" id="synth-grid"></div></div></section>
     <section class="collection-view codex-view" id="codex-view"><div class="codex-summary" id="codex-summary"></div><div class="codex-toolbar"><div class="codex-seg" id="codex-type"></div><div class="codex-seg" id="codex-status"></div><div class="codex-seg" id="codex-rarity"></div></div><div class="codex-body"><div class="codex-grid" id="codex-grid"></div><aside class="codex-detail" id="codex-detail"></aside></div></section>
-    <section class="collection-view deck-view" id="deck-view"><div class="deck-toolbar"><div class="deck-filters" id="deck-filters"></div><div class="deck-count"><strong id="build-count">0</strong> / 60장</div></div><div class="deck-content"><div class="owned-grid" id="owned-grid"></div><div class="deck-list"><h3>전투 덱</h3><div class="deck-rows" id="deck-rows"></div><p class="deck-help">보유 카드를 눌러 추가하거나 이 패널로 드래그해 넣고, 덱 목록을 눌러(또는 보유 카드 영역으로 드래그해) 제거합니다. 저장하면 현재 전투의 남은 덱도 교체됩니다.</p><button class="deck-save" id="deck-save" onclick="saveBattleDeck()">60장 덱 저장</button></div></div></section>
+    <section class="collection-view deck-view" id="deck-view"><div class="deck-switcher" id="deck-switcher"></div><div class="deck-toolbar"><div class="deck-filters" id="deck-filters"></div><div class="deck-count"><strong id="build-count">0</strong> / 60장</div></div><div class="deck-content"><div class="owned-grid" id="owned-grid"></div><div class="deck-list"><h3 id="deck-panel-title">전투 덱</h3><div class="deck-rows" id="deck-rows"></div><p class="deck-help">보유 카드를 눌러 추가하거나 이 패널로 드래그해 넣고, 덱 목록을 눌러(또는 보유 카드 영역으로 드래그해) 제거합니다. 저장하면 현재 전투의 남은 덱도 교체됩니다.</p><button class="deck-save" id="deck-save" onclick="saveBattleDeck()">60장 덱 저장</button></div></div></section>
   </div></div>
   <script src="runtime/cards.js?v=2666b67e03"></script>
   <script src="vfx/elemental/amaterasu-flame.js"></script>
@@ -1504,7 +1521,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     const REMOVED_CARD_INDEX_V6=24;
     const REMOVED_CARD_INDEXES_V7=[11,14,17,19,22,52,64,69]/* v7에서 제거된 카드의 이전 순번(오름차순) */;
     function loadCollectionState(){try{const saved=JSON.parse(localStorage.getItem('primal-collection-v1'));if(saved&&saved.pendingChallenge===true){/* 약자멸시를 끝내지 않고 떠났다 → 패배로 정산 */const loss=Math.min(CHALLENGE_LOSS_COST,Math.max(0,Number(saved.crackers)||0));saved.crackers=Math.max(0,(Number(saved.crackers)||0)-loss);saved.pendingChallenge=false;abandonedChallengeLoss=loss;}if(saved&&Number(saved.version)===5&&Array.isArray(saved.owned)&&Array.isArray(saved.deck)){/* v6: 미토시스 슬라임(순번 24) 제거 — 저장된 보유/덱 순번을 한 칸씩 당긴다 */saved.owned.splice(REMOVED_CARD_INDEX_V6,1);saved.deck=saved.deck.filter(index=>index!==REMOVED_CARD_INDEX_V6).map(index=>index>REMOVED_CARD_INDEX_V6?index-1:index);saved.version=6;}if(saved&&Number(saved.version)===6&&Array.isArray(saved.owned)&&Array.isArray(saved.deck)){/* v7: 남성 캐릭터 8장 제거 — 저장된 보유/덱 순번을 제거된 개수만큼 당긴다 */const gone=REMOVED_CARD_INDEXES_V7,shift=index=>index-gone.filter(removed=>removed<index).length;saved.owned=saved.owned.filter((_,i)=>!gone.includes(i));saved.deck=saved.deck.filter(index=>!gone.includes(index)).map(shift);saved.version=7;}if(saved&&Number(saved.version)<5){const migrated=defaultCollectionState(saved.crackers);localStorage.setItem('primal-collection-v1',JSON.stringify(migrated));return migrated;}if(saved&&Array.isArray(saved.owned)&&Array.isArray(saved.deck)){const aligned=remapSavedByCardIds(saved,COLLECTION_CARD_IDS),starter=starterOwnedCards(),knownIds=new Set(Array.isArray(saved.cardIds)?saved.cardIds:[]),owned=collectionCards.map((_,i)=>{const have=Number(aligned.owned[i])||0;/* 시작 지급량은 저장에 없던 새 카드에만 준다. 이미 알던 카드는 저장값 그대로 (합성으로 쓴 시작 카드가 새로고침에 되살아나지 않게) */return knownIds.has(COLLECTION_CARD_IDS[i])?have:Math.max(starter[i],have);}),validDeck=aligned.deck.filter(index=>Number.isInteger(index)&&index>=0&&index<collectionCards.length),availableTypes=owned.filter(Boolean).length,deckTypes=new Set(validDeck).size,needsRepair=validDeck.length!==60||spellCountIn(validDeck)>SPELL_DECK_LIMIT||deckTypes<Math.min(4,availableTypes)||validDeck.some(index=>validDeck.filter(value=>value===index).length>DECK_COPY_LIMIT),deck=needsRepair?buildBalancedDeck(owned):Number(saved.version)<8&&!spellCountIn(validDeck)?addStarterSpells(validDeck,owned):validDeck,state={version:8,crackers:Math.max(0,Number(saved.crackers)||0),owned,deck,cardIds:COLLECTION_CARD_IDS};localStorage.setItem('primal-collection-v1',JSON.stringify(state));return state;}}catch(e){}return defaultCollectionState();}
-    let collectionState=loadCollectionState(),draftDeck=[...collectionState.deck],collectionFilter='all',gachaPulling=false;
+    let collectionState=withSavedDecks(readSavedDecks(),loadCollectionState()),draftDeck=[...collectionState.deck],collectionFilter='all',gachaPulling=false;
     const DEV_CRACKER_FLOOR=999999;/* 로컬 시연·QA에서는 소환/합성/상점 테스트가 재화 부족으로 막히지 않게 한다. 배포 호스트에는 적용하지 않는다. */
     if(DEV_MODE&&collectionState.crackers<DEV_CRACKER_FLOOR){collectionState.crackers=DEV_CRACKER_FLOOR;persistCollection();}
     if(abandonedChallengeLoss)setTimeout(()=>writeLog('<strong>이전 약자멸시 도전을 끝내지 않고 떠나 패배로 처리되었습니다.</strong> 크래커 '+abandonedChallengeLoss+'개를 잃었습니다.'),900);
@@ -1529,7 +1546,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function closeTierStatus(){document.querySelector('#tier-modal').classList.remove('show');}
     updateTierHud();document.querySelector('#tier-modal').addEventListener('click',event=>{if(event.target.id==='tier-modal')closeTierStatus();});
     function updateCrackerHud(){const balance=(collectionState.crackers||0).toLocaleString('ko-KR');const node=document.querySelector('#cracker-count'),modalNode=document.querySelector('#collection-cracker-count');if(node)node.textContent=balance;if(modalNode)modalNode.textContent=balance;const enemyLabel=document.querySelector('#enemy-deck-label');if(enemyLabel)enemyLabel.textContent=enemyLabel.textContent.includes('크래커')?enemyLabel.textContent.replace(/크래커\s+\d+/,'크래커 '+enemyCrackers):enemyLabel.textContent+' · 크래커 '+enemyCrackers;}
-    function openCollection(view='deck'){if(view==='deck'&&guardianChosen){writeLog('대전이 시작된 뒤에는 덱을 편집할 수 없습니다.');view='codex';}draftDeck=[...collectionState.deck];document.querySelector('#collection-modal').classList.add('show');document.body.style.overflow='hidden';switchCollectionView(view);renderCollection(); }
+    function openCollection(view='deck'){if(view==='deck'&&guardianChosen){writeLog('대전이 시작된 뒤에는 덱을 편집할 수 없습니다.');view='codex';}draftDeck=collectionState.decks?draftOfDeck(editingDeck=collectionState.activeDeck||0):[...collectionState.deck];document.querySelector('#collection-modal').classList.add('show');document.body.style.overflow='hidden';switchCollectionView(view);renderCollection(); }
     function closeCollection(){ document.querySelector('#collection-modal').classList.remove('show');document.body.style.overflow=''; }
     const COLLECTION_SUBTITLE={deck:'내가 쓸 60장 덱을 속성·비용·희귀도별로 살펴보며 편성하세요.',codex:'모든 카드의 수집 현황을 확인하세요. 캐릭터는 소환으로, 마법·함정은 전투에서 발견하면 등록됩니다.',synth:'여분 캐릭터 카드 3장을 합쳐 무작위 새 카드를 만들어 보세요. 덱에 편성된 카드는 재료로 쓰이지 않습니다.',gacha:'크래커로 새로운 캐릭터 카드를 소환해 컬렉션을 늘리세요.'};
     function switchCollectionView(view){if(view==='deck'&&guardianChosen){writeLog('대전이 시작된 뒤에는 덱을 편집할 수 없습니다.');view='codex';}document.querySelector('#collection-sub').textContent=COLLECTION_SUBTITLE[view]||''; document.querySelectorAll('.collection-tab').forEach(button=>button.classList.toggle('active',button.dataset.view===view));document.querySelectorAll('.collection-view').forEach(panel=>panel.classList.toggle('active',panel.id===view+'-view'));if(view==='deck')renderDeckBuilder();if(view==='codex')renderCodex();if(view==='synth')renderSynthesis(); }
@@ -2337,7 +2354,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     /* 재료는 '덱에 편성되지 않은 여분'만 쓴다. 재료 등급 점수(일반 0/희귀 1/전설 2 합계)가 높을수록 높은 등급이 나오기 쉽다. */
     const SYNTH_SCORE={common:0,rare:1,legendary:2},SYNTH_ODDS=[[85,14,1],[75,22,3],[65,30,5],[55,38,7],[40,48,12],[25,55,20],[10,55,35]]/* 점수 0~6: [일반,희귀,전설]% */,SYNTH_FRESH_BIAS=.7/* 아직 없는 카드를 우선할 확률 */;
     var synthSlots=[],synthBusy=false,synthFilter='all',synthSort='default',synthDupOnly=false,synthLast=null;
-    function synthReserved(index){return Math.max(collectionState.deck.filter(i=>i===index).length,countInDraft(index));}
+    function synthReserved(index){return Math.max(collectionState.deck.filter(i=>i===index).length,countInDraft(index),...(collectionState.decks||[]).map(d=>deckIndexesOf(d.ids).filter(i=>i===index).length));}/* 어느 덱에든 편성된 장수는 합성 재료에서 보호 */
     function synthSpare(index){return collectionState.owned[index]-synthReserved(index)-synthSlots.filter(i=>i===index).length;}
     function synthOdds(slots=synthSlots){const score=slots.reduce((sum,i)=>sum+SYNTH_SCORE[rarityByCard[i]],0),row=SYNTH_ODDS[Math.min(SYNTH_ODDS.length-1,score)];return {common:row[0],rare:row[1],legendary:row[2]};}
     function synthRoll(slots){const odds=synthOdds(slots),r=Math.random()*100,rarity=r<odds.legendary?'legendary':r<odds.legendary+odds.rare?'rare':'common',pool=collectionCards.map((_,i)=>i).filter(i=>rarityByCard[i]===rarity),fresh=pool.filter(i=>collectionState.owned[i]===0),from=fresh.length&&Math.random()<SYNTH_FRESH_BIAS?fresh:pool;return from[Math.floor(Math.random()*from.length)];}
@@ -2439,6 +2456,43 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         if(spec.key==='reversal-insight'){const count=Math.min(REVERSAL_INSIGHT_MAX,Math.floor(hp/Math.max(1,amount)));if(count<=0){writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합이 '+hp+'이라 뽑을 카드가 없었습니다.');return;}for(let i=0;i<count;i++)setTimeout(()=>{if(deck.length&&document.querySelectorAll('.hand .card').length<8)drawCard();},i*240);writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합 '+hp+' → 카드 '+count+'장을 뽑습니다.');return;}
         return castSpellBeforeReversal(card);};
     }
+
+    /* ===== 덱 여러 개: 한 유저가 덱을 최대 MAX_DECKS개 저장하고, 그중 하나를 전투 덱으로 쓴다 =====
+       collectionState.deck = 지금 전투에 쓰는 덱(카드 순번 배열, 기존 로직 그대로)
+       collectionState.decks = [{name, ids:[cardId…]}] — 카드 목록이 바뀌어 순번이 밀려도 깨지지 않게 cardId로 저장
+       collectionState.activeDeck = 전투 덱으로 쓰는 덱 번호
+       덱 편집에서 고친 내용은 그 덱에 바로 저장되고, '이 덱으로 전투'(저장 버튼)를 눌러야 전투 덱이 바뀐다. */
+    var MAX_DECKS=MAX_DECKS||6,editingDeck=editingDeck||0;/* var: 이 줄보다 앞에서 실행되는 덱 불러오기(withSavedDecks)가 먼저 쓰므로 const 금지 */
+    function readSavedDecks(){try{const raw=JSON.parse(localStorage.getItem('primal-collection-v1'));return raw&&Array.isArray(raw.decks)?{decks:raw.decks,activeDeck:raw.activeDeck}:null;}catch(e){return null;}}
+    function deckIdsOf(indexes){return (indexes||[]).map(i=>COLLECTION_CARD_IDS[i]).filter(Boolean);}
+    function deckIndexesOf(ids){const at=new Map(COLLECTION_CARD_IDS.map((id,i)=>[id,i]));return (ids||[]).map(id=>at.get(id)).filter(i=>i!==undefined);}
+    function draftOfDeck(i){return deckIndexesOf(collectionState.decks?.[i]?.ids);}
+    function withSavedDecks(saved,state){
+      const decks=(saved?.decks||[]).filter(d=>d&&Array.isArray(d.ids)).slice(0,MAX_DECKS||6).map((d,i)=>({name:String(d.name||('덱 '+(i+1))).trim().slice(0,16)||('덱 '+(i+1)),ids:d.ids.filter(id=>typeof id==='string')}));
+      if(!decks.length)decks.push({name:'덱 1',ids:deckIdsOf(state.deck)});/* 기존 사용자: 지금 쓰던 덱을 '덱 1'로 옮긴다 */
+      const active=Number.isInteger(saved?.activeDeck)&&saved.activeDeck>=0&&saved.activeDeck<decks.length?saved.activeDeck:0;
+      state.decks=decks;state.activeDeck=active;editingDeck=active;
+      try{localStorage.setItem('primal-collection-v1',JSON.stringify({...state,cardIds:COLLECTION_CARD_IDS}));}catch(e){}/* 불러오기가 덱 목록 없이 덮어쓴 저장을 바로 되돌린다 */
+      return state;}
+    function deckEditorOpen(){return Boolean(document.querySelector('#collection-modal.show'))&&Boolean(collectionState.decks?.[editingDeck]);}
+    function storeDraft(){if(!deckEditorOpen())return;collectionState.decks[editingDeck].ids=deckIdsOf(draftDeck);persistCollection();}
+    function nextDeckName(){const used=new Set(collectionState.decks.map(d=>d.name));let n=collectionState.decks.length+1;while(used.has('덱 '+n))n++;return '덱 '+n;}
+    function selectDeck(i){if(i===editingDeck||!collectionState.decks[i])return;storeDraft();editingDeck=i;draftDeck=draftOfDeck(i);renderDeckBuilder();}
+    function createDeck(){if(collectionState.decks.length>=MAX_DECKS)return;storeDraft();collectionState.decks.push({name:nextDeckName(),ids:[]});editingDeck=collectionState.decks.length-1;draftDeck=[];persistCollection();renderDeckBuilder();}
+    function duplicateDeck(){if(collectionState.decks.length>=MAX_DECKS)return;storeDraft();const src=collectionState.decks[editingDeck];collectionState.decks.push({name:(src.name+' 사본').slice(0,16),ids:[...src.ids]});editingDeck=collectionState.decks.length-1;draftDeck=draftOfDeck(editingDeck);persistCollection();renderDeckBuilder();}
+    function deleteDeck(){const decks=collectionState.decks;if(decks.length<=1||editingDeck===collectionState.activeDeck)return;if(!confirm('「'+decks[editingDeck].name+'」 덱을 삭제할까요? 되돌릴 수 없습니다.'))return;decks.splice(editingDeck,1);if(collectionState.activeDeck>editingDeck)collectionState.activeDeck--;editingDeck=collectionState.activeDeck;draftDeck=draftOfDeck(editingDeck);persistCollection();renderDeckBuilder();}
+    function renameDeck(value){const name=String(value).trim().slice(0,16);if(!name||!collectionState.decks[editingDeck])return;collectionState.decks[editingDeck].name=name;persistCollection();renderDeckBar();}
+    function escapeDeckName(text){return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);}
+    function renderDeckBar(){const bar=document.querySelector('#deck-switcher');if(!bar||!collectionState.decks)return;const decks=collectionState.decks,active=collectionState.activeDeck;
+      bar.innerHTML='<div class="deck-tabs" role="tablist" aria-label="내 덱 목록">'+decks.map((d,i)=>{const n=i===editingDeck?draftDeck.length:deckIndexesOf(d.ids).length;return '<button class="deck-tab'+(i===editingDeck?' editing':'')+(i===active?' active':'')+(n===60?' complete':'')+'" role="tab" aria-selected="'+(i===editingDeck)+'" onclick="selectDeck('+i+')"><b>'+escapeDeckName(d.name)+'</b><small>'+(i===active?'<em>전투 덱</em> · ':'')+n+' / 60장</small></button>';}).join('')+(decks.length<MAX_DECKS?'<button class="deck-tab add" onclick="createDeck()" title="새 덱 만들기 (최대 '+MAX_DECKS+'개)">＋ 새 덱</button>':'')+'</div>'
+        +'<div class="deck-manage"><label>덱 이름 <input id="deck-name" maxlength="16" value="'+escapeDeckName(decks[editingDeck].name)+'"></label><button onclick="duplicateDeck()" '+(decks.length>=MAX_DECKS?'disabled':'')+'>복제</button><button onclick="deleteDeck()" '+(decks.length<=1||editingDeck===active?'disabled title="전투에 쓰는 덱은 삭제할 수 없습니다"':'')+'>삭제</button></div>';
+      const input=bar.querySelector('#deck-name');input.addEventListener('change',e=>renameDeck(e.target.value));input.addEventListener('keydown',e=>{if(e.key==='Enter')e.target.blur();e.stopPropagation();});
+      const title=document.querySelector('#deck-panel-title');if(title)title.textContent=decks[editingDeck].name+(editingDeck===active?' · 전투 덱':'');}
+    (function(){
+      const baseRender=renderDeckBuilder,baseSave=saveBattleDeck;
+      renderDeckBuilder=function(...args){const result=baseRender.apply(this,args);if(collectionState.decks){storeDraft();renderDeckBar();const save=document.querySelector('#deck-save');if(save&&draftDeck.length===60&&editingDeck!==collectionState.activeDeck)save.textContent='이 덱으로 전투 (셔플하여 저장)';}return result;};
+      saveBattleDeck=function(...args){if(collectionState.decks&&!guardianChosen&&draftDeck.length===60){collectionState.decks[editingDeck].ids=deckIdsOf(draftDeck);collectionState.activeDeck=editingDeck;}return baseSave.apply(this,args);};
+    })();
 </script>
 </body>
 </html>
