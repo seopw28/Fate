@@ -119,14 +119,22 @@ test('ready ultimate action uses a compact two-line cost layout', () => {
   assert.ok(html.includes('.field-ultimate-action:not(.locked)::before{display:none}'), 'Ready action must hide the duplicated English ULTIMATE label');
 });
 
-test('궁극기 선택은 현재 성격 오로라와 같은 계열 카드를 시각적으로 추천한다', () => {
+test('오라 각성은 왼쪽, 궁극기는 오른쪽이며 궁극기는 선택 오라 색을 따른다', () => {
+  assert.ok(html.includes('.field-action-dock>.field-guardian-ultimate{order:2}'), 'Aura awakening must occupy the left action slot');
+  assert.ok(html.includes('.field-action-dock>.field-ultimate-action{order:3'), 'Ultimate must occupy the right action slot');
+  assert.ok(html.includes("GUARDIANS[playerGuardian].color"), 'Ultimate color must come from the selected aura');
+  assert.ok(html.includes("button.style.setProperty('--ultimate-aura',auraColor)"), 'Ultimate action must expose the selected aura color to CSS');
+  assert.ok(html.includes('color-mix(in srgb,var(--ultimate-aura)'), 'Ultimate border and glow must be derived from the aura color');
+});
+
+test('궁극기 선택은 현재 성격 오라와 같은 계열 카드를 시각적으로 추천한다', () => {
   assert.ok(html.includes('function syncAuraUltimateCandidates(arming)'), 'Ultimate selection must synchronize aura recommendations');
   assert.ok(html.includes('card.dataset.persona===persona'), 'Recommendation must compare card personality with the selected aura');
   assert.ok(html.includes("card.classList.toggle('aura-ultimate-match',match)"), 'Matching cards must receive a dedicated highlight class');
   assert.ok(html.includes("card.classList.toggle('aura-ultimate-mismatch',Boolean(persona&&!match))"), 'Non-matching cards must be visually subdued');
   assert.ok(html.includes("cards.sort((a,b)=>Number(b.dataset.persona===persona)-Number(a.dataset.persona===persona))"), 'Matching aura cards must be sorted above the other ultimate candidates');
-  assert.ok(html.includes("content:'오로라 공명 · 마나 −2 · 대기 −1턴'"), 'Matching cards must explain why they are highlighted');
-  assert.ok(html.includes('오로라 공명 추천'), 'Matching cards must expose an accessible recommendation description');
+  assert.ok(html.includes("content:'오라 공명 · 마나 −2 · 대기 −1턴'"), 'Matching cards must explain why they are highlighted');
+  assert.ok(html.includes('오라 공명 추천'), 'Matching cards must expose an accessible recommendation description');
 });
 
 test('mana curve starts low and grows into the mid game', () => {
@@ -146,13 +154,13 @@ test('freshly drawn cards obey the same global hand sorting', () => {
   assert.ok(!html.includes('freshDrawOrder(a,b)||'), 'Fresh cards must not form an unsorted priority block');
 });
 
-test('덱은 같은 성격 오로라 카드를 최대 30장까지만 허용한다', () => {
+test('덱은 같은 성격 오라 카드를 최대 30장까지만 허용한다', () => {
   assert.ok(html.includes('AURA_DECK_LIMIT=30'), 'Aura deck limit must be thirty');
   assert.ok(html.includes('auraCountInDeck(cards,personality)>AURA_DECK_LIMIT'), 'Deck validation must detect an aura over the limit');
   assert.ok(html.includes('canAddAuraToDeck(draftDeck,index)'), 'Button and drag additions must share the aura limit guard');
   assert.ok(html.includes('deckAuraLimitExceeded(validDeck)'), 'Loaded legacy decks over the aura limit must be repaired');
   assert.ok(html.includes('deckAuraLimitExceeded(draftDeck)'), 'Deck saving must reject an over-limit draft');
-  assert.ok(html.includes('같은 성격 오로라는 최대 30장입니다.'), 'Deck editor must disclose the aura limit');
+  assert.ok(html.includes('같은 성격 오라는 최대 30장입니다.'), 'Deck editor must disclose the aura limit');
 });
 
 test('self replication stays conditional and linear', () => {
