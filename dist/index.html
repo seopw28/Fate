@@ -1387,6 +1387,8 @@
     @keyframes count-bump { 40% { transform:scale(1.35); color:#fff3c8; } }
     .owned-card.add-denied { animation:add-denied .4s ease; }
     @keyframes add-denied { 20%,60% { transform:translateX(-6px); } 40%,80% { transform:translateX(6px); } }
+    /* 궁극기 세팅: 오로라가 다른 카드도 선택할 수 있으므로 흐리게 하지 않는다 (흐리면 '선택 불가'로 오해). 같은 오로라만 테두리·배지로 강조 */
+    body .command-rail .hand.ultimate-arming.aura-candidate-mode .card.summon-card.aura-ultimate-mismatch, body .hand.ultimate-arming.aura-candidate-mode .card.summon-card.aura-ultimate-mismatch { opacity:1; filter:none; transform:none; }
 </style>
 </head>
 <body>
