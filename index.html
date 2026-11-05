@@ -1618,11 +1618,27 @@
     body:has(.guardian-select) .top-collection small, body:has(.battle-intro) .top-collection small { display:block; color:#cdb6f5; }
     @keyframes top-collection-glow { 50% { box-shadow:0 0 40px #9b6bffaa,inset 0 1px 0 #e3d0ff66; } }
     @media(prefers-reduced-motion:reduce){ .top-collection { animation:none!important; } }
+    /* === 상단 컬렉션 바로가기 (개별 탭) === */
+    .top-actions { align-items:center; gap:10px; }
+    .top-actions > * { align-self:center; }
+    .top-nav { display:flex; align-items:stretch; gap:3px; padding:3px; border:1px solid #4b3a6e; border-radius:12px; background:#1a1626; }
+    .top-nav-btn { display:inline-flex; align-items:center; justify-content:center; padding:7px 12px; border-radius:9px; color:#cdbcef; font-size:clamp(12px,.9vw,14px); font-weight:700; text-decoration:none; white-space:nowrap; transition:background .15s,color .15s; }
+    .top-nav-btn:hover { background:#2e2348; color:#f1e8ff; }
+    .top-nav-btn.main { color:#e9dcff; }
+    .top-nav-btn.current { background:#4b2f7a; color:#fff; box-shadow:inset 0 0 0 1px #b48cff; }
+    #sound-toggle { min-height:36px; }
+    /* 대전 시작 전(인트로·오로라 선택): 바로가기를 크게, 위에 떠서 눌리게 */
+    body:has(.guardian-select) .top-nav, body:has(.battle-intro) .top-nav { position:relative; z-index:330; padding:5px; gap:5px; border:2px solid #b48cff; border-radius:16px; background:linear-gradient(135deg,#3a2560,#211836); box-shadow:0 0 26px #9b6bff66; animation:top-collection-glow 2.2s ease-in-out infinite; }
+    body:has(.guardian-select) .top-nav-btn, body:has(.battle-intro) .top-nav-btn { padding:11px 18px; font-size:clamp(14px,1.1vw,18px); }
+    body:has(.guardian-select) .top-nav-btn.main, body:has(.battle-intro) .top-nav-btn.main { background:#4b2f7a; color:#fff; }
+    body:has(.guardian-select) #sound-toggle, body:has(.battle-intro) #sound-toggle { min-height:46px; }
+    /* 컬렉션 창이 열려 있으면 바로가기는 숨김 (창 안 탭이 같은 역할) */
+    body:has(#collection-modal.show) .top-nav { visibility:hidden; animation:none; }
 </style>
 </head>
 <body>
   <main class="app">
-    <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><b class="hand-guide" id="hand-guide" role="status" aria-live="polite">카드를 선택하세요</b><div class="top-actions"><span class="ghost cracker-wallet" hidden>◆ 크래커 <strong id="cracker-count">0</strong></span><div class="sound-wrap"><button class="ghost" id="sound-toggle" onclick="toggleSoundPanel()" aria-haspopup="true" aria-expanded="false">🔊 사운드</button><div class="sound-panel" id="sound-panel" hidden><label><span>배경음악</span><output id="bgm-value">45%</output><input type="range" id="bgm-slider" min="0" max="100" step="1" aria-label="배경음악 볼륨"></label><label><span>효과음</span><output id="sfx-value">35%</output><input type="range" id="sfx-slider" min="0" max="100" step="1" aria-label="효과음 볼륨"></label><button class="sound-mute" id="sound-mute" onclick="toggleMute()">🔇 전체 음소거</button></div></div><button class="top-collection" onclick="openCollection('enhance')"><b>✦ 강화 · 상점</b><small>컬렉션 · 합성 · 덱 편집</small></button></div></header>
+    <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><b class="hand-guide" id="hand-guide" role="status" aria-live="polite">카드를 선택하세요</b><div class="top-actions"><span class="ghost cracker-wallet" hidden>◆ 크래커 <strong id="cracker-count">0</strong></span><div class="sound-wrap"><button class="ghost" id="sound-toggle" onclick="toggleSoundPanel()" aria-haspopup="true" aria-expanded="false">🔊 사운드</button><div class="sound-panel" id="sound-panel" hidden><label><span>배경음악</span><output id="bgm-value">45%</output><input type="range" id="bgm-slider" min="0" max="100" step="1" aria-label="배경음악 볼륨"></label><label><span>효과음</span><output id="sfx-value">35%</output><input type="range" id="sfx-slider" min="0" max="100" step="1" aria-label="효과음 볼륨"></label><button class="sound-mute" id="sound-mute" onclick="toggleMute()">🔇 전체 음소거</button></div></div><nav class="top-nav" aria-label="컬렉션 바로가기"><a class="top-nav-btn" href="#덱편집" data-view="deck" onclick="event.preventDefault();openCollectionDirect('deck')">덱 편집</a><a class="top-nav-btn" href="#도감" data-view="codex" onclick="event.preventDefault();openCollectionDirect('codex')">도감</a><a class="top-nav-btn" href="#합성" data-view="synth" onclick="event.preventDefault();openCollectionDirect('synth')">합성</a><a class="top-nav-btn main" href="#강화" data-view="enhance" onclick="event.preventDefault();openCollectionDirect('enhance')">강화</a><a class="top-nav-btn main" href="#상점" data-view="gacha" onclick="event.preventDefault();openCollectionDirect('gacha')">상점</a></nav></div></header>
     <div class="layout">
       <section class="battle">
         <div class="status"><span>캐릭터 체험전 · 오로라 역전</span><span>연쇄 <strong id="combo-count">0</strong> · 전투 기록 <strong>03:42</strong></span></div>
@@ -2932,6 +2948,17 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       const base=renderEnhancement;renderEnhancement=function(...a){const r=base.apply(this,a);romanize(document.querySelector('#enhance-view'));return r;};
       new MutationObserver(list=>{for(const m of list){const t=m.target.nodeType===1?m.target:m.target.parentElement;const stage=t?.closest?.('.enh-stage')||[...m.addedNodes].find(n=>n.nodeType===1&&n.classList?.contains('enh-stage'));if(stage){romanize(stage);break;}}}).observe(document.body,{childList:true,subtree:true,characterData:true});
       renderEnhancement();
+    })();
+
+    /* 컬렉션 바로가기: 상단 개별 버튼과 주소 링크(#덱편집 #도감 #합성 #강화 #상점 또는 #deck #codex #synth #enhance #shop)로 해당 탭을 바로 연다 */
+    (function(){
+      const HASH={'덱편집':'deck','deck':'deck','도감':'codex','codex':'codex','합성':'synth','synth':'synth','강화':'enhance','enhance':'enhance','상점':'gacha','shop':'gacha','gacha':'gacha'},NAME={deck:'덱편집',codex:'도감',synth:'합성',enhance:'강화',gacha:'상점'};
+      window.openCollectionDirect=function(view){openCollection(view);try{history.replaceState(null,'','#'+NAME[view]);}catch(e){}syncNav(view);};
+      function syncNav(view){document.querySelectorAll('.top-nav-btn').forEach(b=>b.classList.toggle('current',b.dataset.view===view));}
+      function fromHash(){const key=decodeURIComponent(location.hash.replace(/^#/,''));const v=HASH[key];if(v){openCollection(v);syncNav(v);}}
+      if(typeof switchCollectionView==='function'){const base=switchCollectionView;switchCollectionView=function(view,...a){const r=base.call(this,view,...a);if(document.querySelector('#collection-modal.show')){try{history.replaceState(null,'','#'+NAME[view]);}catch(e){}syncNav(view);}return r;};}
+      if(typeof closeCollection==='function'){const baseClose=closeCollection;closeCollection=function(...a){const r=baseClose.apply(this,a);try{if(HASH[decodeURIComponent(location.hash.replace(/^#/,''))])history.replaceState(null,'',location.pathname+location.search);}catch(e){}syncNav('');return r;};}
+      addEventListener('hashchange',fromHash);setTimeout(fromHash,0);
     })();
 </script>
 </body>
