@@ -29,7 +29,7 @@ for (const [index, card] of cards.entries()) {
   if (!allowedElements.has(card.element)) errors.push(`${at}: invalid element`);
   if (!allowedRarities.has(card.rarity)) errors.push(`${at}: invalid rarity`);
   if (card.personality !== undefined && !allowedPersonalities.has(card.personality)) errors.push(`${at}: invalid personality`);
-  if (card.cardType === 'champion' && card.collectible !== false && card.releaseState !== 'prototype' && !card.personality) errors.push(`${at}: champion needs a personality`);
+  if (!card.personality) errors.push(`${at}: personality(성격 오로라 5종) required — 게임은 element 대신 personality를 쓴다`);
   if (card.releaseState !== undefined && !allowedReleaseStates.has(card.releaseState)) errors.push(`${at}: invalid releaseState`);
   if (!Number.isInteger(card.cost) || card.cost < 0 || card.cost > 20) errors.push(`${at}: invalid cost`);
   if (!Number.isInteger(card.deckLimit) || card.deckLimit < 1 || card.deckLimit > 3) errors.push(`${at}: invalid deckLimit`);

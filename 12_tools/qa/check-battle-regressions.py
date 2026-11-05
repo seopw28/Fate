@@ -11,6 +11,7 @@ URL = next((a for a in sys.argv[1:] if a.startswith("http")), "http://localhost:
 WAIT = "await new Promise(r=>setTimeout(r,%d));"
 TRIM_HAND = "[...document.querySelectorAll('.hand .card')].slice(3).forEach(c=>c.remove());"  # 손패 8장 제한에 걸리지 않게
 ADD_ENEMY = "enemySummonUnit(document.querySelector('.arena .lane:first-child'),{el:'fire',name:'적',atk:3,hp:40,cost:3});"
+ULT_READY = ADD_ENEMY + ADD_ENEMY + "playerHp=60;updateHeroHealth();['fire','water','earth'].forEach(el=>summonBattleToken('아군',2,5,el));"  # 어떤 성격의 궁극기든 발동 조건(적 2명·체력 75% 이하·서로 다른 성격 3명 등)을 채운다
 
 CHECKS = [
     ("혈마나로 세트한 마법을 취소하면 낸 체력을 그대로 돌려받는다 (60으로 잘리지 않음)",
@@ -22,7 +23,7 @@ CHECKS = [
      + WAIT % 1500 + "const lost=document.querySelector('#result').classList.contains('show');return {ok:!lost&&deck.length===0,lost,deck:deck.length};})()"),
     ("궁극기 효과가 적용될 때까지 턴 종료가 잠기고, 적용 뒤 풀린다",
      "(async()=>{const c=createRuntimeBattleCard('core.seraphina');ultimateState=ultimateSpec(c);ultimateUsed=false;lastUltimateTurn=null;"
-     "turnNumber=8;mana=10;updateMana();" + ADD_ENEMY + "activateUltimate();const during=battlePhase;endTurn(document.querySelector('.turn-actions .end'));"
+     "turnNumber=8;mana=10;updateMana();" + ULT_READY + "activateUltimate();const during=battlePhase;endTurn(document.querySelector('.turn-actions .end'));"
      "const afterEnd=battlePhase;" + WAIT % 2900 + "return {ok:during==='ultimate-resolving'&&afterEnd==='ultimate-resolving'&&battlePhase==='setup',during,afterEnd,after:battlePhase};})()"),
     ("소환 효과(마나 화살)로 상대 영웅 체력이 0이 되면 승리한다",
      "(async()=>{enemyHp=2;updateHeroHealth();const u=summonBattleToken('t',1,3,'wind','arcane-arrow');triggerBattlecry(u);" + WAIT % 3500 +

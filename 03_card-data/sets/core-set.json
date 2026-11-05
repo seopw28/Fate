@@ -254,7 +254,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "water"
     },
     {
       "schemaVersion": 1,
@@ -283,7 +284,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "fire"
     },
     {
       "schemaVersion": 1,
@@ -319,7 +321,8 @@
           "craft"
         ],
         "characterId": null
-      }
+      },
+      "personality": "water"
     },
     {
       "schemaVersion": 1,
@@ -348,7 +351,8 @@
           "craft"
         ],
         "characterId": null
-      }
+      },
+      "personality": "fire"
     },
     {
       "schemaVersion": 1,
@@ -377,7 +381,8 @@
           "craft"
         ],
         "characterId": null
-      }
+      },
+      "personality": "earth"
     },
     {
       "schemaVersion": 1,
@@ -412,7 +417,8 @@
           "craft"
         ],
         "characterId": null
-      }
+      },
+      "personality": "water"
     },
     {
       "schemaVersion": 1,
@@ -447,7 +453,8 @@
           "craft"
         ],
         "characterId": null
-      }
+      },
+      "personality": "wood"
     },
     {
       "schemaVersion": 1,
@@ -475,7 +482,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "fire"
     },
     {
       "schemaVersion": 1,
@@ -503,7 +511,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "fire"
     },
     {
       "schemaVersion": 1,
@@ -531,7 +540,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "water"
     },
     {
       "schemaVersion": 1,
@@ -559,7 +569,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "water"
     },
     {
       "schemaVersion": 1,
@@ -587,7 +598,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "earth"
     },
     {
       "schemaVersion": 1,
@@ -615,7 +627,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "wood"
     },
     {
       "schemaVersion": 1,
@@ -643,7 +656,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "metal"
     },
     {
       "schemaVersion": 1,
@@ -671,7 +685,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "metal"
     },
     {
       "schemaVersion": 1,
@@ -699,7 +714,8 @@
           "summon"
         ],
         "characterId": null
-      }
+      },
+      "personality": "water"
     },
     {
       "schemaVersion": 1,
@@ -747,7 +763,8 @@
           "event"
         ],
         "characterId": "time-warden"
-      }
+      },
+      "personality": "earth"
     },
     {
       "schemaVersion": 1,
@@ -773,7 +790,8 @@
           "event"
         ],
         "characterId": "time-warden"
-      }
+      },
+      "personality": "earth"
     },
     {
       "schemaVersion": 1,
@@ -812,7 +830,8 @@
           "event"
         ],
         "characterId": "bloodbound-heroine"
-      }
+      },
+      "personality": "fire"
     },
     {
       "schemaVersion": 1,
@@ -838,7 +857,8 @@
           "event"
         ],
         "characterId": "bloodbound-heroine"
-      }
+      },
+      "personality": "fire"
     },
     {
       "schemaVersion": 1,
@@ -870,7 +890,8 @@
           "craft"
         ],
         "characterId": null
-      }
+      },
+      "personality": "metal"
     }
   ]
 }
