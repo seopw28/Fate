@@ -132,8 +132,8 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
 
 test('경제: 기권은 패배로 처리하되 성격 오라 선택에 따른 별도 재화 차감은 없다', () => {
   const surrender = html.slice(html.indexOf('function surrenderBattle('), html.indexOf('function finish('));
-  assert.ok(surrender.includes("finish(false,'기권했습니다. 기권은 패배로 계산됩니다.',true)"), 'Surrender must finish as a defeat with the forfeit flag');
-  assert.ok(html.includes('showBattleResult(win,reason,Boolean(forfeit))'), 'A surrender result must use the new-game return path');
+  assert.ok(surrender.includes("showBattleResult(false,'기권했습니다. 기권은 패배로 계산됩니다.',true)"), 'Surrender must show a defeat through the new-game return path');
+  assert.ok(surrender.includes('settleRank(false)'), 'Surrender must settle as a defeat');
   assert.ok(html.includes('setTimeout(()=>location.reload(),1600)'), 'A surrender must return to the new-game start screen');
   assert.ok(!surrender.includes('animateCrackerTransfer'), 'Surrender must not run its own cracker transfer');
   assert.ok(!html.includes('if(!win&&(challengeMode||forfeit))'), 'Guardian choice and surrender must not add a defeat currency penalty');
