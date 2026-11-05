@@ -68,6 +68,11 @@ test('deck editing stays open during a battle but never changes the current batt
   assert.ok(html.includes('지금 고친 덱은 다음 판부터 적용됩니다'), 'Deck editor must tell the player when changes apply');
 });
 
+test('deck editor: a deck is designated as the main deck and the editor stays open', () => {
+  assert.ok(html.includes("save.textContent=isMain?(applied?'✓ 메인 덱':'메인 덱에 변경 반영'):'메인 덱으로 지정'"), 'Save button must designate the main deck');
+  assert.ok(!html.includes("다음 판부터 이 덱으로 싸웁니다.');closeCollection();") && !html.includes("셔플했습니다.');closeCollection();"), 'Designating the main deck must not close the deck editor');
+});
+
 test('deck exhaustion and opponent-type disclosure follow the PRD', () => {
   assert.ok(html.includes("<strong>덱 소진:</strong> 더 뽑지 않고 현재 손패와 전장으로 계속 싸웁니다."), 'An empty deck must skip drawing instead of ending the battle');
   assert.ok(!html.includes("finish(false,'덱이 비어 더 이상 카드를 뽑을 수 없습니다.')"), 'Deck exhaustion must not be a defeat condition');
