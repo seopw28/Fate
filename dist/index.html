@@ -1378,6 +1378,15 @@
     .deck-manage button:disabled { opacity:.4; cursor:not-allowed; }
     .deck-view { flex-direction:column; }
     .deck-battle-note { flex:none; margin:0 0 12px; padding:9px 14px; border:1px solid #8c6d3f; border-radius:10px; background:#2b241a; color:#ffd77f; font-size:clamp(12px,.9vw,14px); font-weight:700; }
+    /* 덱 편집 더블클릭 추가 연출 */
+    .owned-card { user-select:none; }
+    .deck-fly { position:fixed; z-index:400; object-fit:cover; object-position:center 18%; border:2px solid #ffd477; border-radius:12px; box-shadow:0 0 26px #f3bd68aa,0 12px 30px #000a; pointer-events:none; transform-origin:top left; }
+    .deck-row.deck-row-pulse { animation:deck-row-pulse .7s ease-out .35s both; }
+    @keyframes deck-row-pulse { 0% { box-shadow:0 0 0 0 #ffd47700; background:#3a2f1c; } 30% { box-shadow:0 0 0 3px #ffd477aa,0 0 22px #f3bd6888; background:#4a3a22; } 100% { box-shadow:0 0 0 0 #ffd47700; } }
+    #build-count.count-bump { display:inline-block; animation:count-bump .45s cubic-bezier(.2,1.6,.4,1) .3s; }
+    @keyframes count-bump { 40% { transform:scale(1.35); color:#fff3c8; } }
+    .owned-card.add-denied { animation:add-denied .4s ease; }
+    @keyframes add-denied { 20%,60% { transform:translateX(-6px); } 40%,80% { transform:translateX(6px); } }
 </style>
 </head>
 <body>
@@ -2498,6 +2507,23 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
 
     /* 대전 중 덱 편집: 편집은 허용하고, 저장한 덱은 다음 판부터 적용된다는 안내를 덱 편집 안에 보여준다 */
     (function(){const base=renderDeckBuilder;renderDeckBuilder=function(...a){const r=base.apply(this,a);const view=document.querySelector('#deck-view');if(!view)return r;let note=view.querySelector('.deck-battle-note');if(guardianChosen){if(!note){note=document.createElement('div');note.className='deck-battle-note';view.insertBefore(note,view.firstChild);}note.textContent='대전이 진행 중입니다 · 지금 고친 덱은 다음 판부터 적용됩니다';const save=document.querySelector('#deck-save');if(save&&draftDeck.length===60)save.textContent='다음 판 전투 덱으로 저장';}else note?.remove();return r;};})();
+
+    /* 덱 편집: 보유 카드를 더블클릭하면 1장 넣고, 카드 그림이 덱 패널의 해당 줄로 날아간다 */
+    (function(){
+      const grid=document.querySelector('#owned-grid');if(!grid)return;
+      function flyToDeck(fromRect,src,index){const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,row=document.querySelector('#deck-rows .deck-row[data-index="'+index+'"]'),dest=(row||document.querySelector('.deck-list')).getBoundingClientRect();
+        if(row){row.classList.remove('deck-row-pulse');void row.offsetWidth;row.classList.add('deck-row-pulse');}
+        const count=document.querySelector('#build-count');if(count){count.classList.remove('count-bump');void count.offsetWidth;count.classList.add('count-bump');}
+        if(reduced||!src)return;const ghost=document.createElement('img');ghost.className='deck-fly';ghost.src=src;Object.assign(ghost.style,{left:fromRect.left+'px',top:fromRect.top+'px',width:fromRect.width+'px',height:fromRect.height+'px'});document.body.appendChild(ghost);
+        const dx=dest.left+(row?8:dest.width/2-fromRect.width*.12)-fromRect.left,dy=dest.top+(row?dest.height/2-fromRect.height*.12:40)-fromRect.top;
+        ghost.animate([{transform:'translate(0,0) scale(1) rotate(0)',opacity:1,offset:0},{transform:'translate('+dx*.45+'px,'+(dy*.45-60)+'px) scale(.6) rotate(-8deg)',opacity:1,offset:.45},{transform:'translate('+dx+'px,'+dy+'px) scale(.24) rotate(4deg)',opacity:.2,offset:1}],{duration:520,easing:'cubic-bezier(.3,.7,.3,1)'}).onfinish=()=>ghost.remove();}
+      grid.addEventListener('dblclick',e=>{const card=e.target.closest('.owned-card[data-index]');if(!card||e.target.closest('button'))return;e.preventDefault();window.getSelection?.().removeAllRanges();
+        const index=Number(card.dataset.index),before=draftDeck.length,img=card.querySelector('img'),rect=(img||card).getBoundingClientRect(),src=img?.getAttribute('src');
+        addToDraft(index);
+        if(draftDeck.length>before){sfx?.('ui-select');flyToDeck(rect,src,index);}
+        else{const again=document.querySelector('#owned-grid .owned-card[data-index="'+index+'"]')||card;again.classList.remove('add-denied');void again.offsetWidth;again.classList.add('add-denied');}});
+      const help=document.querySelector('.deck-help');if(help&&!help.textContent.includes('더블클릭'))help.textContent='보유 카드를 더블클릭하거나 ＋ 버튼·드래그로 넣고, 덱 목록을 눌러(또는 보유 카드 영역으로 드래그해) 뺍니다.';
+    })();
 </script>
 </body>
 </html>
