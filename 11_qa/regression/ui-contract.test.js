@@ -75,19 +75,18 @@ test('deck editor: a deck is designated as the main deck and the editor stays op
   assert.ok(!html.includes("다음 판부터 이 덱으로 싸웁니다.');closeCollection();") && !html.includes("셔플했습니다.');closeCollection();"), 'Designating the main deck must not close the deck editor');
 });
 
-test('deck exhaustion and opponent-type disclosure follow the PRD', () => {
+test('deck exhaustion and result handoff follow the PRD', () => {
   assert.ok(html.includes("<strong>덱 소진:</strong> 더 뽑지 않고 현재 손패와 전장으로 계속 싸웁니다."), 'An empty deck must skip drawing instead of ending the battle');
   assert.ok(!html.includes("finish(false,'덱이 비어 더 이상 카드를 뽑을 수 없습니다.')"), 'Deck exhaustion must not be a defeat condition');
-  assert.ok(html.includes("'봇 대전은 티어 점수가 변하지 않습니다.'"), 'Bot identity and no-score rule must be disclosed on the result screen');
-  assert.ok(html.includes("'PvP 시연 대전으로 정산되었습니다.'"), 'Simulated PvP settlement must be disclosed on the result screen');
+  assert.ok(html.includes("openCollection('codex');},2000)"), 'Battle results must hand off to character completion, not rank progression');
 });
 
-test('initiative uses health, field, tier, then random order', () => {
+test('initiative uses health, field, then random order', () => {
   const health = html.indexOf('if(playerHp!==enemyHp)');
   const field = html.indexOf('if(playerUnits!==enemyUnits)');
-  const tier = html.indexOf('if(playerTierScore!==enemyTierScore)');
   const random = html.indexOf("engineAdapter.random()<.5?'player':'enemy'");
-  assert.ok(health >= 0 && health < field && field < tier && tier < random, 'Initiative priority must match the PRD');
+  assert.ok(health >= 0 && health < field && field < random, 'Initiative priority must match the PRD');
+  assert.ok(!html.includes('if(playerTierScore!==enemyTierScore)'), 'Phase 2 tier must not affect MVP initiative');
 });
 
 test('opening fields are dealt from the shuffled decks', () => {

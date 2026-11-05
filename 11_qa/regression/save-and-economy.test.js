@@ -150,18 +150,23 @@ test('개발 환경: 상점·소환 시연은 크래커 부족으로 막히지 �
   assert.ok(html.includes('if(DEV_MODE&&collectionState.crackers<DEV_CRACKER_FLOOR)'), 'The refill must be restricted to development hosts');
 });
 
-test('PRD: 티어·배치·시즌 현황과 PvP 승패 점수 정산을 제공한다', () => {
-  assert.ok(html.includes("const RANK_KEY='fate-rank-v1'"), 'Rank progression must persist independently');
-  assert.ok(html.includes("delta=ranked?(win?20:-20):0"), 'PvP wins and losses must change score by 20');
-  assert.ok(html.includes("rankState.placementPlayed=Math.min(5,rankState.placementPlayed+1)"), 'Placement must complete after five ranked matches');
-  assert.ok(html.includes('시즌 리더보드 <small>· 목업 데이터</small>'), 'Simulated leaderboard data must be disclosed');
+test('핵심가치: 상점 획득은 캐릭터별 어필 영상과 다시 보기를 제공한다', () => {
+  assert.ok(html.includes('function showCharacterAppeal(index'), 'Character acquisition needs a named appeal sequence');
+  assert.ok(html.includes('CHARACTER ENCOUNTER'), 'The shop reveal must identify the character encounter');
+  assert.ok(html.includes('획득 어필 영상 다시 보기'), 'Owned character results must allow replaying the appeal');
+  assert.ok(html.includes("if(collectionIsSpell[index])return"), 'Magic and traps must not be treated as character videos');
 });
 
-test('승패 연출: 2초 뒤 티어 화면으로 전환하고 점수를 굴려 정산한다', () => {
-  assert.ok(html.includes("setTimeout(()=>{resultNode.classList.remove('show','auto-transition');openTierStatus(rank);},2000)"), 'Result alert must hand off to rank status after two seconds');
-  assert.ok(html.includes('function animateTierScore(rank)'), 'Rank settlement must have a named score animation');
-  assert.ok(html.includes("value.classList.add('rolling')"), 'Score must visibly roll before settling');
-  assert.ok(html.includes("value.classList.add('settled')"), 'Score animation must land on the final value');
+test('핵심가치: 전투 결과는 랭크보다 캐릭터 완결로 연결한다', () => {
+  assert.ok(html.includes('캐릭터 체험전 · 오로라 역전'), 'Battle chrome must emphasize the character and aura experience');
+  assert.ok(html.includes("openCollection('codex');},2000)"), 'Result alert must hand off to character completion after two seconds');
+  assert.ok(html.includes('캐릭터 완결 현황'), 'The result CTA must expose character completion');
+});
+
+test('핵심가치: 도감은 캐릭터별 4차 강화 완결 진척을 보여준다', () => {
+  assert.ok(html.includes('function highestEnhancementLevel(index)'), 'Codex needs enhancement progress per character');
+  assert.ok(html.includes('캐릭터 완결'), 'Codex summary must prioritize completed characters');
+  assert.ok(html.includes('강화 목표 이어가기'), 'Codex detail must continue into enhancement');
 });
 
 test('PRD: 카드 소환 가격은 1회 200, 10회 2,000이다', () => {
