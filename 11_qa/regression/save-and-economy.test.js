@@ -148,6 +148,7 @@ test('보안: 크래커/오로라 URL 옵션은 개발 환경에서만 동작한
 test('개발 환경: 상점·소환 시연은 크래커 부족으로 막히지 않는다', () => {
   assert.ok(html.includes('const DEV_CRACKER_FLOOR=999999;'), 'Local demo balance must have a generous named floor');
   assert.ok(html.includes('if(DEV_MODE&&collectionState.crackers<DEV_CRACKER_FLOOR)'), 'The refill must be restricted to development hosts');
+  assert.ok(html.includes('const DEMO_COOKIE_FLOOR=500;') && html.includes('if(collectionState.cookieFragments<DEMO_COOKIE_FLOOR)'), 'Cookie fragments must be topped up to 500 on every host so the cookie reward gacha can be tried');
 });
 
 test('핵심가치: 상점 획득은 캐릭터별 어필 영상과 다시 보기를 제공한다', () => {
