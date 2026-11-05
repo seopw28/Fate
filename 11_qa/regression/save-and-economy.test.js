@@ -111,7 +111,8 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("B:{name:'순환',chance:.95,manaMin:2,manaMax:2"), 'Water must offer the reliable mana branch');
   assert.ok(html.includes("B:{name:'숲의 생명',chance:1,hpGain:1"), 'Wood must offer guaranteed steady growth');
   assert.ok(html.includes("B:{name:'연속 응수',chance:1,ratio:.2,minDamage:1,maxDamage:3"), 'Metal must offer guaranteed low-damage counters');
-  assert.ok(html.includes("B:{name:'대지의 귀환',chance:.08,maxProcs:2,reviveRatio:.5"), 'Earth must offer limited half-health revival');
+  assert.ok(html.includes("A:{name:'지각 회피',chance:.035,avoidDamage:true"), 'Earth must offer a very-low-chance full damage dodge');
+  assert.ok(html.includes("B:{name:'불굴',chance:.09,maxProcs:2,reviveRatio:0"), 'Earth must offer a stronger version of its base lethal survival');
   assert.ok(!html.includes('GUARDIAN_AWAKEN_DURATION=1'), 'Persistent awakening must not retain the old one-turn duration');
   assert.ok(html.includes('left:var(--field-left);top:var(--field-top);width:var(--field-width);height:var(--field-height)'), 'Awakening choices must be constrained to the battlefield');
   assert.ok(html.includes('.awaken-field-sigil{position:absolute'), 'The selected aura sigil must be engraved inside its card lane');

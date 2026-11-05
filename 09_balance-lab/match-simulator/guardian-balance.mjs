@@ -75,8 +75,8 @@ const AWAKENING_OPTIONS = {
     B: { label: '연속 응수', chance: 1.00, ratio: 0.20, minDamage: 1, maxDamage: 3 },
   },
   hyeonmu: {
-    A: { label: '불굴', chance: 0.09, maxProcs: 2, reviveRatio: 0 },
-    B: { label: '대지의 귀환', chance: 0.08, maxProcs: 2, reviveRatio: 0.50 },
+    A: { label: '지각 회피', chance: 0.035, avoidDamage: true },
+    B: { label: '불굴', chance: 0.09, maxProcs: 2, reviveRatio: 0 },
   },
 };
 const AI = { atkWeight: 1, hpWeight: 0.7, manaWeight: 0.35 };
@@ -113,6 +113,7 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
 
   function damageUnit(side, unit, dmg) {
     const earth = auraConfig(side, 'hyeonmu');
+    if (earth.avoidDamage && proc(side, 'hyeonmu')) return;
     if (dmg >= unit.hp && (!earth.maxProcs || side.procs < earth.maxProcs) && proc(side, 'hyeonmu')) {
       side.procs++;
       if (earth.reviveRatio) { unit.hp = Math.max(1, Math.ceil(unit.maxHp * earth.reviveRatio)); return; }
