@@ -1493,6 +1493,7 @@
     @keyframes roman-glow { 0% { filter:brightness(2.2) drop-shadow(0 0 12px #fff); transform:scale(1.35); } 100% { filter:none; transform:none; } }
     .enh-tier .tier-spark { position:relative; justify-self:center; align-self:center; width:56px; height:56px; margin:0; border:2px solid var(--tier-c,#ffe9a8); border-radius:50%; opacity:0; box-shadow:0 0 18px var(--tier-c,#ffd477); animation:tier-spark .8s ease-out 1.6s both; }
     @media(prefers-reduced-motion:reduce){ .enh-tier.rewrite * { animation:none!important; clip-path:none!important; } .enh-tier.rewrite .enh-roman.old { display:none; } }
+    .codex-card .enh-tier, .owned-card .enh-tier, .synth-pick .enh-tier { opacity:.95; }
 </style>
 </head>
 <body>
@@ -2740,8 +2741,8 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       const AURA_HEX={fire:'#ff6a4a',water:'#4fb8ff',wood:'#5fd38a',wind:'#5fd38a',metal:'#cfd8e6',neutral:'#cfd8e6',earth:'#d9a35b',ice:'#4fb8ff',thunder:'#cfd8e6'};
       function auraColorOf(index){const def=typeof cardDefinitionById!=='undefined'?cardDefinitionById.get(ids()[index]):null;return AURA_HEX[def?.aura]||AURA_HEX[collectionCards[index]?.[0]]||'';}
       function topTier(index){const e=collectionState.cardEnhancements?.[ids()[index]],lv=e&&Array.isArray(e.levels)?e.levels:[];for(let t=4;t>=1;t--)if(Array.isArray(lv[t])&&lv[t].length)return t;return 0;}
-      function mark(el,tier,index){if(!el)return;el.querySelector(':scope > .enh-tier')?.remove();if(!(tier>0))return;const m=document.createElement('span');m.className='enh-tier';const col=index!==undefined&&index!==null?auraColorOf(index):'';if(col)m.style.setProperty('--tier-c',col);m.setAttribute('aria-label',tier+'차 강화');m.innerHTML='<b class="enh-roman">'+ROMAN[tier]+'</b>';el.appendChild(m);}
-      const ROMAN=['','I','II','III','IV'];
+      function mark(el,tier,index){if(!el)return;tier=Math.max(0,Math.min(4,Number(tier)||0));const prev=el.querySelector(':scope > .enh-tier');if(prev&&prev.dataset.t===String(tier)&&!prev.classList.contains('rewrite'))return;prev?.remove();const m=document.createElement('span');m.className='enh-tier';const col=index!==undefined&&index!==null?auraColorOf(index):'';if(col)m.style.setProperty('--tier-c',col);m.dataset.t=String(tier);m.setAttribute('aria-label','강화 '+ROMAN[tier]);m.innerHTML='<b class="enh-roman">'+ROMAN[tier]+'</b>';el.appendChild(m);}
+      const ROMAN=['I','II','III','IV','V'];/* 0차(강화 전)=I … 4차=V */
       const baseEnh=renderEnhancement;renderEnhancement=function(...a){const r=baseEnh.apply(this,a);
         document.querySelectorAll('#enhance-grid button.synth-pick').forEach(b=>mark(b,enhanceLevel,b.dataset.index!==undefined?Number(b.dataset.index):undefined));
         const slot=document.querySelector('#enhance-result .synth-card:not(.unknown)');if(slot)mark(slot,enhanceLast?enhanceLast.level:enhanceLevel,enhanceLast?enhanceLast.index:enhanceSelected);return r;};
@@ -2749,12 +2750,12 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       if(typeof renderDeckBuilder==='function'){const baseDeck=renderDeckBuilder;renderDeckBuilder=function(...a){const r=baseDeck.apply(this,a);document.querySelectorAll('#owned-grid .owned-card[data-index]').forEach(c=>mark(c,topTier(Number(c.dataset.index)),Number(c.dataset.index)));return r;};}
       if(typeof renderCodex==='function'&&typeof codexEntries==='function'){const baseCodex=renderCodex;renderCodex=function(...a){const r=baseCodex.apply(this,a);const byNo=new Map(codexEntries().map(e=>[e.no,e]));const at=new Map(ids().map((id,i)=>[id,i]));
         document.querySelectorAll('#codex-grid .codex-card').forEach(c=>{const no=Number((/selectCodex\((\d+)\)/.exec(c.getAttribute('onclick')||'')||[])[1]),e=byNo.get(no);if(e&&e.collected&&e.type==='champion')mark(c,topTier(at.get(e.def.cardId)),at.get(e.def.cardId));});return r;};}
-      new MutationObserver(()=>{const card=document.querySelector('.synth-stage.enh-stage.revealed .stage-card');if(card&&!card.querySelector('.enh-tier')&&enhanceLast){mark(card,enhanceLast.level,enhanceLast.index);if(enhanceLast.success&&enhanceLast.level>0)animateNewTier(card,enhanceLast.level);}}).observe(document.body,{childList:true,subtree:true});
+      new MutationObserver(()=>{const card=document.querySelector('.synth-stage.enh-stage.revealed .stage-card');if(card&&!card.querySelector('.enh-tier')&&enhanceLast){mark(card,enhanceLast.level,enhanceLast.index);if(enhanceLast.success&&enhanceLast.level>0){card.querySelector('.enh-tier')?.classList.add('rewrite');animateNewTier(card,enhanceLast.level);}}}).observe(document.body,{childList:true,subtree:true});
       /* 전투: 덱을 만들 때 그 카드로 가진 강화 단계를 높은 것부터 배정하고(장수만큼), 손패 카드·필드 유닛 귀퉁이에 오로라 색으로 표시한다. 능력치 보너스는 아직 적용하지 않는다 */
       function tierPoolFor(cardId){const lv=collectionState.cardEnhancements?.[cardId]?.levels;const out=[];if(Array.isArray(lv))for(let t=4;t>=1;t--)(Array.isArray(lv[t])?lv[t]:[]).forEach(()=>out.push(t));return out;}
       if(typeof deckEntry==='function'){let pool=null;const baseEntry=deckEntry;deckEntry=function(index,...rest){const e=baseEntry.call(this,index,...rest);if(!e||e.spell)return e;if(!pool){pool=new Map();queueMicrotask(()=>{pool=null;});}if(!pool.has(e.cardId))pool.set(e.cardId,tierPoolFor(e.cardId));const t=pool.get(e.cardId).shift();if(t)e.enhTier=t;return e;};}
       function tierEl(el,tier){if(!el||!(tier>0))return;el.dataset.enhTier=String(tier);}
-      function markBattle(){document.querySelectorAll('.hand .card[data-enh-tier], .arena .unit[data-enh-tier]').forEach(el=>{if(!el.querySelector(':scope > .enh-tier'))mark(el,Number(el.dataset.enhTier));});}
+      function markBattle(){document.querySelectorAll('.hand .card.summon-card, .arena .unit').forEach(el=>{const t=String(Number(el.dataset.enhTier)||0),cur=el.querySelector(':scope > .enh-tier');if(!cur||cur.dataset.t!==t)mark(el,Number(t));});}
       if(typeof drawCard==='function'){const baseDraw=drawCard;drawCard=function(...a){const next=Array.isArray(deck)?deck[0]:null,before=new Set(document.querySelectorAll('.hand .card'));const r=baseDraw.apply(this,a);if(next&&next.enhTier){const fresh=[...document.querySelectorAll('.hand .card')].find(c=>!before.has(c));tierEl(fresh,next.enhTier);markBattle();}return r;};}
       /* 이미 만들어진 첫 판 덱(이 코드보다 먼저 생성됨)과 시작 손패에도 배정한다: 손패의 같은 카드부터, 남은 단계는 덱 순서대로 */
       (function(){if(!Array.isArray(deck))return;const pools=new Map();
@@ -2764,7 +2765,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         deck.forEach(e=>{if(e&&!e.spell&&!e.enhTier&&e.cardId){const t=free(e.cardId).shift();if(t)e.enhTier=t;}});})();
       new MutationObserver(markBattle).observe(document.body,{childList:true,subtree:true});markBattle();
       /* 강화 성공: 새로 얻은 단계의 귀퉁이 하나가 카드가 자리 잡은 뒤 빛나며 칠해진다 */
-      function animateNewTier(card,level){const box=card.querySelector('.enh-tier');if(!box)return;box.classList.add('rewrite');box.innerHTML=(level>1?'<b class="enh-roman old">'+ROMAN[level-1]+'</b>':'')+'<b class="enh-roman new">'+ROMAN[level]+'</b><b class="tier-spark"></b>';setTimeout(()=>tone(523,.12,'triangle',.04,392),420);setTimeout(()=>{tone(1319,.18,'triangle',.06,1760);tone(1976,.22,'sine',.035,2637,.06);},720);}
+      function animateNewTier(card,level){const box=card.querySelector('.enh-tier');if(!box)return;box.classList.add('rewrite');box.innerHTML='<b class="enh-roman old">'+ROMAN[level-1]+'</b><b class="enh-roman new">'+ROMAN[level]+'</b><b class="tier-spark"></b>';setTimeout(()=>tone(523,.12,'triangle',.04,392),420);setTimeout(()=>{tone(1319,.18,'triangle',.06,1760);tone(1976,.22,'sine',.035,2637,.06);},720);}
     })();
 
     /* 개발용 ?enhanceTest[=장수]: 보유 챔프 앞 8종에 0~3차 재료를 단계마다 N장(기본 6)씩 채운다 (localhost에서만) */
@@ -2772,7 +2773,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       if(typeof DEV_MODE==='undefined'||!DEV_MODE||typeof enhancementEntry!=='function')return;
       const params=new URLSearchParams(location.search);if(!params.has('enhanceTest'))return;
       const per=Math.max(5,Math.min(30,Math.floor(Number(params.get('enhanceTest'))||6))),inDeck=[...new Set((collectionState.deck||[]).filter(i=>!collectionIsSpell[i]))],picks=[...inDeck,...collectionCards.map((_,i)=>i).filter(i=>!collectionIsSpell[i]&&!inDeck.includes(i))].slice(0,Math.max(8,inDeck.length));/* 메인 덱에 든 챔프부터 — 그래야 전투에서 강화 카드가 나온다 */
-      picks.forEach((i,k)=>{const e=enhancementEntry(i);for(let lv=1;lv<=3;lv++)e.levels[lv]=Array.from({length:per},(_,n)=>({attack:Math.min(lv,(n+k)%3),health:lv>=2?(n%2):0}));e.levels[4]=inDeck.includes(i)?[{attack:2,health:2}]:[];/* 메인 덱 카드는 4차 1장도: 전투 손패·필드에서 I~IV가 보이게 */
+      picks.forEach((i,k)=>{const e=enhancementEntry(i);for(let lv=1;lv<=3;lv++)e.levels[lv]=Array.from({length:per},(_,n)=>({attack:Math.min(lv,(n+k)%3),health:lv>=2?(n%2):0}));e.levels[4]=[];if(inDeck.includes(i)){/* 덱 카드마다 최고 단계를 I~V로 돌려가며 정해, 전투에 I~V가 고르게 섞이게 (그 아래 단계는 강화 재료로 남김) */const top=k%5;for(let lv=top+1;lv<=4;lv++)e.levels[lv]=[];if(top===4)e.levels[4]=[{attack:2,health:2},{attack:2,health:2}];}/* 메인 덱 카드는 4차 1장도: 전투 손패·필드에서 I~IV가 보이게 */
         const used=e.levels.slice(1).reduce((sum,cards)=>sum+cards.length,0);collectionState.owned[i]=Math.max(collectionState.owned[i]||0,used+per);});
       persistCollection();params.delete('enhanceTest');history.replaceState(null,'',location.pathname+(params.toString()?'?'+params:'')+location.hash);
       setTimeout(()=>writeLog?.('<strong>개발용</strong> 강화 재료를 채웠습니다: 챔프 '+picks.length+'종(메인 덱 '+inDeck.length+'종 포함) × 0~3차 각 '+per+'장, 메인 덱 카드는 4차 1장 추가. 다음 판부터 전투 카드에 I~IV가 표시됩니다.'),0);
