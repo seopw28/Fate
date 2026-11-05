@@ -1477,6 +1477,22 @@
     .hand .card[data-enh-tier], .arena .unit[data-enh-tier] { position:relative; }
     .arena .unit .enh-tier i { --o:clamp(3px,.3vw,5px); width:clamp(8px,.65vw,11px); height:clamp(8px,.65vw,11px); }
     @keyframes tier-fill { 0% { transform:scale(0); opacity:0; background:#fff; } 45% { transform:scale(2.2); opacity:1; background:#fff; filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 22px var(--tier-c,#ffd477)); } 100% { transform:scale(1); background:var(--tier-c,var(--pc,#ffd477)); } }
+    /* === 강화 차수: 카드 오른쪽 위 로마 숫자 (등급 문양 ●/★ 대체, 0차는 표시 없음) === */
+    .command-rail .hand .card.summon-card[data-rarity]::before, .arena .unit[data-rarity]::before { content:none!important; display:none!important; }
+    .enh-tier { position:absolute; inset:auto; top:clamp(4px,.4vw,7px); right:clamp(5px,.5vw,8px); z-index:7; pointer-events:none; display:grid; }
+    .enh-tier > * { grid-area:1/1; }
+    .enh-roman { color:var(--tier-c,var(--pc,#ffd477)); font-family:Georgia,'Times New Roman',serif; font-size:clamp(13px,1vw,17px); font-weight:700; line-height:1; letter-spacing:.02em; text-shadow:0 0 0 #0b0e15,1px 1px 0 #0b0e15,-1px -1px 0 #0b0e15,1px -1px 0 #0b0e15,-1px 1px 0 #0b0e15,0 0 8px color-mix(in srgb,var(--tier-c,var(--pc,#ffd477)) 70%,transparent); }
+    .arena .unit .enh-roman { font-size:clamp(12px,.9vw,15px); }
+    .stage-card .enh-tier { top:clamp(10px,1.2vmin,16px); right:clamp(12px,1.4vmin,18px); } .stage-card .enh-roman { font-size:clamp(24px,3vmin,36px); }
+    .synth-stage.enh-stage .stage-card .new-badge { display:none; }
+    .codex-card .enh-tier { top:clamp(28px,2.2vw,36px); }
+    .enh-tier.rewrite .enh-roman.old { animation:roman-erase .55s ease-in .55s both; }
+    .enh-tier.rewrite .enh-roman.new { clip-path:inset(0 100% 0 0); animation:roman-write .6s cubic-bezier(.4,0,.2,1) 1.1s forwards, roman-glow 1.2s ease-out 1.7s; }
+    @keyframes roman-erase { 0% { opacity:1; filter:none; } 100% { opacity:0; filter:blur(6px) brightness(2); transform:scale(1.25) translateY(-4px); } }
+    @keyframes roman-write { to { clip-path:inset(0 0 0 0); } }
+    @keyframes roman-glow { 0% { filter:brightness(2.2) drop-shadow(0 0 12px #fff); transform:scale(1.35); } 100% { filter:none; transform:none; } }
+    .enh-tier .tier-spark { position:relative; justify-self:center; align-self:center; width:56px; height:56px; margin:0; border:2px solid var(--tier-c,#ffe9a8); border-radius:50%; opacity:0; box-shadow:0 0 18px var(--tier-c,#ffd477); animation:tier-spark .8s ease-out 1.6s both; }
+    @media(prefers-reduced-motion:reduce){ .enh-tier.rewrite * { animation:none!important; clip-path:none!important; } .enh-tier.rewrite .enh-roman.old { display:none; } }
 </style>
 </head>
 <body>
@@ -2724,10 +2740,12 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       const AURA_HEX={fire:'#ff6a4a',water:'#4fb8ff',wood:'#5fd38a',wind:'#5fd38a',metal:'#cfd8e6',neutral:'#cfd8e6',earth:'#d9a35b',ice:'#4fb8ff',thunder:'#cfd8e6'};
       function auraColorOf(index){const def=typeof cardDefinitionById!=='undefined'?cardDefinitionById.get(ids()[index]):null;return AURA_HEX[def?.aura]||AURA_HEX[collectionCards[index]?.[0]]||'';}
       function topTier(index){const e=collectionState.cardEnhancements?.[ids()[index]],lv=e&&Array.isArray(e.levels)?e.levels:[];for(let t=4;t>=1;t--)if(Array.isArray(lv[t])&&lv[t].length)return t;return 0;}
-      function mark(el,tier,index){if(!el)return;el.querySelector(':scope > .enh-tier')?.remove();if(!(tier>0))return;const m=document.createElement('span');m.className='enh-tier';const col=index!==undefined&&index!==null?auraColorOf(index):'';if(col)m.style.setProperty('--tier-c',col);m.setAttribute('aria-label',tier+'차 강화');m.innerHTML=[0,1,2,3].map(i=>'<i class="c'+i+(i<tier?' on':'')+'"></i>').join('');el.appendChild(m);}
+      function mark(el,tier,index){if(!el)return;el.querySelector(':scope > .enh-tier')?.remove();if(!(tier>0))return;const m=document.createElement('span');m.className='enh-tier';const col=index!==undefined&&index!==null?auraColorOf(index):'';if(col)m.style.setProperty('--tier-c',col);m.setAttribute('aria-label',tier+'차 강화');m.innerHTML='<b class="enh-roman">'+ROMAN[tier]+'</b>';el.appendChild(m);}
+      const ROMAN=['','I','II','III','IV'];
       const baseEnh=renderEnhancement;renderEnhancement=function(...a){const r=baseEnh.apply(this,a);
         document.querySelectorAll('#enhance-grid button.synth-pick').forEach(b=>mark(b,enhanceLevel,b.dataset.index!==undefined?Number(b.dataset.index):undefined));
         const slot=document.querySelector('#enhance-result .synth-card:not(.unknown)');if(slot)mark(slot,enhanceLast?enhanceLast.level:enhanceLevel,enhanceLast?enhanceLast.index:enhanceSelected);return r;};
+      if(typeof renderSynthesis==='function'){const baseSynth=renderSynthesis;renderSynthesis=function(...a){const r=baseSynth.apply(this,a);document.querySelectorAll('#synth-grid .synth-pick').forEach(t=>{const i=Number((/synthPick\((\d+)\)/.exec(t.querySelector('[onclick*="synthPick"]')?.getAttribute('onclick')||'')||[])[1]);if(Number.isFinite(i))mark(t,topTier(i),i);});return r;};}
       if(typeof renderDeckBuilder==='function'){const baseDeck=renderDeckBuilder;renderDeckBuilder=function(...a){const r=baseDeck.apply(this,a);document.querySelectorAll('#owned-grid .owned-card[data-index]').forEach(c=>mark(c,topTier(Number(c.dataset.index)),Number(c.dataset.index)));return r;};}
       if(typeof renderCodex==='function'&&typeof codexEntries==='function'){const baseCodex=renderCodex;renderCodex=function(...a){const r=baseCodex.apply(this,a);const byNo=new Map(codexEntries().map(e=>[e.no,e]));const at=new Map(ids().map((id,i)=>[id,i]));
         document.querySelectorAll('#codex-grid .codex-card').forEach(c=>{const no=Number((/selectCodex\((\d+)\)/.exec(c.getAttribute('onclick')||'')||[])[1]),e=byNo.get(no);if(e&&e.collected&&e.type==='champion')mark(c,topTier(at.get(e.def.cardId)),at.get(e.def.cardId));});return r;};}
@@ -2746,7 +2764,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         deck.forEach(e=>{if(e&&!e.spell&&!e.enhTier&&e.cardId){const t=free(e.cardId).shift();if(t)e.enhTier=t;}});})();
       new MutationObserver(markBattle).observe(document.body,{childList:true,subtree:true});markBattle();
       /* 강화 성공: 새로 얻은 단계의 귀퉁이 하나가 카드가 자리 잡은 뒤 빛나며 칠해진다 */
-      function animateNewTier(card,level){const corner=card.querySelector('.enh-tier .c'+(level-1));if(!corner)return;corner.classList.add('fresh');const spark=document.createElement('b');spark.className='tier-spark c'+(level-1);card.querySelector('.enh-tier').appendChild(spark);setTimeout(()=>{tone(1319,.18,'triangle',.06,1760);tone(1976,.22,'sine',.035,2637,.06);},720);}
+      function animateNewTier(card,level){const box=card.querySelector('.enh-tier');if(!box)return;box.classList.add('rewrite');box.innerHTML=(level>1?'<b class="enh-roman old">'+ROMAN[level-1]+'</b>':'')+'<b class="enh-roman new">'+ROMAN[level]+'</b><b class="tier-spark"></b>';setTimeout(()=>tone(523,.12,'triangle',.04,392),420);setTimeout(()=>{tone(1319,.18,'triangle',.06,1760);tone(1976,.22,'sine',.035,2637,.06);},720);}
     })();
 
     /* 개발용 ?enhanceTest[=장수]: 보유 챔프 앞 8종에 0~3차 재료를 단계마다 N장(기본 6)씩 채운다 (localhost에서만) */
