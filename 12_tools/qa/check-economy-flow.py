@@ -13,6 +13,7 @@ import sys
 from playwright.sync_api import sync_playwright
 
 BASE = "http://localhost:8765"
+DEMO_CRACKER_FLOOR = 1_000_000
 fails = []
 
 
@@ -46,9 +47,9 @@ with sync_playwright() as p:
     pg = new_page()
     pg.evaluate("pickGuardian('baekho')")
     pg.wait_for_timeout(300)
-    check("성격 오로라 선택 무료", crackers(pg), 999999)
+    check("성격 오로라 선택 무료", crackers(pg), DEMO_CRACKER_FLOOR)
     surrender(pg)
-    check("성격 오로라 기권 별도 차감 없음", crackers(pg), 999999)
+    check("성격 오로라 기권 별도 차감 없음", crackers(pg), DEMO_CRACKER_FLOOR)
 
     # 2. 제거된 오로라 미선택 값은 선택되지 않음
     pg = new_page()
@@ -64,7 +65,7 @@ with sync_playwright() as p:
     pg.goto("http://fate.test/index.html?skipIntro&crackers=999999&guardian=baekho")
     pg.wait_for_timeout(1200)
     state = pg.evaluate("({hostname:location.hostname,crackers:collectionState.crackers,guardian:playerGuardian,chosen:guardianChosen})")
-    check("배포 주소에서 ?crackers 무시", state["crackers"], 300)
+    check("배포 주소에서 ?crackers 무시·체험 잔액 유지", state["crackers"], DEMO_CRACKER_FLOOR)
     check("배포 주소에서 ?guardian 무시 (선택 화면이 열림)", (state["guardian"], state["chosen"]), (None, False))
 
     browser.close()

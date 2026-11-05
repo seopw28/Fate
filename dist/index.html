@@ -1486,6 +1486,7 @@
     /* 덱 편집 더블클릭 추가 연출 */
     .owned-card { user-select:none; }
     .deck-fly { position:fixed; z-index:400; object-fit:cover; object-position:center 18%; border:2px solid #ffd477; border-radius:12px; box-shadow:0 0 26px #f3bd68aa,0 12px 30px #000a; pointer-events:none; transform-origin:top left; }
+    .enhance-equip-fly { position:fixed; z-index:520; object-fit:cover; object-position:center 18%; border:2px solid #dca8ff; border-radius:14px; box-shadow:0 0 28px #c56fffcc,0 0 70px #7140caaa,0 18px 36px #000c; pointer-events:none; transform-origin:top left; }
     .deck-row.deck-row-pulse { animation:deck-row-pulse .7s ease-out .35s both; }
     @keyframes deck-row-pulse { 0% { box-shadow:0 0 0 0 #ffd47700; background:#3a2f1c; } 30% { box-shadow:0 0 0 3px #ffd477aa,0 0 22px #f3bd6888; background:#4a3a22; } 100% { box-shadow:0 0 0 0 #ffd47700; } }
     #build-count.count-bump { display:inline-block; animation:count-bump .45s cubic-bezier(.2,1.6,.4,1) .3s; }
@@ -1500,6 +1501,8 @@
     #enhance-grid .synth-pick:not(:disabled) { cursor:pointer; user-select:none; }
     #enhance-grid .enh-none { grid-column:1/-1; }
     #enhance-result .synth-card.enh-slot { border-color:#ffd477; box-shadow:0 0 22px #f3bd6855; }
+    #enhance-result .synth-card.enh-equip-land { animation:enh-equip-land .82s cubic-bezier(.2,1.35,.35,1); }
+    @keyframes enh-equip-land { 0% { transform:scale(.82); filter:brightness(2.6); box-shadow:0 0 0 5px #f7d8ff,0 0 70px #c56fff; } 35% { transform:scale(1.1); filter:brightness(1.5); box-shadow:0 0 0 2px #ffd477,0 0 44px #f3bd68; } 100% { transform:scale(1); filter:none; box-shadow:0 0 22px #f3bd6855; } }
     #enhance-result .synth-card h4 { word-break:keep-all; overflow-wrap:break-word; }
     /* 강화는 슬롯 하나에 카드 하나라 합성보다 크게 보여 준다: 패널 폭의 72%까지, 화면 높이(28vh − 64px)로 상한 — 1366×768~1920×1080에서 패널 스크롤 없이 키 큰 화면일수록 크게 */
     #enhance-result .synth-card { width:clamp(150px,min(72%,calc(28vh - 64px)),360px); padding:8px; gap:5px; }
@@ -1791,9 +1794,8 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     collectionState.cookieFragments=Math.max(0,Number(collectionState.cookieFragments)||0);
     collectionState.cookieRewardEvents=Array.isArray(collectionState.cookieRewardEvents)?collectionState.cookieRewardEvents.slice(-50):[];
     collectionState.cardEnhancements=collectionState.cardEnhancements&&typeof collectionState.cardEnhancements==='object'?collectionState.cardEnhancements:{};
-    const DEV_CRACKER_FLOOR=999999;/* 로컬 시연·QA에서는 소환/합성/상점 테스트가 재화 부족으로 막히지 않게 한다. 배포 호스트에는 적용하지 않는다. */
-    if(DEV_MODE&&collectionState.crackers<DEV_CRACKER_FLOOR){collectionState.crackers=DEV_CRACKER_FLOOR;persistCollection();}
-    const DEMO_COOKIE_FLOOR=500;/* 쿠키조각 체험용(목업): 접속할 때 500개보다 적으면 500개로 채운다 — 쿠키 보상 뽑기(1회 10·10회 100)를 바로 해 볼 수 있게. 크래커와 달리 배포 주소에도 적용한다 (2026-11-05 사용자 요청) */
+    const DEMO_CRACKER_FLOOR=1000000,DEMO_COOKIE_FLOOR=50000;/* 공개 목업 시연용: 상점·합성·강화를 충분히 반복할 수 있도록 접속 시 최소 잔액을 보충한다. 실제 서비스 경제에는 적용하지 않는다. */
+    if(collectionState.crackers<DEMO_CRACKER_FLOOR){collectionState.crackers=DEMO_CRACKER_FLOOR;persistCollection();}
     if(collectionState.cookieFragments<DEMO_COOKIE_FLOOR){collectionState.cookieFragments=DEMO_COOKIE_FLOOR;persistCollection();}
     /* 테스트용: 주소에 ?crackers=10000 을 붙여 열면 크래커를 그 값으로 맞추고 저장한 뒤, 주소에서 옵션을 지운다 (새로고침해도 다시 덮어쓰지 않음) */
     {const params=new URLSearchParams(location.search),requested=DEV_MODE?params.get('crackers'):null;if(requested!==null&&Number.isFinite(Number(requested))&&Number(requested)>=0){collectionState.crackers=Math.floor(Number(requested));persistCollection();params.delete('crackers');history.replaceState(null,'',location.pathname+(params.toString()?'?'+params:'')+location.hash);}}
@@ -2694,7 +2696,8 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function enhancementEntry(index){const id=COLLECTION_CARD_IDS[index],store=collectionState.cardEnhancements||(collectionState.cardEnhancements={}),entry=store[id]||(store[id]={levels:[[],[],[],[],[]]});if(!Array.isArray(entry.levels)){entry.levels=[[],Array.isArray(entry.level1)?entry.level1:[],Array.isArray(entry.level2)?entry.level2:[],[],[]];delete entry.level1;delete entry.level2;}while(entry.levels.length<5)entry.levels.push([]);for(let level=1;level<=4;level++)entry.levels[level]=Array.isArray(entry.levels[level])?entry.levels[level]:[];return entry;}
     function enhancementCount(index,level=enhanceLevel){const entry=enhancementEntry(index);return level===0?Math.max(0,collectionState.owned[index]-entry.levels.slice(1).reduce((sum,cards)=>sum+cards.length,0)):entry.levels[level].length;}
     function rollEnhanceBonus(max){if(max<=0)return 0;const roll=Math.random()*100;if(max===1)return roll<60?0:1;return roll<60?0:roll<90?1:2;}
-    function selectEnhancement(index){enhanceSelected=index;enhanceLast=null;renderEnhancement();sfx('ui-select');}
+    function animateEnhancementEquip(index,from){const src=collectionCards[index]?.[1];if(!from||!from.width||!src||matchMedia('(prefers-reduced-motion: reduce)').matches)return;requestAnimationFrame(()=>{const slot=document.querySelector('#enhance-result .synth-card')||document.querySelector('#enhance-result'),to=slot?.getBoundingClientRect();if(!slot||!to?.width)return;const ghost=document.createElement('img');ghost.className='enhance-equip-fly';ghost.src=src;Object.assign(ghost.style,{left:from.left+'px',top:from.top+'px',width:from.width+'px',height:from.height+'px'});document.body.appendChild(ghost);const scale=Math.min(to.width/from.width,to.height/from.height),dx=to.left+(to.width-from.width*scale)/2-from.left,dy=to.top+(to.height-from.height*scale)/2-from.top;slot.style.visibility='hidden';ghost.animate([{transform:'translate(0,0) scale(1) rotate(0)',filter:'brightness(1)',opacity:.75},{transform:'translate('+(dx*.52)+'px,'+(dy*.45-70)+'px) scale('+((1+scale)*.56)+') rotate(-8deg)',filter:'brightness(1.65)',opacity:1,offset:.55},{transform:'translate('+dx+'px,'+dy+'px) scale('+scale+') rotate(0)',filter:'brightness(2.2)',opacity:1}],{duration:620,easing:'cubic-bezier(.2,.78,.18,1)',fill:'forwards'}).onfinish=()=>{ghost.remove();slot.style.visibility='';slot.classList.remove('enh-equip-land');void slot.offsetWidth;slot.classList.add('enh-equip-land');sfx('card-land','neutral',4);setTimeout(()=>slot.classList.remove('enh-equip-land'),850);};});}
+    function selectEnhancement(index,source){const fromNode=source?.querySelector?.('img')||source,from=fromNode?.getBoundingClientRect?.();enhanceSelected=index;enhanceLast=null;renderEnhancement();sfx('ui-select');animateEnhancementEquip(index,from);}
     function setEnhanceLevel(level){enhanceLevel=level;enhanceSelected=null;enhanceLast=null;renderEnhancement();}
     /* 대화 게이트: 이 캐릭터와 대화하는 페이지(characterId 기준)로 보낼 자리. 지금은 목업이라 안내만 잠깐 보여 준다 */
     function withAndParticle(name){const last=String(name).trim().slice(-1),code=last.charCodeAt(0)-0xAC00;return name+(code>=0&&code<11172&&code%28!==0?'과':'와');}/* 받침 있으면 '과', 없으면 '와' */
@@ -2703,7 +2706,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       const grid=document.querySelector('#enhance-grid');if(!grid)return;const rule=ENHANCE_RULES[enhanceLevel],eligible=collectionCards.map((_,index)=>index).filter(index=>!collectionIsSpell[index]&&enhancementCount(index)>0);
       document.querySelector('#enhance-level').innerHTML=[0,1,2,3].map(level=>'<button class="'+(enhanceLevel===level?'active':'')+'" onclick="setEnhanceLevel('+level+')">'+level+'차 → '+(level+1)+'차</button>').join('');
       document.querySelector('#enhance-count').textContent='동일 카드 '+ENHANCE_MATERIAL_COUNT+'장 필요 · 성공률 '+rule.chance+'%';
-      grid.innerHTML=eligible.map(index=>{const card=collectionCards[index],count=enhancementCount(index),rarity=rarityByCard[index];return '<button class="synth-pick '+rarity+(enhanceSelected===index?' picked':'')+'" onclick="selectEnhancement('+index+')"><span class="synth-spare">'+enhanceLevel+'차 '+count+'장</span><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>비용 '+card[3]+' · ⚔ '+card[4]+' · ♥ '+card[5]+'</small></button>';}).join('')||'<div class="gacha-empty">이 단계에서 강화할 수 있는 챔프 카드가 없습니다.</div>';
+      grid.innerHTML=eligible.map(index=>{const card=collectionCards[index],count=enhancementCount(index),rarity=rarityByCard[index];return '<button class="synth-pick '+rarity+(enhanceSelected===index?' picked':'')+'" onclick="selectEnhancement('+index+',this)"><span class="synth-spare">'+enhanceLevel+'차 '+count+'장</span><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>비용 '+card[3]+' · ⚔ '+card[4]+' · ♥ '+card[5]+'</small></button>';}).join('')||'<div class="gacha-empty">이 단계에서 강화할 수 있는 챔프 카드가 없습니다.</div>';
       const ready=enhanceSelected!==null&&enhancementCount(enhanceSelected)>=ENHANCE_MATERIAL_COUNT,go=document.querySelector('#enhance-go');go.disabled=!ready;if(ready)go.innerHTML='<span class="eg-main">✦ 강화하기</span><span class="eg-sub">성공 '+rule.chance+'% · 재료 '+ENHANCE_MATERIAL_COUNT+'장 · '+rule.label+'</span>';else go.textContent='같은 단계 카드 '+ENHANCE_MATERIAL_COUNT+'장을 고르세요';document.querySelector('#enhance-view .enhance-acquire')?.toggleAttribute('hidden',ready);/* 재료가 충분하면 '부족한 카드 얻기'는 숨긴다 */{/* 고른 카드의 원작으로 가는 게이트 버튼 (목업: 링크는 아직 동작하지 않는다) */const gate=document.querySelector('#enhance-gate'),def=enhanceSelected!==null?collectionCardDefs[enhanceSelected]:null;if(gate){gate.hidden=!def;if(def){gate.dataset.characterId=def.acquisition?.characterId||def.cardId;gate.dataset.label=withAndParticle(collectionCards[enhanceSelected][2])+' 대화하러 가기 ↗';if(!gate.classList.contains('notice'))gate.textContent=gate.dataset.label;}}}
       const attack='공격력 +0~'+rule.attackMax,health=rule.healthMax?' · 체력 +0~'+rule.healthMax:'',bonusOdds=rule.attackMax===1&&rule.healthMax===0?'+0 60% · +1 40%':'+0 60% · +1 30% · +2 10%';document.querySelector('#enhance-odds').innerHTML='<div class="enh-outcome ok"><small>성공 시</small><b>'+attack.replace('공격력 ','⚔ ')+health.replace(' · 체력 ',' · ♥ ')+'</b><span>'+bonusOdds+'</span></div><div class="enh-outcome ng"><small>실패 시</small><b>'+(ENHANCE_MATERIAL_COUNT-1)+'장 소멸</b><span>'+enhanceLevel+'차 카드 1장 유지</span></div>';/* 성공/실패 결과를 두 칸으로. 성공 확률은 슬롯 카드의 원형 게이지에 표시 */
       const result=document.querySelector('#enhance-result');if(enhanceLast){const card=collectionCards[enhanceLast.index],bonus='⚔ +'+enhanceLast.attack+' · ♥ +'+enhanceLast.health;result.innerHTML='<article class="synth-card '+(enhanceLast.success?'synth-pop ':'')+rarityByCard[enhanceLast.index]+'"><span class="new-badge">'+(enhanceLast.success?'성공':'실패')+'</span><img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+' · '+enhanceLast.level+'차</h4><small>'+(enhanceLast.success?bonus:(ENHANCE_MATERIAL_COUNT-1)+'장 소멸 · 단계 유지')+'</small></article>';}else result.innerHTML='<div class="synth-card unknown"><span>✦</span><small>'+rule.label+' 결과</small></div>';
@@ -2844,15 +2847,15 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       const help=document.querySelector('.deck-help');if(help&&!help.textContent.includes('더블클릭'))help.textContent='보유 카드를 더블클릭하거나 ＋ 버튼·드래그로 넣고, 덱 목록을 눌러(또는 보유 카드 영역으로 드래그해) 뺍니다.';
     })();
 
-    /* 강화 화면 보조: 3장 이상인 카드만 활성(위쪽), 나머지는 흐리게(아래쪽) · 더블클릭하면 카드가 왼쪽 슬롯으로 날아가 들어간다 */
+    /* 강화 화면 보조: 3장 이상인 카드만 활성(위쪽), 나머지는 흐리게(아래쪽) · 클릭하면 카드가 왼쪽 슬롯으로 날아가 들어간다 */
     (function(){
       if(typeof renderEnhancement!=='function')return;
-      const NEED=()=>typeof ENHANCE_MATERIAL_COUNT==='number'?ENHANCE_MATERIAL_COUNT:3,idxOf=btn=>Number((/selectEnhancement\((\d+)\)/.exec(btn.getAttribute('onclick')||'')||[])[1]);
+      const NEED=()=>typeof ENHANCE_MATERIAL_COUNT==='number'?ENHANCE_MATERIAL_COUNT:3,idxOf=btn=>Number((/selectEnhancement\((\d+)/.exec(btn.getAttribute('onclick')||'')||[])[1]);
       const base=renderEnhancement;
       renderEnhancement=function(...a){const r=base.apply(this,a);const grid=document.querySelector('#enhance-grid');if(!grid)return r;
         const buttons=[...grid.querySelectorAll('button.synth-pick')];if(!buttons.length)return r;const need=NEED();
         if(enhanceSelected!==null&&enhancementCount(enhanceSelected)<need&&!enhanceLast){enhanceSelected=null;}
-        const ready=[],short=[];buttons.forEach(btn=>{const i=idxOf(btn),n=enhancementCount(i);btn.dataset.index=i;btn.title=n>=need?'더블클릭하면 강화 슬롯에 들어갑니다':'같은 단계 카드가 '+need+'장 있어야 강화할 수 있습니다';
+        const ready=[],short=[];buttons.forEach(btn=>{const i=idxOf(btn),n=enhancementCount(i);btn.dataset.index=i;btn.title=n>=need?'클릭하면 강화 슬롯에 장착됩니다':'같은 단계 카드가 '+need+'장 있어야 강화할 수 있습니다';
           const tag=btn.querySelector('.synth-spare');if(tag)tag.textContent=n+' / '+need+'장';
           if(n>=need){btn.disabled=false;btn.classList.remove('enh-short');ready.push(btn);}else{btn.disabled=true;btn.classList.add('enh-short');btn.classList.remove('picked');short.push(btn);}});
         grid.innerHTML='';const head=(text,cnt,cls)=>{const h=document.createElement('div');h.className='synth-section'+(cls?' '+cls:'');h.innerHTML=text+' <b>'+cnt+'</b>';return h;};
@@ -2861,12 +2864,6 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         if(!ready.length&&short.length)grid.insertBefore(Object.assign(document.createElement('div'),{className:'gacha-empty enh-none',textContent:'이 단계에서 '+need+'장 이상 모은 카드가 없습니다.'}),grid.firstChild);
         const slot=document.querySelector('#enhance-result');if(slot&&!enhanceLast&&enhanceSelected!==null){const card=collectionCards[enhanceSelected],n=enhancementCount(enhanceSelected);slot.innerHTML='<article class="synth-card enh-slot '+rarityByCard[enhanceSelected]+'"><span class="new-badge">'+n+'장 보유</span><img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+' · '+enhanceLevel+'차</h4><small class="enh-mats" title="재료 '+need+'장 소모">재료 '+Array.from({length:need},(_,k)=>'<i class="'+(k<n?'on':'')+'"></i>').join('')+(n>need?'<em>+'+(n-need)+'</em>':'')+'</small><span class="enh-chance" style="--p:'+ENHANCE_RULES[enhanceLevel].chance+'" title="같은 단계의 같은 카드 '+need+'장을 다음 단계 카드 1장으로 강화합니다. 실패하면 '+(need-1)+'장이 소멸하고 같은 단계 카드 1장만 남습니다."><b>'+ENHANCE_RULES[enhanceLevel].chance+'%</b><small>성공</small></span></article>';}
         return r;};
-      document.addEventListener('dblclick',e=>{const btn=e.target.closest?.('#enhance-grid button.synth-pick');if(!btn||btn.disabled)return;e.preventDefault();getSelection?.().removeAllRanges();
-        const i=Number(btn.dataset.index),img=btn.querySelector('img'),from=(img||btn).getBoundingClientRect(),src=img?.getAttribute('src');selectEnhancement(i);
-        const slot=document.querySelector('#enhance-result .synth-card')||document.querySelector('#enhance-result');if(!slot||!src||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const to=slot.getBoundingClientRect();
-        const g=document.createElement('img');g.className='deck-fly';g.src=src;Object.assign(g.style,{left:from.left+'px',top:from.top+'px',width:from.width+'px',height:from.height+'px'});document.body.appendChild(g);
-        const sx=to.width/from.width,dx=to.left-from.left,dy=to.top-from.top;slot.style.visibility='hidden';
-        g.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate('+dx*.5+'px,'+(dy*.5-50)+'px) scale('+((1+sx)/2)+') rotate(-6deg)',offset:.5},{transform:'translate('+dx+'px,'+dy+'px) scale('+sx+')'}],{duration:480,easing:'cubic-bezier(.3,.7,.3,1)'}).onfinish=()=>{g.remove();slot.style.visibility='';slot.classList.remove('enh-land');void slot.offsetWidth;slot.classList.add('enh-land');};});
       renderEnhancement();
     })();
 

@@ -145,10 +145,17 @@ test('보안: 크래커/오로라 URL 옵션은 개발 환경에서만 동작한
   assert.ok(html.includes("preset=DEV_MODE?params.get('guardian'):null"), '?guardian must be gated by DEV_MODE');
 });
 
-test('개발 환경: 상점·소환 시연은 크래커 부족으로 막히지 않는다', () => {
-  assert.ok(html.includes('const DEV_CRACKER_FLOOR=999999;'), 'Local demo balance must have a generous named floor');
-  assert.ok(html.includes('if(DEV_MODE&&collectionState.crackers<DEV_CRACKER_FLOOR)'), 'The refill must be restricted to development hosts');
-  assert.ok(html.includes('const DEMO_COOKIE_FLOOR=500;') && html.includes('if(collectionState.cookieFragments<DEMO_COOKIE_FLOOR)'), 'Cookie fragments must be topped up to 500 on every host so the cookie reward gacha can be tried');
+test('공개 목업: 상점·소환 시연은 체험 재화 부족으로 막히지 않는다', () => {
+  assert.ok(html.includes('const DEMO_CRACKER_FLOOR=1000000,DEMO_COOKIE_FLOOR=50000;'), 'The public demo must have generous named currency floors');
+  assert.ok(html.includes('if(collectionState.crackers<DEMO_CRACKER_FLOOR)'), 'Crackers must be topped up on every demo host');
+  assert.ok(html.includes('if(collectionState.cookieFragments<DEMO_COOKIE_FLOOR)'), 'Cookie fragments must be topped up on every demo host');
+});
+
+test('강화 슬롯: 카드를 선택하면 비행·점등 장착 연출을 재생한다', () => {
+  assert.ok(html.includes('function animateEnhancementEquip(index,from)'), 'Enhancement selection needs a named equip animation');
+  assert.ok(html.includes("className='enhance-equip-fly'"), 'The selected card must fly to the enhancement slot');
+  assert.ok(html.includes("slot.classList.add('enh-equip-land')"), 'The enhancement slot must react when the card lands');
+  assert.ok(html.includes("onclick=\"selectEnhancement('+index+',this)\""), 'A regular click must provide the source card to the animation');
 });
 
 test('핵심가치: 상점 획득은 캐릭터별 어필 영상과 다시 보기를 제공한다', () => {
