@@ -1591,7 +1591,7 @@
       #synth-view .synth-altar { overflow:hidden; }
       #synth-view .synth-altar { width:clamp(270px,20vw,400px); }
       /* 재료 칸 영역이 패널의 남는 높이를 차지하고, 칸은 그 높이 안에 3줄이 들어가는 크기(카드 비율 3:4)로 — 합성 버튼이 항상 보인다 */
-      #synth-view .synth-slots { flex:1 1 0; min-height:220px; container-type:size; grid-template-columns:repeat(4,minmax(0,1fr)); grid-template-rows:auto repeat(3,auto); grid-auto-rows:auto; align-content:center; align-items:center; justify-items:center; }
+      #synth-view .synth-slots { flex:1 1 0; min-height:220px; container-type:size; grid-template-columns:repeat(3,minmax(0,1fr))/* 3×3 = 재료 9칸 (사용자 확정) */; grid-template-rows:auto repeat(3,auto); grid-auto-rows:auto; align-content:center; align-items:center; justify-items:center; }
       #synth-view .synth-slots > .synth-slot { width:min(100%,calc((100cqh - 30px - 3 * clamp(6px,.7vw,12px)) / 3 * .75)); }
       #synth-view .synth-altar { overflow-y:auto; overflow-x:hidden; }/* 좁아진 패널이 넘쳐도 합성 버튼이 잘리지 않게 스크롤 */
       #synth-view .synth-help { display:none; }/* 위 안내 줄과 내용이 겹친다 */
@@ -1608,16 +1608,11 @@
     .top-collection b { font-size:clamp(16px,1.25vw,21px); font-weight:900; letter-spacing:.02em; }
     .top-collection small { color:#d9bf8a; font-size:clamp(10px,.75vw,12px); font-weight:600; }
     .top-collection:hover { transform:translateY(-1px); filter:brightness(1.12); box-shadow:0 0 32px #f3bd6877,inset 0 1px 0 #ffe9a855; }
-    /* 강화·상점 버튼: 전투 UI(금색)와 구분되는 보라 계열. 전투 중엔 작게, 오로라 선택(대전 시작 전)엔 크게 강조 */
+    /* 강화·상점 버튼: 전투 UI(금색)와 구분되는 보라 계열. 진행 상태와 무관하게 상단 바 크기를 유지한다. */
     .top-collection { min-height:0; padding:7px 14px; border:1px solid #6d4fa0; border-radius:10px; background:linear-gradient(135deg,#2a1f40,#1a1626); color:#e2d2ff; box-shadow:none; }
     .top-collection b { font-size:clamp(12px,.9vw,14px); font-weight:800; }
     .top-collection small { display:none; }
     .top-collection:hover { filter:brightness(1.15); box-shadow:0 0 14px #9b6bff44; }
-    body:has(.guardian-select) .top-collection, body:has(.battle-intro) .top-collection { position:relative; z-index:330; min-height:clamp(52px,4vw,64px); padding:clamp(10px,.8vw,14px) clamp(20px,1.8vw,30px); border:2px solid #b48cff; border-radius:14px; background:linear-gradient(135deg,#4b2f7a,#2a1a48); color:#f3e9ff; box-shadow:0 0 26px #9b6bff77,inset 0 1px 0 #e3d0ff44; animation:top-collection-glow 2.2s ease-in-out infinite; }
-    body:has(.guardian-select) .top-collection b, body:has(.battle-intro) .top-collection b { font-size:clamp(17px,1.35vw,22px); font-weight:900; }
-    body:has(.guardian-select) .top-collection small, body:has(.battle-intro) .top-collection small { display:block; color:#cdb6f5; }
-    @keyframes top-collection-glow { 50% { box-shadow:0 0 40px #9b6bffaa,inset 0 1px 0 #e3d0ff66; } }
-    @media(prefers-reduced-motion:reduce){ .top-collection { animation:none!important; } }
     /* === 상단 컬렉션 바로가기 (개별 탭) === */
     .top-actions { align-items:center; gap:10px; }
     .top-actions > * { align-self:center; }
@@ -1627,11 +1622,6 @@
     .top-nav-btn.main { color:#e9dcff; }
     .top-nav-btn.current { background:#4b2f7a; color:#fff; box-shadow:inset 0 0 0 1px #b48cff; }
     #sound-toggle { min-height:36px; }
-    /* 대전 시작 전(인트로·오로라 선택): 바로가기를 크게, 위에 떠서 눌리게 */
-    body:has(.guardian-select) .top-nav, body:has(.battle-intro) .top-nav { position:relative; z-index:330; padding:5px; gap:5px; border:2px solid #b48cff; border-radius:16px; background:linear-gradient(135deg,#3a2560,#211836); box-shadow:0 0 26px #9b6bff66; animation:top-collection-glow 2.2s ease-in-out infinite; }
-    body:has(.guardian-select) .top-nav-btn, body:has(.battle-intro) .top-nav-btn { padding:11px 18px; font-size:clamp(14px,1.1vw,18px); }
-    body:has(.guardian-select) .top-nav-btn.main, body:has(.battle-intro) .top-nav-btn.main { background:#4b2f7a; color:#fff; }
-    body:has(.guardian-select) #sound-toggle, body:has(.battle-intro) #sound-toggle { min-height:46px; }
     /* 컬렉션 창이 열려 있으면 바로가기는 숨김 (창 안 탭이 같은 역할) */
     body:has(#collection-modal.show) .top-nav { visibility:hidden; animation:none; }
 </style>
@@ -2630,7 +2620,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     })();
 
     /* ===== 합성: 서로 다른 카드와 중복 카드를 자유롭게 섞어 다른 카드 생성 ===== */
-    const SYNTH_BASE_CHANCE=[0,10,18,25,31,36,40,43,46,48,49],SYNTH_MAX_CHANCE=49,SYNTH_MAX_MATERIALS=10;/* 재료 2~10장. 기본 확률 2장 18% … 10장 49%, 연속 실패 보정 포함 최종 상한 49% */
+    const SYNTH_BASE_CHANCE=[0,10,18,25,31,36,40,43,46,48],SYNTH_MAX_CHANCE=48,SYNTH_MAX_MATERIALS=9;/* 사용자 확정(2026-11-05): 재료 2~9장(3×3 칸), 기본 확률 2장 18% … 9장 48%, 연속 실패 보정을 받아도 최종 48%를 넘지 않는다. 회귀 테스트(save-and-economy)가 이 값을 고정한다 */
     var synthSlots=[],synthBusy=false,synthFilter='all',synthSort='default',synthDupOnly=false,synthLast=null,synthFailureStreak=0;
     function synthReserved(){return 1;}/* 합성 대상 원본 1장은 항상 남긴다. */
     function synthSpare(index){return Math.max(0,collectionState.owned[index]-1-synthSlots.filter(value=>value===index).length);}
@@ -2643,7 +2633,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       document.querySelector('.synth-altar').classList.toggle('busy',synthBusy);
       slotsEl.innerHTML='<div class="synth-slots-head"><b>재료 '+synthSlots.length+' / '+SYNTH_MAX_MATERIALS+'</b><small>'+(synthSlots.length<2?'카드를 2장 이상 넣으면 합성할 수 있습니다':'칸을 누르면 재료에서 뺍니다')+'</small></div>'+Array.from({length:SYNTH_MAX_MATERIALS},(_,pos)=>{const index=synthSlots[pos];if(index===undefined)return '<div class="synth-slot vacant" aria-hidden="true"><span>'+(pos+1)+'</span></div>';const card=collectionCards[index],rarity=rarityByCard[index];return '<button class="synth-slot filled '+rarity+'" onclick="synthRemove('+pos+')" title="'+card[2]+' · 눌러서 빼기"><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>'+(pos+1)+'</small></button>';}).join('');/* 재료 칸은 항상 SYNTH_MAX_MATERIALS(10)칸 */
       const ready=synthSlots.length>=2,chance=synthChance();
-      document.querySelector('#synth-odds').innerHTML=synthBusy?'<div class="synth-odds-hint">합성 결과를 확인하고 있습니다…</div>':ready?'<div class="synth-odd rare"><small>성공 확률</small><b>'+chance+'%</b></div>'+(()=>{const g=synthGuaranteeRarity(synthSlots);return '<div class="synth-odd '+g+'" title="성공하면 재료 중 가장 높은 등급 이상의 카드가 나옵니다"><small>성공 시 최소 등급</small><b>'+rarityLabel[g]+'</b></div>';})()+'<div class="synth-odds-hint">재료 '+synthSlots.length+'장 · 연속 실패 보정 +'+(synthFailureStreak*5)+'%p · 최종 상한 49%</div>':'<div class="synth-odds-hint">재료 2~'+SYNTH_MAX_MATERIALS+'장에 따라 성공 확률이 '+SYNTH_BASE_CHANCE[2]+'%에서 '+SYNTH_BASE_CHANCE[SYNTH_MAX_MATERIALS]+'%까지 높아집니다.</div>';
+      document.querySelector('#synth-odds').innerHTML=synthBusy?'<div class="synth-odds-hint">합성 결과를 확인하고 있습니다…</div>':ready?'<div class="synth-odd rare"><small>성공 확률</small><b>'+chance+'%</b></div>'+(()=>{const g=synthGuaranteeRarity(synthSlots);return '<div class="synth-odd '+g+'" title="성공하면 재료 중 가장 높은 등급 이상의 카드가 나옵니다"><small>성공 시 최소 등급</small><b>'+rarityLabel[g]+'</b></div>';})()+'<div class="synth-odds-hint">재료 '+synthSlots.length+'장 · 연속 실패 보정 +'+(synthFailureStreak*5)+'%p · 최종 상한 '+SYNTH_MAX_CHANCE+'%</div>':'<div class="synth-odds-hint">재료 2~'+SYNTH_MAX_MATERIALS+'장에 따라 성공 확률이 '+SYNTH_BASE_CHANCE[2]+'%에서 '+SYNTH_BASE_CHANCE[SYNTH_MAX_MATERIALS]+'%까지 높아집니다.</div>';
       const go=document.querySelector('#synth-go');go.disabled=!ready||synthBusy;go.textContent=synthBusy?'합성 중…':ready?'⚗ '+chance+'% 확률로 합성':'카드를 2장 이상 골라주세요';
       const result=document.querySelector('#synth-result');
       if(synthBusy)result.innerHTML='<div class="synth-card unknown synth-wait"><span>⚗</span><small>합성 중</small></div>';
