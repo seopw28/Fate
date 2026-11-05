@@ -170,7 +170,7 @@ test('핵심가치: 도감은 캐릭터별 4차 강화 완결 진척을 보여�
 });
 
 test('PRD: 카드 소환 가격은 1회 200, 10회 2,000이다', () => {
-  assert.ok(html.includes('const GACHA_SINGLE_COST=200,GACHA_TEN_COST=2000;'), 'Gacha costs must use named PRD values');
+  assert.ok(html.includes('const GACHA_SINGLE_COST=200,GACHA_TEN_COST=2000,COOKIE_SINGLE_COST=10,COOKIE_TEN_COST=100;'), 'Gacha costs must use named PRD values');
   assert.ok(html.includes('count===10?GACHA_TEN_COST:GACHA_SINGLE_COST'), 'Pull settlement must use the PRD costs');
 });
 
@@ -197,10 +197,13 @@ test('PRD: 강화는 0~4차, 재료 5장, 단계별 50%·40%·30%·20%를 적용
   assert.ok(html.includes('if(max===1)return roll<60?0:1'), 'A +0~1 bonus must use the 60%·40% distribution');
 });
 
-test('강화 목표는 직접 뽑기와 작품 젠돈 기반 쿠키조각 뽑기권에 연결된다', () => {
-  assert.ok(html.includes('작품 쿠키조각 교환소'), 'Shop must expose the work-bound cookie fragment exchange');
-  assert.ok(html.includes('해당 작품 등장인물 뽑기권'), 'Cookie fragments must exchange into a work-specific character ticket');
-  assert.ok(html.includes('부족한 카드 얻기 · 직접 뽑기 / 작품 뽑기권'), 'Enhancement must link back to both acquisition routes');
+test('쿠키조각은 젠돈·게임 승리에서 얻어 카드 뽑기에 직접 쓰는 공통 재화다', () => {
+  assert.ok(html.includes("window.grantCookieFragmentsFromGenerateDone"), 'Generate-done integration must grant cookie fragments');
+  assert.ok(html.includes('VICTORY_COOKIE_REWARD=10'), 'A valid game win must grant the prototype cookie reward');
+  assert.ok(html.includes("pullCards(1,'cookie')"), 'The shop must spend cookie fragments directly on card pulls');
+  assert.ok(html.includes('cookieRewardEvents'), 'Reward event IDs must be stored for duplicate prevention');
+  assert.ok(html.includes('부족한 카드 얻기 · 크래커 / 쿠키조각 뽑기'), 'Enhancement must link back to both direct pull currencies');
+  assert.ok(!html.includes('작품 쿠키조각 교환소'), 'The removed work-bound exchange must not remain');
 });
 
 test('궁극기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤에 적용한다', () => {
