@@ -96,6 +96,7 @@ STATES = [
     ("결과 닫기", "document.querySelector('#result').classList.remove('show','lose')"),
     ("챔프 소환 설명", "showEffectNarration('summon','S급 병기발명가 베카 · 공격력 99','공격 시 표식을 남기며, 표식 3개에서 4 피해로 폭발합니다. 아군이 쓰러지면 라운드마다 한 번 2/2 사령을 부릅니다.',600000);const n=document.querySelector('.effect-narration.summon p');n.textContent='공격 시 표식을 남기며, 표식 3개에서 4 피해로 폭발합니다. 아군이 쓰러지면 라운드마다 한 번 2/2 사령을 부릅니다.'"),
     ("챔프 소환 설명 닫기", "document.querySelectorAll('.effect-narration').forEach(n=>n.remove())"),
+    ("역전 마법 카드", "const h=document.querySelector('.hand');h.innerHTML='';['reversal.judgment','reversal.bulwark','reversal.giant-hunt','reversal.weight-toll','reversal.life-siphon','reversal.insight'].forEach(id=>h.appendChild(createRuntimeBattleCard(id)));setHandFilter('spell')"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
     ("수호신 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
 ]

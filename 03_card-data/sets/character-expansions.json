@@ -5238,6 +5238,174 @@
         ],
         "characterId": "akforest-nemu"
       }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "reversal.judgment",
+      "nameKey": "card.reversal_judgment",
+      "displayName": "되돌리는 심판",
+      "cardType": "spell",
+      "cost": 6,
+      "element": "neutral",
+      "rarity": "legendary",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "reversal_judgment",
+          "trigger": "next_round_start",
+          "target": "all_enemies",
+          "amount": 50,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/pending/judgment",
+      "deckLimit": 1,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "reversal.bulwark",
+      "nameKey": "card.reversal_bulwark",
+      "displayName": "반격의 방벽",
+      "cardType": "spell",
+      "cost": 3,
+      "element": "earth",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "reversal_bulwark",
+          "trigger": "next_round_start",
+          "target": "self",
+          "amount": 100,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/pending/bulwark",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "reversal.giant-hunt",
+      "nameKey": "card.reversal_giant_hunt",
+      "displayName": "거인 사냥",
+      "cardType": "spell",
+      "cost": 4,
+      "element": "wind",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "reversal_giant_hunt",
+          "trigger": "next_round_start",
+          "target": "all_enemies",
+          "amount": 30,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/pending/giant-hunt",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "reversal.weight-toll",
+      "nameKey": "card.reversal_weight_toll",
+      "displayName": "무게의 대가",
+      "cardType": "spell",
+      "cost": 8,
+      "element": "fire",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "reversal_weight_toll",
+          "trigger": "next_round_start",
+          "target": "all_enemies",
+          "amount": 5,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/pending/weight-toll",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "reversal.life-siphon",
+      "nameKey": "card.reversal_life_siphon",
+      "displayName": "생명 강탈",
+      "cardType": "spell",
+      "cost": 4,
+      "element": "water",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "reversal_life_siphon",
+          "trigger": "next_round_start",
+          "target": "strongest_ally",
+          "amount": 50,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/pending/life-siphon",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "reversal.insight",
+      "nameKey": "card.reversal_insight",
+      "displayName": "역전의 지혜",
+      "cardType": "spell",
+      "cost": 3,
+      "element": "neutral",
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "reversal_insight",
+          "trigger": "next_round_start",
+          "target": "self",
+          "amount": 10,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/pending/insight",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      }
     }
   ]
 }
