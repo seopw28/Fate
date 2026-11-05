@@ -182,8 +182,9 @@ test('PRD: 카드 뽑기는 전체 카드 풀·10회 보장·51번째 전설 보
 });
 
 test('PRD: 합성은 서로 다른 카드와 같은 카드 중복을 모두 허용한다', () => {
-  assert.ok(html.includes('const SYNTH_BASE_CHANCE=[0,10,18,25,31,36,40,43,46,48,49]'), 'Material count must use the PRD probability table');
-  assert.ok(html.includes('Math.min(SYNTH_MAX_CHANCE,(SYNTH_BASE_CHANCE[count]||0)+synthFailureStreak*5)'), 'Failure compensation must add 5%p and cap at 49%');
+  assert.ok(html.includes('const SYNTH_BASE_CHANCE=[0,10,18,25,31,36,40,43,46,48],SYNTH_MAX_CHANCE=48,SYNTH_MAX_MATERIALS=9;'), 'PRD 1.26: materials 2~9 (3x3), 9 materials = 48%, final cap 48%');
+  assert.ok(html.includes('Math.min(SYNTH_MAX_CHANCE,(SYNTH_BASE_CHANCE[count]||0)+synthFailureStreak*5)'), 'Failure compensation must add 5%p and cap at SYNTH_MAX_CHANCE (48%)');
+  assert.ok(html.includes('grid-template-columns:repeat(3,minmax(0,1fr))/* 3×3 = 재료 9칸'), 'Synthesis material slots must be a 3x3 grid');
   assert.ok(html.includes('const slots=[...synthSlots],count=slots.length,used=new Map()'), 'A synthesis attempt must aggregate mixed materials');
   assert.ok(html.includes('used.forEach((amount,index)=>collectionState.owned[index]-=amount)'), 'Materials must be consumed regardless of success');
 });
