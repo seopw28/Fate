@@ -2771,11 +2771,11 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     (function(){
       if(typeof DEV_MODE==='undefined'||!DEV_MODE||typeof enhancementEntry!=='function')return;
       const params=new URLSearchParams(location.search);if(!params.has('enhanceTest'))return;
-      const per=Math.max(5,Math.min(30,Math.floor(Number(params.get('enhanceTest'))||6))),picks=collectionCards.map((_,i)=>i).filter(i=>!collectionIsSpell[i]).slice(0,8);
-      picks.forEach((i,k)=>{const e=enhancementEntry(i);for(let lv=1;lv<=3;lv++)e.levels[lv]=Array.from({length:per},(_,n)=>({attack:Math.min(lv,(n+k)%3),health:lv>=2?(n%2):0}));e.levels[4]=[];
+      const per=Math.max(5,Math.min(30,Math.floor(Number(params.get('enhanceTest'))||6))),inDeck=[...new Set((collectionState.deck||[]).filter(i=>!collectionIsSpell[i]))],picks=[...inDeck,...collectionCards.map((_,i)=>i).filter(i=>!collectionIsSpell[i]&&!inDeck.includes(i))].slice(0,Math.max(8,inDeck.length));/* 메인 덱에 든 챔프부터 — 그래야 전투에서 강화 카드가 나온다 */
+      picks.forEach((i,k)=>{const e=enhancementEntry(i);for(let lv=1;lv<=3;lv++)e.levels[lv]=Array.from({length:per},(_,n)=>({attack:Math.min(lv,(n+k)%3),health:lv>=2?(n%2):0}));e.levels[4]=inDeck.includes(i)?[{attack:2,health:2}]:[];/* 메인 덱 카드는 4차 1장도: 전투 손패·필드에서 I~IV가 보이게 */
         const used=e.levels.slice(1).reduce((sum,cards)=>sum+cards.length,0);collectionState.owned[i]=Math.max(collectionState.owned[i]||0,used+per);});
       persistCollection();params.delete('enhanceTest');history.replaceState(null,'',location.pathname+(params.toString()?'?'+params:'')+location.hash);
-      setTimeout(()=>writeLog?.('<strong>개발용</strong> 강화 재료를 채웠습니다: 챔프 '+picks.length+'종 × 0~3차 각 '+per+'장.'),0);
+      setTimeout(()=>writeLog?.('<strong>개발용</strong> 강화 재료를 채웠습니다: 챔프 '+picks.length+'종(메인 덱 '+inDeck.length+'종 포함) × 0~3차 각 '+per+'장, 메인 덱 카드는 4차 1장 추가. 다음 판부터 전투 카드에 I~IV가 표시됩니다.'),0);
     })();
 </script>
 </body>
