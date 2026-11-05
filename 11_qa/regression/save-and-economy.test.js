@@ -191,6 +191,12 @@ test('PRD: 강화는 0~4차, 재료 5장, 단계별 50%·40%·30%·20%를 적용
   assert.ok(html.includes('if(max===1)return roll<60?0:1'), 'A +0~1 bonus must use the 60%·40% distribution');
 });
 
+test('강화 목표는 직접 뽑기와 작품 젠돈 기반 쿠키조각 뽑기권에 연결된다', () => {
+  assert.ok(html.includes('작품 쿠키조각 교환소'), 'Shop must expose the work-bound cookie fragment exchange');
+  assert.ok(html.includes('해당 작품 등장인물 뽑기권'), 'Cookie fragments must exchange into a work-specific character ticket');
+  assert.ok(html.includes('부족한 카드 얻기 · 직접 뽑기 / 작품 뽑기권'), 'Enhancement must link back to both acquisition routes');
+});
+
 test('궁극기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤에 적용한다', () => {
   assert.ok(html.includes('ULTIMATE_EFFECT_DELAY=ULTIMATE_OVERLAY_MS+30'), 'Effect delay must exceed the overlay duration');
   assert.ok(html.includes('},ULTIMATE_EFFECT_DELAY);setTimeout(()=>overlay.remove(),ULTIMATE_OVERLAY_MS);'), 'Effects must be scheduled with the named delay, not a fixed 900ms');
