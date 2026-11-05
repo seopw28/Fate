@@ -1453,6 +1453,18 @@
     .synth-stage .enh-shards i { position:absolute; left:0; top:0; width:10px; height:24px; background:linear-gradient(#ff8a7a,#7a1a22); clip-path:polygon(50% 0,100% 40%,60% 100%,0 60%); transform:rotate(var(--a)); animation:enh-shard .9s ease-out both; }
     @keyframes enh-shard { 0% { transform:rotate(var(--a)) translateY(0) scale(1.4); opacity:1; } 100% { transform:rotate(var(--a)) translateY(calc(var(--d) * -1)) scale(.4); opacity:0; } }
     @media(prefers-reduced-motion:reduce){ .synth-stage.enh-stage, .synth-stage.enh-stage * { animation:none!important; } }
+    /* 강화 단계 귀퉁이 표시 */
+    .synth-pick, .owned-card, .codex-card, .synth-card, .stage-card { position:relative; }
+    .enh-tier { position:absolute; inset:0; z-index:6; pointer-events:none; }
+    .enh-tier i { --o:clamp(4px,.4vw,7px); position:absolute; width:clamp(10px,.8vw,14px); height:clamp(10px,.8vw,14px); background:#fff1b8; filter:drop-shadow(0 0 1px #000) drop-shadow(0 0 4px #f3bd68); display:none; }
+    .enh-tier i.on { display:block; }
+    .enh-tier .c0 { top:var(--o); left:var(--o); clip-path:polygon(0 0,100% 0,0 100%); }
+    .enh-tier .c1 { top:var(--o); right:var(--o); clip-path:polygon(0 0,100% 0,100% 100%); }
+    .enh-tier .c2 { bottom:var(--o); right:var(--o); clip-path:polygon(100% 0,100% 100%,0 100%); }
+    .enh-tier .c3 { bottom:var(--o); left:var(--o); clip-path:polygon(0 0,100% 100%,0 100%); }
+    .stage-card .enh-tier i { --o:clamp(6px,.8vmin,10px); width:clamp(16px,1.8vmin,22px); height:clamp(16px,1.8vmin,22px); }
+    #enhance-grid .synth-pick .synth-spare { left:calc(10px + clamp(12px,1vw,16px)); }
+    .owned-card:has(.enh-tier i.on) .owned-count, .codex-card:has(.enh-tier i.on) .codex-no { margin-left:clamp(12px,1vw,16px); }
 </style>
 </head>
 <body>
@@ -2691,6 +2703,21 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         },1750);
         return result;};
       addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelector('.synth-stage.enh-stage.revealed'))close();});
+    })();
+
+    /* 강화 단계 표시: 카드 앞면 네 귀퉁이 끝을 작게 칠한다 (1차=1곳 … 4차=4곳, 왼위→오위→오아래→왼아래). 최소한으로만 보이게 */
+    (function(){
+      if(typeof renderEnhancement!=='function')return;
+      const ids=()=>typeof COLLECTION_CARD_IDS!=='undefined'?COLLECTION_CARD_IDS:[];
+      function topTier(index){const e=collectionState.cardEnhancements?.[ids()[index]],lv=e&&Array.isArray(e.levels)?e.levels:[];for(let t=4;t>=1;t--)if(Array.isArray(lv[t])&&lv[t].length)return t;return 0;}
+      function mark(el,tier){if(!el)return;el.querySelector(':scope > .enh-tier')?.remove();if(!(tier>0))return;const m=document.createElement('span');m.className='enh-tier';m.setAttribute('aria-label',tier+'차 강화');m.innerHTML=[0,1,2,3].map(i=>'<i class="c'+i+(i<tier?' on':'')+'"></i>').join('');el.appendChild(m);}
+      const baseEnh=renderEnhancement;renderEnhancement=function(...a){const r=baseEnh.apply(this,a);
+        document.querySelectorAll('#enhance-grid button.synth-pick').forEach(b=>mark(b,enhanceLevel));
+        const slot=document.querySelector('#enhance-result .synth-card:not(.unknown)');if(slot)mark(slot,enhanceLast?enhanceLast.level:enhanceLevel);return r;};
+      if(typeof renderDeckBuilder==='function'){const baseDeck=renderDeckBuilder;renderDeckBuilder=function(...a){const r=baseDeck.apply(this,a);document.querySelectorAll('#owned-grid .owned-card[data-index]').forEach(c=>mark(c,topTier(Number(c.dataset.index))));return r;};}
+      if(typeof renderCodex==='function'&&typeof codexEntries==='function'){const baseCodex=renderCodex;renderCodex=function(...a){const r=baseCodex.apply(this,a);const byNo=new Map(codexEntries().map(e=>[e.no,e]));const at=new Map(ids().map((id,i)=>[id,i]));
+        document.querySelectorAll('#codex-grid .codex-card').forEach(c=>{const no=Number((/selectCodex\((\d+)\)/.exec(c.getAttribute('onclick')||'')||[])[1]),e=byNo.get(no);if(e&&e.collected&&e.type==='champion')mark(c,topTier(at.get(e.def.cardId)));});return r;};}
+      new MutationObserver(()=>{const card=document.querySelector('.synth-stage.enh-stage.revealed .stage-card');if(card&&!card.querySelector('.enh-tier')&&enhanceLast)mark(card,enhanceLast.level);}).observe(document.body,{childList:true,subtree:true});
     })();
 </script>
 </body>
