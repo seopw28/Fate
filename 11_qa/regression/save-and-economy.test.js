@@ -106,7 +106,7 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes('const GUARDIAN_AWAKEN_HP=70'), 'Awakening must unlock at 70 hero HP');
   assert.ok(html.includes('playerHp<=GUARDIAN_AWAKEN_HP'), 'Runtime must detect the awakening health threshold');
   assert.ok(html.includes("guardianAwakenChoice=choice"), 'The selected awakening branch must be stored');
-  assert.ok(html.includes("const guardianAwakenActive=side=>side==='player'&&Boolean(guardianAwakenChoice)"), 'Awakening must remain active after selection');
+  assert.ok(html.includes('const guardianAwakenActive=side=>Boolean(guardianAwakenChoiceOf(side))'), 'Awakening must remain active for either side after selection');
   assert.ok(html.includes("jujak:{A:{name:'폭열',chance:.045,extraStrikes:2"), 'Fire must offer the balanced triple-strike branch');
   assert.ok(html.includes("B:{name:'순환',chance:.95,manaMin:2,manaMax:2"), 'Water must offer the reliable mana branch');
   assert.ok(html.includes("B:{name:'숲의 생명',chance:1,hpGain:1"), 'Wood must offer guaranteed steady growth');
@@ -114,10 +114,13 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("B:{name:'대지의 귀환',chance:.08,maxProcs:2,reviveRatio:.5"), 'Earth must offer limited half-health revival');
   assert.ok(!html.includes('GUARDIAN_AWAKEN_DURATION=1'), 'Persistent awakening must not retain the old one-turn duration');
   assert.ok(html.includes('left:var(--field-left);top:var(--field-top);width:var(--field-width);height:var(--field-height)'), 'Awakening choices must be constrained to the battlefield');
-  assert.ok(html.includes('.awaken-field-sigil{position:absolute'), 'The selected aura sigil must be engraved at field center');
-  assert.ok(html.includes("GUARDIANS[playerGuardian].sigil"), 'The field engraving must use the selected aura asset');
+  assert.ok(html.includes('.awaken-field-sigil{position:absolute'), 'The selected aura sigil must be engraved inside its card lane');
+  assert.ok(html.includes("GUARDIANS[id].sigil"), 'Each field engraving must use that side selected aura asset');
   assert.ok(html.includes("sigil.className='awaken-field-sigil engraving'"), 'The field sigil must enter with an engraving animation');
   assert.ok(html.includes('@keyframes awaken-field-sigil-engrave'), 'The engraving animation must stamp the aura into field center');
+  assert.ok(html.includes("chooseEnemyGuardianAwakening()"), 'The enemy must choose an awakening after crossing 70 HP');
+  assert.ok(html.includes("syncLaneSigil('enemy',enemyGuardian,arena.querySelector('.lane:first-child'))"), 'Enemy awakening must engrave its aura under the enemy card lane');
+  assert.ok(html.includes("syncLaneSigil('player',playerGuardian,arena.querySelector('.lane:nth-child(2)'))"), 'Player awakening must engrave its aura under the player card lane');
   assert.ok(html.includes("arena.classList.add('guardian-awakened','guardian-awakened-'+playerGuardian)"), 'Awakening must add a guardian-specific field aura');
   assert.ok(html.includes('.arena.guardian-awakened.guardian-awakened-cheongryong'), 'Guardian field aura must provide guardian-specific colors');
   assert.ok(html.includes("if(!playerGuardian)return '성격 오라 필요'"), 'No-aura mode must not receive an aura awakening');
