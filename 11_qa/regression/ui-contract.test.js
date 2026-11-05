@@ -119,7 +119,7 @@ test('궁극기 선택은 현재 성격 오로라와 같은 계열 카드를 시
   assert.ok(html.includes("card.classList.toggle('aura-ultimate-match',match)"), 'Matching cards must receive a dedicated highlight class');
   assert.ok(html.includes("card.classList.toggle('aura-ultimate-mismatch',Boolean(persona&&!match))"), 'Non-matching cards must be visually subdued');
   assert.ok(html.includes("cards.sort((a,b)=>Number(b.dataset.persona===persona)-Number(a.dataset.persona===persona))"), 'Matching aura cards must be sorted above the other ultimate candidates');
-  assert.ok(html.includes("content:'오로라 공명'"), 'Matching cards must explain why they are highlighted');
+  assert.ok(html.includes("content:'오로라 공명 · 마나 −2 · 대기 −1턴'"), 'Matching cards must explain why they are highlighted');
   assert.ok(html.includes('오로라 공명 추천'), 'Matching cards must expose an accessible recommendation description');
 });
 
