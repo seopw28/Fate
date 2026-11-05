@@ -1624,6 +1624,8 @@
     #sound-toggle { min-height:36px; }
     /* 컬렉션 창이 열려 있으면 바로가기는 숨김 (창 안 탭이 같은 역할) */
     body:has(#collection-modal.show) .top-nav { visibility:hidden; animation:none; }
+    /* 대전 시작 전 어두운 덮개(z 309) 위로 바로가기를 띄워, 크기는 그대로 두고 선명하게·누를 수 있게 보이게 한다 */
+    body:has(.guardian-select) .top-nav, body:has(.battle-intro) .top-nav { position:relative; z-index:330; }
 </style>
 </head>
 <body>
