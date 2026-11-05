@@ -2341,11 +2341,11 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     const guardianOfSide=side=>side==='player'?playerGuardian:enemyGuardian,sideOfUnit=unit=>unit.closest('.summon-zone')?'player':'enemy';
     const GUARDIAN_AWAKEN_HP=70;
     const GUARDIAN_AWAKEN_OPTIONS={
-      jujak:{A:{name:'폭열',chance:.045,extraStrikes:2,desc:'4.5% 확률로 최초 공격을 포함해 총 3회 공격'},B:{name:'연격',chance:.075,extraStrikes:1,desc:'7.5% 확률로 최초 공격을 포함해 총 2회 공격'}},
-      cheongryong:{A:{name:'범람',chance:.285,manaMin:4,manaMax:5,desc:'비용 2 이상 카드 사용 시 28.5% 확률로 마나 4~5 회복'},B:{name:'순환',chance:.95,manaMin:2,manaMax:2,desc:'비용 2 이상 카드 사용 시 95% 확률로 마나 2 회복'}},
+      jujak:{A:{name:'폭열',chance:.042,extraStrikes:2,desc:'4.2% 확률로 최초 공격을 포함해 총 3회 공격'},B:{name:'연격',chance:.075,extraStrikes:1,desc:'7.5% 확률로 최초 공격을 포함해 총 2회 공격'}},
+      cheongryong:{A:{name:'범람',chance:.27,manaMin:4,manaMax:5,desc:'비용 2 이상 카드 사용 시 27% 확률로 마나 4~5 회복'},B:{name:'순환',chance:1,manaMin:2,manaMax:2,desc:'비용 2 이상 카드 사용 시 항상 마나 2 회복'}},
       namu:{A:{name:'거목',chance:.325,hpGain:3,desc:'내 턴 시작 시 아군마다 32.5% 확률로 최대·현재 체력 +3'},B:{name:'숲의 생명',chance:1,hpGain:1,desc:'내 턴 시작 시 모든 아군의 최대·현재 체력 +1'}},
       baekho:{A:{name:'절단 반격',chance:.5,ratio:.4,minDamage:2,maxDamage:5,desc:'생존 시 50% 확률로 공격자에게 공격력 40% 반격 · 피해 2~5'},B:{name:'공진 반격',chance:.4,aoeDamage:1,desc:'생존 시 40% 확률로 적 전장 전체에 피해 1'}},
-      hyeonmu:{A:{name:'절대방어',chance:.035,avoidDamage:true,desc:'피해를 받을 때 3.5% 확률로 피해를 완전히 무효화'},B:{name:'불굴',chance:.09,maxProcs:2,reviveRatio:0,desc:'치명 피해 시 9% 확률로 체력 1 생존 · 최대 2회'}}
+      hyeonmu:{A:{name:'절대방어',chance:.035,avoidDamage:true,desc:'피해를 받을 때 3.5% 확률로 피해를 완전히 무효화'},B:{name:'불굴',chance:.095,maxProcs:2,reviveRatio:0,desc:'치명 피해 시 9.5% 확률로 체력 1 생존 · 최대 2회'}}
     };
     let guardianAwakenUsed=false,guardianAwakenChoice=null,enemyGuardianAwakenChoice=null,guardianAwakenPrompted=false;
     const guardianAwakenChoiceOf=side=>side==='player'?guardianAwakenChoice:enemyGuardianAwakenChoice;

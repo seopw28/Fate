@@ -59,12 +59,12 @@ const HERO_HP = 100, MANA_CAP = 10, START_MANA = 3, FIELD_LIMIT = 6, HAND_LIMIT 
 const AWAKEN_HP = 70;
 const AWAKENING_OPTIONS = {
   jujak: {
-    A: { label: '폭열', chance: 0.045, extraStrikes: 2 },
+    A: { label: '폭열', chance: 0.042, extraStrikes: 2 },
     B: { label: '연격', chance: 0.075, extraStrikes: 1 },
   },
   cheongryong: {
-    A: { label: '범람', chance: 0.285, manaMin: 4, manaMax: 5 },
-    B: { label: '순환', chance: 0.95, manaMin: 2, manaMax: 2 },
+    A: { label: '범람', chance: 0.27, manaMin: 4, manaMax: 5 },
+    B: { label: '순환', chance: 1.00, manaMin: 2, manaMax: 2 },
   },
   namu: {
     A: { label: '거목', chance: 0.325, hpGain: 3 },
@@ -76,7 +76,7 @@ const AWAKENING_OPTIONS = {
   },
   hyeonmu: {
     A: { label: '절대방어', chance: 0.035, avoidDamage: true },
-    B: { label: '불굴', chance: 0.09, maxProcs: 2, reviveRatio: 0 },
+    B: { label: '불굴', chance: 0.095, maxProcs: 2, reviveRatio: 0 },
   },
 };
 const AI = { atkWeight: 1, hpWeight: 0.7, manaWeight: 0.35 };
@@ -246,18 +246,32 @@ function batch(playerGuardian, enemyPicker, games, playerAwakening = null, enemy
   return { rate: (win + draw * 0.5) / games, win, games, rounds: rounds / games };
 }
 
+function seatAdjustedAwakeningPool(targetGuardian, targetOption, games) {
+  const others = IDS.filter(id => id !== targetGuardian);
+  const half = Math.floor(games / 2);
+  let score = 0, rounds = 0;
+  for (let i = 0; i < games; i++) {
+    const otherGuardian = others[Math.floor(rnd() * others.length)];
+    const otherOption = rnd() < 0.5 ? 'A' : 'B';
+    const targetIsPlayer = i < half;
+    const result = targetIsPlayer
+      ? playGame(targetGuardian, otherGuardian, rnd, targetOption, otherOption)
+      : playGame(otherGuardian, targetGuardian, rnd, otherOption, targetOption);
+    if (result.winner === 'draw') score += 0.5;
+    else if ((targetIsPlayer && result.winner === 'player') || (!targetIsPlayer && result.winner === 'enemy')) score++;
+    rounds += result.rounds;
+  }
+  return { rate: score / games, win: score, games, rounds: rounds / games };
+}
+
 if (AWAKENING_SIM) {
   console.log(`[오라 지속 각성] 영웅 체력 ${AWAKEN_HP} 이하 자동 발동 · 판수 ${GAMES}/선택지 · seed ${SEED} · ${SYM ? '대칭 모드' : '게임 모드'}`);
-  console.log('상대: 나머지 4개 오라 무작위 · 상대 A/B 균등 선택');
+  console.log('상대: 나머지 4개 오라 무작위 · 상대 A/B 균등 선택 · 양쪽 좌석 50:50 보정');
   const awakeningResults = {};
   for (const id of IDS) {
     awakeningResults[id] = {};
-    const others = IDS.filter(x => x !== id);
     for (const option of ['A', 'B']) {
-      let pendingEnemy = null;
-      const enemyPicker = () => { pendingEnemy = others[Math.floor(rnd() * others.length)]; return pendingEnemy; };
-      const enemyAwakeningPicker = () => rnd() < 0.5 ? 'A' : 'B';
-      const result = batch(id, enemyPicker, GAMES, option, enemyAwakeningPicker);
+      const result = seatAdjustedAwakeningPool(id, option, GAMES);
       awakeningResults[id][option] = result;
       console.log(`  ${GUARDIANS[id].name.padEnd(8)} ${option} ${AWAKENING_OPTIONS[id][option].label.padEnd(8)} ${pct(result.rate)} ±${ci(result.win, result.games).toFixed(2)}  (평균 ${result.rounds.toFixed(1)}라운드)`);
     }
