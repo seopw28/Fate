@@ -109,7 +109,8 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes('const guardianAwakenActive=side=>Boolean(guardianAwakenChoiceOf(side))'), 'Awakening must remain active for either side after selection');
   assert.ok(html.includes("jujak:{A:{name:'폭열',chance:.042,extraStrikes:2"), 'Fire must offer the balanced triple-strike branch');
   assert.ok(html.includes("B:{name:'순환',chance:1,manaMin:2,manaMax:2"), 'Water must offer the reliable mana branch');
-  assert.ok(html.includes("B:{name:'숲의 생명',chance:1,hpGain:1"), 'Wood must offer guaranteed steady growth');
+  assert.ok(html.includes("A:{name:'숲의 생명',chance:1,hpGain:1"), 'Wood must offer guaranteed whole-field growth');
+  assert.ok(html.includes("B:{name:'거목 수호',chance:.75,hpGain:2,leftmostOnly:true"), 'Wood must offer focused growth for the leftmost ally');
   assert.ok(html.includes("B:{name:'공진 반격',chance:.4,aoeDamage:1"), 'Metal must offer a low-damage whole-field counter distinct from its single-target branch');
   assert.ok(html.includes("A:{name:'절대방어',chance:.035,avoidDamage:true"), 'Earth must offer a very-low-chance absolute defense');
   assert.ok(html.includes("B:{name:'불굴',chance:.095,maxProcs:2,reviveRatio:0"), 'Earth must offer a stronger version of its base lethal survival');

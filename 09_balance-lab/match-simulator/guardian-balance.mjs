@@ -67,8 +67,8 @@ const AWAKENING_OPTIONS = {
     B: { label: '순환', chance: 1.00, manaMin: 2, manaMax: 2 },
   },
   namu: {
-    A: { label: '거목', chance: 0.325, hpGain: 3 },
-    B: { label: '숲의 생명', chance: 1.00, hpGain: 1 },
+    A: { label: '숲의 생명', chance: 1.00, hpGain: 1 },
+    B: { label: '거목 수호', chance: 0.75, hpGain: 2, leftmostOnly: true },
   },
   baekho: {
     A: { label: '절단 반격', chance: 0.50, ratio: 0.40, minDamage: 2, maxDamage: 5 },
@@ -152,7 +152,7 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
     }
   }
   // 나무의 오라: 자기 턴 시작에 필드의 카드마다 독립적으로 chance 확률로 체력 +1
-  function growNamu(side) { if (side.guardian !== 'namu' || !GUARDIANS.namu) return; const cfg = auraConfig(side, 'namu'); side.field.forEach(u => { if (rnd() < cfg.chance) { const gain = cfg.hpGain || 1; u.hp += gain; u.maxHp += gain; } }); }
+  function growNamu(side) { if (side.guardian !== 'namu' || !GUARDIANS.namu) return; const cfg = auraConfig(side, 'namu'), targets = cfg.leftmostOnly ? side.field.slice(0, 1) : side.field; targets.forEach(u => { if (rnd() < cfg.chance) { const gain = cfg.hpGain || 1; u.hp += gain; u.maxHp += gain; } }); }
   function healHero(side) { const before = side.hp; side.hp = Math.min(HERO_HP, side.hp + GUARDIANS.hyeonmu.amount); side.healed += side.hp - before; }
 
   // ── 대칭 모드: 한 쪽의 한 턴 ──

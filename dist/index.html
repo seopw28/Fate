@@ -2343,7 +2343,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     const GUARDIAN_AWAKEN_OPTIONS={
       jujak:{A:{name:'폭열',chance:.042,extraStrikes:2,desc:'4.2% 확률로 최초 공격을 포함해 총 3회 공격'},B:{name:'연격',chance:.075,extraStrikes:1,desc:'7.5% 확률로 최초 공격을 포함해 총 2회 공격'}},
       cheongryong:{A:{name:'범람',chance:.27,manaMin:4,manaMax:5,desc:'비용 2 이상 카드 사용 시 27% 확률로 마나 4~5 회복'},B:{name:'순환',chance:1,manaMin:2,manaMax:2,desc:'비용 2 이상 카드 사용 시 항상 마나 2 회복'}},
-      namu:{A:{name:'거목',chance:.325,hpGain:3,desc:'내 턴 시작 시 아군마다 32.5% 확률로 최대·현재 체력 +3'},B:{name:'숲의 생명',chance:1,hpGain:1,desc:'내 턴 시작 시 모든 아군의 최대·현재 체력 +1'}},
+      namu:{A:{name:'숲의 생명',chance:1,hpGain:1,desc:'내 턴 시작 시 전장에 있는 모든 아군의 최대·현재 체력 +1'},B:{name:'거목 수호',chance:.75,hpGain:2,leftmostOnly:true,desc:'내 턴 시작 시 75% 확률로 가장 왼쪽 아군의 최대·현재 체력 +2'}},
       baekho:{A:{name:'절단 반격',chance:.5,ratio:.4,minDamage:2,maxDamage:5,desc:'생존 시 50% 확률로 공격자에게 공격력 40% 반격 · 피해 2~5'},B:{name:'공진 반격',chance:.4,aoeDamage:1,desc:'생존 시 40% 확률로 적 전장 전체에 피해 1'}},
       hyeonmu:{A:{name:'절대방어',chance:.035,avoidDamage:true,desc:'피해를 받을 때 3.5% 확률로 피해를 완전히 무효화'},B:{name:'불굴',chance:.095,maxProcs:2,reviveRatio:0,desc:'치명 피해 시 9.5% 확률로 체력 1 생존 · 최대 2회'}}
     };
@@ -2397,7 +2397,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function auraMark(id){const aura=PERSONALITY_AURAS[id];if(!aura)return '';return '<span class="aura-mark aura-'+id+'" style="--ac:'+aura.color+'"><img src="'+aura.sigil+'" alt="'+aura.name+' 문양"></span>';}
     function growUnitHp(unit,amount,label){const hp=unit.querySelector('.stats span:last-child'),h=(Number(hp.textContent.replace(/[^0-9]/g,''))||0)+amount;hp.textContent='♥ '+h;unit.dataset.maxHp=String((Number(unit.dataset.maxHp)||h-amount)+amount);if(unit.dataset.hp)unit.dataset.hp=String(h);showSkillEffect('heal',unit,label);}
     /* 나무의 오라: 자기 턴이 시작될 때 필드의 카드마다 독립적으로 판정한다. 각성 선택에 따라 확률과 성장량이 바뀐다. */
-    function growNamuField(side){if(!guardianOfSide(side)||guardianOfSide(side)!=='namu')return 0;const lane=side==='player'?'.summon-zone':'.arena .lane:first-child',config=guardianAuraConfig(side,'namu'),amount=config.hpGain||1;let grown=0;document.querySelectorAll(lane+' > .unit:not([data-destroyed="true"])').forEach((unit,i)=>{if(!guardianProc(side,'namu'))return;grown++;setTimeout(()=>{if(unit.isConnected)growUnitHp(unit,amount,(config.name||'나무')+' · 체력 +'+amount);},i*90);});if(grown)writeLog('<strong>'+(side==='player'?'':'상대 ')+(config.name||'나무의 오라')+'</strong>로 필드 카드 '+grown+'장의 체력이 '+amount+'씩 늘었습니다.');return grown;}
+    function growNamuField(side){if(!guardianOfSide(side)||guardianOfSide(side)!=='namu')return 0;const lane=side==='player'?'.summon-zone':'.arena .lane:first-child',config=guardianAuraConfig(side,'namu'),amount=config.hpGain||1,units=[...document.querySelectorAll(lane+' > .unit:not([data-destroyed="true"])')],targets=config.leftmostOnly?units.slice(0,1):units;let grown=0;targets.forEach((unit,i)=>{if(!guardianProc(side,'namu'))return;grown++;setTimeout(()=>{if(unit.isConnected)growUnitHp(unit,amount,(config.name||'나무')+' · 체력 +'+amount);},i*90);});if(grown)writeLog('<strong>'+(side==='player'?'':'상대 ')+(config.name||'나무의 오라')+'</strong>로 '+(config.leftmostOnly?'가장 왼쪽 카드':'필드 카드 '+grown+'장')+'의 체력이 '+amount+' 늘었습니다.');return grown;}
     const startPlayerTurnBeforeAura=startPlayerTurn;
     startPlayerTurn=function(button){startPlayerTurnBeforeAura(button);if(battlePhase==='setup')growNamuField('player');};
     const enemyTurnBeforeAura=enemyTurn;
