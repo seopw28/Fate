@@ -1465,16 +1465,17 @@
     .gacha-orb { width:clamp(150px,13vw,260px); height:clamp(150px,13vw,260px); font-size:clamp(62px,5.5vw,110px); }
     .gacha-banner h3 { font-size:clamp(18px,1.6vw,28px); } .gacha-banner p { font-size:clamp(12px,1vw,16px); } .shop-tag { font-size:clamp(10px,.8vw,13px); }
     .gacha-actions button { padding:clamp(12px,1vw,20px); font-size:clamp(13px,1.1vw,18px); } .gacha-actions small { font-size:clamp(11px,.9vw,15px); }
-    .gacha-results { grid-template-columns:repeat(auto-fill,minmax(clamp(130px,10.5vw,230px),1fr)); gap:clamp(10px,1vw,18px); }
+    .gacha-results { grid-template-columns:repeat(5,minmax(0,1fr)); gap:clamp(10px,1vw,18px); }
     .pull-card { padding:clamp(10px,.8vw,14px); } .pull-card h4 { font-size:clamp(11px,.9vw,15px); } .pull-card small { font-size:clamp(9px,.75vw,12px); }
     .gacha-empty { font-size:clamp(13px,1vw,17px); }
     }
     /* --- 큰 창 미세 조정 --- */
     @media(min-width:901px){
     .gacha-placeholder { grid-column:1/-1; align-self:start; display:flex; flex-direction:column; align-items:center; gap:clamp(18px,2vw,34px); padding:clamp(8px,1vw,16px) 0; }
-    .gacha-placeholder .ghosts { width:100%; display:grid; grid-template-columns:repeat(5,1fr); gap:clamp(10px,1vw,18px); }
+    .gacha-placeholder .ghosts { width:100%; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:clamp(10px,1vw,18px); }
     .gacha-placeholder .ghost { aspect-ratio:4/5; display:grid; place-items:center; border:2px dashed #2f3a4a; border-radius:14px; background:linear-gradient(160deg,#151b24,#10151c); color:#2f3a4a; font-size:clamp(28px,3vw,56px); font-weight:800; }
     .gacha-placeholder p { margin:0; color:#748195; font-size:clamp(13px,1.1vw,18px); line-height:1.6; text-align:center; }
+    @media(max-width:780px){.gacha-placeholder .ghosts{grid-template-columns:repeat(2,minmax(0,1fr))}}
     .synth-card { width:clamp(120px,min(12.5vw,16vh),240px); }
     .synth-circle { width:clamp(180px,min(16vw,24vh),320px); height:clamp(180px,min(16vw,24vh),320px); }
     .synth-altar { gap:clamp(8px,.8vw,14px); }
