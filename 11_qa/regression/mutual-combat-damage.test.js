@@ -25,7 +25,7 @@ test('자동 공격은 반격이 구분된 뒤 다음 카드 공격을 시작한
   assert.ok(html.includes('function runCombatQueue(units,perform,done)'));
   assert.ok(html.includes('combatQueueHasNext=hasNext;combatBusyUntil=performance.now();perform(unit)'));
   assert.ok(html.includes('afterCombatSettles(next,hasNext)'));
-  assert.ok(html.includes('postCombatPause:463'));
+  assert.ok(html.includes('postCombatPause:278'));
   assert.ok(!html.includes('PLAYER_AUTO_ATTACK_INTERVAL'));
 });
 
