@@ -162,7 +162,7 @@
     .impact-ray { position:fixed; z-index:4; width:var(--ray-length); height:3px; border-radius:99px; transform-origin:left center; transform:rotate(var(--ray-angle)) scaleX(.05); pointer-events:none; background:linear-gradient(90deg,#fff,var(--fx-color) 28%,transparent); box-shadow:0 0 8px var(--fx-color); animation:ray-out .58s cubic-bezier(.1,.7,.2,1) forwards; }
     .particle.shard { position:fixed; z-index:5; width:var(--size); height:3px; border-radius:99px; pointer-events:none; transform-origin:left center; background:linear-gradient(90deg,#fff,var(--fx-color)); box-shadow:0 0 8px var(--fx-color); animation:shard-out var(--duration) cubic-bezier(.12,.6,.25,1) forwards; }
     .element-wisp { position:fixed; z-index:4; width:var(--size); height:var(--size); margin:calc(var(--size) / -2); border:2px solid var(--fx-color); border-radius:50%; pointer-events:none; filter:blur(.3px) drop-shadow(0 0 5px var(--fx-color)); animation:wisp-rise var(--duration) ease-out forwards; }
-    .unit.hit-react,.avatar.hit-react { animation:target-hit .42s cubic-bezier(.2,.9,.3,1) both; transform-origin:center; }
+    .unit.hit-react,.avatar.hit-react { animation:target-hit .68s cubic-bezier(.16,.84,.28,1) both; transform-origin:center; }
     .unit.field-attacker{z-index:7;filter:brightness(1.16) saturate(1.18);will-change:transform}.unit.field-target,.avatar.field-target{z-index:6;box-shadow:0 0 0 3px var(--target-color,#efca78),0 0 30px color-mix(in srgb,var(--target-color,#efca78) 58%,transparent);will-change:transform}/* 평타 궤적: 전면 컷인을 걷어낸 자리를 메우는 주연출. --hit(0~1, 피해 비중)에 따라
    두께·발광·잔상이 함께 커져 '주고받는 수치'가 화면에서 읽히게 한다 (2026-11-07) */
     .field-attack-line{position:fixed;z-index:5;height:calc(3px + 5px*var(--hit,.3));pointer-events:none;transform-origin:0 50%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--attack-color),#fff,var(--attack-color),transparent);filter:drop-shadow(0 0 calc(7px + 14px*var(--hit,.3)) var(--attack-color)) saturate(calc(1 + .6*var(--hit,.3)));animation:field-line calc(.48s - .12s*var(--hit,.3)) cubic-bezier(.12,.85,.25,1) both}
@@ -220,7 +220,16 @@
     @keyframes ray-out { 0%{transform:rotate(var(--ray-angle)) scaleX(.05);opacity:0} 18%{opacity:1} 100%{transform:rotate(var(--ray-angle)) scaleX(1);opacity:0} }
     @keyframes shard-out { 0%{transform:translate(0,0) rotate(var(--angle)) scaleX(.25);opacity:0} 12%{opacity:1} 100%{transform:translate(var(--dx),var(--dy)) rotate(var(--angle)) scaleX(1.4);opacity:0} }
     @keyframes wisp-rise { 0%{transform:translate(0,0) scale(.25);opacity:0} 20%{opacity:.8} 100%{transform:translate(var(--dx),var(--dy)) scale(1.5);opacity:0} }
-    @keyframes target-hit { 0%,100%{transform:translate(0) scale(1);filter:brightness(1)} 22%{transform:translate(7px,-2px) scale(.96);filter:brightness(2.15) saturate(1.4)} 52%{transform:translate(-5px,1px) scale(1.025);filter:brightness(1.25)} }
+/* 피격 반응: 맞은 쪽은 때린 방향 그대로(위로) 밀려난다. --knock-x/y는 fieldAttack이 공격자→대상
+       벡터와 피해량으로 계산해 넣는다. 밀려나는 구간을 길게 잡고 되돌아오는 길을 더 느리게 해 무게를 남긴다 (2026-11-07) */
+    @keyframes target-hit {
+      0%{transform:translate(0) scale(1);filter:brightness(1)}
+      16%{transform:translate(calc(var(--knock-x,6px)*.55),calc(var(--knock-y,-10px)*.55)) scale(.955);filter:brightness(2.15) saturate(1.4)}
+      38%{transform:translate(var(--knock-x,6px),var(--knock-y,-10px)) scale(.975);filter:brightness(1.5) saturate(1.2)}
+      62%{transform:translate(calc(var(--knock-x,6px)*.46),calc(var(--knock-y,-10px)*.46)) scale(1.02);filter:brightness(1.22)}
+      82%{transform:translate(calc(var(--knock-x,6px)*.14),calc(var(--knock-y,-10px)*.14)) scale(1.005)}
+      100%{transform:translate(0) scale(1);filter:brightness(1)}
+    }
     @media(prefers-reduced-motion:reduce){ .impact-ray,.particle.shard,.element-wisp,.asset-fx,.attack-trail{display:none}.arena.impact,.unit.hit-react,.avatar.hit-react{animation:none}.shockwave{animation-duration:.18s}.screen-flash{animation-duration:.18s} }
     .battle-rules { display:flex; align-items:center; justify-content:center; gap:8px; margin:10px 0 2px; min-height:32px; }
     .rule-chip { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border:1px solid #364354; border-radius:99px; background:#111823; color:#8f9bad; font-size:10px; }
@@ -696,10 +705,8 @@
     .guardian-select{position:fixed;inset:0;z-index:310;display:grid;grid-template-rows:minmax(0,1fr);justify-items:center;align-items:center;gap:clamp(6px,1.2vh,14px);overflow:auto;padding:clamp(8px,1.6vh,22px) clamp(10px,2vw,32px);background:radial-gradient(ellipse at center,#1b2536f5 0,#06090ffa 75%);animation:gs-in .45s ease both}
     .enemy-difficulty{margin-left:5px;padding:2px 7px;border:1px solid #596477;border-radius:99px;color:#cbd3df;font-size:9px;vertical-align:middle}
     /* 초보자 설명 모드: 상단 토글 + 실제 조작부에 붙는 짧은 맥락 설명 */
-    .beginner-help-toggle{display:inline-flex;align-items:center;gap:8px;padding:7px 10px!important;border-color:#72d79a77!important;background:#15271f!important;color:#c6f4d5!important}.beginner-help-toggle[hidden]{display:none}.beginner-help-toggle .toggle-track{position:relative;width:30px;height:17px;border-radius:99px;background:#4d5966;box-shadow:inset 0 1px 3px #0008}.beginner-help-toggle .toggle-track::after{content:'';position:absolute;top:3px;left:3px;width:11px;height:11px;border-radius:50%;background:#fff;transition:transform .18s}.beginner-help-toggle[aria-pressed="true"] .toggle-track{background:#49b978}.beginner-help-toggle[aria-pressed="true"] .toggle-track::after{transform:translateX(13px)}
-    .beginner-overview{position:fixed;z-index:32;left:calc(var(--field-left) + 14px);top:calc(var(--field-top) + 14px);width:min(560px,calc(var(--field-width) - 28px));box-sizing:border-box;padding:15px 18px;border:1px solid #72d79a88;border-radius:12px;background:#0c1714ee;box-shadow:0 12px 32px #000b,0 0 24px #72d79a22;color:#dcece3;pointer-events:none}.beginner-overview[hidden]{display:none}.beginner-overview strong{display:block;margin-bottom:6px;color:#8ee3aa;font-size:16px}.beginner-overview p{margin:0;font-size:14px;line-height:1.55;word-break:keep-all}.beginner-overview b{color:#fff}.beginner-overview .beginner-step{display:inline-block;margin-right:11px}
-    body.beginner-help [data-beginner-label]{position:relative;overflow:visible!important}body.beginner-help [data-beginner-label]::after{display:none;content:attr(data-beginner-label);position:absolute;z-index:45;left:8px;bottom:calc(100% + 10px);width:max-content;max-width:280px;padding:11px 15px;border:1px solid #72d79aaa;border-radius:10px;background:#102019fa;color:#e4ffec;font-size:max(14px,.88rem);font-weight:850;line-height:1.45;white-space:normal;word-break:keep-all;box-shadow:0 8px 26px #000c,0 0 24px #72d79a33;pointer-events:none}body.beginner-help [data-beginner-label].beginner-focus::after{display:block;animation:beginner-coach-in .38s cubic-bezier(.2,.8,.2,1) both,beginner-coach-pulse 1.35s .38s ease-in-out infinite}.arena [data-beginner-label]::after{left:50%;transform:translateX(-50%)}.duel-hud[data-beginner-label]::after{left:auto;right:10px;bottom:8px;transform:none}.beginner-help-toggle[data-beginner-label]::after{left:auto;right:0;top:calc(100% + 9px);bottom:auto;transform:none}.command-rail .hand-tabs[data-beginner-label]::after,.command-rail .hand[data-beginner-label]::after{left:auto;right:calc(100% + 14px);top:0;bottom:auto;transform:none}.turn-actions [data-beginner-label]::after{left:auto;right:calc(100% + 14px);top:50%;bottom:auto;transform:translateY(-50%)}body.beginner-help .beginner-focus{z-index:26;filter:brightness(1.08);box-shadow:0 0 0 2px #72d79a99,0 0 22px #72d79a44!important}body:has(.guardian-select) .beginner-help-toggle{position:relative;z-index:330}@keyframes beginner-coach-in{from{opacity:0;filter:brightness(1.8)}to{opacity:1;filter:brightness(1)}}@keyframes beginner-coach-pulse{50%{border-color:#b6f7ca;box-shadow:0 8px 30px #000c,0 0 34px #72d79a66}}@media(prefers-reduced-motion:reduce){body.beginner-help [data-beginner-label].beginner-focus::after{animation:none}}
-    @media(max-width:1100px){.beginner-overview{width:min(420px,calc(var(--field-width) - 20px));left:calc(var(--field-left) + 10px);top:calc(var(--field-top) + 10px)}body.beginner-help [data-beginner-label]::after{max-width:240px;font-size:14px}}
+    body.beginner-help [data-beginner-label]{position:relative;overflow:visible!important}body.beginner-help [data-beginner-label]::after{display:none;content:attr(data-beginner-label);position:absolute;z-index:45;left:8px;bottom:calc(100% + 10px);width:max-content;max-width:280px;padding:11px 15px;border:1px solid #72d79aaa;border-radius:10px;background:#102019fa;color:#e4ffec;font-size:max(14px,.88rem);font-weight:850;line-height:1.45;white-space:normal;word-break:keep-all;box-shadow:0 8px 26px #000c,0 0 24px #72d79a33;pointer-events:none}body.beginner-help [data-beginner-label].beginner-focus::after{display:block;animation:beginner-coach-in .38s cubic-bezier(.2,.8,.2,1) both,beginner-coach-pulse 1.35s .38s ease-in-out infinite}.arena [data-beginner-label]::after{left:50%;transform:translateX(-50%)}.duel-hud[data-beginner-label]::after{left:auto;right:10px;bottom:8px;transform:none}.command-rail .hand-tabs[data-beginner-label]::after,.command-rail .hand[data-beginner-label]::after{left:auto;right:calc(100% + 14px);top:0;bottom:auto;transform:none}.turn-actions [data-beginner-label]::after{left:auto;right:calc(100% + 14px);top:50%;bottom:auto;transform:translateY(-50%)}body.beginner-help .beginner-focus{z-index:26;filter:brightness(1.08);box-shadow:0 0 0 2px #72d79a99,0 0 22px #72d79a44!important}@keyframes beginner-coach-in{from{opacity:0;filter:brightness(1.8)}to{opacity:1;filter:brightness(1)}}@keyframes beginner-coach-pulse{50%{border-color:#b6f7ca;box-shadow:0 8px 30px #000c,0 0 34px #72d79a66}}@media(prefers-reduced-motion:reduce){body.beginner-help [data-beginner-label].beginner-focus::after{animation:none}}
+    @media(max-width:1100px){body.beginner-help [data-beginner-label]::after{max-width:240px;font-size:14px}}
     .gs-board{width:min(1240px,100%);height:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));grid-template-areas:'. n .' 'w c e' '. s .';gap:clamp(8px,1.4vh,16px) clamp(10px,1.4vw,22px)}
     .gs-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(2px,.6vh,8px);min-width:0;min-height:0;padding:clamp(8px,1.4vh,18px) clamp(12px,1.4vw,22px);border:2px solid #3a4658;border-radius:18px;background:linear-gradient(160deg,#243044,#121926);color:#dce5ef;text-align:center;cursor:pointer;transition:transform .16s,border-color .16s,box-shadow .16s}
     .gs-card:hover,.gs-card:focus-visible{transform:translateY(-4px) scale(1.02);outline:none}
@@ -1762,11 +1769,14 @@
     /* === 상단 컬렉션 바로가기 (개별 탭) === */
     .top-actions { align-items:center; gap:10px; }
     .top-actions > * { align-self:center; }
-    .top-nav { display:flex; align-items:stretch; gap:3px; padding:3px; border:1px solid #4b3a6e; border-radius:12px; background:#1a1626; }
-    .top-nav-btn { display:inline-flex; align-items:center; justify-content:center; padding:7px 12px; border-radius:9px; color:#cdbcef; font-size:clamp(12px,.9vw,14px); font-weight:700; text-decoration:none; white-space:nowrap; transition:background .15s,color .15s; }
-    .top-nav-btn:hover { background:#2e2348; color:#f1e8ff; }
-    .top-nav-btn.main { color:#e9dcff; }
-    .top-nav-btn.current { background:#4b2f7a; color:#fff; box-shadow:inset 0 0 0 1px #b48cff; }
+    /* 상단 바로가기는 헤더에서 가장 먼저 보여야 한다: 대비·글자·여백·아이콘을 키워 전시한다. */
+    .top-nav { display:flex; align-items:stretch; gap:4px; padding:4px; border:1px solid #7d5fc0; border-radius:14px; background:linear-gradient(180deg,#2a2140,#171327); box-shadow:0 2px 14px #0008,0 0 20px #7d5fc033,inset 0 1px 0 #ffffff14; }
+    .top-nav-btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:9px 15px; border-radius:10px; color:#e4d8ff; font-size:clamp(13px,1vw,15px); font-weight:800; letter-spacing:.01em; text-decoration:none; white-space:nowrap; text-shadow:0 1px 2px #0009; transition:background .15s,color .15s,transform .12s,box-shadow .15s; }
+    .top-nav-btn > i { font-size:1.08em; font-style:normal; line-height:1; opacity:.95; }
+    .top-nav-btn:hover { background:#4634709e; color:#fff; transform:translateY(-1px); box-shadow:0 0 14px #9b6bff55; }
+    .top-nav-btn.main { color:#ffe9b8; }
+    .top-nav-btn.tutorial { color:#bff0d2; }
+    .top-nav-btn.current { background:linear-gradient(180deg,#6b45ad,#4b2f7a); color:#fff; box-shadow:inset 0 0 0 1px #c4a4ff,0 0 16px #9b6bff66; }
     #sound-toggle { min-height:36px; }
     /* 컬렉션 창이 열려 있으면 바로가기는 숨김 (창 안 탭이 같은 역할) */
     body:has(#collection-modal.show) .top-nav { visibility:hidden; animation:none; }
@@ -1821,3 +1831,24 @@
     .spell-target-ring::after { content:attr(data-label); position:absolute; left:50%; top:-22px; transform:translateX(-50%); padding:2px 8px; border-radius:6px; background:#120d1ded; color:#fff; font-size:11px; font-weight:900; letter-spacing:.04em; white-space:normal; max-width:150px; text-align:center; }
     @keyframes spell-target-lock { 0%{opacity:0;transform:scale(1.5)} 45%{opacity:1;transform:scale(1)} 80%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(.98)} }
     @media(prefers-reduced-motion:reduce){ .spell-target-ring { animation-duration:.3s; } }
+
+    /* === 튜토리얼 탭 (상단 안내 배너를 대체) === */
+    .tutorial-view { min-height:0; flex-direction:column; }
+    .tutorial-body { min-height:0; flex:1; overflow:auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); align-content:start; gap:12px; padding:20px 22px 22px; }
+    .tut-card { padding:16px 18px; border:1px solid #3a4658; border-radius:13px; background:linear-gradient(160deg,#1b2230,#131822); }
+    .tut-card h3 { display:flex; align-items:center; gap:9px; margin:0 0 10px; color:#ffd477; font-size:15px; }
+    .tut-step { display:grid; place-items:center; flex:none; width:24px; height:24px; border-radius:50%; background:#4b2f7a; color:#fff; font-size:12px; font-weight:900; }
+    .tut-card ul { margin:0; padding-left:18px; }
+    .tut-card li { margin-bottom:7px; color:#c7d0dd; font-size:12px; line-height:1.65; word-break:keep-all; }
+    .tut-card li:last-child { margin-bottom:0; }
+    .tut-card b { color:#fff; }
+    @media(max-width:780px){ .tutorial-body { grid-template-columns:1fr; padding:16px; } }
+
+    /* 궁극기 효과 해설 (2026-11-07)
+       컷씬만 뜨고 무엇이 바뀌었는지 모르는 문제를 막는다. 컷씬이 걷힌 직후
+       효과 설명을 띄우고, 대상에는 조준 링이 함께 찍힌다. */
+    .effect-narration.ultimate { border-color:#d9b25f; border-left-color:#ffd874; background:linear-gradient(100deg,#241a0bf7,#141020f4); box-shadow:0 18px 55px #000d,0 0 38px #ffc65055; }
+    .effect-narration.ultimate small { color:#ffd874; }
+    .effect-narration.ultimate strong { word-break:keep-all; }
+    .spell-target-ring.ult { border-width:4px; animation-duration:.9s; }
+    .spell-target-ring.ult::after { font-size:12px; max-width:190px; }

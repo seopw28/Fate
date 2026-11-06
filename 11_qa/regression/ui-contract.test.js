@@ -289,3 +289,15 @@ test('카드 평타 동작은 툭 스치지 않고 크게 움직인다', () => {
   assert.ok(motions.includes('const amp = 1.12 + power * 0.42'), '모션 진폭이 1 이상이어야 한다');
   assert.ok(motions.includes('const lift = 66 + power * 58'), '내려찍기는 충분히 높이 떠야 한다');
 });
+
+test('피격 카드는 때린 방향 그대로 위로 밀려나고, 밀린 구간이 충분히 길다', () => {
+  // 예전에는 translate(7px,-2px) 고정이라 어디서 맞든 오른쪽으로 찔끔 움직였다.
+  assert.ok(!html.includes('22%{transform:translate(7px,-2px)'), '고정 방향 피격 반응으로 되돌리지 말 것');
+  assert.ok(html.includes("target.style.setProperty('--knock-y',(-reach*1.5).toFixed(1)+'px')"), '세로 밀림은 항상 위쪽이어야 한다');
+  assert.ok(html.includes("target.style.setProperty('--knock-x',(ux*reach*.55).toFixed(1)+'px')"), '가로 밀림은 실제 공격 각도를 따라야 한다');
+  assert.ok(html.includes('reach=16+38*hitWeight'), '밀리는 거리가 피해량에 비례해야 한다');
+  // 밀려난 구간을 길게 잡고 되돌아오는 길을 느리게 둔다.
+  assert.ok(html.includes('animation:target-hit .68s'), '피격 반응이 충분히 길어야 한다');
+  assert.ok(html.includes("setTimeout(()=>target.classList.remove('hit-react'),combatMs(700))"), '복귀 구간이 잘리면 안 된다');
+  assert.ok(html.includes('38%{transform:translate(var(--knock-x,6px),var(--knock-y,-10px))'), '최대 밀림 지점이 있어야 한다');
+});
