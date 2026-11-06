@@ -452,10 +452,16 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
             hitWeight=Math.max(0,Math.min(1,dealt/12)),
             lethalHit=dealt>0&&targetHp>0&&dealt>=targetHp;
       line.style.setProperty('--hit',hitWeight.toFixed(3));
+      /* 밀려나는 방향: 때린 쪽 반대로, 즉 공격자→대상 벡터를 그대로 이어받아 '위로' 밀린다.
+         예전에는 translate(7px,-2px) 고정이라 어디서 맞든 오른쪽으로 찔끔 움직여 힘의 방향이 읽히지 않았다.
+         세로 성분을 가중해 아래→위로 밀려나는 느낌을 분명히 하고, 피해량에 비례해 거리를 늘린다 (2026-11-07) */
+      {const push=Math.hypot(dx,dy)||1,ux=dx/push,reach=16+38*hitWeight;
+       target.style.setProperty('--knock-x',(ux*reach*.55).toFixed(1)+'px');
+       target.style.setProperty('--knock-y',(-reach*1.5).toFixed(1)+'px');}
       if(counter)line.classList.add('counter');
       if(lethalHit)line.classList.add('lethal');
       document.body.appendChild(line);slowCombatAnimations(line);const motion=pickAttackMotion(attacker,dx,dy,moveX,moveY),heroTarget=target.classList.contains('avatar'),visualTail=combatQueueHasNext?(heroTarget?COMBAT_TIMING.heroImpactTail:COMBAT_TIMING.cardImpactTail):0;markCombatBusy(combatMs(Math.round(motion.duration*motion.hit)+visualTail));attacker.animate(motion.keyframes,{duration:combatMs(motion.duration),easing:motion.easing});setTimeout(()=>{/* 착탄 연출: 타격 지점에 섬광 + 방사 파편 */
-        const burst=document.createElement('div');burst.className='field-impact-burst';
+        const burst=document.createElement('div');burst.className='field-impact-burst '+(motion.impact||'blunt');burst.style.setProperty('--impact-angle',Math.atan2(dy,dx)+'rad');
         burst.style.left=tx+'px';burst.style.top=ty+'px';
         burst.style.setProperty('--attack-color',color);burst.style.setProperty('--hit',hitWeight.toFixed(3));
         burst.innerHTML=Array.from({length:8},(_,i)=>'<i style="--i:'+i+'"></i>').join('');

@@ -1784,7 +1784,6 @@
     .top-nav-btn > i { font-size:1.08em; font-style:normal; line-height:1; opacity:.95; }
     .top-nav-btn:hover { background:#4634709e; color:#fff; transform:translateY(-1px); box-shadow:0 0 14px #9b6bff55; }
     .top-nav-btn.main { color:#ffe9b8; }
-    .top-nav-btn.tutorial { color:#bff0d2; }
     .top-nav-btn.current { background:linear-gradient(180deg,#6b45ad,#4b2f7a); color:#fff; box-shadow:inset 0 0 0 1px #c4a4ff,0 0 16px #9b6bff66; }
     #sound-toggle { min-height:36px; }
     /* 컬렉션 창이 열려 있으면 바로가기는 숨김 (창 안 탭이 같은 역할) */
@@ -1841,17 +1840,6 @@
     @keyframes spell-target-lock { 0%{opacity:0;transform:scale(1.5)} 45%{opacity:1;transform:scale(1)} 80%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(.98)} }
     @media(prefers-reduced-motion:reduce){ .spell-target-ring { animation-duration:.3s; } }
 
-    /* === 튜토리얼 탭 (상단 안내 배너를 대체) === */
-    .tutorial-view { min-height:0; flex-direction:column; }
-    .tutorial-body { min-height:0; flex:1; overflow:auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); align-content:start; gap:12px; padding:20px 22px 22px; }
-    .tut-card { padding:16px 18px; border:1px solid #3a4658; border-radius:13px; background:linear-gradient(160deg,#1b2230,#131822); }
-    .tut-card h3 { display:flex; align-items:center; gap:9px; margin:0 0 10px; color:#ffd477; font-size:15px; }
-    .tut-step { display:grid; place-items:center; flex:none; width:24px; height:24px; border-radius:50%; background:#4b2f7a; color:#fff; font-size:12px; font-weight:900; }
-    .tut-card ul { margin:0; padding-left:18px; }
-    .tut-card li { margin-bottom:7px; color:#c7d0dd; font-size:12px; line-height:1.65; word-break:keep-all; }
-    .tut-card li:last-child { margin-bottom:0; }
-    .tut-card b { color:#fff; }
-    @media(max-width:780px){ .tutorial-body { grid-template-columns:1fr; padding:16px; } }
 
     /* 궁극기 효과 해설 (2026-11-07)
        컷씬만 뜨고 무엇이 바뀌었는지 모르는 문제를 막는다. 컷씬이 걷힌 직후
@@ -1865,7 +1853,7 @@
 </head>
 <body><script data-ui-scale>/* ?scale=0.6~1.2 로 화면 배율 변경 (기본 .9, CSS --ui-scale) */(function(){var v=parseFloat(new URLSearchParams(location.search).get('scale'));if(v>=.6&&v<=1.2)document.documentElement.style.setProperty('--ui-scale',String(v));})();</script>
   <main class="app">
-    <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><b class="hand-guide" id="hand-guide" role="status" aria-live="polite">카드를 선택하세요</b><div class="top-actions"><span class="ghost cracker-wallet" hidden>◆ 크래커 <strong id="cracker-count">0</strong></span><nav class="top-nav" aria-label="컬렉션 바로가기"><a class="top-nav-btn" href="#덱편집" data-view="deck" onclick="event.preventDefault();openCollectionDirect('deck')">덱 편집</a><a class="top-nav-btn" href="#도감" data-view="codex" onclick="event.preventDefault();openCollectionDirect('codex')">도감</a><a class="top-nav-btn" href="#합성" data-view="synth" onclick="event.preventDefault();openCollectionDirect('synth')">합성</a><a class="top-nav-btn main" href="#강화" data-view="enhance" onclick="event.preventDefault();openCollectionDirect('enhance')">강화</a><a class="top-nav-btn main" href="#상점" data-view="gacha" onclick="event.preventDefault();openCollectionDirect('gacha')">상점</a></nav><div class="sound-wrap"><button class="ghost" id="sound-toggle" onclick="toggleSoundPanel()" aria-haspopup="true" aria-expanded="false">🔊 사운드</button><div class="sound-panel" id="sound-panel" hidden><label><span>배경음악</span><output id="bgm-value">45%</output><input type="range" id="bgm-slider" min="0" max="100" step="1" aria-label="배경음악 볼륨"></label><label><span>효과음</span><output id="sfx-value">35%</output><input type="range" id="sfx-slider" min="0" max="100" step="1" aria-label="효과음 볼륨"></label><button class="sound-mute" id="sound-mute" onclick="toggleMute()">🔇 전체 음소거</button></div></div></div></header>
+    <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><b class="hand-guide" id="hand-guide" role="status" aria-live="polite">카드를 선택하세요</b><div class="top-actions"><span class="ghost cracker-wallet" hidden>◆ 크래커 <strong id="cracker-count">0</strong></span><nav class="top-nav" aria-label="컬렉션 바로가기"><a class="top-nav-btn" href="#덱편집" data-view="deck" onclick="event.preventDefault();openCollectionDirect('deck')"><i aria-hidden="true">🂠</i>덱 편집</a><a class="top-nav-btn" href="#도감" data-view="codex" onclick="event.preventDefault();openCollectionDirect('codex')"><i aria-hidden="true">📖</i>도감</a><a class="top-nav-btn" href="#합성" data-view="synth" onclick="event.preventDefault();openCollectionDirect('synth')"><i aria-hidden="true">⚗</i>합성</a><a class="top-nav-btn main shop" href="#강화" data-view="enhance" onclick="event.preventDefault();openCollectionDirect('enhance')"><i aria-hidden="true">✦</i>강화</a><a class="top-nav-btn main shop" href="#상점" data-view="gacha" onclick="event.preventDefault();openCollectionDirect('gacha')"><i aria-hidden="true">◆</i>상점</a></nav><div class="util-group"><div class="sound-wrap"><button class="ghost" id="sound-toggle" onclick="toggleSoundPanel()" aria-haspopup="true" aria-expanded="false">🔊 사운드</button><div class="sound-panel" id="sound-panel" hidden><label><span>배경음악</span><output id="bgm-value">45%</output><input type="range" id="bgm-slider" min="0" max="100" step="1" aria-label="배경음악 볼륨"></label><label><span>효과음</span><output id="sfx-value">35%</output><input type="range" id="sfx-slider" min="0" max="100" step="1" aria-label="효과음 볼륨"></label><button class="sound-mute" id="sound-mute" onclick="toggleMute()">🔇 전체 음소거</button></div></div><button class="util-toggle" id="tutorial-toggle" type="button" role="switch" aria-checked="false" onclick="toggleTutorialMode()"><span class="toggle-track" aria-hidden="true"></span><span class="util-toggle-label">튜토리얼</span></button></div></div></header>
     <div class="layout">
       <section class="battle">
         <div class="status"><span>캐릭터 체험전 · 오라 역전</span><span>연쇄 <strong id="combo-count">0</strong> · 전투 기록 <strong>03:42</strong></span></div>
@@ -2375,10 +2363,16 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
             hitWeight=Math.max(0,Math.min(1,dealt/12)),
             lethalHit=dealt>0&&targetHp>0&&dealt>=targetHp;
       line.style.setProperty('--hit',hitWeight.toFixed(3));
+      /* 밀려나는 방향: 때린 쪽 반대로, 즉 공격자→대상 벡터를 그대로 이어받아 '위로' 밀린다.
+         예전에는 translate(7px,-2px) 고정이라 어디서 맞든 오른쪽으로 찔끔 움직여 힘의 방향이 읽히지 않았다.
+         세로 성분을 가중해 아래→위로 밀려나는 느낌을 분명히 하고, 피해량에 비례해 거리를 늘린다 (2026-11-07) */
+      {const push=Math.hypot(dx,dy)||1,ux=dx/push,reach=16+38*hitWeight;
+       target.style.setProperty('--knock-x',(ux*reach*.55).toFixed(1)+'px');
+       target.style.setProperty('--knock-y',(-reach*1.5).toFixed(1)+'px');}
       if(counter)line.classList.add('counter');
       if(lethalHit)line.classList.add('lethal');
       document.body.appendChild(line);slowCombatAnimations(line);const motion=pickAttackMotion(attacker,dx,dy,moveX,moveY),heroTarget=target.classList.contains('avatar'),visualTail=combatQueueHasNext?(heroTarget?COMBAT_TIMING.heroImpactTail:COMBAT_TIMING.cardImpactTail):0;markCombatBusy(combatMs(Math.round(motion.duration*motion.hit)+visualTail));attacker.animate(motion.keyframes,{duration:combatMs(motion.duration),easing:motion.easing});setTimeout(()=>{/* 착탄 연출: 타격 지점에 섬광 + 방사 파편 */
-        const burst=document.createElement('div');burst.className='field-impact-burst';
+        const burst=document.createElement('div');burst.className='field-impact-burst '+(motion.impact||'blunt');burst.style.setProperty('--impact-angle',Math.atan2(dy,dx)+'rad');
         burst.style.left=tx+'px';burst.style.top=ty+'px';
         burst.style.setProperty('--attack-color',color);burst.style.setProperty('--hit',hitWeight.toFixed(3));
         burst.innerHTML=Array.from({length:8},(_,i)=>'<i style="--i:'+i+'"></i>').join('');
@@ -2639,7 +2633,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     sfx=function(kind,variant='neutral',strength=3){if(soundOn&&sfxIsMuted(kind,variant))return;if(kind==='hit'&&soundOn){fateSfx.playHit(variant,strength,hitPan);return;}if(soundOn&&(kind==='frost-cast'||kind==='frost-shatter')&&fateSfx.playFrost(kind==='frost-cast'?'cast':'shatter'))return;return sfxBeforeVariety(kind,variant,strength);};
     function impact(target,damage,element='fire'){
       hitPan=panFor(target);sfx('hit',element,damage); const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches; const color=impactPalette[element]||impactPalette.fire;const hero=target.classList.contains('avatar');if(hero)heroHealthImpact(target,damage);/* 영웅 직접 피해: 체력바·화면 테두리에 더해, 아바타 자리에 오라 타격 이펙트를 작게 낸다(화면 전체 번쩍임·어둡힘·필드 흔들림은 생략) */ if(!hero){const arena=document.querySelector('.arena'); arena.classList.remove('impact'); void arena.offsetWidth; arena.classList.add('impact');slowCombatAnimations(arena);}const r=target.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
-      target.classList.remove('hit-react'); void target.offsetWidth; target.classList.add('hit-react');slowCombatAnimations(target);setTimeout(()=>target.classList.remove('hit-react'),combatMs(460));
+      target.classList.remove('hit-react'); void target.offsetWidth; target.classList.add('hit-react');slowCombatAnimations(target);setTimeout(()=>target.classList.remove('hit-react'),combatMs(700));/* 밀려났다 돌아오는 길(0.68초)을 끝까지 보여준 뒤 해제한다 */
       if(!hero){const vignette=document.createElement('div'); vignette.className='impact-vignette'; vignette.style.setProperty('--x',x+'px'); vignette.style.setProperty('--y',y+'px'); document.body.appendChild(vignette);slowCombatAnimations(vignette);setTimeout(()=>vignette.remove(),combatMs(700));
       const flash=document.createElement('div'); flash.className='fx screen-flash'; flash.style.background='radial-gradient(circle at '+x+'px '+y+'px,#fff9 0, '+color+'44 13%,transparent 44%)'; document.body.appendChild(flash);slowCombatAnimations(flash);setTimeout(()=>flash.remove(),combatMs(500));}
       const core=addCombatLayer('impact-core',x,y,color,520); addCombatLayer('shockwave',x,y,color,800); addCombatLayer('shockwave secondary',x,y,color,900);
