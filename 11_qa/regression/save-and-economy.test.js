@@ -102,19 +102,19 @@ test('물의 오라: 60% 확률로 마나 1~2를 회복한다', () => {
   assert.ok(html.includes("const rollPoseidonMana=side=>{const config=guardianAuraConfig(side,'cheongryong');return engineAdapter.randomInt(config.manaMin,config.manaMax);}"), 'Runtime recovery must roll the base or awakened configured range');
 });
 
-test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까지 유지한다', () => {
-  assert.ok(html.includes('const GUARDIAN_AWAKEN_HP=70'), 'Awakening must unlock at 70 hero HP');
+test('오라 각성: 체력 80 이하에서 양자택일하고 배틀 종료까지 유지한다', () => {
+  assert.ok(html.includes('const GUARDIAN_AWAKEN_HP=80'), 'Awakening must unlock at 80 hero HP');
   assert.ok(html.includes('playerHp<=GUARDIAN_AWAKEN_HP'), 'Runtime must detect the awakening health threshold');
   assert.ok(html.includes("guardianAwakenChoice=choice"), 'The selected awakening branch must be stored');
   assert.ok(html.includes('const guardianAwakenActive=side=>Boolean(guardianAwakenChoiceOf(side))'), 'Awakening must remain active for either side after selection');
-  assert.ok(html.includes("jujak:{A:{name:'폭열',chance:.044,extraStrikes:2"), 'Fire must offer the balanced triple-strike branch');
-  assert.ok(html.includes("A:{name:'범람',chance:.15,manaMin:8,manaMax:8"), 'Water must offer a rare fixed 8-mana branch');
-  assert.ok(html.includes("B:{name:'순환',chance:.8,manaMin:2,manaMax:3"), 'Water must offer the 80% reliable 2-3 mana branch');
+  assert.ok(html.includes("jujak:{A:{name:'폭열',chance:.055,extraStrikes:2"), 'Fire must offer the balanced triple-strike branch');
+  assert.ok(html.includes("A:{name:'범람',chance:.14,manaMin:7,manaMax:7"), 'Water must offer the tuned rare fixed-7-mana branch');
+  assert.ok(html.includes("B:{name:'순환',chance:.90,manaMin:2,manaMax:2"), 'Water must offer the tuned reliable fixed-2-mana branch');
   assert.ok(html.includes("A:{name:'숲의 생명',chance:1,hpGain:1"), 'Wood must offer guaranteed whole-field growth');
   assert.ok(html.includes("B:{name:'거목 수호',chance:.30,hpGain:5,leftmostOnly:true"), 'Wood must offer low-frequency, high-impact growth for the leftmost ally');
   assert.ok(html.includes("B:{name:'파쇄 공명',chance:.14,aoeDamage:3"), 'Metal must offer a rare but stronger whole-field counter distinct from its single-target branch');
-  assert.ok(html.includes("A:{name:'절단 반격',chance:.7,ratio:.3,minDamage:1,maxDamage:3"), 'Metal must offer a frequent low-damage single-target counter');
-  assert.ok(html.includes("A:{name:'암반 피부',chance:.7,damageReduction:1,minCost:4"), 'Earth rock skin must only protect champions costing four or more');
+  assert.ok(html.includes("A:{name:'절단 반격',chance:.8,ratio:.3,minDamage:1,maxDamage:3"), 'Metal must offer a frequent low-damage single-target counter');
+  assert.ok(html.includes("A:{name:'암반 피부',chance:.57,damageReduction:1,minCost:4"), 'Earth rock skin must only protect champions costing four or more');
   assert.ok(html.includes("B:{name:'절대방어',chance:.055,avoidDamage:true"), 'Earth must offer a low-chance absolute defense branch');
   assert.ok(html.includes("eligibleCost=Number(target.dataset.cost||0)>=(earth.minCost||0)"), 'Rock skin must enforce its cost eligibility in combat');
   assert.ok(!html.includes('GUARDIAN_AWAKEN_DURATION=1'), 'Persistent awakening must not retain the old one-turn duration');
@@ -241,7 +241,7 @@ test('궁극기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤�
 });
 
 test('궁극기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다시 쓸 수 있다', () => {
-  assert.ok(html.includes('ULTIMATE_BASE_MIN_TURN=5,ULTIMATE_STRONG_TURN_DELAY=2'), 'First ultimate timing must be turn 5 normally and turn 7 for strong cards');
+  assert.ok(html.includes('ULTIMATE_BASE_MIN_TURN=4,ULTIMATE_STRONG_TURN_DELAY=2'), 'First ultimate timing must be turn 4 normally and turn 6 for strong cards');
   assert.ok(html.includes('minTurn=ULTIMATE_BASE_MIN_TURN+(strong?ULTIMATE_STRONG_TURN_DELAY:0)'), 'Ultimate specs must use the balanced named turn thresholds');
   assert.ok(html.includes('const ULTIMATE_COOLDOWN_TURNS=3;'), 'Cooldown must be a single named constant');
   assert.ok(html.includes('const cooldown=ULTIMATE_COOLDOWN_TURNS-(auraUltimateMatch(ultimateState)?AURA_ULTIMATE_COOLDOWN_REDUCTION:0);'), 'Cooldown must come from the named constant, shortened only by aura resonance');
@@ -249,6 +249,28 @@ test('궁극기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다
   assert.ok(html.includes('const AURA_ULTIMATE_COOLDOWN_REDUCTION=1;'), 'Aura resonance shortens the cooldown by one turn');
   assert.ok(html.includes('function ultimateManaCost(spec){return spec?Math.max(1,spec.cost-(auraUltimateMatch(spec)'), 'Aura resonance always reduces ultimate mana, not only while awakened');
   assert.ok(html.includes('lastUltimateTurn=turnNumber;'), 'Activation must record the turn it was used');
+});
+
+test('궁극기: 맨 왼쪽 아군을 제물로 순서 고정 0/1 사용자를 배치하고 전장 6장에서는 잠긴다', () => {
+  assert.ok(html.includes("if(fieldCount>=FIELD_CARD_LIMIT)return '내 전장 6장 · 궁극기 사용 불가'"));
+  assert.ok(html.includes("if(fieldCount<1)return '제물로 삼을 아군 챔프 필요'"));
+  assert.ok(html.includes(".at(0),firstUse=!firstUltimateSpec"));
+  assert.ok(html.includes("summonBattleToken(spec.name,0,1,spec.element,'ultimate-spent')"));
+  assert.ok(html.includes('lane.prepend(unit)'));
+  assert.ok(html.includes("unit.dataset.ultimateSpent=firstUse?'first':'later'"));
+  assert.ok(html.includes("unit.dataset.orderLocked='true'"));
+  assert.ok(html.includes("unit.draggable=battlePhase==='setup'&&!locked"));
+  assert.ok(html.includes("unit.dataset.orderLocked==='true'"));
+  assert.ok(html.includes("target?.dataset.orderLocked==='true'"));
+});
+
+test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복수자로 한 번 등장한다', () => {
+  assert.ok(html.includes('function matchFirstUltimateCompanion(spec)'));
+  assert.ok(html.includes("!card.spell&&card.el===spec.element&&card.name!==spec.name"));
+  assert.ok(html.includes('if(avengerSummoned||!firstUltimateSpec||!firstUltimateCompanion)return null'));
+  assert.ok(html.includes("attack=firstUltimateSpec.attack+3,hp=firstUltimateSpec.hp+10"));
+  assert.ok(html.includes("summonBattleToken(partner.name,attack,hp,partner.el,'ultimate-avenger')"));
+  assert.ok(html.includes("if(side==='player')summonFirstUltimateAvenger()"));
 });
 
 test('궁극기: 땅 궁극기는 회복이 아니라 절대방어(+강한 카드는 부활)다', () => {
@@ -262,7 +284,8 @@ test('궁극기: 땅 궁극기는 회복이 아니라 절대방어(+강한 카�
 test('궁극기: 화염은 상대 마무리 조건이 아니라 내 열세에서 열린다', () => {
   assert.ok(html.includes("conditions={fire:'내 영웅 체력 '"), 'Fire ultimate UI must describe the player health comeback condition');
   assert.ok(html.includes("if(spec.element==='fire')return playerHp<=Math.round(HERO_MAX_HP*.75)"), 'Fire ultimate must unlock from low player health');
-  assert.ok(!html.includes("if(spec.element==='fire')return enemyHp<="), 'Fire ultimate must never depend on lowering the enemy hero first');
+  const playerCondition = html.match(/function ultimateCondition\(spec\)\{[^}]+\}/)?.[0] || '';
+  assert.ok(!playerCondition.includes("enemyHp<="), 'Player fire ultimate must never depend on lowering the enemy hero first');
 });
 
 test('손패: 사용 가능 여부 우선, 같은 등급 안에서는 가치(비용>공격력>체력) 높은 카드가 위', () => {
