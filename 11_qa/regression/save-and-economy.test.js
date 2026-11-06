@@ -116,7 +116,10 @@ test('오라 각성: 체력 80 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("A:{name:'숲의 생명',chance:1,hpGain:2"));
   assert.ok(html.includes("B:{name:'거목 수호',chance:.35,hpGain:5,leftmostOnly:true"));
   assert.ok(html.includes("A:{name:'숙련 가속',survivalStep:.42,maxChance:1,attackGain:4"));
-  assert.ok(html.includes("B:{name:'초경도 단련',survivalStep:.32,maxChance:.95,attackGain:6"));
+  assert.ok(html.includes("B:{name:'연속베기',continuousSlashRatio:.5"));
+  assert.ok(html.includes("opponents.find(unit=>unit!==defender)||opponents.find(unit=>unit===defender)"), 'Continuous Slash must prefer a different champion and fall back to the original target');
+  assert.ok(html.includes("{ratio:metal.continuousSlashRatio,noCounter:true,continuousSlash:true}"), 'The follow-up slash must deal reduced damage without causing a second counterattack');
+  assert.ok(html.includes('if(options.noCounter)return'), 'Combat must support a counter-free awakening follow-up');
   assert.ok(html.includes("A:{name:'암반 피부',chance:.12,damageReduction:1,minCost:4"));
   assert.ok(html.includes("B:{name:'절대방어',chance:.012,avoidDamage:true"));
   assert.ok(html.includes("eligibleCost=Number(target.dataset.cost||0)>=(earth.minCost||0)"), 'Rock skin must enforce its cost eligibility in combat');
