@@ -14,7 +14,7 @@
 | 1 | [01-overview.md](01-overview.md) | 승패, 자원, 한도 수치 한눈에 | 처음 인수받을 때 |
 | 2 | [02-turn-and-combat.md](02-turn-and-combat.md) | 시작 세팅, 턴 흐름, 전투·피해·상태이상 | 전투 규칙 문의, 버그 재현 |
 | 3 | [03-cards-and-effects.md](03-cards-and-effects.md) | 카드 유형·등급·효과 사전, 마법/함정 세팅 | 카드 기획·밸런스 |
-| 4 | [04-ultimate-and-comeback.md](04-ultimate-and-comeback.md) | 궁극기, 역전 돌진, 최후의 발악 | 역전/후반 시스템 |
+| 4 | [04-ultimate-and-comeback.md](04-ultimate-and-comeback.md) | 궁극기, 역전 돌진, 최후의 저항 | 역전/후반 시스템 |
 | 5 | [05-guardians.md](05-guardians.md) | 성격 오라 5종과 오라 각성 | 오라 밸런스 |
 | 6 | [06-economy-and-deck.md](06-economy-and-deck.md) | 크래커 경제, 소환(가챠), 덱 편성, 저장 데이터 | 과금·경제 설계 |
 | 7 | [07-opponent-ai.md](07-opponent-ai.md) | 상대 AI 행동, 공정성 장치 | 난이도 조정 |

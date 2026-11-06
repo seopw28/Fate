@@ -559,7 +559,7 @@ test('마법 시네마틱: 회복·아케인·보이드 계열은 전용 자산�
   assert.ok(html.includes("['bounce','resurrect','global-destroy'].includes(effect))showSpellCinematicEffect('void'"), 'Recall, resurrection, and destruction spells must use the void gate');
 });
 
-test('배경음악: 최후의 발악이 시작되면 각성 BGM으로 크로스페이드한다', () => {
+test('배경음악: 최후의 저항이 시작되면 각성 BGM으로 크로스페이드한다', () => {
   const html = require('node:fs').readFileSync(require('node:path').join(__dirname, '../../dist/index.html'), 'utf8');
   assert.ok(html.includes("awakening:new Audio('assets/audio/bgm-awakening.mp3')"), 'Awakening track must be loaded');
   assert.ok(require('node:fs').existsSync(require('node:path').join(__dirname, '../../dist/assets/audio/bgm-awakening.mp3')), 'Awakening mp3 must be shipped');

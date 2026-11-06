@@ -54,7 +54,7 @@ Constraints: transparent background (alpha), no characters, no text, no letters,
 
 ## (완료) 일러스트 없는 마법·함정
 
-> 2026-11-02: 사용자 제공 이미지로 모두 해결 — 치유의 샘·진홍의 화염구·화염 인장·빙결 사슬(숨김 해제), 함정 매복 지뢰·역류 장벽·최후의 저항. 영문 카드명은 한글로 변경.
+> 2026-11-02: 사용자 제공 이미지로 모두 해결 — 치유의 샘·진홍의 화염구·화염 인장·빙결 사슬(숨김 해제), 함정 매복 지뢰·역류 장벽·배수의 진. 영문 카드명은 한글로 변경.
 
 (참고: 프로토타입 `prototype.comeback-flare`(Comeback Ember), `chronicle.prophecy-of-ruin`(Omen of Ruin)은 일러스트가 없지만 출시 전 카드라 뒤로 미룬다.)
 

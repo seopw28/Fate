@@ -35,4 +35,4 @@
 | `spells/great-ruin.png` | `crack-261103-6ae943d95bb9a62dcb98bc53.png` | `dist/assets/spells/generated/great-ruin.webp` |
 | `spells/tempest.png` | `crack-261103-6ae943e68bb79dbec79826b5.png` | `dist/assets/spells/generated/tempest.webp` |
 
-메모: 매복 지뢰·최후의 저항·낙뢰·대지의 진동·폭풍우는 손패의 가로 띠에서 피사체가 보이도록 정사각형(1024×1024)으로 잘라 변환했다.
+메모: 매복 지뢰·배수의 진·낙뢰·대지의 진동·폭풍우는 손패의 가로 띠에서 피사체가 보이도록 정사각형(1024×1024)으로 잘라 변환했다.

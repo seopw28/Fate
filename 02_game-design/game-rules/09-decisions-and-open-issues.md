@@ -13,7 +13,7 @@
 | 상대 마나 = 내 최대 마나 | 상대가 마나를 덜 쓰던 비대칭을 없애고 "과한 선점 없이" 똑똑하게 만들기 위함 |
 | 승리 시 상대 크래커 최대 200 갈취 | 이기면 재화가 늘어나는 구조 |
 | 궁극기 배틀당 횟수 제한 없음, 사용 카드는 묘지 | 사용 가능 턴·마나·카드 소모가 자연스러운 제한. 부활 효과와 상호작용 |
-| 역전 돌진 + 최후의 발악 연출 | 밀리는 쪽에 반격 기회와 극적인 피드백 제공 |
+| 역전 돌진 + 최후의 저항 연출 | 밀리는 쪽에 반격 기회와 극적인 피드백 제공 |
 | URL 테스트 옵션은 개발 환경 전용 | 배포 주소에서 재화를 만드는 우회로 차단 |
 | UI 글자 넘침 금지 | 지마켓산스 적용 후 반복된 문제 → 검사기 도입 |
 | 카드 일러스트는 Codex 이미지 생성 사용 | Claude는 이미지 생성 불가. 코드로 그린 SVG는 품질이 낮아 쓰지 않음 |
@@ -76,7 +76,7 @@
 | 영웅 체력 60 → 100 | `HERO_MAX_HP` |
 | 단축키: 스페이스=탭 전환, Enter=턴 종료 | 기존 스페이스=턴 종료에서 변경 |
 | ~~불가침의 유나 (소환 턴 무적)~~ | 사용자 요청으로 카드 삭제(2026-11-02). 불가침 효과 코드는 남겨 둠 |
-| 역전 돌진 + 최후의 발악 연출·안내 | 내 영웅 체력이 최대 체력의 30% 이하 |
+| 역전 돌진 + 최후의 저항 연출·안내 | 내 영웅 체력이 최대 체력의 30% 이하 |
 | 궁극기 배틀당 횟수 제한 없음, 사용한 카드는 묘지로 이동 | `ULTIMATE_MAX_USES` (Infinity) |
 | 슬라임·남성 캐릭터 삭제 | 저장 데이터 마이그레이션 v6, v7 |
 | **피격 효과음 변주 + 평타 모션 6종** (Kenney CC0 샘플 + 합성음) | [10](10-audio-and-motion.md). 테스트 12개 추가 |
@@ -106,7 +106,7 @@
 
 | 작업 | 커밋 | 부분 되돌리기 |
 |---|---|---|
-| **역전 돌진 · 최후의 발악(게이지 연출·중앙 안내) · 궁극기 횟수 제한** | `5c17adf49` (궁극기 무제한으로의 변경은 `bd08279a4`) | `comebackRushActive`, `totalHealth`, `showDesperateNotice`, `updateDesperation`, CSS `.desperate*` 블록을 `dist/index.html`에서 제거 |
+| **역전 돌진 · 최후의 저항(게이지 연출·중앙 안내) · 궁극기 횟수 제한** | `5c17adf49` (궁극기 무제한으로의 변경은 `bd08279a4`) | `comebackRushActive`, `totalHealth`, `showDesperateNotice`, `updateDesperation`, CSS `.desperate*` 블록을 `dist/index.html`에서 제거 |
 | **게임 규칙서** `game-rules/01~09` | `5c17adf49` | 폴더 단위: `git checkout 5c17adf49~1 -- 02_game-design/game-rules` |
 | **피격 효과음 v1 + 평타 모션 6종 + Kenney 음원 + 측정 도구 초판** | `bd08279a4` (블랙타워 제외·새 인물 16명·궁극기 무제한과 함께) | 파일 단위: `05_game-client/battle/sfx-variety.js`, `attack-motions.js`, `dist/assets/audio/sfx/`, `dist/runtime/{sfx-variety,attack-motions}.js`, `12_tools/asset-pipeline/build-sfx.py`, `12_tools/qa/measure-sfx.py`, `12_tools/build-scripts/build-runtime.mjs`의 복사 2줄, `11_qa/regression/sfx-and-motion.test.js`, 규칙서 `10-audio-and-motion.md`. `dist/index.html`에서는 `fateSfx`, `panFor`, `hitPan`, `pickAttackMotion`, `.summon-zone:has(.field-attacker)` 블록 제거 후 `sfx`/`fieldAttack` 원복 |
 

@@ -123,6 +123,7 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("GUARDIANS[id].sigil"), 'Each field engraving must use that side selected aura asset');
   assert.ok(html.includes("sigil.className='awaken-field-sigil engraving'"), 'The field sigil must enter with an engraving animation');
   assert.ok(html.includes('@keyframes awaken-field-sigil-engrave'), 'The engraving animation must stamp the aura into field center');
+  assert.ok(html.includes("typeSkillTitle(fx.querySelector('.gdx-title'),g.name+' · 각성')"), 'Awakening title must not repeat the aura word');
   assert.ok(html.includes("chooseEnemyGuardianAwakening()"), 'The enemy must choose an awakening after crossing 70 HP');
   assert.ok(html.includes("syncLaneSigil('enemy',enemyGuardian,arena.querySelector('.lane:first-child'))"), 'Enemy awakening must engrave its aura under the enemy card lane');
   assert.ok(html.includes("syncLaneSigil('player',playerGuardian,arena.querySelector('.lane:nth-child(2)'))"), 'Player awakening must engrave its aura under the player card lane');
@@ -260,12 +261,12 @@ test('손패: 사용 가능 여부 우선, 같은 등급 안에서는 가치(비
   assert.ok(html.includes('function handCardValue(card)'), 'Card value must be a named helper');
 });
 
-test('최후의 발악: 내 턴 시작에 덱에서 카드를 1장 더 받는다', () => {
-  assert.ok(html.includes("drawCard();/* 최후의 발악: 내 턴 시작에 덱에서 1장 더 받는다"), 'Turn start must draw an extra card while desperate');
+test('최후의 저항: 내 턴 시작에 덱에서 카드를 1장 더 받는다', () => {
+  assert.ok(html.includes("drawCard();/* 최후의 저항: 내 턴 시작에 덱에서 1장 더 받는다"), 'Turn start must draw an extra card while desperate');
   assert.ok(html.includes("if(desperateActive('player')&&deck.length&&document.querySelectorAll('.hand .card').length<8){drawCard();"), 'Extra draw must respect deck and hand limits');
 });
 
-test('최후의 발악: 처음 발동된 내 턴에 한해 마법카드 1장을 즉시 발동', () => {
+test('최후의 저항: 처음 발동된 내 턴에 한해 마법카드 1장을 즉시 발동', () => {
   assert.ok(html.includes("desperateQuickCastTurn=battlePhase==='setup'?turnNumber:turnNumber+1"), 'Window must be the first player turn of desperation');
   assert.ok(html.includes("return desperateQuickCastTurn===turnNumber&&!desperateQuickCastUsed&&battlePhase==='setup';"), 'Quick cast is once, only in that turn');
   assert.ok(html.includes("if(quickCast){desperateQuickCastUsed=true;"), 'Playing a spell in the window must cast it instead of setting it');

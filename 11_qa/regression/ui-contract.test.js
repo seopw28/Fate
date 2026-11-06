@@ -193,7 +193,7 @@ test('space switches hand tabs and Enter ends the turn', () => {
   }
 });
 
-test('최후의 발악: 최대 마나가 11로 늘어나고, 발악이 풀리면 10으로 돌아간다', () => {
+test('최후의 저항: 최대 마나가 11로 늘어나고, 저항 상태가 해제되면 10으로 돌아간다', () => {
   assert.ok(html.includes('const DESPERATE_HP_RATIO=.3'), 'Desperation must start at thirty percent');
   assert.ok(html.includes('hp>0&&hp<=DESPERATE_HP'), 'Exactly thirty percent health must activate desperation');
   assert.ok(html.includes('const DESPERATE_MANA_CAP = 11;'), 'Desperation mana cap must be eleven');
