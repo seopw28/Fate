@@ -559,8 +559,8 @@ test('보호막 이미지: 유지 오라와 파괴 버스트가 실제 피해 �
     assert.ok(fs.existsSync(path.join(root, 'dist/assets/vfx/shield', file)), `${file} must be shipped`);
   }
   assert.ok(html.includes("attributeFilter:['data-shield']"), 'Shield aura must follow shield state changes');
-  assert.ok(html.includes("plating.className='shield-armor-vfx'"), 'Shielded cards must receive visible armor on both top corners');
-  assert.ok(html.includes("armor?.remove()"), 'Corner armor must disappear when the shield breaks');
+  assert.ok(!html.includes("plating.className='shield-armor-vfx'"), 'Shielded cards must not receive horn-like armor on their top corners');
+  assert.ok(html.includes("legacyArmor?.remove()"), 'Any stale horn-like shield armor must be removed');
   assert.ok(html.includes("burst.src='assets/vfx/shield/shield-break-v1.png'"), 'Shield break must use the generated burst asset');
 });
 
