@@ -1775,7 +1775,21 @@
     .top-nav-btn > i { font-size:1.08em; font-style:normal; line-height:1; opacity:.95; }
     .top-nav-btn:hover { background:#4634709e; color:#fff; transform:translateY(-1px); box-shadow:0 0 14px #9b6bff55; }
     .top-nav-btn.main { color:#ffe9b8; }
-    .top-nav-btn.tutorial { color:#bff0d2; }
+    /* 결제로 이어지는 강화·상점은 금색으로 한 단계 더 도드라지게 둔다. */
+    .top-nav-btn.shop { color:#ffdf9b; background:linear-gradient(180deg,#4a3a1c,#2e2412); box-shadow:inset 0 0 0 1px #b1884a66, 0 0 12px #e8bd6333; }
+    .top-nav-btn.shop:hover { background:linear-gradient(180deg,#604b24,#3b2f17); color:#fff4d6; box-shadow:inset 0 0 0 1px #d6a95e, 0 0 18px #e8bd6366; }
+    .top-nav-btn.shop.current { background:linear-gradient(180deg,#8a6526,#5b4319); color:#fff; box-shadow:inset 0 0 0 1px #ffd477, 0 0 18px #e8bd6377; }
+    /* 사운드·튜토리얼은 게임 진행용 보조 장치라 작고 조용하게 둔다 (상점 요소와 시각적으로 구분). */
+    .util-group { display:flex; align-items:center; gap:6px; }
+    .util-group #sound-toggle { padding:5px 9px !important; font-size:11px; min-height:0; opacity:.85; }
+    .util-group #sound-toggle:hover { opacity:1; }
+    .util-toggle { display:inline-flex; align-items:center; gap:6px; padding:5px 9px; border:1px solid #3c4657; border-radius:8px; background:#161c26; color:#8b96a8; font-size:11px; font-weight:700; opacity:.85; transition:color .15s,border-color .15s,background .15s,opacity .15s; }
+    .util-toggle:hover { opacity:1; color:#cfd8e6; }
+    .util-toggle .toggle-track { position:relative; width:24px; height:14px; border-radius:99px; background:#49535f; box-shadow:inset 0 1px 3px #0008; transition:background .18s; }
+    .util-toggle .toggle-track::after { content:''; position:absolute; top:2px; left:2px; width:10px; height:10px; border-radius:50%; background:#fff; transition:transform .18s; }
+    .util-toggle.on { border-color:#72d79a88; background:#15271f; color:#c6f4d5; opacity:1; }
+    .util-toggle.on .toggle-track { background:#3f9c68; }
+    .util-toggle.on .toggle-track::after { transform:translateX(10px); }
     .top-nav-btn.current { background:linear-gradient(180deg,#6b45ad,#4b2f7a); color:#fff; box-shadow:inset 0 0 0 1px #c4a4ff,0 0 16px #9b6bff66; }
     #sound-toggle { min-height:36px; }
     /* 컬렉션 창이 열려 있으면 바로가기는 숨김 (창 안 탭이 같은 역할) */
@@ -1832,17 +1846,6 @@
     @keyframes spell-target-lock { 0%{opacity:0;transform:scale(1.5)} 45%{opacity:1;transform:scale(1)} 80%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(.98)} }
     @media(prefers-reduced-motion:reduce){ .spell-target-ring { animation-duration:.3s; } }
 
-    /* === 튜토리얼 탭 (상단 안내 배너를 대체) === */
-    .tutorial-view { min-height:0; flex-direction:column; }
-    .tutorial-body { min-height:0; flex:1; overflow:auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); align-content:start; gap:12px; padding:20px 22px 22px; }
-    .tut-card { padding:16px 18px; border:1px solid #3a4658; border-radius:13px; background:linear-gradient(160deg,#1b2230,#131822); }
-    .tut-card h3 { display:flex; align-items:center; gap:9px; margin:0 0 10px; color:#ffd477; font-size:15px; }
-    .tut-step { display:grid; place-items:center; flex:none; width:24px; height:24px; border-radius:50%; background:#4b2f7a; color:#fff; font-size:12px; font-weight:900; }
-    .tut-card ul { margin:0; padding-left:18px; }
-    .tut-card li { margin-bottom:7px; color:#c7d0dd; font-size:12px; line-height:1.65; word-break:keep-all; }
-    .tut-card li:last-child { margin-bottom:0; }
-    .tut-card b { color:#fff; }
-    @media(max-width:780px){ .tutorial-body { grid-template-columns:1fr; padding:16px; } }
 
     /* 궁극기 효과 해설 (2026-11-07)
        컷씬만 뜨고 무엇이 바뀌었는지 모르는 문제를 막는다. 컷씬이 걷힌 직후

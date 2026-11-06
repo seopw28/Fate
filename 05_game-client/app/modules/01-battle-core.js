@@ -68,18 +68,41 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function attackRange(base){base=Number(base)||1;return {min:base,max:base+2};}
     function rollAttack(min,max){return engineAdapter.randomInt(Number(min),Number(max));}
     const ENEMY_DIFFICULTIES={normal:{label:'초보자',mistakeRate:.35,searchDepth:0},nightmare:{label:'나이트메어',mistakeRate:.10,searchDepth:1},hell:{label:'헬',mistakeRate:0,searchDepth:2}};
-    let enemyDifficulty='normal';
-    const enemyDifficultyConfig=()=>ENEMY_DIFFICULTIES[enemyDifficulty]||ENEMY_DIFFICULTIES.normal;
+    /* 난이도는 선택하지 않는다. 저장된 티어 점수·배치 전적으로 상대 실력에 맞춰 자동 결정한다 (matchEnemyDifficulty). */
+    let enemyDifficulty='normal',difficultyAutoMatched=false;
+    /* 튜토리얼 모드: 설명 UI를 켜는 동시에 상대 AI를 약하게 만든다 (실수를 더 섞고 앞수를 읽지 않는다).
+       난이도 자동 매칭 위에 덧씌우는 보조 장치라 티어가 높아도 켜면 쉬워진다. 선택은 브라우저에 저장한다. */
+    const TUTORIAL_KEY='fate.tutorialMode';
+    const TUTORIAL_HANDICAP={mistakeRate:.55,searchDepth:0};
+    let tutorialMode=(()=>{try{return localStorage.getItem(TUTORIAL_KEY)==='1';}catch(e){return false;}})();
+    function persistTutorialMode(){try{localStorage.setItem(TUTORIAL_KEY,tutorialMode?'1':'0');}catch(e){}}
+    const enemyDifficultyBase=()=>ENEMY_DIFFICULTIES[enemyDifficulty]||ENEMY_DIFFICULTIES.normal;
+    const enemyDifficultyConfig=()=>{const base=enemyDifficultyBase();return tutorialMode?{...base,...TUTORIAL_HANDICAP}:base;};
     let beginnerHelpEnabled=false,beginnerOverviewDismissed=false,beginnerOverviewTimer=null;
-    function ensureBeginnerHelpUi(){let toggle=document.querySelector('#beginner-help-toggle');if(!toggle){toggle=document.createElement('button');toggle.id='beginner-help-toggle';toggle.className='ghost beginner-help-toggle';toggle.type='button';toggle.setAttribute('role','switch');toggle.innerHTML='<span class="toggle-track" aria-hidden="true"></span><span class="toggle-label">설명 켜기</span>';toggle.addEventListener('click',()=>toggleBeginnerHelp());document.querySelector('.top-actions')?.prepend(toggle);}let overview=document.querySelector('#beginner-overview');if(!overview){overview=document.createElement('div');overview.id='beginner-overview';overview.className='beginner-overview';overview.setAttribute('role','status');overview.setAttribute('aria-live','polite');overview.innerHTML='<strong>처음이라면, 이번 턴은 이렇게 해보세요</strong><p><span class="beginner-step"><b>1.</b> 남은 마나 확인</span><span class="beginner-step"><b>2.</b> 비용이 낮은 챔프 선택</span><span class="beginner-step"><b>3.</b> 준비가 끝나면 턴 종료</span></p>';document.body.appendChild(overview);}const labels=[['.duel-hud','위는 상대, 아래는 나의 체력과 카드 수예요'],['.summon-zone','손패의 챔프를 누르면 여기에 소환돼요'],['.magic-field','마법을 미리 놓아 두는 자리예요'],['.hand-tabs','챔프와 마법 손패를 바꿔 볼 수 있어요'],['#draw-action','마나를 써서 손패를 한 장 늘려요'],['.turn-actions .end','준비가 끝났다면 눌러 공격을 시작해요'],['.mana-hud','이번 턴에 쓸 수 있는 마나예요. 카드 비용만큼 줄어요']];labels.forEach(([selector,label])=>document.querySelector(selector)?.setAttribute('data-beginner-label',label));return {toggle,overview};}
-    function syncBeginnerHelp(){const {toggle,overview}=ensureBeginnerHelpUi(),available=enemyDifficulty==='normal'&&!document.querySelector('.difficulty-select');toggle.hidden=!available;document.body.classList.toggle('beginner-help',available&&beginnerHelpEnabled);overview.hidden=!(available&&beginnerHelpEnabled)||beginnerOverviewDismissed;toggle.setAttribute('aria-pressed',String(available&&beginnerHelpEnabled));toggle.setAttribute('aria-label','초보자 설명 '+(beginnerHelpEnabled?'끄기':'켜기'));toggle.querySelector('.toggle-label').textContent='설명 '+(beginnerHelpEnabled?'끄기':'켜기');if(!(available&&beginnerHelpEnabled))clearBeginnerCoach();}
+    /* 상단 안내 배너와 설명 토글은 폐지했다 (튜토리얼 탭으로 이관). 조작부에 붙는 짧은 맥락 설명만 남긴다. */
+    const BEGINNER_LABELS=[['.duel-hud','위는 상대, 아래는 나의 체력과 카드 수예요'],['.summon-zone','손패의 챔프를 누르면 여기에 소환돼요'],['.magic-field','마법을 미리 놓아 두는 자리예요'],['.hand-tabs','챔프와 마법 손패를 바꿔 볼 수 있어요'],['#draw-action','마나를 써서 손패를 한 장 늘려요'],['.turn-actions .end','준비가 끝났다면 눌러 공격을 시작해요'],['.mana-hud','이번 턴에 쓸 수 있는 마나예요. 카드 비용만큼 줄어요']];
+    function ensureBeginnerHelpUi(){BEGINNER_LABELS.forEach(([selector,label])=>document.querySelector(selector)?.setAttribute('data-beginner-label',label));}
+    function syncBeginnerHelp(){ensureBeginnerHelpUi();const available=!document.querySelector('.guardian-select');document.body.classList.toggle('beginner-help',available&&beginnerHelpEnabled);if(!(available&&beginnerHelpEnabled))clearBeginnerCoach();}
+    /* 튜토리얼 모드 on/off: 설명 UI와 AI 핸디캡을 한 스위치로 묶는다. 전투 중에 꺼도 즉시 반영된다. */
+    function syncTutorialToggle(){const toggle=document.querySelector('#tutorial-toggle');if(!toggle)return;
+      toggle.setAttribute('aria-checked',String(tutorialMode));
+      toggle.setAttribute('aria-label','튜토리얼 모드 '+(tutorialMode?'끄기':'켜기')+' · 켜면 설명이 나오고 상대가 약해집니다');
+      toggle.classList.toggle('on',tutorialMode);}
+    function toggleTutorialMode(force){
+      tutorialMode=typeof force==='boolean'?force:!tutorialMode;persistTutorialMode();
+      beginnerHelpEnabled=tutorialMode;if(!tutorialMode)beginnerOverviewDismissed=true;
+      syncTutorialToggle();syncBeginnerHelp();
+      const label=document.querySelector('#enemy-difficulty');
+      if(label)label.textContent=enemyDifficultyBase().label+(tutorialMode?' · 튜토리얼':'');
+      if(typeof writeLog==='function')writeLog('<strong>튜토리얼 모드:</strong> '+(tutorialMode?'켬 · 설명이 표시되고 상대가 실수를 더 섞습니다.':'끔 · 상대가 제 실력으로 돌아옵니다.'));
+      if(tutorialMode&&guardianChosen)startBeginnerGuideSequence();
+    }
     let beginnerCoachTimer=0,beginnerSequenceTimers=[];
     function clearBeginnerCoach(){clearTimeout(beginnerCoachTimer);document.querySelectorAll('.beginner-focus').forEach(node=>node.classList.remove('beginner-focus'));}
-    function showBeginnerCoach(selector,message,duration=3600){if(!beginnerHelpEnabled||enemyDifficulty!=='normal')return;const target=document.querySelector(selector);if(!target)return;clearBeginnerCoach();if(message)target.setAttribute('data-beginner-label',message);target.classList.add('beginner-focus');beginnerCoachTimer=setTimeout(()=>target.classList.remove('beginner-focus'),duration);}
+    function showBeginnerCoach(selector,message,duration=3600){if(!beginnerHelpEnabled)return;const target=document.querySelector(selector);if(!target)return;clearBeginnerCoach();if(message)target.setAttribute('data-beginner-label',message);target.classList.add('beginner-focus');beginnerCoachTimer=setTimeout(()=>target.classList.remove('beginner-focus'),duration);}
     function showBeginnerEndTurnGuide(delay=0){const run=()=>showBeginnerCoach('.turn-actions .end','카드를 냈다면 준비 완료! 이제 턴 종료를 눌러 공격을 시작하세요.',5200);if(delay)beginnerSequenceTimers.push(setTimeout(run,delay));else run();}
-    function hideBeginnerOverview(){clearTimeout(beginnerOverviewTimer);beginnerOverviewDismissed=true;const overview=document.querySelector('#beginner-overview');if(overview)overview.hidden=true;}
-    function startBeginnerGuideSequence(){beginnerSequenceTimers.forEach(clearTimeout);beginnerSequenceTimers=[];if(!beginnerHelpEnabled)return;const overview=document.querySelector('#beginner-overview');beginnerOverviewDismissed=false;overview.hidden=false;clearTimeout(beginnerOverviewTimer);beginnerOverviewTimer=setTimeout(hideBeginnerOverview,4800);showBeginnerCoach('.mana-hud','먼저 마나를 확인하세요. 카드 왼쪽 위 숫자가 필요한 마나예요.',3200);beginnerSequenceTimers.push(setTimeout(()=>showBeginnerCoach('.hand-tabs','이제 챔프 손패에서 마나 이하인 카드를 골라보세요.',4000),3400));beginnerSequenceTimers.push(setTimeout(()=>showBeginnerCoach('.turn-actions .end','카드를 모두 골랐다면 이 버튼으로 공격을 시작해요.',4200),7800));}
-    function toggleBeginnerHelp(force){beginnerHelpEnabled=typeof force==='boolean'?force:!beginnerHelpEnabled;if(beginnerHelpEnabled)beginnerOverviewDismissed=false;else hideBeginnerOverview();syncBeginnerHelp();if(beginnerHelpEnabled&&guardianChosen)startBeginnerGuideSequence();}
+    function hideBeginnerOverview(){clearTimeout(beginnerOverviewTimer);beginnerOverviewDismissed=true;}
+    function startBeginnerGuideSequence(){beginnerSequenceTimers.forEach(clearTimeout);beginnerSequenceTimers=[];if(!beginnerHelpEnabled)return;beginnerOverviewDismissed=false;showBeginnerCoach('.mana-hud','먼저 마나를 확인하세요. 카드 왼쪽 위 숫자가 필요한 마나예요.',3200);beginnerSequenceTimers.push(setTimeout(()=>showBeginnerCoach('.hand-tabs','이제 챔프 손패에서 마나 이하인 카드를 골라보세요.',4000),3400));beginnerSequenceTimers.push(setTimeout(()=>showBeginnerCoach('.turn-actions .end','카드를 모두 골랐다면 이 버튼으로 공격을 시작해요.',4200),7800));}
     function rollPowerGrade(){const roll=engineAdapter.random();return roll<.15?{key:'a',label:'A급',bonus:2}:roll<.50?{key:'b',label:'B급',bonus:1}:{key:'c',label:'C급',bonus:0};}
     function gradeCardData(data,side){if(data.spell)return data;const grade=rollPowerGrade(side==='player'?'player':'enemy');return {...data,grade,atkFinal:Number(data.atk)+grade.bonus};}
     function applyPowerGrade(card,base){const grade=rollPowerGrade('player'),attack=Number(base)+grade.bonus;card.classList.remove('grade-a','grade-b','grade-c','grade-s');card.classList.add('grade-'+grade.key);card.dataset.atk=attack;card.dataset.baseAtk=base;card.dataset.grade=grade.key;card.dataset.gradeBonus=grade.bonus;card.querySelector('.power-grade')?.remove();const badge=document.createElement('span');badge.className='power-grade';badge.textContent=String(grade.key).toUpperCase();badge.title=grade.label;const statsRow=card.querySelector('.card-stats');if(statsRow&&statsRow.lastElementChild&&statsRow.children.length>=2)statsRow.insertBefore(badge,statsRow.lastElementChild);else card.appendChild(badge);const attackNode=card.querySelector('.card-stats span:first-child');if(attackNode)attackNode.innerHTML='⚔ '+attack+(grade.bonus?'<small class="grade-bonus">+'+grade.bonus+'</small>':'');return grade;}
@@ -150,6 +173,26 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     let rankState=loadRankState(),lastRankResult=null;
     function persistRank(){try{localStorage.setItem(RANK_KEY,JSON.stringify(rankState));}catch(e){}}
     function tierFor(score){if(score>=800)return {name:'플래티넘',icon:'✦',floor:800,ceil:1000};if(score>=600)return {name:'골드',icon:'◆',floor:600,ceil:800};if(score>=400)return {name:'실버',icon:'◇',floor:400,ceil:600};return {name:'브론즈',icon:'◈',floor:0,ceil:400};}
+    /* 티어 점수를 난이도로 환산한다. 배치(5전) 전에는 아직 실력을 모르므로 초보자로 시작한다.
+       실버 이하=초보자 / 골드=나이트메어 / 플래티넘=헬. 최근 전적이 한쪽으로 치우치면 한 단계 보정한다. */
+    const DIFFICULTY_LADDER=['normal','nightmare','hell'];
+    function matchEnemyDifficulty(){
+      if(rankState.placementPlayed<5)return 'normal';
+      const score=rankState.score;let step=score>=800?2:score>=600?1:0;
+      const recent=rankState.history.slice(0,5);
+      if(recent.length>=3){const wins=recent.filter(r=>r.win).length;
+        if(wins===recent.length)step=Math.min(2,step+1);
+        else if(wins===0)step=Math.max(0,step-1);}
+      return DIFFICULTY_LADDER[step];
+    }
+    function applyMatchedDifficulty(){
+      enemyDifficulty=matchEnemyDifficulty();difficultyAutoMatched=true;
+      beginnerHelpEnabled=tutorialMode;beginnerOverviewDismissed=false;
+      const config=enemyDifficultyConfig(),label=document.querySelector('#enemy-difficulty');
+      if(label)label.textContent=config.label+(tutorialMode?' · 튜토리얼':'');
+      syncBeginnerHelp();
+      return config;
+    }
     function rankPercentile(score){return Math.max(1,Math.min(99,Math.round(96-score/10)));}/* 실제 유저 풀이 없는 목업용 추정치 */
     function seasonEnd(){const now=new Date(),month=Math.floor(now.getMonth()/3)*3+3;return new Date(now.getFullYear(),month,0);}
     function seasonLabel(){const end=seasonEnd();return (Math.floor(new Date().getMonth()/3)+1)+'분기 시즌 · '+(end.getMonth()+1)+'월 '+end.getDate()+'일 종료';}
