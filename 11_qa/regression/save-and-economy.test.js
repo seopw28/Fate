@@ -114,8 +114,9 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("B:{name:'거목 수호',chance:.30,hpGain:5,leftmostOnly:true"), 'Wood must offer low-frequency, high-impact growth for the leftmost ally');
   assert.ok(html.includes("B:{name:'파쇄 공명',chance:.14,aoeDamage:3"), 'Metal must offer a rare but stronger whole-field counter distinct from its single-target branch');
   assert.ok(html.includes("A:{name:'절단 반격',chance:.7,ratio:.3,minDamage:1,maxDamage:3"), 'Metal must offer a frequent low-damage single-target counter');
-  assert.ok(html.includes("A:{name:'암반 피부',chance:.7,damageReduction:1"), 'Earth must offer a reliable one-damage reduction branch');
-  assert.ok(html.includes("B:{name:'절대방어',chance:.05,avoidDamage:true"), 'Earth must offer a low-chance absolute defense branch');
+  assert.ok(html.includes("A:{name:'암반 피부',chance:.7,damageReduction:1,minCost:4"), 'Earth rock skin must only protect champions costing four or more');
+  assert.ok(html.includes("B:{name:'절대방어',chance:.055,avoidDamage:true"), 'Earth must offer a low-chance absolute defense branch');
+  assert.ok(html.includes("eligibleCost=Number(target.dataset.cost||0)>=(earth.minCost||0)"), 'Rock skin must enforce its cost eligibility in combat');
   assert.ok(!html.includes('GUARDIAN_AWAKEN_DURATION=1'), 'Persistent awakening must not retain the old one-turn duration');
   assert.ok(html.includes('left:var(--field-left);top:var(--field-top);width:var(--field-width);height:var(--field-height)'), 'Awakening choices must be constrained to the battlefield');
   assert.ok(html.includes('.awaken-field-sigil{position:absolute'), 'The selected aura sigil must be engraved inside its card lane');

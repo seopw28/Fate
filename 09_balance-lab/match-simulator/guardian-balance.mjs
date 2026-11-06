@@ -76,8 +76,8 @@ const AWAKENING_OPTIONS = {
     B: { label: '파쇄 공명', chance: 0.14, aoeDamage: 3 },
   },
   hyeonmu: {
-    A: { label: '암반 피부', chance: 0.70, damageReduction: 1 },
-    B: { label: '절대방어', chance: 0.05, avoidDamage: true },
+    A: { label: '암반 피부', chance: 0.70, damageReduction: 1, minCost: 4 },
+    B: { label: '절대방어', chance: 0.055, avoidDamage: true },
   },
 };
 for (const override of String(args['awakening-override'] || '').split(',').filter(Boolean)) {
@@ -120,7 +120,7 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
 
   function damageUnit(side, unit, dmg) {
     const earth = auraConfig(side, 'hyeonmu');
-    if (earth.damageReduction && proc(side, 'hyeonmu')) dmg = Math.max(1, dmg - earth.damageReduction);
+    if (earth.damageReduction && unit.cost >= (earth.minCost || 0) && proc(side, 'hyeonmu')) dmg = Math.max(1, dmg - earth.damageReduction);
     if (earth.avoidDamage && proc(side, 'hyeonmu')) return;
     if (earth.maxProcs && dmg >= unit.hp && side.procs < earth.maxProcs && proc(side, 'hyeonmu')) {
       side.procs++;
