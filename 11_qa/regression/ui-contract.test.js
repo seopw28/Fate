@@ -290,10 +290,13 @@ test('카드 평타 동작은 툭 스치지 않고 크게 움직인다', () => {
   assert.ok(motions.includes('const lift = 66 + power * 58'), '내려찍기는 충분히 높이 떠야 한다');
 });
 
-test('피격 카드는 때린 방향 그대로 위로 밀려나고, 밀린 구간이 충분히 길다', () => {
+test('피격 카드는 때린 방향 그대로 밀려나고, 밀린 구간이 충분히 길다', () => {
   // 예전에는 translate(7px,-2px) 고정이라 어디서 맞든 오른쪽으로 찔끔 움직였다.
   assert.ok(!html.includes('22%{transform:translate(7px,-2px)'), '고정 방향 피격 반응으로 되돌리지 말 것');
-  assert.ok(html.includes("target.style.setProperty('--knock-y',(-reach*1.5).toFixed(1)+'px')"), '세로 밀림은 항상 위쪽이어야 한다');
+  // 세로 부호를 위쪽으로 고정하면 적 레인(위)이 내 소환존(아래)을 때릴 때 거꾸로 솟는다.
+  assert.ok(!html.includes("target.style.setProperty('--knock-y',(-reach*1.5).toFixed(1)+'px')"), '세로 밀림을 위쪽 고정으로 되돌리지 말 것');
+  assert.ok(html.includes("target.style.setProperty('--knock-y',(vy*reach*1.5).toFixed(1)+'px')"), '세로 밀림은 공격자→대상 벡터의 부호를 따라야 한다');
+  assert.ok(html.includes("vy=Math.sign(uy||-1)*Math.max(Math.abs(uy),.62)"), '세로 밀림 크기에 하한이 있어야 한다(대각 교전에서 무게 유지)');
   assert.ok(html.includes("target.style.setProperty('--knock-x',(ux*reach*.55).toFixed(1)+'px')"), '가로 밀림은 실제 공격 각도를 따라야 한다');
   assert.ok(html.includes('reach=16+38*hitWeight'), '밀리는 거리가 피해량에 비례해야 한다');
   // 밀려난 구간을 길게 잡고 되돌아오는 길을 느리게 둔다.
