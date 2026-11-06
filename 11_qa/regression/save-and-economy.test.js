@@ -109,7 +109,7 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes('const guardianAwakenActive=side=>Boolean(guardianAwakenChoiceOf(side))'), 'Awakening must remain active for either side after selection');
   assert.ok(html.includes("jujak:{A:{name:'폭열',chance:.044,extraStrikes:2"), 'Fire must offer the balanced triple-strike branch');
   assert.ok(html.includes("A:{name:'범람',chance:.15,manaMin:8,manaMax:8"), 'Water must offer a rare fixed 8-mana branch');
-  assert.ok(html.includes("B:{name:'순환',chance:.99,manaMin:2,manaMax:2"), 'Water must offer the 99% reliable mana branch');
+  assert.ok(html.includes("B:{name:'순환',chance:.8,manaMin:2,manaMax:3"), 'Water must offer the 80% reliable 2-3 mana branch');
   assert.ok(html.includes("A:{name:'숲의 생명',chance:1,hpGain:1"), 'Wood must offer guaranteed whole-field growth');
   assert.ok(html.includes("B:{name:'거목 수호',chance:.30,hpGain:5,leftmostOnly:true"), 'Wood must offer low-frequency, high-impact growth for the leftmost ally');
   assert.ok(html.includes("B:{name:'파쇄 공명',chance:.14,aoeDamage:3"), 'Metal must offer a rare but stronger whole-field counter distinct from its single-target branch');
