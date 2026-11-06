@@ -57,6 +57,18 @@
     return { damage: Math.max(0, Number(base) || 0), modifier: 1, label: '' };
   }
 
+  function resolveHealthDamage(currentHealth, incomingDamage) {
+    const healthBefore = Math.max(0, Number(currentHealth) || 0);
+    const damage = Math.max(0, Number(incomingDamage) || 0);
+    const healthAfter = Math.max(0, healthBefore - damage);
+    return Object.freeze({
+      healthBefore,
+      healthAfter,
+      damageApplied: healthBefore - healthAfter,
+      defeated: healthAfter === 0
+    });
+  }
+
   function createMatchState({ matchId = 'local', seed = 'local', players, startingPlayer = 0 } = {}) {
     if (!Array.isArray(players) || players.length !== 2) throw new TypeError('Exactly two players are required');
     return {
@@ -118,5 +130,5 @@
     return { ok: true, state: next, events: [event] };
   }
 
-  return Object.freeze({ ACTIONS, createRng, calculateDamage, createMatchState, validateAction, applyAction });
+  return Object.freeze({ ACTIONS, createRng, calculateDamage, resolveHealthDamage, createMatchState, validateAction, applyAction });
 });
