@@ -264,6 +264,17 @@ test('궁극기: 맨 왼쪽 아군을 제물로 순서 고정 0/1 사용자를 �
   assert.ok(html.includes("target?.dataset.orderLocked==='true'"));
 });
 
+test('궁극기 소진 0/1 카드가 죽으면 중앙 확대·분할 소멸 연출을 한 번 재생한다', () => {
+  assert.ok(html.includes('function showUltimateSpentDeath(unit)'));
+  assert.ok(html.includes("target.dataset.ultimateSpent)showUltimateSpentDeath(target)"));
+  assert.ok(html.includes("unit.dataset.ultimateDeathFx==='true'"));
+  assert.ok(html.includes('spent-death-half left'));
+  assert.ok(html.includes('spent-death-half right'));
+  assert.ok(html.includes('소진자의 죽음이 복수를 부릅니다'));
+  assert.ok(html.includes('@keyframes spent-half-left'));
+  assert.ok(html.includes('@keyframes spent-half-right'));
+});
+
 test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복수자로 한 번 등장한다', () => {
   assert.ok(html.includes('function matchFirstUltimateCompanion(spec)'));
   assert.ok(html.includes("!card.spell&&card.el===spec.element&&card.name!==spec.name"));
