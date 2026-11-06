@@ -65,6 +65,7 @@ test('첫 타격이 치명적이어도 교전 시작 시 확정된 방어 카드
 });
 
 test('여러 세트 마법은 한 연출이 끝난 뒤 다음 마법을 시작한다', () => {
-  assert.ok(html.includes('spellGap:3400'));
-  assert.ok(html.includes('order*COMBAT_TIMING.spellGap'));
+  assert.ok(html.includes('async function resolveEnemySetMagic()'));
+  assert.ok(html.includes('await resolveEnemySpell(card)'));
+  assert.ok(html.includes('await new Promise(resolve=>setTimeout(resolve,MAGIC_SEQUENCE_GAP_MS))'));
 });

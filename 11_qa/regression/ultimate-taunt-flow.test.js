@@ -30,8 +30,10 @@ test('치명상을 받은 도발 카드는 반격·사망 제거가 끝나기 �
 });
 
 test('공격력 0 궁극기 소진자는 카드와 영웅에게 실제 피해 0을 준다', () => {
-  assert.ok(html.includes('calculateDamage(Math.max(0,Math.ceil((attackerBase+attackerField.bonus+chainBonus)*ratio))'));
+  assert.ok(html.includes('rawDamage=attackerBase<=0?0:Math.max(0,Math.ceil((attackerBase+attackerField.bonus+chainBonus)*ratio))'));
   assert.ok(html.includes("const baseAtk=Number(selected.querySelector('.stats span').textContent.replace(/[^0-9]/g,''))||0"));
+  assert.ok(html.includes('damage=baseAtk<=0?0:baseAtk+field.bonus+chainBonus'), '내 공격력 0 카드는 영웅 공격 보너스를 받아도 피해 0이어야 한다');
   const queuedEnemyTurn = html.slice(html.indexOf('enemyTurn=function(done)'), html.indexOf('function playCard('));
   assert.ok(queuedEnemyTurn.includes("const baseAtk=Number(unit.querySelector('.stats span').textContent.replace(/[^0-9]/g,''))||0"));
+  assert.ok(queuedEnemyTurn.includes('damage=baseAtk<=0?0:baseAtk+field.bonus'), '상대 공격력 0 카드도 영웅에게 피해를 줄 수 없어야 한다');
 });

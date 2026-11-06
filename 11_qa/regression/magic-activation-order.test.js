@@ -42,7 +42,8 @@ test('동시에 준비된 내 마법은 각 카드의 최소 노출시간이 끝
 test('마법 공개 레이어가 사라지고 효과 정산이 끝날 때까지 다른 진행을 멈춘다', () => {
   assert.ok(html.includes("setTimeout(()=>{global.remove();castSpell(card)"));
   assert.ok(html.includes('setTimeout(()=>resolve(true),MAGIC_EFFECT_SETTLE_MS)'));
-  assert.ok(html.includes('enemyTurn=async function(done)'));
+  assert.ok(html.includes('enemyTurn=function(done)'));
+  assert.ok(html.includes('(async()=>{'));
   assert.ok(html.includes('await resolveEnemySetMagic();if(resultPending)'));
   assert.ok(html.includes("setTimeout(()=>{global.remove();onResolve();setTimeout(resolve,ENEMY_MAGIC_EFFECT_SETTLE_MS);},ENEMY_MAGIC_REVEAL_MS)"));
 });
