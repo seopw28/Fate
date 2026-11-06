@@ -469,7 +469,9 @@ test('번개 소리: 물 공격의 번개 연출 전용 샘플을 쓰고, 팩이
 });
 
 test('번개 소리 연결: 물 공격에서 아주르 썬더폴 연출이 뜰 때 번개 소리를 함께 낸다', () => {
-  assert.ok(html.includes("showCinematicSkillEffect('lightning','아주르 썬더폴',1);muteSfx(['hit:water'],1200);thunderfallAt=performance.now();fateSfx.playLightning(0);}"), 'Water attack lightning cinematic must have its own thunder sound');
+  // 평타에서는 전면 컷인을 띄우지 않는다. 번개 소리만 약화해서 남긴다 (컷인은 광역 마법카드로 이관).
+  assert.ok(html.includes("if(element==='water'){muteSfx(['hit:water'],1200);thunderfallAt=performance.now();fateSfx.playLightning(0,{gain:.5});}"), '물 평타는 컷인 없이 약화된 번개 소리만 낸다');
+  assert.ok(!html.includes("showCinematicSkillEffect('lightning','아주르 썬더폴'"), '평타에 전면 컷인을 되살리지 말 것');
 });
 
 test('물 피격음에는 폭발(천둥 같은 울림) 샘플을 섞지 않는다 — 번개 소리는 연출 전용으로 분리', () => {
@@ -500,7 +502,7 @@ test('스킬 고유 소리: 아주르 썬더폴은 번개만, 빙결 계열은 �
   assert.ok(html.includes("sfx=function(kind,variant='neutral',strength=3){if(soundOn&&sfxIsMuted(kind,variant))return;"), 'Every sound must pass the mute check first');
   // 아주르 썬더폴: 일반 공격음 없음 + 물 피격음 음소거 + 휘두르는 소리 없음
   assert.ok(html.includes("if(element!=='water'&&element!=='wind')sfx('attack',element,3);"), 'Thunderfall must not play the generic water attack sound');
-  assert.ok(html.includes("muteSfx(['hit:water'],1200);thunderfallAt=performance.now();fateSfx.playLightning(0);"), 'Thunderfall must mute the water hit and play only lightning');
+  assert.ok(html.includes("muteSfx(['hit:water'],1200);thunderfallAt=performance.now();fateSfx.playLightning(0,{gain:.5});"), 'Thunderfall must mute the water hit and play only lightning');
   assert.ok(html.includes("if(performance.now()-thunderfallAt>300)fateSfx.playSwing("), 'Thunderfall must not play the generic swing sound');
   // 빙결 계열(빙결 사슬 = champion-control, 프로스트 노바): 일반 마법 시전음·마법 효과음·물 피격음 끔
   assert.ok(html.includes("['champion-control','frost-nova'].includes(card?.dataset?.effect))muteSfx(['spell','magic','hit:water'],1800)"), 'Frost spells must only have frost sounds');
@@ -531,8 +533,12 @@ test('바람 연출(실피드 템페스트): 칼바람 소리가 3번 연달아 
   const engine = fs.readFileSync(path.resolve(__dirname, '../../05_game-client/battle/sfx-variety.js'), 'utf8');
   const index = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
   assert.ok(/function playGust\(/.test(engine) && engine.includes('playLightning, playGust'), 'Engine must expose playGust');
-  assert.ok(engine.includes('[[0, -0.55, 1], [0.15, 0.55, 1.1], [0.3, 0, 1.2]]'), 'Gust must pass three times in a row');
-  assert.ok(index.includes("if(element==='wind'){showCinematicSkillEffect('gust','실피드 템페스트',1);fateSfx.playGust(0);}"), 'Wind cinematic must play the gust');
+  assert.ok(engine.includes('[[0, -0.55, 1], [0.15, 0.55, 1.1], [0.3, 0, 1.2]]'), 'Gust must keep the three-pass form for the spell card');
+  // 평타는 약화한 1회 스침만 쓴다. 3연타 원형은 광역 마법카드용으로 남긴다.
+  assert.ok(/function playGustLight\(/.test(engine), 'Engine must expose the softened gust');
+  assert.ok(engine.includes('return playGust(pan, { passes: 1, gain: 0.45 })'), '평타용 칼바람은 1회·약화여야 한다');
+  assert.ok(index.includes("if(element==='wind')fateSfx.playGustLight(0);"), '바람 평타는 약화된 칼바람만 낸다');
+  assert.ok(!index.includes("showCinematicSkillEffect('gust','실피드 템페스트'"), '평타에 전면 컷인을 되살리지 말 것');
   assert.ok(index.includes("if(element!=='water'&&element!=='wind')sfx('attack',element,3);"), 'Wind must not also play the generic attack sound');
 });
 

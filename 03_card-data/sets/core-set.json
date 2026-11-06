@@ -862,6 +862,118 @@
         "characterId": null
       },
       "aura": "metal"
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.sylphid-tempest",
+      "nameKey": "card.tower_sylphid_tempest",
+      "displayName": "실피드 템페스트",
+      "cardType": "spell",
+      "cost": 5,
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "board_damage",
+          "trigger": "next_round_start",
+          "target": "all_units",
+          "amount": 4,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/gale-vortex.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      },
+      "aura": "wood"
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.gaia-breaker",
+      "nameKey": "card.tower_gaia_breaker",
+      "displayName": "가이아 브레이커",
+      "cardType": "spell",
+      "cost": 5,
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "board_damage",
+          "trigger": "next_round_start",
+          "target": "all_units",
+          "amount": 5,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/earth-rift.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      },
+      "aura": "earth"
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.azure-thunderfall",
+      "nameKey": "card.tower_azure_thunderfall",
+      "displayName": "아주르 썬더폴",
+      "cardType": "spell",
+      "cost": 4,
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "chain_lightning",
+          "trigger": "next_round_start",
+          "target": "all_enemies",
+          "amount": 5,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/chain-lightning.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      },
+      "aura": "water"
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "tower.volt-requiem",
+      "nameKey": "card.tower_volt_requiem",
+      "displayName": "볼트 레퀴엠",
+      "cardType": "spell",
+      "cost": 6,
+      "rarity": "legendary",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "chain_lightning",
+          "trigger": "next_round_start",
+          "target": "all_enemies",
+          "amount": 7,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "spells/generated/lightning-strike.webp",
+      "deckLimit": 1,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": null
+      },
+      "aura": "water"
     }
   ]
 }
