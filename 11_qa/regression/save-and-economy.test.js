@@ -280,7 +280,7 @@ test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 
   assert.ok(html.includes("unit.dataset.orderLocked==='true'"));
   assert.ok(html.includes("target?.dataset.orderLocked==='true'"));
   assert.ok(html.includes("if(locked&&summonDropZone.lastElementChild!==locked)summonDropZone.append(locked)"));
-  assert.ok(html.includes("const ultimateAggro=targets.find(u=>u.dataset.ultimateAggro==='true');if(ultimateAggro)return ultimateAggro"));
+  assert.ok(html.includes("const ultimateAggro=targets.find(u=>u.dataset.ultimateAggro==='true');if(ultimateAggro){showUltimateAggroIntercept(ultimateAggro);return ultimateAggro;}"));
   assert.ok(html.includes('.unit[data-ultimate-aggro="true"]::after{content:none!important;display:none!important}'), '전역 도발 텍스트 배지는 카드 경계 밖으로 노출되면 안 된다');
 });
 
@@ -291,6 +291,8 @@ test('첫 궁극기 소진 0/1 카드만 죽을 때 복수의 중앙 확대·분
   assert.ok(html.includes("unit.dataset.ultimateDeathFx==='true'"));
   assert.ok(html.includes('spent-death-half left'));
   assert.ok(html.includes('spent-death-half right'));
+  assert.ok(html.includes('<strong>복수의 시작</strong><b></b>'), '연출 제목과 소진자 이름은 별도 행이어야 한다');
+  assert.ok(html.includes("fx.querySelector('.spent-death-copy b').textContent=name"), '소진자 이름은 독립된 이름 행에 표시해야 한다');
   assert.ok(html.includes('최초 소진자의 죽음이 단 한 번의 복수를 부릅니다'));
   assert.ok(html.includes('performance.now()+4050'));
   assert.ok(html.includes('@keyframes spent-half-left'));
@@ -315,12 +317,9 @@ test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복�
   assert.ok(html.includes('showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral)'));
   assert.ok(html.includes('.unit[data-effect="ultimate-avenger"]'), '복수자 카드만 전용 테두리와 오라를 사용해야 한다');
   assert.ok(html.includes('.arena .unit[data-effect="ultimate-avenger"]>h4'), '복수자도 기존 카드 이름 영역을 유지해야 한다');
-  assert.ok(html.includes('function decorateAvengerUnit(unit)'));
-  assert.ok(html.includes("crown.className='avenger-crown-vfx'"));
-  assert.ok(html.includes("decorateAvengerUnit(unit);showAvengerArrival"));
-  assert.ok(html.includes('assets/ui/avenger-crown-v1.webp'), '복수자는 투명 배경 왕관 이미지 자산을 사용해야 한다');
-  assert.ok(html.includes('.avenger-crown-vfx{position:absolute;z-index:13;left:50%;top:-80px'), '왕관은 카드 프레임 위로 돌출되어야 한다');
-  assert.ok(html.includes('.summon-zone:has(.unit[data-effect="ultimate-avenger"]) { overflow:visible; }'), '돌출된 왕관이 내 전장 슬롯에 잘리면 안 된다');
+  assert.ok(html.includes('z-index:6;scale:1.1;border:3px solid var(--avenger-accent)'), '복수자는 전장에서 10% 확대하고 오라색 굵은 테두리를 사용해야 한다');
+  assert.equal(html.includes('avenger-crown-vfx'), false, '복수자 카드에 왕관 장식을 다시 붙이면 안 된다');
+  assert.equal(html.includes('decorateAvengerUnit'), false, '왕관 장식용 DOM 로직을 다시 사용하면 안 된다');
   assert.equal(html.includes('crown-body'), false, 'CSS 도형 왕관을 다시 사용하면 안 된다');
   assert.ok(html.includes("wave.className='avenger-landing-impact'"));
   assert.ok(html.includes("arena?.animate([{transform:'none'},{transform:'translateY(13px) scale(.985)'"));
