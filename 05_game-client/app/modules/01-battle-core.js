@@ -254,7 +254,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
        - priority 가 높은 연출은 대기열 앞으로 간다. 재생 중인 연출보다 충분히 높으면 선점한다.
        - FX_PRIORITY 가 큰 값일수록 중요하다. 같은 priority 는 도착 순서(FIFO)를 지킨다.
        자세한 규약: 11_qa/regression/presentation-queue.test.js */
-    const FX_PRIORITY={ultimate:100,guardian:90,desperate:80,magic:60,trap:60,cinematic:40,banner:20};
+    const FX_PRIORITY={choice:200,ultimate:100,guardian:90,desperate:80,magic:60,trap:60,cinematic:40,banner:20};/* choice: 유저 입력을 기다리는 오버레이. hold:0 으로 올려 결정 전까지 필드를 멈춘다. 어떤 연출에도 선점당하면 안 된다. */
     const FX_PREEMPT_MARGIN=30;/* 재생 중인 연출보다 이만큼 더 중요하면 즉시 끊고 끼어든다 */
     let fxActive=null,fxQueue=[],fxSeq=0;
     function fxNow(){return performance.now();}
@@ -290,7 +290,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       const done=new Promise(resolve=>{entry.resolve=resolve;});
       entry.promise=done;
       /* 재생 중인 연출이 덜 중요하면 끊고 바로 끼어든다 — 궁극기가 사소한 배너 뒤에서 기다리지 않게. */
-      if(fxActive&&priority>=fxActive.priority+FX_PREEMPT_MARGIN){fxQueue.push(entry);fxEnd(fxActive,'preempt');return done;}
+      if(hold===0){fxQueue.push(entry);fxPump();return done;}if(fxActive&&priority>=fxActive.priority+FX_PREEMPT_MARGIN){fxQueue.push(entry);fxEnd(fxActive,'preempt');return done;}
       fxQueue.push(entry);fxPump();return done;
     }
     /* hold:0 으로 띄운 연출을 수동으로 종료한다. */
@@ -306,6 +306,8 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     }
     /* 연출이 하나라도 화면에 있으면 true — 전투 진행을 잠시 멈출지 판단할 때 쓴다. */
     function fxBusy(){return !!fxActive||fxQueue.length>0;}
+    /* 유저 결정을 기다리는 중이면 true — 턴 진행을 멈출지 판단할 때 쓴다. */
+    function fxAwaitingChoice(){return !!fxActive&&fxActive.hold===0;}
     function matchFirstUltimateCompanion(spec){const pool=collectionState.deck.map(deckEntry).filter(card=>!card.spell&&card.el===spec.element&&card.name!==spec.name);return pool.length?pool[Math.floor(engineAdapter.random()*pool.length)]:null;}
     function seedAvengerFromLatestFallenUltimate(){if(firstUltimateSpec)return firstUltimateSpec;const dead=[...allyGraveyard].reverse().find(card=>card.art&&cardDefByArt.has(card.art));if(!dead)return null;const spec={name:dead.name,art:dead.art,element:dead.element||dead.el,attack:Number(dead.attack??dead.atk)||0,hp:Math.max(1,Number(dead.maxHp??dead.hp)||1)},companion=matchFirstUltimateCompanion(spec);if(!companion)return null;firstUltimateSpec=spec;firstUltimateCompanion=companion;writeLog('<strong>복수의 기억:</strong> 아직 궁극기 사용자가 없어, 가장 최근에 쓰러진 궁극기 보유 카드 <strong>'+spec.name+'</strong>을(를) 복수의 기준으로 삼습니다.');return spec;}
     function sendUltimateToGraveyard(spec){const lane=document.querySelector('.summon-zone'),victim=[...lane.querySelectorAll(':scope > .unit:not([data-destroyed="true"])')].at(-1),firstUse=!firstUltimateSpec;if(!victim)return null;if(firstUse){firstUltimateSpec={...spec};firstUltimateCompanion=matchFirstUltimateCompanion(spec);}const victimName=victim.querySelector('h4')?.textContent||'아군 챔프';retireFieldUnit(victim);victim.remove();const unit=summonBattleToken(spec.name,0,1,spec.element,'ultimate-spent');if(!unit)return null;unit.dataset.art=spec.art;unit.dataset.ultimateSpent=firstUse?'first':'later';unit.dataset.ultimateAggro='true';unit.dataset.orderLocked='true';unit.querySelector('.emoji').innerHTML='<img class="creature-art" src="'+spec.art+'" alt="'+spec.name+'">';updateFieldReorderState();showSkillEffect('burn',unit,'궁극기 소진 · 0/1 · 전역 도발');writeLog('<strong>'+victimName+'</strong>을(를) 제물로 보내고 <strong>'+spec.name+'</strong>을(를) 공격력 0 · 체력 1로 맨 오른쪽에 고정했습니다. 소진자가 살아 있는 동안 상대의 모든 기본 공격은 소진자만 노립니다.');if(firstUse&&desperateActive('player'))queueFirstUltimateAvenger(520);return unit;}

@@ -176,3 +176,50 @@ test('전투 종료로 버려진 연출을 기다리던 턴 진행도 멈추지 
   assert.notEqual(settled, 'STUCK', '버려진 연출의 Promise 는 반드시 resolve 돼야 한다');
   assert.equal(settled, 'cleared');
 });
+
+test('선택 연출(오라 각성)은 유저가 고를 때까지 화면을 붙잡는다', () => {
+  const q = loadQueue();
+  const onScreen = new Set();
+  q.fxPresent('aura-awaken-choice', () => { onScreen.add('choice'); return () => onScreen.delete('choice'); },
+    { priority: q.FX_PRIORITY.choice, hold: 0 });
+
+  assert.ok(onScreen.has('choice'));
+  q.advance(60000);
+  assert.ok(onScreen.has('choice'), '시간이 아무리 지나도 스스로 사라지면 안 된다');
+  assert.equal(q.fxBusy(), true, '결정 전까지 필드는 멈춘 상태여야 한다');
+
+  q.fxRelease();
+  assert.equal(onScreen.size, 0, '선택하면 내려간다');
+  assert.equal(q.fxBusy(), false, '선택 후 필드가 다시 움직인다');
+});
+
+test('선택을 기다리는 동안 다른 연출은 끼어들지 못하고 결정 후에 재생된다', () => {
+  const q = loadQueue();
+  const onScreen = new Set();
+  const show = (name, priority, hold) =>
+    q.fxPresent(name, () => { onScreen.add(name); return () => onScreen.delete(name); }, { priority, hold });
+
+  show('choice', q.FX_PRIORITY.choice, 0);
+  show('ultimate', q.FX_PRIORITY.ultimate, 2250);
+  q.advance(5000);
+  assert.ok(onScreen.has('choice'), '궁극기도 선택 연출을 끊지 못한다');
+  assert.equal(onScreen.size, 1, '선택 중에는 하나만 보인다');
+
+  q.fxRelease();
+  assert.ok(onScreen.has('ultimate'), '결정이 끝나면 대기하던 연출이 이어진다');
+  q.advance(2250);
+  assert.equal(onScreen.size, 0);
+});
+
+test('선택 연출이 대기열에 있으면 재생 중인 연출을 끊지 않고 기다린다', () => {
+  const q = loadQueue();
+  const onScreen = new Set();
+  const show = (name, priority, hold) =>
+    q.fxPresent(name, () => { onScreen.add(name); return () => onScreen.delete(name); }, { priority, hold });
+
+  show('magic', q.FX_PRIORITY.magic, 1500);
+  show('choice', q.FX_PRIORITY.choice, 0);
+  assert.ok(onScreen.has('magic'), '재생 중인 마법 연출이 잘리면 안 된다');
+  q.advance(1500);
+  assert.ok(onScreen.has('choice'), '마법이 끝난 뒤 선택 연출이 올라온다');
+});
