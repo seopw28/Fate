@@ -18,7 +18,7 @@ await Promise.all([
 const cardSet = JSON.parse(await readFile(resolve(root, '03_card-data/sets/core-set.json'), 'utf8'));
 const characterExpansions = JSON.parse(await readFile(resolve(root, '03_card-data/sets/character-expansions.json'), 'utf8'));
 cardSet.cards.push(...characterExpansions.cards);
-// 카드 데이터는 성격 오로라 5종만 저장한다. 런타임의 옛 키는 CSS·연출 호환용 표현 계층이다.
+// 카드 데이터는 성격 오라 5종만 저장한다. 런타임의 옛 키는 CSS·연출 호환용 표현 계층이다.
 const AURA_KEY = { fire: 'fire', water: 'water', wood: 'wind', metal: 'neutral', earth: 'earth' };
 for (const card of cardSet.cards) {
   card.auraKey = AURA_KEY[card.aura];

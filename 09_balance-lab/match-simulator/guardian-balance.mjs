@@ -32,6 +32,7 @@ const SYM = (args.mode || 'symmetric') !== 'game';
 const INITIATIVE = !args['no-initiative'];
 const HEAL_COUNTS_FOR_INITIATIVE = !!args['heal-counts'];/* 기본: 현무 회복분은 선공권 판정에서 제외(게임과 동일). --heal-counts 로 회복분도 포함 *//* --no-initiative: 선공권 규칙을 끄고 항상 내가 선공(상호 교대 없음) */
 const AWAKENING_SIM = !!args.awakening;
+const AWAKENING_MATCHUP = args['awakening-matchup'] ? String(args['awakening-matchup']) : '';
 
 // ── 데이터 로드 ──────────────────────────────────────────────
 const sandbox = { globalThis: {} };
@@ -68,7 +69,7 @@ const AWAKENING_OPTIONS = {
   },
   namu: {
     A: { label: '숲의 생명', chance: 1.00, hpGain: 1 },
-    B: { label: '거목 수호', chance: 0.75, hpGain: 2, leftmostOnly: true },
+    B: { label: '거목 수호', chance: 0.30, hpGain: 5, leftmostOnly: true },
   },
   baekho: {
     A: { label: '절단 반격', chance: 0.50, ratio: 0.40, minDamage: 2, maxDamage: 5 },
@@ -79,6 +80,12 @@ const AWAKENING_OPTIONS = {
     B: { label: '불굴', chance: 0.095, maxProcs: 2, reviveRatio: 0 },
   },
 };
+for (const override of String(args['awakening-override'] || '').split(',').filter(Boolean)) {
+  const [path, value] = override.split('=');
+  const [id, option, key] = path.split('.');
+  if (!AWAKENING_OPTIONS[id]?.[option] || !(key in AWAKENING_OPTIONS[id][option])) throw new Error(`알 수 없는 각성 override: ${path}`);
+  AWAKENING_OPTIONS[id][option][key] = Number(value);
+}
 const AI = { atkWeight: 1, hpWeight: 0.7, manaWeight: 0.35 };
 const grade = rnd => { const r = rnd(); return r < 0.15 ? 2 : r < 0.5 ? 1 : 0; };
 const mkCard = (base, rnd) => ({ cost: base.cost, atk: base.atk + grade(rnd), hp: base.hp });
@@ -262,6 +269,37 @@ function seatAdjustedAwakeningPool(targetGuardian, targetOption, games) {
     rounds += result.rounds;
   }
   return { rate: score / games, win: score, games, rounds: rounds / games };
+}
+
+function seatAdjustedAwakeningMatchup(targetGuardian, targetOption, opponentGuardian, opponentOption, games) {
+  const half = Math.floor(games / 2);
+  let score = 0, rounds = 0;
+  for (let i = 0; i < games; i++) {
+    const targetIsPlayer = i < half;
+    const result = targetIsPlayer
+      ? playGame(targetGuardian, opponentGuardian, rnd, targetOption, opponentOption)
+      : playGame(opponentGuardian, targetGuardian, rnd, opponentOption, targetOption);
+    if (result.winner === 'draw') score += 0.5;
+    else if ((targetIsPlayer && result.winner === 'player') || (!targetIsPlayer && result.winner === 'enemy')) score++;
+    rounds += result.rounds;
+  }
+  return { rate: score / games, win: score, games, rounds: rounds / games };
+}
+
+if (AWAKENING_MATCHUP) {
+  const [targetGuardian, targetOption] = AWAKENING_MATCHUP.split('.');
+  if (!AWAKENING_OPTIONS[targetGuardian]?.[targetOption]) throw new Error(`각성 매치업은 guardian.A 또는 guardian.B 형식이어야 합니다: ${AWAKENING_MATCHUP}`);
+  console.log(`[각성 1:1 상성] ${GUARDIANS[targetGuardian].name} ${targetOption} ${AWAKENING_OPTIONS[targetGuardian][targetOption].label} · 판수 ${GAMES}/상대 선택지 · seed ${SEED} · 좌석 50:50 보정`);
+  for (const opponentGuardian of IDS.filter(id => id !== targetGuardian)) {
+    const rates = [];
+    for (const opponentOption of ['A', 'B']) {
+      const result = seatAdjustedAwakeningMatchup(targetGuardian, targetOption, opponentGuardian, opponentOption, GAMES);
+      rates.push(result.rate);
+      console.log(`  vs ${GUARDIANS[opponentGuardian].name} ${opponentOption} ${AWAKENING_OPTIONS[opponentGuardian][opponentOption].label.padEnd(8)} ${pct(result.rate)} ±${ci(result.win, result.games).toFixed(2)}`);
+    }
+    console.log(`  → ${GUARDIANS[opponentGuardian].name} A/B 균등 평균 ${pct((rates[0] + rates[1]) / 2)}`);
+  }
+  process.exit(0);
 }
 
 if (AWAKENING_SIM) {

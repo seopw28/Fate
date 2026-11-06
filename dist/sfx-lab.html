@@ -28,7 +28,7 @@
 </head>
 <body>
 <h1>효과음 시험실</h1>
-<p class="sub">전투를 기다리지 않고 오로라별 피격음과 빙결 카드 소리를 바로 들어 보는 페이지입니다. 게임과 같은 소리 엔진(<code>runtime/sfx-variety.js</code>)을 씁니다.</p>
+<p class="sub">전투를 기다리지 않고 오라별 피격음과 빙결 카드 소리를 바로 들어 보는 페이지입니다. 게임과 같은 소리 엔진(<code>runtime/sfx-variety.js</code>)을 씁니다.</p>
 
 <div class="bar">
   <label>효과음 크기 <input id="vol" type="range" min="0" max="100" value="35"><span id="volv">35%</span></label>
@@ -38,7 +38,7 @@
 
 <div class="grid" id="grid"></div>
 <div class="note">
-  · "1회"는 같은 오로라을 여러 번 눌러 변주(매번 다른 조합·음높이)를 확인하세요. "5연타"는 한 턴에 타격이 연속으로 나올 때(0.9초 간격) 잔향이 뭉치지 않는지 듣는 용도입니다.<br>
+  · "1회"는 같은 오라를 여러 번 눌러 변주(매번 다른 조합·음높이)를 확인하세요. "5연타"는 한 턴에 타격이 연속으로 나올 때(0.9초 간격) 잔향이 뭉치지 않는지 듣는 용도입니다.<br>
   · 새 주문 샘플 팩은 불·물·바람(번개 어택)과 빙결 카드에만 섞여 있습니다. 체크를 껐다 켜며 비교해 보세요.
 </div>
 
@@ -68,7 +68,7 @@
     ['water', '물', '물 튀기는 소리만 (음정 있는 유리·얼음 소리 제거) · 4번 겹쳐 튀는 느낌 · 이전보다 크게'],
     ['wind', '바람 (칼날)', '높고 예리하게 · 처음 소리를 3번 겹쳐 여러 번 스치는 느낌'],
     ['earth', '대지', '더 낮고 크게 · 가장 넓은 공간감'],
-    ['neutral', '무오로라 (금속)', '"쓰윽!" 칼날이 스치는 소리만 (앞의 띵 하는 금속음 없음)'],
+    ['neutral', '무오라 (금속)', '"쓰윽!" 칼날이 스치는 소리만 (앞의 띵 하는 금속음 없음)'],
   ];
   const grid = document.getElementById('grid');
   for (const [key, name, desc] of ELEMENTS) {
@@ -83,7 +83,7 @@
   grid.appendChild(frost);
   const thunder = document.createElement('div');
   thunder.className = 'card water';
-  thunder.innerHTML = '<h2>물 공격 번개 (아주르 썬더폴)</h2><p>물 오로라 공격 때 번개 그림 연출과 함께 나는 소리. 번개가 내리치는 순간이 시작 후 0.45초이며 타격 시점과 맞춥니다.</p><div class="row"><button data-thunder="2.7">번개 길게(꼬리 2.7초)</button><button data-thunder="1.8">중간(1.8초)</button><button data-thunder="1.2">짧게(1.2초)</button><button data-thunder-hit>번개 → 0.45초 뒤 물 피격</button></div>';
+  thunder.innerHTML = '<h2>물 공격 번개 (아주르 썬더폴)</h2><p>물 오라 공격 때 번개 그림 연출과 함께 나는 소리. 번개가 내리치는 순간이 시작 후 0.45초이며 타격 시점과 맞춥니다.</p><div class="row"><button data-thunder="2.7">번개 길게(꼬리 2.7초)</button><button data-thunder="1.8">중간(1.8초)</button><button data-thunder="1.2">짧게(1.2초)</button><button data-thunder-hit>번개 → 0.45초 뒤 물 피격</button></div>';
   grid.appendChild(thunder);
   const gust = document.createElement('div');
   gust.className = 'card wind';

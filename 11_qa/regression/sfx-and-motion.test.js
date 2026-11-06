@@ -15,7 +15,7 @@ function seeded(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) 
 test('피격음은 피해량과 무관하게 항상 같은 "강한 신호"다 (강도 단계 없음)', () => {
   assert.equal(Sfx.hitTier, undefined, '피해 강도 단계는 없애기로 함');
   assert.ok(Sfx.STRONG && Sfx.STRONG.cap > 0 && Sfx.STRONG.power > 0.5, '강한 신호 설정이 있어야 함');
-  for (const element of Object.keys(Sfx.ELEMENT)) assert.ok(['long', 'short'].includes(Sfx.ELEMENT[element].space), `${element}: 오로라별 공간 종류가 있어야 함`);
+  for (const element of Object.keys(Sfx.ELEMENT)) assert.ok(['long', 'short'].includes(Sfx.ELEMENT[element].space), `${element}: 오라별 공간 종류가 있어야 함`);
   for (const element of Object.keys(Sfx.HIT_SETS)) assert.ok(Array.isArray(Sfx.HIT_SETS[element]), `${element}: 조합 배열`);
 });
 
@@ -32,7 +32,7 @@ test('변주: 직전과 같은 번호를 고르지 않고 나머지는 모두 �
   assert.equal(Sfx.pickIndex(undefined, 1), 0, '후보가 1개면 0');
 });
 
-test('조합표: 오로라별 변주 후보가 있고, 쓰는 샘플이 실제로 존재한다 (불은 원본 폭발음, 물은 건조한 유리·얼음)', () => {
+test('조합표: 오라별 변주 후보가 있고, 쓰는 샘플이 실제로 존재한다 (불은 원본 폭발음, 물은 건조한 유리·얼음)', () => {
   const known = new Set([...Object.keys(Sfx.BANK), ...Object.keys(Sfx.LEGACY)]);
   for (const element of ['fire', 'water', 'wind', 'earth', 'neutral']) {
     const combos = Sfx.HIT_SETS[element];
@@ -99,7 +99,7 @@ function fakeAudio() {
   return { ctx, stats };
 }
 
-test('효과음 실행: 모든 오로라×강도 조합이 샘플 없이도(합성음만으로) 소리를 만든다', () => {
+test('효과음 실행: 모든 오라×강도 조합이 샘플 없이도(합성음만으로) 소리를 만든다', () => {
   const { ctx, stats } = fakeAudio();
   const api = Sfx.init({ engine: () => ctx, bus: () => ctx.createGain() });
   for (const element of ['fire', 'water', 'wind', 'earth', 'neutral', 'unknown']) {
@@ -152,7 +152,7 @@ test('모션 선택: 직전 동작을 연달아 반복하지 않는다', () => {
   }
 });
 
-test('모션 선택: 오로라별 스타일이 드러나고, 공격력이 높을수록 큰 동작이 늘어난다', () => {
+test('모션 선택: 오라별 스타일이 드러나고, 공격력이 높을수록 큰 동작이 늘어난다', () => {
   const share = (element, power, name) => { const rnd = seeded(5); let hit = 0; for (let i = 0; i < 4000; i++) if (Motions.pick(element, power, undefined, rnd) === name) hit++; return hit / 4000; };
   assert.ok(share('fire', 0.5, 'slam') > share('fire', 0.5, 'jab'), '불: 내려찍기가 찌르기보다 많다');
   assert.ok(share('wind', 0.5, 'jab') > share('wind', 0.5, 'bash'), '바람: 찌르기가 박치기보다 많다');
@@ -279,7 +279,7 @@ test('공간감 구별: 대지는 가장 넓은 홀 잔향, 칼날·금속은 �
     assert.ok(E[element].wet <= 0.15, `${element}: 잔향 대신 겹쳐 내기`);
   }
   assert.ok(E.water.stack.count >= E.wind.stack.count, '물이 더 많이 튄다');
-  assert.ok(!E.neutral.stack && E.neutral.synth === 0, '금속(무오로라)은 "쓰윽" 칼 스치는 소리만: 겹쳐 내기·합성 층 없음');
+  assert.ok(!E.neutral.stack && E.neutral.synth === 0, '금속(무오라)은 "쓰윽" 칼 스치는 소리만: 겹쳐 내기·합성 층 없음');
   for (const element of ['fire', 'earth']) assert.ok(!E[element].stack, `${element}: 겹쳐 내기를 쓰지 않는다`);
 });
 
@@ -341,7 +341,7 @@ test('페이드아웃: 긴 꼬리는 일찍부터 지수적으로 완만하게 �
   assert.ok(finish && finish.time >= cap - 0.05 && finish.time < cap, '끝에서 남은 잔여를 짧게 0으로 마무리');
 });
 
-test('페이드아웃: 오로라별 시작 시점 — 칼날은 일찍(예리하게 사라짐), 나머지는 공간감을 위해 늦게', () => {
+test('페이드아웃: 오라별 시작 시점 — 칼날은 일찍(예리하게 사라짐), 나머지는 공간감을 위해 늦게', () => {
   const E = Sfx.ELEMENT;
   assert.ok(E.wind.fade <= 0.2, '칼날은 일찍 줄기 시작해야 날카롭게 끝난다');
   for (const roomy of ['fire', 'water', 'earth', 'neutral']) assert.ok(E[roomy].fade >= 0.3 && E[roomy].fade <= 0.6, `${roomy}: 너무 일찍(공간감 손실)·너무 늦게(뚝 끊김) 줄이지 않는다`);
@@ -354,7 +354,7 @@ test('주문 팩: 불·물·바람 조합에 쓰이고, 원본·출처 기록이
   assert.ok(used('water').length >= 2, '물에는 새 주문 샘플(물·얼음) 조합이 있어야 함');
   assert.equal(used('fire').length, 0, '불은 처음 쓰던 원본 폭발음만 쓴다');
   assert.ok(used('wind').length >= 1, '바람에는 번개 샘플이 예리한 어택으로 얹힌다');
-  assert.equal(used('earth').length, 0, '이 팩에 없는 오로라은 바꾸지 않는다');
+  assert.equal(used('earth').length, 0, '이 팩에 없는 오라는 바꾸지 않는다');
   const dir = path.join(root, '06_assets/audio/basic-spell-impacts');
   assert.equal(fs.readdirSync(dir).filter((name) => name.endsWith('.wav')).length, 20, '원본 WAV 20개');
   const source = fs.readFileSync(path.join(dir, 'SOURCE.md'), 'utf8');
@@ -397,7 +397,7 @@ test('빙결 소리 연결: index.html이 얼음 샘플을 먼저 시도하고 �
 });
 
 // ───────── 대지: 더 낮고 묵직하게 ─────────
-test('대지: 다른 오로라보다 낮은 음높이와 고음 제한, 강한 저음 EQ', () => {
+test('대지: 다른 오라보다 낮은 음높이와 고음 제한, 강한 저음 EQ', () => {
   const E = Sfx.ELEMENT;
   assert.ok(E.earth.rate <= 0.9, '대지는 음높이를 낮춘다');
   for (const other of ['fire', 'water', 'wind', 'neutral']) assert.ok(!E[other].rate || E[other].rate > E.earth.rate, `${other}보다 낮아야 함`);
@@ -520,7 +520,7 @@ test('바람 연출(실피드 템페스트): 칼바람 소리가 3번 연달아 
   assert.ok(index.includes("if(element!=='water'&&element!=='wind')sfx('attack',element,3);"), 'Wind must not also play the generic attack sound');
 });
 
-test('오로라 시네마틱: 불·빙결·대지·암흑 기술은 전용 투명 자산과 발동 연결을 가진다', () => {
+test('오라 시네마틱: 불·빙결·대지·암흑 기술은 전용 투명 자산과 발동 연결을 가진다', () => {
   const assets = {
     fire: 'fire-meteor-v1.png',
     frost: 'frost-nova-v1.png',
@@ -595,7 +595,7 @@ test('효과 표시: 돌아가는 원+글자(rush) 대신 카드 테두리 임�
   assert.ok(html.includes('function borderImpact(target,'), 'Border impact helper must exist');
 });
 
-test('타격: 영웅을 직접 쳐도 아바타 자리에 오로라 타격 이펙트가 나온다', () => {
+test('타격: 영웅을 직접 쳐도 아바타 자리에 오라 타격 이펙트가 나온다', () => {
   const html = fs.readFileSync(path.join(__dirname, '../../dist/index.html'), 'utf8');
   assert.ok(!html.includes("if(target.classList.contains('avatar')){heroHealthImpact(target,damage);return;}"), 'impact() must not return early for hero avatars');
   assert.ok(html.includes("const hero=target.classList.contains('avatar');if(hero)heroHealthImpact(target,damage);"), 'Hero hits keep the HP bar feedback and add hit VFX');

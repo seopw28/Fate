@@ -23,13 +23,13 @@
 
 | 옵션 | 효과 |
 |---|---|
-| `?skipIntro` | 전투 시작 연출 생략 (성격 오로라 선택 화면은 그대로 표시) |
+| `?skipIntro` | 전투 시작 연출 생략 (성격 오라 선택 화면은 그대로 표시) |
 | `?crackers=10000` | 보유 크래커를 그 값으로 맞추고 저장. 적용 후 주소에서 옵션이 사라져 새로고침해도 다시 덮어쓰지 않음. **개발 환경 전용** |
 | `?tab=spell` | 손패를 마법카드 탭으로 시작 |
 | `?fixedStarter` | 시작 손패를 `battle-starter.json`의 고정 8장으로 (재현용) |
 | `?seed=문자열` | 덱 셔플 시드 고정 (결정적 재현용) |
 
-> **개발 환경 전용** 옵션(`?crackers`, `?guardian`)은 주소의 호스트가 `localhost`, `127.0.0.1`, `[::1]`, 또는 `file://`일 때만 동작합니다(`DEV_MODE`). 배포 주소에서는 무시되어 재화를 만들거나 성격 오로라을 공짜로 받는 우회로가 막혀 있습니다.
+> **개발 환경 전용** 옵션(`?crackers`, `?guardian`)은 주소의 호스트가 `localhost`, `127.0.0.1`, `[::1]`, 또는 `file://`일 때만 동작합니다(`DEV_MODE`). 배포 주소에서는 무시되어 재화를 만들거나 성격 오라를 공짜로 받는 우회로가 막혀 있습니다.
 > 빈 전장으로 시작하는 현재 방침 때문에 `skipIntro` 사용 시에도 초기 전장은 비어 있습니다.
 
 ## 3. 로컬 실행
@@ -61,7 +61,7 @@ npm run ngrok
 | `npm run validate:cards` | 카드 데이터 검증 (허용되지 않은 효과 ID, 스타터 8장 등) |
 | `npm test` | 카드 검증 + 효과 검증 + 엔진 + 플랫폼 + UI 계약 테스트 |
 | `npm run qa:overflow` | **UI 글자 넘침 검사** (서버 8765 기동 필요). `OK: 넘침 없음`이어야 통과 |
-| `node 09_balance-lab/match-simulator/guardian-balance.mjs --games 20000` | 성격 오로라 밸런스 시뮬레이션 |
+| `node 09_balance-lab/match-simulator/guardian-balance.mjs --games 20000` | 성격 오라 밸런스 시뮬레이션 |
 
 ## 5. 개발 규칙 (루트 `CLAUDE.md` 요약)
 

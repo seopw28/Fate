@@ -2,14 +2,14 @@
 """피격 효과음 측정·보정 도구 (헤드리스: 소리를 듣지 않고도 크기·울림·넓이를 수치로 확인한다).
 
 사용:
-  python3 -I 12_tools/qa/measure-sfx.py                   # 오로라×조합별 수치 표 출력
+  python3 -I 12_tools/qa/measure-sfx.py                   # 오라×조합별 수치 표 출력
   python3 -I 12_tools/qa/measure-sfx.py --wav /tmp/sfx    # 위에 더해 조합별 WAV 파일 저장 (귀로 들어 볼 용도)
   python3 -I 12_tools/qa/measure-sfx.py --calibrate [3]   # 조합별 음량(TRIM)을 목표 RMS에 맞춰 sfx-variety.js 에 기록
   python3 -I 12_tools/qa/measure-sfx.py --burst           # 한 턴에 0.9초 간격으로 5번 연속 타격할 때 잔향이 얼마나 정리되는지 측정
 전제: dist를 http.server로 띄운 상태(기본 http://localhost:8765), numpy·playwright 설치.
       보정 후에는 `npm run build:runtime` 으로 dist/runtime 에 반영한다.
 
-모든 피격은 피해량과 무관하게 같은 "강한 신호"로 울린다. 그래서 오로라·조합이 달라도 비슷한 크기로 들리게 하는 것이 목표다.
+모든 피격은 피해량과 무관하게 같은 "강한 신호"로 울린다. 그래서 오라·조합이 달라도 비슷한 크기로 들리게 하는 것이 목표다.
 
 수치 해석
   cut      꼬리가 뚝 끊기는 정도(dB/10ms). 낮을수록 부드러움 (자연스러운 감쇠 약 2 이하, 6 초과면 끊김으로 들림)
@@ -34,7 +34,7 @@ SRC = ROOT / "05_game-client/battle/sfx-variety.js"
 URL = "http://localhost:8765/index.html?skipIntro&guardian=baekho"
 SR = 44100
 TARGET_RMS = -21.5  # 버스 볼륨 0.35 기준, 첫 0.25초 평균 음량(dB)
-# 사람 귀는 3~5kHz에 민감해서(A-가중) 고음이 많은 소리는 같은 RMS여도 더 크게 들리고 피크도 높다 → 오로라별로 목표를 낮춘다.
+# 사람 귀는 3~5kHz에 민감해서(A-가중) 고음이 많은 소리는 같은 RMS여도 더 크게 들리고 피크도 높다 → 오라별로 목표를 낮춘다.
 # (효과음 볼륨 슬라이더를 최대로 올려도 피크가 0dBFS를 넘지 않도록 -9dB 여유가 필요하다)
 TARGET_OFFSET = {"wind": -4.0, "neutral": -1.0, "earth": 7.0, "fire": 1.0}  # 대지는 더 크고 묵직하게(+7dB), 불은 원본 폭발음(이전 방식 RMS 약 -18dB)보다 조금 작게(-20.5dB)
 
@@ -164,7 +164,7 @@ def main():
         if "--burst" in args:
             gap, count = 0.9, 5
             print(f"\n연속 {count}회 타격(간격 {gap}초) — 4번째 타격 기준")
-            print(f"{'오로라':8s}{'hit RMS':>9s}{'직전 residual':>14s}{'마지막 꼬리(s)':>14s}")
+            print(f"{'오라':8s}{'hit RMS':>9s}{'직전 residual':>14s}{'마지막 꼬리(s)':>14s}")
             for e in counts:
                 rows = []
                 for _ in range(3):
@@ -183,7 +183,7 @@ def main():
                 print(f"{e:8s}{avg[0]:9.1f}{avg[1]:12.1f}dB{avg[2]:14.2f}")
             browser.close()
             return
-        print(f"{'오로라':8s}{'조합':4s}{'rms':>7s}{'peak':>7s}{'cut':>6s}{'tail30':>8s}{'late%':>7s}{'corr':>6s}{'centroid':>9s}")
+        print(f"{'오라':8s}{'조합':4s}{'rms':>7s}{'peak':>7s}{'cut':>6s}{'tail30':>8s}{'late%':>7s}{'corr':>6s}{'centroid':>9s}")
         worst = 0.0
         for e in counts:
             for c in range(counts[e]):
@@ -193,7 +193,7 @@ def main():
                 print(f"{e:8s}{c:<4d}{m['rms']:7.1f}{m['peak']:7.1f}{m['cut']:6.1f}{m['tail30']:8.2f}{m['late']:7.1f}{m['corr']:6.2f}{m['centroid']:9.0f}")
                 if wav_dir:
                     save_wav(wav_dir / f"{e}_{c}.wav", data)
-        print(f"\n목표 음량(기준 {TARGET_RMS:.1f}dB, 오로라별 가감 {TARGET_OFFSET})과의 최대 차이: {worst:.1f}dB")
+        print(f"\n목표 음량(기준 {TARGET_RMS:.1f}dB, 오라별 가감 {TARGET_OFFSET})과의 최대 차이: {worst:.1f}dB")
         browser.close()
 
 

@@ -12,7 +12,7 @@
     "displayName": { "type": "string", "minLength": 1 },
     "cardType": { "enum": ["champion", "spell", "trap"] },
     "cost": { "type": "integer", "minimum": 0, "maximum": 20 },
-    "aura": { "enum": ["fire", "water", "wood", "metal", "earth"], "description": "성격의 오로라 5종(불·물·나무·금속·대지). 카드 분류·덱 편성·전투 판정·연출의 단일 기준이다." },
+    "aura": { "enum": ["fire", "water", "wood", "metal", "earth"], "description": "성격의 오라 5종(불·물·나무·금속·대지). 카드 분류·덱 편성·전투 판정·연출의 단일 기준이다." },
     "rarity": { "enum": ["common", "rare", "legendary"] },
     "collectible": { "type": "boolean", "default": true },
     "releaseState": { "enum": ["live", "prototype", "retired"], "default": "live" },

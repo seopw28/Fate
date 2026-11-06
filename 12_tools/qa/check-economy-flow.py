@@ -5,8 +5,8 @@
 전제: dist를 http.server로 띄운 상태 (기본 http://localhost:8765). 실패하면 exit 1.
 
 검사 항목
-  1. 성격 오로라 선택·기권에 별도 재화 차감 없음
-  2. 오로라 미선택 경로가 없음
+  1. 성격 오라 선택·기권에 별도 재화 차감 없음
+  2. 오라 미선택 경로가 없음
   3. 개발 환경이 아닌 주소에서는 ?crackers / ?guardian이 무시됨
 """
 import sys
@@ -43,19 +43,19 @@ with sync_playwright() as p:
         pg.evaluate("const b=document.querySelector('#surrender-action');surrenderBattle(b);surrenderBattle(b)")
         pg.wait_for_timeout(3500)
 
-    # 1. 성격 오로라 선택·기권
+    # 1. 성격 오라 선택·기권
     pg = new_page()
     pg.evaluate("pickGuardian('baekho')")
     pg.wait_for_timeout(300)
-    check("성격 오로라 선택 무료", crackers(pg), DEMO_CRACKER_FLOOR)
+    check("성격 오라 선택 무료", crackers(pg), DEMO_CRACKER_FLOOR)
     surrender(pg)
-    check("성격 오로라 기권 별도 차감 없음", crackers(pg), DEMO_CRACKER_FLOOR)
+    check("성격 오라 기권 별도 차감 없음", crackers(pg), DEMO_CRACKER_FLOOR)
 
-    # 2. 제거된 오로라 미선택 값은 선택되지 않음
+    # 2. 제거된 오라 미선택 값은 선택되지 않음
     pg = new_page()
     pg.evaluate("pickGuardian('none')")
     pg.wait_for_timeout(300)
-    check("오로라 미선택 값 거부", pg.evaluate("guardianChosen"), False)
+    check("오라 미선택 값 거부", pg.evaluate("guardianChosen"), False)
 
     # 3. 개발 환경이 아닌 주소에서는 URL 옵션 무시 (fate.test를 로컬 서버로 대신 연결)
     ctx = browser.new_context(viewport={"width": 1440, "height": 900})

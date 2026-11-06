@@ -1,14 +1,14 @@
 /* 피격·평타 효과음 변주 (v2: 공간감 · 몸통 · 잔향).
  *
  * 소리 한 번 = 여러 층의 합성:
- *   ① 몸통(body)   : 길게 울리는 기존 샘플(폭발·금속·칼) — 음높이/필터를 오로라별로 달리 해서 공간감과 무게를 만든다
+ *   ① 몸통(body)   : 길게 울리는 기존 샘플(폭발·금속·칼) — 음높이/필터를 오라별로 달리 해서 공간감과 무게를 만든다
  *   ② 어택(accent) : Kenney Impact Sounds(CC0)의 짧은 타격음 — 매번 다른 변형을 골라 질감을 바꾼다
  *   ③ 합성 질감    : 잡음·공명(resonator) 기반 레이어 (삑 하는 순수 톤은 쓰지 않는다)
  * 그리고 공통으로
  *   - 잔향(리버브): 합성 임펄스 응답(IR)으로 만든 ConvolverNode. 강타일수록 잔향이 크다.
  *   - 스테레오 폭: 중간 이상 타격은 같은 소리를 좌우로 11ms 어긋나게 겹쳐 넓힌다 (Haas).
  *   - 압축기: 여러 층이 겹쳐도 찌그러지지 않고 하나의 소리로 묶인다.
- *   - 오로라별 EQ: 불=저음 두툼, 물=고음 반짝, 대지=아주 낮게.
+ *   - 오라별 EQ: 불=저음 두툼, 물=고음 반짝, 대지=아주 낮게.
  * 같은 조합이 연달아 나오지 않게 하고, 음높이·볼륨·타이밍·좌우 위치를 매번 조금씩 바꾼다.
  * 샘플이 아직 로드되지 않았거나 실패해도 합성음만으로 소리가 난다. (PM 메모: 피격음의 "고급스러움"은 대부분 ①과 잔향에서 나온다)
  *
@@ -24,7 +24,7 @@
     impactPlate_heavy: 5, impactPlate_light: 5, impactPlate_medium: 5, impactPunch_heavy: 5, impactPunch_medium: 5,
     impactSoft_heavy: 5, impactSoft_medium: 5, impactTin_medium: 5, impactWood_heavy: 5, impactWood_light: 5, impactWood_medium: 5,
     // Basic Spell Impacts(CC0, 스테레오·잔향 포함): 06_assets/audio/basic-spell-impacts, 변환은 12_tools/asset-pipeline/build-spell-sfx.py
-    // spell<오로라>은 폭발 직전부터 자른 피격음용, spellIceCast는 차오름(약 0.5초 뒤 정점)까지 전체를 쓰는 빙결 시전음용
+    // spell<오라>은 폭발 직전부터 자른 피격음용, spellIceCast는 차오름(약 0.5초 뒤 정점)까지 전체를 쓰는 빙결 시전음용
     // spellLightningCast는 번개가 내리치는 순간이 0.45초에 오도록 정렬한 물 공격의 번개 연출("아주르 썬더폴")용
     spellFire: 5, spellIce: 5, spellIceCast: 5, spellLightning: 5, spellLightningCast: 5, spellWater: 5
   };
@@ -34,7 +34,7 @@
   // 층 정의: s=샘플 이름, g=볼륨 배율, r=음높이 배율, lp/hp=저역/고역 필터(Hz), dur=최대 길이(초)
   const L = (s, o = {}) => Object.assign({ s }, o);
 
-  // 오로라별 조합 후보 (모든 피격은 강한 신호로 통일: 피해 강도에 따라 소리를 바꾸지 않는다).
+  // 오라별 조합 후보 (모든 피격은 강한 신호로 통일: 피해 강도에 따라 소리를 바꾸지 않는다).
   // 한 번 칠 때 후보 중 하나(직전 제외)를 고르고 그 안의 층을 모두 겹쳐 재생한다.
   const HIT_SETS = {
     // 불: 처음 쓰던 폭발 샘플 "원본"이 가장 불다워서 가공 없이 그대로 쓴다 (변주는 음높이·좌우 위치·볼륨의 미세한 흔들림으로만).
@@ -66,7 +66,7 @@
       [L('impactMining'), L('impactPunch_heavy', { r: 0.8 }), L('impactSoft_heavy', { r: 0.7 }), L('legacy_explosion', { g: 0.85, r: 0.6, lp: 1400 })],
       [L('impactWood_heavy', { r: 0.85 }), L('impactMining', { g: 0.8 }), L('legacy_explosion', { g: 0.8, r: 0.7, lp: 1500 }), L('legacy_metal', { g: 0.3, r: 0.6 })]
     ],
-    // 무오로라(금속): "쓰윽!" 하고 칼날이 스치는 소리만. 앞에 "띵-" 하고 울리던 금속 타격·금속 여운 샘플은 뺐다.
+    // 무오라(금속): "쓰윽!" 하고 칼날이 스치는 소리만. 앞에 "띵-" 하고 울리던 금속 타격·금속 여운 샘플은 뺐다.
     // 칼 베는 샘플(legacy_slash)의 저음을 잘라 날카롭게 하고, 음높이·길이를 달리한 두 겹으로 변주한다. (바람은 더 높고 3번 겹쳐 구별)
     neutral: [
       [L('legacy_slash', { g: 1.1, r: 1.0, hp: 1000, dur: 0.9 }), L('legacy_slash', { g: 0.55, r: 1.25, hp: 2500, dur: 0.5 })],
@@ -83,9 +83,9 @@
   // 연속 타격 대응: 최근 CROWD_WINDOW초 안의 타격 수가 늘수록 잔향·꼬리를 줄이고, 새 타격 때 이전 잔향을 잠깐 눌러 준다
   const CROWD_WINDOW = 2.5, CROWD_STEP = 0.16, CROWD_MIN = 0.45;
   const FADE_DECIBELS_E = 6.9; // 지수 감쇠가 cap에서 e^-6.9 ≈ -60dB 가 되도록 하는 상수 (페이드 길이 ÷ 이 값 = 시정수)
-  // 오로라별 공간·음색: wet=잔향 양, space=잔향 종류, tail=샘플 꼬리 길이 배율(전체 cap 기준), wide=좌우 폭, hp=저음 제거(Hz), fade=꼬리 감쇠 시작 비율,
+  // 오라별 공간·음색: wet=잔향 양, space=잔향 종류, tail=샘플 꼬리 길이 배율(전체 cap 기준), wide=좌우 폭, hp=저음 제거(Hz), fade=꼬리 감쇠 시작 비율,
   // rate=음높이 배율, lp=고음 제한(Hz), jitter=음높이 무작위 폭, synth=합성 질감 층 수(없으면 STRONG.layers), stack=겹쳐 내기
-  // 구별이 되도록 오로라마다 다르게 둔다: 대지는 넓고 크게, 불은 원본 그대로, 물은 건조하게 겹쳐서, 바람(칼날)은 높고 예리하게, 무오로라(금속)은 짧게.
+  // 구별이 되도록 오라마다 다르게 둔다: 대지는 넓고 크게, 불은 원본 그대로, 물은 건조하게 겹쳐서, 바람(칼날)은 높고 예리하게, 무오라(금속)은 짧게.
   const ELEMENT = {
     // 불: 원본 폭발 샘플을 가공 없이 (EQ·좌우 확장·합성음 없음). 길이만 부드럽게 줄인다.
     fire: { eq: [], wet: 0.08, space: 'long', tail: 1.0, wide: 0, hp: 0, fade: 0.45, jitter: 0.06, synth: 0 },
@@ -96,11 +96,11 @@
     wind: { eq: [{ type: 'highshelf', freq: 4500, gain: 4 }], wet: 0.02, space: 'short', tail: 0.3, wide: 0.1, hp: 600, fade: 0.1, rate: 1.2, stack: { count: 3, spacing: [0.03, 0.055], decay: 0.74, pitch: 0.04, jitter: 0.03, spread: 0.4, layers: 1, cap: 0.16 } },
     // 대지: 더 낮고 묵직하게 — rate·lp·강한 저음 EQ. 공간감(잔향·꼬리·좌우 폭)을 크게. pitch는 합성 저음(쿵·우르릉)에도 적용된다
     earth: { eq: [{ type: 'lowshelf', freq: 140, gain: 8 }], wet: 0.38, space: 'long', tail: 1.0, wide: 0.4, hp: 0, fade: 0.4, rate: 0.82, lp: 4200 },
-    // 무오로라(금속): 강철 부딪힘 — 고음을 살리고 여운은 짧게(tail 0.55), "깡-깡" 두 번 연달아 부딪히는 느낌으로 2번 겹침, 합성 부딪힘 1층
+    // 무오라(금속): 강철 부딪힘 — 고음을 살리고 여운은 짧게(tail 0.55), "깡-깡" 두 번 연달아 부딪히는 느낌으로 2번 겹침, 합성 부딪힘 1층
     neutral: { eq: [{ type: 'highshelf', freq: 3000, gain: 4 }], wet: 0.08, space: 'short', tail: 0.8, wide: 0.2, hp: 0, fade: 0.3, synth: 0 },
   };
-  // 조합별 음량 보정 (12_tools/qa/measure-sfx.py --calibrate 로 조합마다 렌더링·측정해 맞춘 값). TRIM[오로라][조합 번호]
-  // 목표: 오로라·조합이 달라도 비슷한 크기로 들리게 한다. 값이 없으면 1.
+  // 조합별 음량 보정 (12_tools/qa/measure-sfx.py --calibrate 로 조합마다 렌더링·측정해 맞춘 값). TRIM[오라][조합 번호]
+  // 목표: 오라·조합이 달라도 비슷한 크기로 들리게 한다. 값이 없으면 1.
   const TRIM = {
     fire: [0.84],
     water: [12.60, 12.60, 12.60, 12.60, 12.60], // 물 튀는 소리를 +2dB 키움 (보정 도구의 클램프 10 밖이라 직접 지정)
@@ -387,7 +387,7 @@
       }
       const params = { power, pan, wet, space: e.space, pitch: e.rate || 1, boost: (played ? 1 : 1.8) * trim }; // 샘플이 없으면 합성음을 키운다
       const names = SYNTH_NAMES[element] || SYNTH_NAMES.neutral;
-      // 합성 질감: 오로라 설정이 우선(불은 0). 단 샘플이 하나도 재생되지 못했으면(아직 로드 전·실패) 소리가 비지 않게 최소 1개는 낸다
+      // 합성 질감: 오라 설정이 우선(불은 0). 단 샘플이 하나도 재생되지 못했으면(아직 로드 전·실패) 소리가 비지 않게 최소 1개는 낸다
       const synthLayers = played ? (e.synth !== undefined ? e.synth : t.layers) : Math.max(1, e.synth !== undefined ? e.synth : t.layers);
       for (let i = 0; i < synthLayers; i++) SYNTH[pickFrom(`syn:${element}:${i}`, names)](params);
       return true;

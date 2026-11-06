@@ -5,7 +5,7 @@
 ## 영역
 
 - `core-rules/`: 턴 구조, 승패, 전투, 자원
-- `card-system/`: 카드 유형, 오로라, 키워드
+- `card-system/`: 카드 유형, 오라, 키워드
 - `deck-building/`: 덱 크기와 편성 제한
 - `progression/`: 해금과 성장
 - `game-modes/`: 튜토리얼, PvE, PvP

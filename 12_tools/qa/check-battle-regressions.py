@@ -35,7 +35,7 @@ CHECKS = [
     ("__RELOAD__", ""),
     ("합성에 쓴 시작 카드가 새로고침해도 되살아나지 않는다 (2단계: 새로고침 뒤)",
      "(()=>{const {i,saved}=JSON.parse(localStorage.getItem('__qa_synth'));return {ok:collectionState.owned[i]===saved,i,saved,afterReload:collectionState.owned[i]};})()"),
-    ("성격 오로라 선택과 패배에는 별도 크래커 차감이 없다",
+    ("성격 오라 선택과 패배에는 별도 크래커 차감이 없다",
      "(()=>{collectionState.crackers=500;persistCollection();finish(false,'qa');"
      "const s=JSON.parse(localStorage.getItem('primal-collection-v1'));return {ok:s.crackers===500,crackers:s.crackers};})()"),
     ("챔프 공격이 보호막에 막히면 '보호막이 막음' 연출이 보인다 (효과·피해 없이 끝나 보이지 않음)",

@@ -43,12 +43,12 @@ Constraints: transparent background (alpha), no characters, no text, no letters,
 
 | 카드 | 파일 이름 | 그림 방향 |
 |---|---|---|
-| 되돌리는 심판 (무오로라·전설) | `reversal-judgment` | 적들이 쏟아낸 무수한 칼날·화살·불꽃이 거대한 빛의 거울에 부딪혀 그대로 되돌아 날아가는 장면, 금빛과 흰빛 |
+| 되돌리는 심판 (무오라·전설) | `reversal-judgment` | 적들이 쏟아낸 무수한 칼날·화살·불꽃이 거대한 빛의 거울에 부딪혀 그대로 되돌아 날아가는 장면, 금빛과 흰빛 |
 | 반격의 방벽 (대지·희귀) | `reversal-bulwark` | 쏟아지는 공격을 받아내며 빛나는 거대한 고대 돌 방벽, 막아낸 힘이 금빛 생명력으로 흘러드는 장면, 호박색·금색 |
 | 거인 사냥 (바람·희귀) | `reversal-giant-hunt` | 폭풍 속에 우뚝 선 거대한 바위 거인의 실루엣을 수많은 청록빛 바람 칼날이 사방에서 깎아내는 장면 |
 | 무게의 대가 (화염·희귀) | `reversal-weight-toll` | 무거운 쇳덩이 저울이 한쪽으로 기울며 그 무게만큼 붉은 불길이 터져 나오는 장면, 붉은색·주황·쇠빛 |
 | 생명 강탈 (물·희귀) | `reversal-life-siphon` | 적진의 붉은 생명 기운이 푸른 물줄기 소용돌이에 빨려 들어 한 점으로 모이는 장면, 심해 남색·청록·붉은 빛 |
-| 역전의 지혜 (무오로라·희귀) | `reversal-insight` | 어둠 속에서 펼쳐진 고서 위로 빛나는 카드들이 떠올라 부채꼴로 펼쳐지는 장면, 보라·금빛 |
+| 역전의 지혜 (무오라·희귀) | `reversal-insight` | 어둠 속에서 펼쳐진 고서 위로 빛나는 카드들이 떠올라 부채꼴로 펼쳐지는 장면, 보라·금빛 |
 
 완료 기록: Codex 이미지 생성 도구로 세로 2:3 원본 PNG 6장을 생성해 `06_assets/source-art/spells/`에 보존하고, 게임용 WebP를 `dist/assets/spells/generated/`에 연결했다. 실제 생성 프롬프트는 `06_assets/source-art/spells/reversal-prompts.md`에 기록했다.
 
@@ -94,6 +94,6 @@ Constraints: no visible people, no readable text, no letters, no numbers, no log
 ## P2 — 소환 토큰
 - ~~`마력 늑대`, `되살린 사령`~~ **완료 (2026-11-03)**: 사용자 제공 일러스트로 교체 — `dist/assets/tokens/mana-wolf.webp`, `necro-spirit.webp` (`TOKEN_ART`). 예전 SVG는 삭제.
 
-## (완료) P3 — 성격 오로라 문양
+## (완료) P3 — 성격 오라 문양
 - 제우스·포세이돈·하데스·아테나를 인물 형상 대신 번개 왕관·삼지창과 파도·명계의 문·아이기스 방패 문양으로 제작했다. 한자·중국풍·이모지 표현은 사용하지 않았다.
 - 파일: `dist/assets/guardians/{zeus,poseidon,hades,athena}-sigil-v1.png`.

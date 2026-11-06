@@ -100,7 +100,7 @@ STATES = [
     ("챔프 소환 설명 닫기", "document.querySelectorAll('.effect-narration').forEach(n=>n.remove())"),
     ("역전 마법 카드", "const h=document.querySelector('.hand');h.innerHTML='';['reversal.judgment','reversal.bulwark','reversal.giant-hunt','reversal.weight-toll','reversal.life-siphon','reversal.insight'].forEach(id=>h.appendChild(createRuntimeBattleCard(id)));setHandFilter('spell')"),
     ("전투 진행 중", "battlePhase='player-combat'; updateDrawAction(); const e=document.querySelector('.end'); if(e) e.textContent='내 챔프 공격 중…'"),
-    ("성격 오로라 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
+    ("성격 오라 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
 ]
 
 def main():
