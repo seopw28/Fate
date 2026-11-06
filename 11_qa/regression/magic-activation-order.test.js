@@ -65,3 +65,17 @@ test('상대 함정은 세트 시 정체를 숨기고 발동 시에만 공개한
   assert.ok(html.includes('상대</strong>가 함정 카드를 뒤집어 세트했습니다.'));
   assert.ok(!html.includes("(card.trap?'함정':'마법')+' <strong>'+card.name+'</strong>을(를) 세트했습니다."));
 });
+
+test('마법 슬롯 2칸이 차면 손패 마법과 함정을 즉시 비활성 시각화한다', () => {
+  assert.ok(html.includes('.command-rail .card.magic-slot-blocked'), '비활성 카드 스타일이 있어야 한다');
+  assert.ok(html.includes('function syncMagicHandSlotAvailability()'), '손패 비활성 동기화 함수가 있어야 한다');
+  const sync = html.slice(html.indexOf('function syncMagicHandSlotAvailability()'), html.indexOf('const renderMagicSlotsBeforeHandBlock'));
+  assert.ok(sync.includes('const full = setMagicCards.length >= 2'), '슬롯 2칸이 모두 찼을 때만 막아야 한다');
+  assert.ok(sync.includes("cardCategory(card)!=='spell'"), '캐릭터 카드는 비활성 대상이 아니어야 한다');
+  assert.ok(sync.includes("card.classList.toggle('magic-slot-blocked', full)"), '슬롯이 비면 비활성 표시를 해제해야 한다');
+  assert.ok(sync.includes("card.setAttribute('aria-disabled','true')"), '보조 기술에도 비활성을 알려야 한다');
+  assert.ok(!sync.includes("card.title=''"), '해제 시 빈 title 대신 속성을 제거해야 한다');
+  assert.ok(html.includes('renderMagicSlots = function(){ renderMagicSlotsBeforeHandBlock(); syncMagicHandSlotAvailability(); }'), '슬롯 상태가 바뀌면 손패도 갱신해야 한다');
+  assert.ok(html.includes('updateCardAffordability = function(...args){ const result = updateCardAffordabilityBeforeMagicBlock.apply(this,args); syncMagicHandSlotAvailability(); return result; }'), '손패 재정렬 후에도 비활성 표시가 유지돼야 한다');
+  assert.ok(!html.includes("content:'슬롯 2/2 · 세팅 불가'"), '공격력·체력을 가리는 글자 띠는 쓰지 않는다');
+});

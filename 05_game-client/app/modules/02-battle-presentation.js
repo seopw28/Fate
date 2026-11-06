@@ -118,7 +118,7 @@
     function updateDesperation(){['player','enemy'].forEach(side=>{const gauge=document.querySelector('#'+side+'-health')?.parentElement;if(!gauge)return;const hp=heroHpOf(side),active=battlePhase!=='ended'&&desperateActive(side);if(active===desperateState[side])return;desperateState[side]=active;gauge.classList.toggle('desperate',active);gauge.title=active?'최후의 저항 · 체력이 '+Math.round(DESPERATE_HP_RATIO*100)+'% 이하':'';if(active){switchToAwakeningBgm();if(!desperateNoticeShown[side]){desperateNoticeShown[side]=true;desperateNoticeUntil=performance.now()+3600;combatPresentationUntil=Math.max(combatPresentationUntil,desperateNoticeUntil);showDesperateNotice(side);}if(side==='player')queueFirstUltimateAvenger(0);else{ensureEnemyAvengerSource();queueEnemyUltimateAvenger(0);}writeLog('<strong>'+(side==='player'?'내':'상대')+' 체력 게이지가 최후의 저항 상태입니다.</strong> (체력 '+hp+' / '+HERO_MAX_HP+')');}});}
     setInterval(updateDesperation,300);
     const fieldAttackBeforePresentationGate=fieldAttack;
-    fieldAttack=function(...args){const now=performance.now();if(fxBusy()||now<combatPresentationUntil){const runAt=Math.max(combatPresentationUntil,combatPresentationSlot||0)+240;combatPresentationSlot=runAt+900;setTimeout(()=>fieldAttack(...args),Math.max(fxBusy()?160:0,runAt-now));return;}combatPresentationSlot=0;return fieldAttackBeforePresentationGate(...args);};
+    /* 연출이 점유 중이면 교전을 미루되, (1) 미루는 동안에도 전투 큐에 '아직 바쁘다'고 알려 다음 챔프가 끼어들지 못하게 하고 (2) 재시도는 래퍼가 아니라 원본을 호출해 게이트가 중첩 재진입하지 않게 한다. 예전에는 래퍼가 자기 자신을 다시 불러 combatPresentationSlot이 매번 밀리고 호출 수가 불어나, 교전 간 0.3초 간격이 160ms 이하로 무너졌다 (2026-11-07) */fieldAttack=function(...args){const now=performance.now();if(fxBusy()||now<combatPresentationUntil){const runAt=Math.max(combatPresentationUntil,combatPresentationSlot||0)+240;combatPresentationSlot=runAt+900;const wait=Math.max(fxBusy()?160:0,runAt-now);markCombatBusy(wait);setTimeout(()=>{if(resultPending)return;combatPresentationSlot=0;fieldAttackBeforePresentationGate(...args);},wait);return;}combatPresentationSlot=0;return fieldAttackBeforePresentationGate(...args);};
     const selectCardBeforeComebackRush=selectCard;
     selectCard=function(card){selectCardBeforeComebackRush(card);const title=document.querySelector('#hand-guide');if(title&&cardCategory(card)==='champion'&&comebackRushActive()&&title.textContent.endsWith('다시 눌러 사용'))title.textContent+=' · 역전 돌진';};
     const castSpellWithoutMediumFx=castSpell;
@@ -131,7 +131,7 @@
     document.querySelectorAll('.card').forEach(card=>card.addEventListener('click',()=>playCard(card)));
     document.querySelector('.magic-field')?.remove();
     document.querySelector('.hand-tab[data-filter="champion"]').childNodes[0].textContent='캐릭터 카드 ';
-    const fieldActionDock=document.createElement('div');fieldActionDock.className='field-action-dock';document.querySelector('.stage-column').appendChild(fieldActionDock);const fieldUltimateAction=document.createElement('button');fieldUltimateAction.id='field-ultimate-action';fieldUltimateAction.className='field-ultimate-action';fieldUltimateAction.hidden=true;fieldUltimateAction.onclick=fireUltimateAction;fieldActionDock.appendChild(fieldUltimateAction);const fieldBloodUltimate=document.createElement('button');fieldBloodUltimate.id='field-ultimate-blood';fieldBloodUltimate.className='field-ultimate-blood';fieldBloodUltimate.hidden=true;fieldBloodUltimate.onclick=fireBloodUltimate;fieldActionDock.appendChild(fieldBloodUltimate);const fieldGuardianUltimate=document.createElement('button');fieldGuardianUltimate.id='field-guardian-ultimate';fieldGuardianUltimate.className='field-guardian-ultimate';fieldGuardianUltimate.hidden=true;fieldGuardianUltimate.onclick=()=>activateGuardianAwakening();fieldActionDock.appendChild(fieldGuardianUltimate);
+    const fieldActionDock=document.createElement('div');fieldActionDock.className='field-action-dock';document.querySelector('.stage-column').appendChild(fieldActionDock);const fieldUltimateAction=document.createElement('button');fieldUltimateAction.type='button';fieldUltimateAction.id='field-ultimate-action';fieldUltimateAction.className='field-ultimate-action';fieldUltimateAction.hidden=true;fieldUltimateAction.addEventListener('pointerdown',event=>{if(event.button!==0)return;fireUltimateAction(event);});fieldUltimateAction.addEventListener('click',event=>{if(event.detail===0)fireUltimateAction(event);});fieldActionDock.appendChild(fieldUltimateAction);const fieldBloodUltimate=document.createElement('button');fieldBloodUltimate.type='button';fieldBloodUltimate.id='field-ultimate-blood';fieldBloodUltimate.className='field-ultimate-blood';fieldBloodUltimate.hidden=true;fieldBloodUltimate.onclick=fireBloodUltimate;fieldActionDock.appendChild(fieldBloodUltimate);const fieldGuardianUltimate=document.createElement('button');fieldGuardianUltimate.type='button';fieldGuardianUltimate.id='field-guardian-ultimate';fieldGuardianUltimate.className='field-guardian-ultimate';fieldGuardianUltimate.hidden=true;fieldGuardianUltimate.onclick=()=>activateGuardianAwakening();fieldActionDock.appendChild(fieldGuardianUltimate);
     const ultimatePanel=document.createElement('div');ultimatePanel.id='ultimate-panel';ultimatePanel.className='ultimate-panel';document.querySelector('.hand-tabs').after(ultimatePanel);
     function playCardByDrop(card,destination='field'){if(!card?.isConnected||battlePhase!=='setup')return;if(destination==='field')ultimateArmed=false;document.querySelectorAll('.hand .card').forEach(item=>item.classList.remove('selected'));card.classList.add('selected');playCard(card);}
     function clearCardDropState(){document.querySelectorAll('.drag-over,.drop-ready').forEach(node=>node.classList.remove('drag-over','drop-ready'));draggedUltimateCard?.classList.remove('selected');draggedUltimateCard=null;}
@@ -369,6 +369,20 @@
       for(let i=0;i<2;i++){ const rack=document.querySelector('#magic-slot-'+i); if(!rack||setMagicCards[i]) continue; const armed = magicArmed && i===setMagicCards.length; rack.classList.toggle('armed', armed);
         rack.innerHTML = armed ? '<strong>세팅 '+(i+1)+' · 선택 중</strong><span>손패 카드를 클릭하세요</span>' : '<strong>세팅 '+(i+1)+' · 비어 있음</strong><span class="slot-empty">눌러서 카드 고르기</span>'; }
     };
+    /* 마법 슬롯이 2칸 모두 차면 손패의 마법·함정 카드를 비활성 시각화한다. 슬롯이 비거나 손패가 다시 그려질 때 해제된다. */
+    function syncMagicHandSlotAvailability(){
+      const full = setMagicCards.length >= 2;
+      document.querySelectorAll('.hand .card').forEach(card=>{
+        if(cardCategory(card)!=='spell'){ card.classList.remove('magic-slot-blocked'); return; }
+        card.classList.toggle('magic-slot-blocked', full);
+        if(full){ card.classList.remove('selected'); card.setAttribute('aria-disabled','true'); card.title='마법 슬롯 2/2 · 세트된 마법을 발동하거나 취소한 뒤 세팅할 수 있습니다'; }
+        else { card.removeAttribute('title'); if(!card.classList.contains('unaffordable')) card.setAttribute('aria-disabled','false'); }
+      });
+    }
+    const renderMagicSlotsBeforeHandBlock = renderMagicSlots;
+    renderMagicSlots = function(){ renderMagicSlotsBeforeHandBlock(); syncMagicHandSlotAvailability(); };
+    const updateCardAffordabilityBeforeMagicBlock = updateCardAffordability;
+    updateCardAffordability = function(...args){ const result = updateCardAffordabilityBeforeMagicBlock.apply(this,args); syncMagicHandSlotAvailability(); return result; };
     renderMagicSlots();
 
     /* 전투 시작: 인트로 연출(2.9초, 클릭/Space/Enter로 건너뛰기) → 성격 오라 선택 → 전투 개시. 선택이 끝나기 전까지는 setup 단계가 아니므로 조작이 잠긴다.

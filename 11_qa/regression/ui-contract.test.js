@@ -127,6 +127,17 @@ test('ready ultimate action uses a compact two-line cost layout', () => {
   assert.ok(html.includes('.field-ultimate-action:not(.locked)::before{display:none}'), 'Ready action must hide the duplicated English ULTIMATE label');
 });
 
+test('활성 궁극기 버튼은 한 번의 클릭으로 상태를 확정한 뒤 컷신을 재생한다', () => {
+  assert.ok(html.includes("fieldUltimateAction.type='button'"), '궁극기 버튼은 폼 기본 동작이 없는 일반 버튼이어야 한다');
+  assert.ok(html.includes("fieldUltimateAction.addEventListener('pointerdown',event=>{if(event.button!==0)return;fireUltimateAction(event);})"), '마우스와 터치는 첫 누름에서 궁극기를 처리해야 한다');
+  assert.ok(html.includes("fieldUltimateAction.addEventListener('click',event=>{if(event.detail===0)fireUltimateAction(event);})"), '키보드로 발생한 클릭도 궁극기를 발동해야 한다');
+  const action = html.slice(html.indexOf('function fireUltimateAction(event)'), html.indexOf('function fireBloodUltimate'));
+  assert.ok(action.includes('const spec=ultimateState,reason=ultimateLockReason()'), '클릭 시작 시 발동 상태와 실패 사유를 한 번 확정해야 한다');
+  assert.ok(action.indexOf('activateUltimate()') < action.indexOf("showUltimateCutscene('sakura',spec)"), '실제 발동 성공을 확인하기 전에 컷신부터 띄우면 안 된다');
+  assert.ok(action.includes('if(ultimateState===spec)'), '발동 상태가 소비되지 않으면 실패를 사용자에게 알려야 한다');
+  assert.ok(action.includes('궁극기 발동 대기:'), '발동하지 못한 첫 클릭을 조용히 무시하면 안 된다');
+});
+
 test('오라 각성은 왼쪽, 궁극기는 오른쪽이며 궁극기는 선택 오라 색을 따른다', () => {
   assert.ok(html.includes('.field-action-dock>.field-guardian-ultimate{order:2}'), 'Aura awakening must occupy the left action slot');
   assert.ok(html.includes('.field-action-dock>.field-ultimate-action{order:3'), 'Ultimate must occupy the right action slot');
@@ -219,4 +230,21 @@ test('최후의 저항: 체력 40 이하에서 발동하지만 최대 마나는 
   assert.ok(html.includes('maxMana=Math.min(MANA_CAP,maxMana+1)'), 'Turn start must never grow beyond ten mana');
   assert.ok(!html.includes('const DESPERATE_MANA_CAP = 11;'), 'The removed eleven-mana cap must not remain');
   assert.ok(!html.includes('function applyDesperateMana'), 'Desperation must not mutate maximum mana');
+});
+
+test('상대는 카드를 한 장씩 간격을 두고 내려놓는다 (같은 프레임 동시 등장 금지)', () => {
+  assert.ok(html.includes('const ENEMY_PLAY_GAP_MS=340'), '카드 간 간격 상수가 있어야 한다');
+  const turn = html.slice(html.indexOf('const openSlots=FIELD_CARD_LIMIT', html.indexOf('await resolveEnemySetMagic()')));
+  assert.ok(turn.includes('await new Promise(resolve=>setTimeout(resolve,combatMs(ENEMY_PLAY_GAP_MS)))'), '카드 사이에 실제 대기가 있어야 한다');
+  assert.ok(!turn.slice(0, turn.indexOf('arrangeEnemyLane')).includes('.forEach(data=>{enemyMana-=data.cost;enemySummonUnit(lane,data);})'), '동기 forEach로 한꺼번에 깔면 안 된다');
+  assert.ok(turn.includes('let placedBefore=lane.querySelectorAll'), '전개 우선 소환 직후에도 같은 간격을 둬야 한다');
+});
+
+test('연출이 점유 중이어도 교전 간 판독 여유가 무너지지 않는다', () => {
+  // 래퍼가 자기 자신을 재호출하면 게이트가 중첩되어 간격이 160ms 이하로 붕괴한다.
+  const gate = html.slice(html.indexOf('fieldAttack=function(...args)'), html.indexOf('const selectCardBeforeComebackRush'));
+  assert.ok(gate.includes('markCombatBusy(wait)'), '미루는 동안에도 전투 큐에 점유를 알려야 한다');
+  assert.ok(gate.includes('fieldAttackBeforePresentationGate(...args)'), '재시도는 원본을 호출해야 한다');
+  assert.ok(!gate.includes('setTimeout(()=>fieldAttack(...args)'), '래퍼를 재귀 호출하면 안 된다');
+  assert.ok(html.includes('postCombatPause:278'), '교전 간 0.3초(278*1.08) 판독 여유를 유지한다');
 });
