@@ -64,7 +64,7 @@ const AWAKENING_OPTIONS = {
     B: { label: '연격', chance: 0.075, extraStrikes: 1 },
   },
   cheongryong: {
-    A: { label: '범람', chance: 0.16, manaMin: 8, manaMax: 8 },
+    A: { label: '범람', chance: 0.15, manaMin: 8, manaMax: 8 },
     B: { label: '순환', chance: 0.99, manaMin: 2, manaMax: 2 },
   },
   namu: {
@@ -72,7 +72,7 @@ const AWAKENING_OPTIONS = {
     B: { label: '거목 수호', chance: 0.30, hpGain: 5, leftmostOnly: true },
   },
   baekho: {
-    A: { label: '절단 반격', chance: 0.50, ratio: 0.40, minDamage: 2, maxDamage: 5 },
+    A: { label: '절단 반격', chance: 0.70, ratio: 0.30, minDamage: 1, maxDamage: 3 },
     B: { label: '땅울림', chance: 0.15, aoeDamage: 3 },
   },
   hyeonmu: {
