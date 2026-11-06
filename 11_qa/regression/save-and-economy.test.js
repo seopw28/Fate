@@ -81,24 +81,25 @@ test('오라 선택: 성격의 오라 5종을 오각형 꼭짓점에 배치하�
   assert.ok(html.includes("<img src=\"'+aura.sigil+'\" alt=\"'+aura.name+' 문양\">"), 'Aura marks must use images instead of letter glyphs');
 });
 
-test('금속의 오라: 낮은 피해로 자주 반격하며 고공격력 폭주를 제한한다', () => {
-  assert.ok(html.includes("chance:.60,ratio:.15,maxDamage:2,short:'허점 반격'"), 'Metal aura must trade damage for a 60% proc rate');
-  assert.ok(html.includes('Math.max(metalAura.minDamage||1,Math.min(metalAura.maxDamage,Math.ceil(attack*metalAura.ratio)))'), 'Counter damage must respect the base or awakened min/max range');
-  assert.ok(html.includes("GUARDIANS.baekho.name+' · '+(metalAura.name||'허점 반격')+' '+power"), 'Frequent counters must have an explicit combat cue');
+test('금속의 오라: 맨 왼쪽 챔프가 생존 경험으로 공격력을 한 번 성장시킨다', () => {
+  assert.ok(html.includes("survivalStep:.26,maxChance:.90,attackGain:4,short:'생존 경험'"));
+  assert.ok(html.includes("unit.dataset.metalSurvivalTurns=String((Number(unit.dataset.metalSurvivalTurns)||0)+1)"));
+  assert.ok(html.includes("front.dataset.metalExperienced='true'"), 'Metal attack growth must be limited to once per champion');
+  assert.ok(html.includes("badge.textContent=front.dataset.metalExperienced==='true'?'단련 완료':'생존 '+turns+'턴 · '+Math.round(chance*100)+'%'"), 'The current survival chance must be visible');
 });
 
-test('오라 밸런스: 불 연속 공격 6%, 대지 치명타 생존 5%, 나무 필드 카드마다 체력 +1 60%', () => {
-  assert.ok(html.includes("jujak:{name:'불의 오라',label:'불',title:'열정',seal:'불',color:'#ff6a4a',sigil:'assets/auras/fire-sigil.svg',chance:.06,short:'연속 공격'"), 'Fire extra attack rate must be 6%');
-  assert.ok(html.includes("if(!guardianProc(side,'jujak'))return"), 'Fire must roll once before scheduling an extra attack');
-  assert.ok(html.includes('resolveDuelBeforePassion(attacker,target'), 'Fire extra attack must not recursively roll another extra attack');
-  assert.ok(html.includes("hyeonmu:{name:'대지의 오라',label:'대지',title:'무던',seal:'땅',color:'#d9a35b',sigil:'assets/auras/earth-sigil.svg',chance:.05,maxProcs:1"), 'Earth survival rate must be 5% with one proc per battle');
-  assert.ok(html.includes("namu:{name:'나무의 오라',label:'나무',title:'발전',seal:'목',color:'#5fd38a',sigil:'assets/auras/wood-sigil.svg',chance:.60,short:'체력 성장'"), 'Wood: each field card independently gains +1 HP at 60% on its turn start');
+test('오라 밸런스: 불 화상 50%, 대지 치명타 생존 1.5%, 나무 체력 성장 78%', () => {
+  assert.ok(html.includes("chance:.50,burnDamage:1,short:'화상'"));
+  assert.ok(html.includes("target.dataset.auraBurn=String(damage)"), 'Fire burn must persist as a non-stacking status');
+  assert.ok(html.includes("afterHp>0&&afterHp<beforeHp)applyAuraBurn(attackerSide,defender)"), 'Burn requires actual combat damage and a surviving champion');
+  assert.ok(html.includes("hyeonmu:{name:'대지의 오라',label:'대지',title:'무던',seal:'땅',color:'#d9a35b',sigil:'assets/auras/earth-sigil.svg',chance:.015,maxProcs:1"));
+  assert.ok(html.includes("namu:{name:'나무의 오라',label:'나무',title:'발전',seal:'목',color:'#5fd38a',sigil:'assets/auras/wood-sigil.svg',chance:.78,short:'체력 성장'"));
   assert.ok(html.includes("growNamuField('player')") && html.includes("growNamuField('enemy')"), 'Wood growth must work for both sides');
   assert.ok(html.includes("if(!guardianProc(side,'namu'))return;grown++"), 'Each field card must roll independently');
 });
 
-test('물의 오라: 60% 확률로 마나 1~2를 회복한다', () => {
-  assert.ok(html.includes("chance:.60,manaMin:1,manaMax:2,short:'마나 회복'"), 'Poseidon must proc at 60% with a 1-2 mana range');
+test('물의 오라: 27% 확률로 마나 1~2를 회복한다', () => {
+  assert.ok(html.includes("chance:.27,manaMin:1,manaMax:2,short:'마나 회복'"));
   assert.ok(html.includes("const rollPoseidonMana=side=>{const config=guardianAuraConfig(side,'cheongryong');return engineAdapter.randomInt(config.manaMin,config.manaMax);}"), 'Runtime recovery must roll the base or awakened configured range');
 });
 
@@ -107,15 +108,16 @@ test('오라 각성: 체력 80 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes('playerHp<=GUARDIAN_AWAKEN_HP'), 'Runtime must detect the awakening health threshold');
   assert.ok(html.includes("guardianAwakenChoice=choice"), 'The selected awakening branch must be stored');
   assert.ok(html.includes('const guardianAwakenActive=side=>Boolean(guardianAwakenChoiceOf(side))'), 'Awakening must remain active for either side after selection');
-  assert.ok(html.includes("jujak:{A:{name:'폭열',chance:.055,extraStrikes:2"), 'Fire must offer the balanced triple-strike branch');
-  assert.ok(html.includes("A:{name:'범람',chance:.14,manaMin:7,manaMax:7"), 'Water must offer the tuned rare fixed-7-mana branch');
-  assert.ok(html.includes("B:{name:'순환',chance:.90,manaMin:2,manaMax:2"), 'Water must offer the tuned reliable fixed-2-mana branch');
-  assert.ok(html.includes("A:{name:'숲의 생명',chance:1,hpGain:1"), 'Wood must offer guaranteed whole-field growth');
-  assert.ok(html.includes("B:{name:'거목 수호',chance:.30,hpGain:5,leftmostOnly:true"), 'Wood must offer low-frequency, high-impact growth for the leftmost ally');
-  assert.ok(html.includes("B:{name:'파쇄 공명',chance:.14,aoeDamage:3"), 'Metal must offer a rare but stronger whole-field counter distinct from its single-target branch');
-  assert.ok(html.includes("A:{name:'절단 반격',chance:.8,ratio:.3,minDamage:1,maxDamage:3"), 'Metal must offer a frequent low-damage single-target counter');
-  assert.ok(html.includes("A:{name:'암반 피부',chance:.57,damageReduction:1,minCost:4"), 'Earth rock skin must only protect champions costing four or more');
-  assert.ok(html.includes("B:{name:'절대방어',chance:.055,avoidDamage:true"), 'Earth must offer a low-chance absolute defense branch');
+  assert.ok(html.includes("jujak:{A:{name:'불길 확산',chance:.80,burnDamage:1"));
+  assert.ok(html.includes("B:{name:'업화',chance:.50,burnDamage:2"));
+  assert.ok(html.includes("A:{name:'범람',chance:.045,manaMin:7,manaMax:7"));
+  assert.ok(html.includes("B:{name:'순환',chance:.27,manaMin:2,manaMax:2"));
+  assert.ok(html.includes("A:{name:'숲의 생명',chance:1,hpGain:2"));
+  assert.ok(html.includes("B:{name:'거목 수호',chance:.35,hpGain:5,leftmostOnly:true"));
+  assert.ok(html.includes("A:{name:'숙련 가속',survivalStep:.42,maxChance:1,attackGain:4"));
+  assert.ok(html.includes("B:{name:'초경도 단련',survivalStep:.32,maxChance:.95,attackGain:6"));
+  assert.ok(html.includes("A:{name:'암반 피부',chance:.12,damageReduction:1,minCost:4"));
+  assert.ok(html.includes("B:{name:'절대방어',chance:.012,avoidDamage:true"));
   assert.ok(html.includes("eligibleCost=Number(target.dataset.cost||0)>=(earth.minCost||0)"), 'Rock skin must enforce its cost eligibility in combat');
   assert.ok(!html.includes('GUARDIAN_AWAKEN_DURATION=1'), 'Persistent awakening must not retain the old one-turn duration');
   assert.ok(html.includes('left:var(--field-left);top:var(--field-top);width:var(--field-width);height:var(--field-height)'), 'Awakening choices must be constrained to the battlefield');
@@ -132,15 +134,12 @@ test('오라 각성: 체력 80 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("if(!playerGuardian)return '성격 오라 필요'"), 'No-aura mode must not receive an aura awakening');
   assert.ok(html.includes("fieldGuardianUltimate.id='field-guardian-ultimate'"), 'Guardian awakening must render beside the field ultimate condition');
   assert.ok(html.includes('.arena.guardian-awakened.guardian-awakened-namu'), 'Wood awakening must have its own field aura color');
-  assert.ok(html.includes("showAwakeningProc(side,'jujak',label,'추가 공격 '+count+'회',attacker)"), 'Fire awakening must visibly announce its extra attacks');
+  assert.ok(html.includes("showAwakeningProc(side,'jujak',label,'대상 턴 시작마다 피해 '+damage,target)"), 'Fire awakening must visibly announce persistent burn');
   assert.ok(html.includes("showAwakeningProc('player','cheongryong',name,'마나 +'+gain"), 'Water awakening must visibly announce recovered mana');
   assert.ok(html.includes("showAwakeningProc(side,'namu',config.name||'나무의 오라'"), 'Wood awakening must visibly announce health growth');
-  assert.ok(html.includes("showShatterResonance(defender,targets,power,side)"), 'Shatter Resonance must use a dedicated field-wide activation effect');
-  assert.ok(html.includes("showAwakeningProc(side,'baekho',metalAura.name||'절단 반격'"), 'Sever Counter must visibly announce its counter damage');
+  assert.ok(html.includes("showAwakeningProc(side,'baekho',config.name||'생존 경험'"), 'Metal awakening must announce attack growth');
   assert.ok(html.includes("showAwakeningProc(side,'hyeonmu','암반 피부'"), 'Rock Skin must visibly announce damage reduction');
   assert.ok(html.includes("showAwakeningProc(side,'hyeonmu','절대방어'"), 'Absolute Defense must visibly announce damage nullification');
-  assert.ok(html.includes("playAudio('metal',.72,.68)"), 'Shatter Resonance must have a distinct heavy metal sound');
-  assert.ok(html.includes(".shatter-resonance-fx{"), 'Shatter Resonance must have dedicated field VFX styling');
 });
 
 test('경제: 기권은 패배로 처리하되 성격 오라 선택에 따른 별도 재화 차감은 없다', () => {

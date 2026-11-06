@@ -8,7 +8,7 @@
  *
  * 모델링한 규칙: 영웅 체력 100, 마나 3→10(+1/라운드), 등급 롤(A 15% +2 / B 35% +1 / C 50%), 선공권(체력↓ → 필드 카드↓ → 나),
  *   소환 직후 공격 불가(플레이어) / 즉시 공격(상대), 가장 왼쪽 카드 공격,
- *   성격 오라 5종(물=마나 회복·금속=살아남으면 즉시 반격·불=공격 시 확률 추가 공격·대지=치명타 생존·나무=체력 성장)과 상대 성격 오라 무작위 배정(내가 고른 것 제외).
+ *   카드 교전의 100% 상호 피해와 성격 오라 5종(물=마나 회복·금속=선두 생존 경험·불=지속 화상·대지=치명타 생존·나무=체력 성장)을 모델링한다.
  * 모델링하지 않은 것: 마법/함정/궁극기, 챔피언 개별 능력, 혈마나, 추가 드로우. (모든 카드를 바닐라 능력치로 취급)
  *
  * 모드:
@@ -61,24 +61,24 @@ const HERO_HP = 100, MANA_CAP = 10, START_MANA = 3, FIELD_LIMIT = 6, HAND_LIMIT 
 const AWAKEN_HP = 80;
 const AWAKENING_OPTIONS = {
   jujak: {
-    A: { label: '폭열', chance: 0.055, extraStrikes: 2 },
-    B: { label: '연격', chance: 0.087, extraStrikes: 1 },
+    A: { label: '불길 확산', chance: 0.80, burnDamage: 1 },
+    B: { label: '업화', chance: 0.50, burnDamage: 2 },
   },
   cheongryong: {
-    A: { label: '범람', chance: 0.14, manaMin: 7, manaMax: 7 },
-    B: { label: '순환', chance: 0.90, manaMin: 2, manaMax: 2 },
+    A: { label: '범람', chance: 0.045, manaMin: 7, manaMax: 7 },
+    B: { label: '순환', chance: 0.27, manaMin: 2, manaMax: 2 },
   },
   namu: {
-    A: { label: '숲의 생명', chance: 1.00, hpGain: 1 },
-    B: { label: '거목 수호', chance: 0.30, hpGain: 5, leftmostOnly: true },
+    A: { label: '숲의 생명', chance: 1.00, hpGain: 2 },
+    B: { label: '거목 수호', chance: 0.35, hpGain: 5, leftmostOnly: true },
   },
   baekho: {
-    A: { label: '절단 반격', chance: 0.80, ratio: 0.30, minDamage: 1, maxDamage: 3 },
-    B: { label: '파쇄 공명', chance: 0.14, aoeDamage: 3 },
+    A: { label: '숙련 가속', survivalStep: 0.42, maxChance: 1.00, attackGain: 4 },
+    B: { label: '초경도 단련', survivalStep: 0.32, maxChance: 0.95, attackGain: 6 },
   },
   hyeonmu: {
-    A: { label: '암반 피부', chance: 0.57, damageReduction: 1, minCost: 4 },
-    B: { label: '절대방어', chance: 0.055, avoidDamage: true },
+    A: { label: '암반 피부', chance: 0.12, damageReduction: 1, minCost: 4 },
+    B: { label: '절대방어', chance: 0.012, avoidDamage: true },
   },
 };
 for (const override of String(args['awakening-override'] || '').split(',').filter(Boolean)) {
@@ -88,6 +88,11 @@ for (const override of String(args['awakening-override'] || '').split(',').filte
   AWAKENING_OPTIONS[id][option][key] = Number(value);
 }
 const AI = { atkWeight: 1, hpWeight: 0.7, manaWeight: 0.35 };
+const METAL_BASE = {
+  survivalStep: Number(GUARDIANS.baekho.survivalStep ?? 0.10),
+  maxChance: Number(GUARDIANS.baekho.maxChance ?? 0.60),
+  attackGain: Number(GUARDIANS.baekho.attackGain ?? 4),
+};
 const grade = rnd => { const r = rnd(); return r < 0.15 ? 2 : r < 0.5 ? 1 : 0; };
 const mkCard = (base, rnd) => ({ cost: base.cost, atk: base.atk + grade(rnd), hp: base.hp });
 const value = c => c.atk * AI.atkWeight + c.hp * AI.hpWeight;
@@ -112,8 +117,11 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
     hand: [], field: [],
   });
   const P = mkSide(playerGuardian, playerAwakening), E = mkSide(enemyGuardian, enemyAwakening);
-  P.hand = P.deck.splice(0, 5); E.hand = E.deck.splice(0, 5);
-  const auraConfig = (side, id) => side.awakened && side.guardian === id && AWAKENING_OPTIONS[id]?.[side.awakeningChoice] ? AWAKENING_OPTIONS[id][side.awakeningChoice] : GUARDIANS[id];
+  P.hand = P.deck.splice(0, 6); E.hand = E.deck.splice(0, 6);
+  const auraConfig = (side, id) => {
+    if (id === 'baekho') return side.awakened && side.guardian === id && AWAKENING_OPTIONS[id]?.[side.awakeningChoice] ? AWAKENING_OPTIONS[id][side.awakeningChoice] : METAL_BASE;
+    return side.awakened && side.guardian === id && AWAKENING_OPTIONS[id]?.[side.awakeningChoice] ? AWAKENING_OPTIONS[id][side.awakeningChoice] : GUARDIANS[id];
+  };
   const proc = (side, id) => side.guardian === id && rnd() < auraConfig(side, id).chance;
   const poseidonMana = side => { const cfg = auraConfig(side, 'cheongryong'); return cfg.manaMin + Math.floor(rnd() * (cfg.manaMax - cfg.manaMin + 1)); };
   const alive = side => side.field.filter(u => u.hp > 0);
@@ -140,28 +148,38 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
     const targets = alive(defenderSide);
     if (!targets.length) { hitHero(defenderSide, unit.atk); return; }
     const target = targets[0];
+    const returnDamage = target.atk;
     damageUnit(defenderSide, target, unit.atk);
-    // 아테나: 공격을 받고 살아남으면 chance 확률로 저위력 반격(실게임과 동일한 ratio·최소 1·maxDamage 상한)
-    if (target.hp > 0 && proc(defenderSide, 'baekho')) {
-      const athena = auraConfig(defenderSide, 'baekho');
-      if (athena.aoeDamage) alive(attackerSide).slice().forEach(enemy => damageUnit(attackerSide, enemy, athena.aoeDamage));
-      else {
-        const counterDamage = Math.max(athena.minDamage || 1, Math.min(athena.maxDamage || Infinity, Math.ceil(target.atk * (athena.ratio || 1))));
-        damageUnit(attackerSide, unit, counterDamage);
-      }
+    if (target.hp > 0 && proc(attackerSide, 'jujak')) {
+      const fire = auraConfig(attackerSide, 'jujak');
+      target.auraBurnDamage = Math.max(target.auraBurnDamage || 0, fire.burnDamage || 1);
     }
+    // 카드 교전은 방어자의 생사와 무관하게 양쪽이 상대 공격력만큼 피해를 주고받는다.
+    damageUnit(attackerSide, unit, returnDamage);
   }
   function attack(attackerSide, defenderSide, unit) {
     strike(attackerSide, defenderSide, unit);
-    // 불의 오라: 첫 공격 뒤 공격자가 살아 있으면 확률적으로 즉시 한 번 더 공격한다.
-    // 첫 대상이 쓰러졌다면 두 번째 타격은 새 앞줄(없으면 영웅)을 다시 지정한다.
-    if (!winner && unit.hp > 0 && proc(attackerSide, 'jujak')) {
-      const extraStrikes = auraConfig(attackerSide, 'jujak').extraStrikes || 1;
-      for (let i = 0; i < extraStrikes && !winner && unit.hp > 0; i++) strike(attackerSide, defenderSide, unit);
-    }
   }
   // 나무의 오라: 자기 턴 시작에 필드의 카드마다 독립적으로 chance 확률로 체력 +1
   function growNamu(side) { if (side.guardian !== 'namu' || !GUARDIANS.namu) return; const cfg = auraConfig(side, 'namu'), targets = cfg.leftmostOnly ? side.field.slice(0, 1) : side.field; targets.forEach(u => { if (rnd() < cfg.chance) { const gain = cfg.hpGain || 1; u.hp += gain; u.maxHp += gain; } }); }
+  function gainMetalExperience(side) {
+    side.field.forEach(unit => { unit.survivalTurns = (unit.survivalTurns || 0) + 1; });
+    if (side.guardian !== 'baekho') return;
+    const front = alive(side)[0];
+    if (!front || front.metalExperienced) return;
+    const cfg = auraConfig(side, 'baekho');
+    const chance = Math.min(cfg.maxChance, (front.survivalTurns || 0) * cfg.survivalStep);
+    if (rnd() >= chance) return;
+    front.atk += cfg.attackGain;
+    front.metalExperienced = true;
+    side.procs++;
+  }
+  function tickAuraBurn(side) {
+    side.field.slice().forEach(unit => {
+      const burn = unit.auraBurnDamage || 0;
+      if (burn > 0) damageUnit(side, unit, burn);
+    });
+  }
   function healHero(side) { const before = side.hp; side.hp = Math.min(HERO_HP, side.hp + GUARDIANS.hyeonmu.amount); side.healed += side.hp - before; }
 
   // ── 대칭 모드: 한 쪽의 한 턴 ──
@@ -171,6 +189,8 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
       const card = S.deck.shift(); if (S.hand.length < HAND_LIMIT) S.hand.push(card);
       if (GUARDIANS.hyeonmu.amount > 0 && proc(S, 'hyeonmu')) healHero(S);
     }
+    tickAuraBurn(S);
+    gainMetalExperience(S);
     growNamu(S);
     let mana = maxMana;
     for (let guard = 0; guard < 12; guard++) {
@@ -178,7 +198,7 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
       if (!picks.length) break;
       const card = S.hand.splice(picks[0], 1)[0];
       mana -= card.cost;
-      S.field.push({ ...card, maxHp: card.hp });
+      S.field.push({ ...card, maxHp: card.hp, survivalTurns: 0, metalExperienced: false });
       if (card.cost >= 2 && proc(S, 'cheongryong')) mana = Math.min(maxMana, mana + poseidonMana(S));
     }
     S.field.sort((a, b) => (a.atk - a.hp * 0.5) - (b.atk - b.hp * 0.5));
@@ -195,6 +215,8 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
       P.field.forEach(u => { u.exhausted = false; });
       if (GUARDIANS.hyeonmu.amount > 0 && proc(P, 'hyeonmu')) healHero(P);
     }
+    tickAuraBurn(P);
+    gainMetalExperience(P);
     growNamu(P);
     let mana = maxMana;
     for (let guard = 0; guard < 12; guard++) {
@@ -202,7 +224,7 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
       if (!picks.length) break;
       const card = P.hand.splice(picks[0], 1)[0];
       mana -= card.cost;
-      P.field.push({ ...card, maxHp: card.hp, exhausted: true });
+      P.field.push({ ...card, maxHp: card.hp, exhausted: true, survivalTurns: 0, metalExperienced: false });
       if (card.cost >= 2 && proc(P, 'cheongryong')) mana = Math.min(maxMana, mana + poseidonMana(P));
     }
     P.field.filter(u => !u.exhausted).forEach(u => attack(P, E, u));
@@ -213,11 +235,13 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
   function enemyHalf(maxMana) {
     if (E.deck.length) { const card = E.deck.shift(); if (E.hand.length < HAND_LIMIT) E.hand.push(card); }
     if (GUARDIANS.hyeonmu.amount > 0 && proc(E, 'hyeonmu')) healHero(E);
+    tickAuraBurn(E);
+    gainMetalExperience(E);
     growNamu(E);
     let mana = Math.min(MANA_CAP, maxMana);
     if (maxMana < MANA_CAP && proc(E, 'cheongryong')) mana = Math.min(MANA_CAP, maxMana + poseidonMana(E));
     const picks = plan(E.hand, mana, FIELD_LIMIT - E.field.length);
-    picks.slice().sort((a, b) => b - a).map(i => E.hand.splice(i, 1)[0]).reverse().forEach(card => E.field.push({ ...card, maxHp: card.hp }));
+    picks.slice().sort((a, b) => b - a).map(i => E.hand.splice(i, 1)[0]).reverse().forEach(card => E.field.push({ ...card, maxHp: card.hp, survivalTurns: 0, metalExperienced: false }));
     E.field.sort((a, b) => (a.atk - a.hp * 0.5) - (b.atk - b.hp * 0.5));
     E.field.slice().forEach(u => attack(E, P, u));
   }
