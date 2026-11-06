@@ -77,6 +77,8 @@ STATES = [
     ("번개·빙결 궁극기 세팅", "const h=document.querySelector('.hand');['core.seraphina','core.estelle-frostblade'].forEach(id=>h.appendChild(createRuntimeBattleCard(id)));ultimateState=null;ultimateUsed=false;battlePhase='setup';setHandFilter('champion');armUltimateSetting()"),
     ("긴 이름 카드", "const h=document.querySelector('.hand');['bellarion.armoni-rosenbel','bellarion.dintea-marcela','bellarion.elicia-orwell','bellarion.nesila-arilain'].forEach(id=>h.appendChild(createRuntimeBattleCard(id)));const lane=document.querySelector('.summon-zone');['아르모니 로젠벨','딘테아 마르셀라','엘리시아 오르웰'].forEach(n=>{const u=document.createElement('div');u.className='unit fire';u.innerHTML='<div class=emoji></div><h4>'+n+'</h4><div class=stats><span>⚔ 10</span><span>♥ 12</span></div>';lane.appendChild(u)});setHandFilter('champion')"),
     ("다수 공격 카드", "const h=document.querySelector('.hand');['gangho.baek-yeonju','sacheon.mong-ri','bellarion.liberna','murim.mu-yeong'].forEach(id=>h.appendChild(createRuntimeBattleCard(id)));setHandFilter('champion')"),
+    ("초보자 설명 켜짐", "document.querySelector('.difficulty-select')?.remove();enemyDifficulty='normal';beginnerHelpEnabled=true;syncBeginnerHelp()"),
+    ("초보자 설명 꺼짐", "toggleBeginnerHelp(false)"),
     ("사운드 패널", "toggleSoundPanel(true)"),
     ("최후의 저항 안내", "showDesperateNotice('enemy',{instant:true})"),
     ("최후의 저항 안내(내 쪽)", "showDesperateNotice('player',{instant:true})"),
