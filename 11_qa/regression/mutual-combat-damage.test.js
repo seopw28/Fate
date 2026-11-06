@@ -13,10 +13,12 @@ test('카드 대 카드 교전은 양쪽이 상대 공격력만큼 피해를 받
   assert.ok(html.includes("attacker.dataset.destroyed='true';triggerDeathrattle(attacker)"));
 });
 
-test('교환 피해는 반격 이펙트 없이 체력 수치로만 처리한다', () => {
+test('교환 피해는 방어 카드의 반격 이동·타격 이펙트 후 적용한다', () => {
   assert.ok(html.includes('function applyNumericExchangeDamage(target,damage,element)'));
-  assert.ok(html.includes('impact=()=>{};shieldBreakFx=()=>{};showSkillEffect=()=>{};showAwakeningProc=()=>{};sfx=()=>{}'));
-  assert.ok(html.includes('applyNumericExchangeDamage(attacker,returnDamage,defenderElement)'));
+  assert.ok(!html.includes('impact=()=>{};shieldBreakFx=()=>{};showSkillEffect=()=>{};showAwakeningProc=()=>{};sfx=()=>{}'));
+  assert.ok(html.includes("fieldAttack(defender,attacker,{label:'교환 '+returnDamage+' 피해',counter:true,onImpact:()=>"));
+  assert.ok(html.includes('const outcome=applyNumericExchangeDamage(attacker,returnDamage,defenderElement)'));
+  assert.ok(html.includes("setTimeout(()=>attacker.remove(),900)"), '사망 카드는 반격 피격을 보여 준 뒤 제거해야 한다');
 });
 
 test('상대가 공격해도 내 카드 공격력만큼 교환 피해가 반드시 적용되고 숫자로 표시된다', () => {

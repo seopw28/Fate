@@ -310,6 +310,10 @@ test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복�
   assert.ok(html.includes('showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral)'));
   assert.ok(html.includes('.unit[data-effect="ultimate-avenger"]'), '복수자 카드만 전용 테두리와 오라를 사용해야 한다');
   assert.ok(html.includes('.arena .unit[data-effect="ultimate-avenger"]>h4'), '복수자 이름은 전용 왕관형 명판을 사용해야 한다');
+  assert.ok(html.includes('function decorateAvengerUnit(unit)'));
+  assert.ok(html.includes("crown.className='avenger-crown-vfx'"));
+  assert.ok(html.includes("decorateAvengerUnit(unit);showAvengerArrival"));
+  assert.ok(html.includes('crown-body') && html.includes('crown-gem') && html.includes('crown-spark'));
   assert.ok(html.includes('@keyframes avenger-nameplate-forge'));
   assert.ok(html.includes('@keyframes avenger-nameplate-sweep'));
   assert.ok(html.includes("wave.className='avenger-landing-impact'"));
