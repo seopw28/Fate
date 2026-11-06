@@ -50,6 +50,21 @@
     const mediumSkillAssets={'arcane-circle':{src:'assets/vfx/medium/arcane-circle-v1.png',label:'ARCANE CIRCLE'},'dark-orb':{src:'assets/vfx/medium/dark-orb-v1.png',label:'ABYSS ORB'},'light-blades':{src:'assets/vfx/medium/light-blades-v1.png',label:'LUMINOUS BLADES'},'flame-pillar':{src:'assets/vfx/medium/flame-pillar-v1.png',label:'INFERNO PILLAR'}};
     function showMediumSkillEffect(kind,target=document.querySelector('.arena'),label=''){const spec=mediumSkillAssets[kind];if(!spec||!target)return;const rect=target.getBoundingClientRect(),fx=document.createElement('div');fx.className='medium-skill-fx '+kind;fx.style.left=(rect.left+rect.width/2)+'px';fx.style.top=(rect.top+rect.height/2)+'px';fx.dataset.label=label||spec.label;fx.innerHTML='<img src="'+spec.src+'" alt="">';document.body.appendChild(fx);{const half=fx.offsetWidth/2+8;fx.style.left=Math.min(Math.max(rect.left+rect.width/2,half),innerWidth-half)+'px';fx.style.top=Math.min(Math.max(rect.top+rect.height/2,half),innerHeight-half)+'px';}slowCombatAnimations(fx);sfx('magic',kind==='flame-pillar'?'offense':kind==='arcane-circle'?'buff':'neutral',6);setTimeout(()=>fx.remove(),combatMs(1350));}
     /* 다중 공격 마법: 영향을 받는 카드마다 오라에 맞는 이펙트를 각각 터뜨린다(카드 크기에 맞춰 축소). */
+    function showSpellTargetRing(unit,label,color){
+      if(!unit?.isConnected)return;
+      const r=unit.getBoundingClientRect(),ring=document.createElement('div');
+      ring.className='spell-target-ring';
+      ring.style.left=(r.left-6)+'px';ring.style.top=(r.top-6)+'px';
+      ring.style.width=(r.width+12)+'px';ring.style.height=(r.height+12)+'px';
+      if(color)ring.style.setProperty('--st-color',color);
+      if(label)ring.setAttribute('data-label',label);
+      document.body.appendChild(ring);
+      setTimeout(()=>ring.remove(),combatMs(620));
+    }
+    function markSpellTargets(units,label,color){
+      /* 마법이 누구에게 적용되는지 보여준다 — 피해 적용 전에 조준 링을 먼저 띄운다. */
+      units.filter(Boolean).forEach((unit,i)=>setTimeout(()=>showSpellTargetRing(unit,label,color),i*combatMs(90)));
+    }
     function showUnitSpellFx(unit,element){const kinds={fire:'flame-pillar',water:'light-blades',ice:'light-blades',wind:'light-blades',earth:'arcane-circle'},tints={wind:'hue-rotate(95deg) saturate(1.4)',earth:'sepia(1) saturate(2.6) hue-rotate(-14deg) brightness(.95)'},thunder=element==='thunder',kind=thunder?'lightning':(kinds[element]||'dark-orb'),spec=thunder?{src:'assets/vfx/cinematic/lightning-strike-v'+(cinematicVariantFor(unit.dataset.cardId||unit.querySelector('h4')?.textContent||'lightning'))+'.png'}:mediumSkillAssets[kind];if(!spec||!unit?.isConnected)return;const r=unit.getBoundingClientRect(),size=Math.max(r.width,r.height)*(thunder?1.9:1.45),fx=document.createElement('div');fx.className='medium-skill-fx unit-fx '+kind;fx.style.left=(r.left+r.width/2)+'px';fx.style.top=(r.top+r.height/2)+'px';fx.style.width=size+'px';fx.innerHTML='<img src="'+spec.src+'" alt="">';if(tints[element])fx.querySelector('img').style.filter=tints[element];document.body.appendChild(fx);slowCombatAnimations(fx);setTimeout(()=>fx.remove(),combatMs(thunder?900:1250));}
     function igniteAmaterasu(target){
       if(typeof AmaterasuFlame==='undefined'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -400,7 +415,7 @@
     })();
 
     /* 필드(.arena) 기준 연출 프레임: 스킬/마법/궁극기 오버레이가 생길 때마다 필드 위치로 맞춘다 */
-    const FIELD_OVERLAYS='.guardian-descent,.guardian-select,.difficulty-select,.cinematic-skill-fx,.ultimate-cutscene,.global-spell,.global-summon,.effect-narration,.awakening-proc-banner,.shatter-resonance-fx,.desperate-notice,.initiative-banner';
+    const FIELD_OVERLAYS='.guardian-descent,.guardian-select,.difficulty-select,.cinematic-skill-fx,.ultimate-cutscene,.global-spell,.global-summon,.effect-narration,.awakening-proc-banner,.shatter-resonance-fx,.spell-target-ring,.desperate-notice,.initiative-banner';
     function syncFieldFrame(){const arena=document.querySelector('.arena');if(!arena)return;const r=arena.getBoundingClientRect(),st=document.documentElement.style;st.setProperty('--field-left',r.left+'px');st.setProperty('--field-top',r.top+'px');st.setProperty('--field-width',r.width+'px');st.setProperty('--field-height',r.height+'px');st.setProperty('--field-cx',(r.left+r.width/2)+'px');st.setProperty('--field-bottom',r.bottom+'px');}
     new MutationObserver(list=>{if(list.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&n.matches(FIELD_OVERLAYS))))syncFieldFrame();}).observe(document.body,{childList:true});
     addEventListener('resize',syncFieldFrame);syncFieldFrame();

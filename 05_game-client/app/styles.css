@@ -163,7 +163,23 @@
     .particle.shard { position:fixed; z-index:5; width:var(--size); height:3px; border-radius:99px; pointer-events:none; transform-origin:left center; background:linear-gradient(90deg,#fff,var(--fx-color)); box-shadow:0 0 8px var(--fx-color); animation:shard-out var(--duration) cubic-bezier(.12,.6,.25,1) forwards; }
     .element-wisp { position:fixed; z-index:4; width:var(--size); height:var(--size); margin:calc(var(--size) / -2); border:2px solid var(--fx-color); border-radius:50%; pointer-events:none; filter:blur(.3px) drop-shadow(0 0 5px var(--fx-color)); animation:wisp-rise var(--duration) ease-out forwards; }
     .unit.hit-react,.avatar.hit-react { animation:target-hit .42s cubic-bezier(.2,.9,.3,1) both; transform-origin:center; }
-    .unit.field-attacker{z-index:7;filter:brightness(1.16) saturate(1.18);will-change:transform}.unit.field-target,.avatar.field-target{z-index:6;box-shadow:0 0 0 3px var(--target-color,#efca78),0 0 30px color-mix(in srgb,var(--target-color,#efca78) 58%,transparent);will-change:transform}.field-attack-line{position:fixed;z-index:5;height:3px;pointer-events:none;transform-origin:0 50%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--attack-color),#fff,var(--attack-color),transparent);filter:drop-shadow(0 0 7px var(--attack-color));animation:field-line .48s ease-out both}.field-impact-label{display:none}@keyframes field-line{0%{opacity:0;transform:rotate(var(--attack-angle)) scaleX(.08)}28%{opacity:.9;transform:rotate(var(--attack-angle)) scaleX(1)}to{opacity:0;transform:rotate(var(--attack-angle)) scaleX(1)}}
+    .unit.field-attacker{z-index:7;filter:brightness(1.16) saturate(1.18);will-change:transform}.unit.field-target,.avatar.field-target{z-index:6;box-shadow:0 0 0 3px var(--target-color,#efca78),0 0 30px color-mix(in srgb,var(--target-color,#efca78) 58%,transparent);will-change:transform}/* 평타 궤적: 전면 컷인을 걷어낸 자리를 메우는 주연출. --hit(0~1, 피해 비중)에 따라
+   두께·발광·잔상이 함께 커져 '주고받는 수치'가 화면에서 읽히게 한다 (2026-11-07) */
+    .field-attack-line{position:fixed;z-index:5;height:calc(3px + 5px*var(--hit,.3));pointer-events:none;transform-origin:0 50%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--attack-color),#fff,var(--attack-color),transparent);filter:drop-shadow(0 0 calc(7px + 14px*var(--hit,.3)) var(--attack-color)) saturate(calc(1 + .6*var(--hit,.3)));animation:field-line calc(.48s - .12s*var(--hit,.3)) cubic-bezier(.12,.85,.25,1) both}
+    /* 궤적 잔상: 본선보다 느리게 퍼지며 사라져 타격의 무게를 남긴다 */
+    .field-attack-line::after{content:'';position:absolute;inset:-2px 0;border-radius:99px;background:inherit;filter:blur(calc(2px + 6px*var(--hit,.3)));opacity:calc(.3 + .45*var(--hit,.3));animation:field-line-ghost .54s ease-out both}
+    /* 반격은 같은 선이면 누가 쳤는지 안 읽힌다. 끊긴 질감 + 역방향 흐름으로 구분한다 */
+    .field-attack-line.counter{background:repeating-linear-gradient(90deg,transparent 0 6px,var(--attack-color) 6px 13px,#fff 13px 15px,transparent 15px 21px);animation-name:field-line-counter}
+    .field-attack-line.counter::after{opacity:calc(.22 + .3*var(--hit,.3))}
+    /* 치명타(대상 체력을 넘기는 타격)는 흰 심지가 굵게 박히고 더 오래 남는다 */
+    .field-attack-line.lethal{filter:drop-shadow(0 0 22px var(--attack-color)) drop-shadow(0 0 40px #fff8) saturate(1.7);animation-duration:.6s}
+    /* 착탄: 타격 지점에서 터지는 섬광 + 방사 파편. 속성색을 그대로 쓴다 */
+    .field-impact-burst{position:fixed;z-index:6;left:0;top:0;width:calc(26px + 54px*var(--hit,.3));height:calc(26px + 54px*var(--hit,.3));margin:calc(-13px - 27px*var(--hit,.3)) 0 0 calc(-13px - 27px*var(--hit,.3));pointer-events:none;border-radius:50%;background:radial-gradient(circle,#fff 0 12%,var(--attack-color) 26%,color-mix(in srgb,var(--attack-color) 40%,transparent) 55%,transparent 72%);animation:impact-burst calc(.34s + .16s*var(--hit,.3)) cubic-bezier(.1,.8,.3,1) both}
+    .field-impact-burst i{position:absolute;left:50%;top:50%;width:calc(3px + 3px*var(--hit,.3));height:calc(9px + 20px*var(--hit,.3));margin-left:-2px;border-radius:99px;background:linear-gradient(var(--attack-color),transparent);transform-origin:50% 0;transform:rotate(calc(var(--i)*45deg));animation:impact-shard calc(.4s + .22s*var(--hit,.3)) cubic-bezier(.15,.75,.3,1) both}
+    @keyframes field-line-ghost{0%{opacity:0;transform:rotate(var(--attack-angle)) scaleX(.08)}30%{transform:rotate(var(--attack-angle)) scaleX(1)}to{opacity:0;transform:rotate(var(--attack-angle)) scaleX(1.06)}}
+    @keyframes field-line-counter{0%{opacity:0;transform:rotate(var(--attack-angle)) scaleX(.08)}26%{opacity:.95;transform:rotate(var(--attack-angle)) scaleX(1)}to{opacity:0;transform:rotate(var(--attack-angle)) scaleX(1)}}
+    @keyframes impact-burst{0%{opacity:0;transform:scale(.18)}22%{opacity:1;transform:scale(1.05)}55%{opacity:.75;transform:scale(1.18)}to{opacity:0;transform:scale(1.3)}}
+    @keyframes impact-shard{0%{opacity:0;transform:rotate(calc(var(--i)*45deg)) translateY(0) scaleY(.4)}25%{opacity:1}to{opacity:0;transform:rotate(calc(var(--i)*45deg)) translateY(calc(16px + 30px*var(--hit,.3))) scaleY(1)}}.field-impact-label{display:none}@keyframes field-line{0%{opacity:0;transform:rotate(var(--attack-angle)) scaleX(.08)}28%{opacity:.9;transform:rotate(var(--attack-angle)) scaleX(1)}to{opacity:0;transform:rotate(var(--attack-angle)) scaleX(1)}}
     /* 영웅 직접 피해: 프로필을 띄우지 않고, 체력바 흔들림 + 맞은 쪽 화면 테두리 붉은 깜빡임 1회 + 체력바 끝에서 피해 숫자 */
     .hero-edge-flash{/* 영웅 피격: 화면 네 귀퉁이가 함께 붉게 반짝인다 */position:fixed;inset:0;z-index:40;pointer-events:none;opacity:0;box-shadow:inset 0 0 90px 10px var(--edge-color,#ff2e24),inset 0 0 0 2px color-mix(in srgb,var(--edge-color,#ff2e24) 70%,transparent);--edge-corners:radial-gradient(ellipse 48% 62% at 0 0,#000 18%,transparent 72%),radial-gradient(ellipse 48% 62% at 100% 0,#000 18%,transparent 72%),radial-gradient(ellipse 48% 62% at 0 100%,#000 18%,transparent 72%),radial-gradient(ellipse 48% 62% at 100% 100%,#000 18%,transparent 72%);-webkit-mask-image:var(--edge-corners);mask-image:var(--edge-corners);animation:hero-edge-blink 1.3s ease-out both}
     .hero-edge-flash.enemy-side{filter:opacity(.62)}/* 내가 맞을 때가 더 강하게 */
@@ -1770,3 +1786,26 @@
     @keyframes aura-burn-flame{0%{transform:translateY(8px) scale(.86,.72);opacity:.62}100%{transform:translateY(-4px) scale(1.08,1.18);opacity:1}}
     @keyframes aura-burn-tick{0%{filter:brightness(1)}35%{filter:brightness(2.3) saturate(1.8);transform:translateY(-3px) scale(1.035)}100%{filter:brightness(1);transform:none}}
     @media(prefers-reduced-motion:reduce){.unit[data-aura-burn],.unit[data-burn],.aura-burn-vfx::before,.aura-burn-vfx::after,.unit.aura-burn-tick{animation:none}}
+
+    /* 마법·함정 소유자 구분 (2026-11-07)
+       - 상대 카드는 위에서 내려오고 붉은 테두리, 내 카드는 아래에서 올라오고 푸른 테두리.
+       - 방향은 필드 높이 기준으로만 움직여 필드 밖으로 새지 않는다. */
+    .global-spell.owner-enemy .global-spell-card { animation:global-card-from-top .8s cubic-bezier(.2,.8,.2,1); border-color:#ff8f8f; box-shadow:0 0 35px #ff6b6b,0 0 130px #d2424299; }
+    .global-spell.owner-player .global-spell-card { animation:global-card-from-bottom .8s cubic-bezier(.2,.8,.2,1); border-color:#8fd4ff; box-shadow:0 0 35px #6bb8ff,0 0 130px #4278d299; }
+    .global-spell .owner-tag { display:block; margin-bottom:6px; font-size:10px; font-weight:950; letter-spacing:.18em; }
+    .global-spell.owner-enemy .owner-tag { color:#ffb3b3; }
+    .global-spell.owner-player .owner-tag { color:#b3dcff; }
+    .global-spell.owner-enemy .global-spell-card::before,
+    .global-spell.owner-player .global-spell-card::before { content:''; position:absolute; left:0; right:0; height:5px; border-radius:4px; }
+    .global-spell .global-spell-card { position:relative; }
+    .global-spell.owner-enemy .global-spell-card::before { top:0; background:linear-gradient(90deg,transparent,#ff6b6b,transparent); }
+    .global-spell.owner-player .global-spell-card::before { bottom:0; background:linear-gradient(90deg,transparent,#6bb8ff,transparent); }
+    @keyframes global-card-from-top { from{transform:translateY(calc(var(--field-height,100vh) * -.55)) scale(.6) rotate(5deg);opacity:0} 65%{transform:translateY(0) scale(1.06) rotate(-2deg);opacity:1} to{transform:none;opacity:1} }
+    @keyframes global-card-from-bottom { from{transform:translateY(calc(var(--field-height,100vh) * .55)) scale(.6) rotate(-5deg);opacity:0} 65%{transform:translateY(0) scale(1.06) rotate(2deg);opacity:1} to{transform:none;opacity:1} }
+    @media(prefers-reduced-motion:reduce){ .global-spell.owner-enemy .global-spell-card,.global-spell.owner-player .global-spell-card { animation-duration:.2s; } }
+
+    /* 마법 대상 표시 — 효과가 적용되기 직전에 대상 위에 조준 링을 씌운다. */
+    .spell-target-ring { position:fixed; z-index:33; pointer-events:none; border-radius:12px; border:3px solid var(--st-color,#ffd46b); box-shadow:0 0 18px var(--st-color,#ffd46b),inset 0 0 18px var(--st-color,#ffd46b); animation:spell-target-lock .62s ease-out both; }
+    .spell-target-ring::after { content:attr(data-label); position:absolute; left:50%; top:-22px; transform:translateX(-50%); padding:2px 8px; border-radius:6px; background:#120d1ded; color:#fff; font-size:11px; font-weight:900; letter-spacing:.04em; white-space:normal; max-width:150px; text-align:center; }
+    @keyframes spell-target-lock { 0%{opacity:0;transform:scale(1.5)} 45%{opacity:1;transform:scale(1)} 80%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(.98)} }
+    @media(prefers-reduced-motion:reduce){ .spell-target-ring { animation-duration:.3s; } }

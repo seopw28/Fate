@@ -248,3 +248,22 @@ test('연출이 점유 중이어도 교전 간 판독 여유가 무너지지 않
   assert.ok(!gate.includes('setTimeout(()=>fieldAttack(...args)'), '래퍼를 재귀 호출하면 안 된다');
   assert.ok(html.includes('postCombatPause:278'), '교전 간 0.3초(278*1.08) 판독 여유를 유지한다');
 });
+
+test('평타 연출은 피해량·반격·치명타를 시각으로 구분한다', () => {
+  // 궤적: --hit(피해 비중)으로 두께·발광·속도가 함께 변한다.
+  assert.ok(html.includes('height:calc(3px + 5px*var(--hit,.3))'), '피해량이 클수록 궤적이 두꺼워야 한다');
+  assert.ok(html.includes("line.style.setProperty('--hit',hitWeight.toFixed(3))"), '궤적에 피해 비중을 넘겨야 한다');
+  assert.ok(html.includes('hitWeight=Math.max(0,Math.min(1,dealt/12))'), '피해량을 0~1로 정규화해 쓴다');
+  // 반격은 같은 선이면 구분이 안 된다. 끊긴 질감으로 분리한다.
+  assert.ok(html.includes('.field-attack-line.counter{background:repeating-linear-gradient'), '반격은 끊긴 질감이어야 한다');
+  assert.ok(html.includes("if(counter)line.classList.add('counter')"), '반격 궤적에 counter 표시를 해야 한다');
+  // 치명타: 대상 체력을 넘기는 타격은 더 굵고 오래 남는다.
+  assert.ok(html.includes('lethalHit=dealt>0&&targetHp>0&&dealt>=targetHp'), '치명타를 판정해야 한다');
+  assert.ok(html.includes('.field-attack-line.lethal{'), '치명타 전용 스타일이 있어야 한다');
+  // 착탄: 섬광 + 방사 파편.
+  assert.ok(html.includes('.field-impact-burst'), '착탄 연출이 있어야 한다');
+  assert.ok(html.includes("burst.className='field-impact-burst'"), '교전마다 착탄 연출을 띄워야 한다');
+  assert.ok(html.includes('@keyframes impact-shard'), '방사 파편 애니메이션이 있어야 한다');
+  // 반동: 때린 쪽도 반작용을 받는다.
+  assert.ok(html.includes('if(attacker.isConnected&&hitWeight>0)attacker.animate('), '공격자 반동이 있어야 한다');
+});
