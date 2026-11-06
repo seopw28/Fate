@@ -322,6 +322,18 @@ test('최후의 저항: 내 턴 시작에 덱에서 카드를 1장 더 받는다
   assert.ok(html.includes("if(desperateActive('player')&&deck.length&&document.querySelectorAll('.hand .card').length<8){drawCard();"), 'Extra draw must respect deck and hand limits');
 });
 
+test('최후의 저항: 한 번 진입하면 영웅 본체 회복은 배틀 종료까지 잠긴다', () => {
+  assert.ok(html.includes('function playerHeroHealingLocked()'));
+  assert.ok(html.includes("desperateState?.player===true||desperateNoticeShown?.player===true||desperateActive('player')"));
+  assert.ok(html.includes('function healPlayerHero(amount)'));
+  assert.ok(html.includes('heroHealed=healPlayerHero(amount)'));
+  assert.ok(html.includes('healed=healPlayerHero(8)'));
+  assert.ok(html.includes('heroHealed=healPlayerHero(6)'));
+  assert.ok(html.includes('healed=healPlayerHero(heal)'));
+  assert.ok(html.includes('if(refund.hp&&!playerHeroHealingLocked())'));
+  assert.ok(html.includes('if(healingLocked&&playerHp>hpBefore){playerHp=hpBefore;updateHeroHealth()'));
+});
+
 test('최후의 저항: 마법카드 즉시 발동 보상은 제거하고 기존 세팅 규칙을 유지한다', () => {
   assert.ok(!html.includes('desperateQuickCast'));
   assert.ok(!html.includes('quick-cast-badge'));
