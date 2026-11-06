@@ -275,7 +275,7 @@ test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 
   assert.ok(html.includes("target?.dataset.orderLocked==='true'"));
   assert.ok(html.includes("if(locked&&summonDropZone.lastElementChild!==locked)summonDropZone.append(locked)"));
   assert.ok(html.includes("const ultimateAggro=targets.find(u=>u.dataset.ultimateAggro==='true');if(ultimateAggro)return ultimateAggro"));
-  assert.ok(html.includes("inset:auto auto auto 50%;top:-11px;width:auto;height:auto"), '전역 도발 배지는 공격 완료 오버레이의 inset을 초기화해야 한다');
+  assert.ok(html.includes('.unit[data-ultimate-aggro="true"]::after{content:none!important;display:none!important}'), '전역 도발 텍스트 배지는 카드 경계 밖으로 노출되면 안 된다');
 });
 
 test('첫 궁극기 소진 0/1 카드만 죽을 때 복수의 중앙 확대·분할 소멸 연출을 한 번 재생한다', () => {
