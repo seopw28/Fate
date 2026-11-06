@@ -83,6 +83,12 @@ test('deck exhaustion and result actions follow the PRD', () => {
   assert.ok(html.includes('onclick="restartBattleToAuraSelect()"'), 'Battle results must offer another battle');
 });
 
+test('enemy champions must be cleared before a direct hero attack', () => {
+  assert.ok(html.includes("const defenders=[...document.querySelectorAll('.lane:nth-child(1) .unit:not([data-destroyed=\"true\"])')]") , 'Direct attacks must inspect surviving enemy champions');
+  assert.ok(html.includes("const front=defenders.find(u=>u.dataset.taunt==='true')||defenders[0]"), 'Taunt or the leftmost champion must intercept a hero attack');
+  assert.ok(html.includes('attack(front,automatic);return;'), 'A blocked hero click must resolve against the defending champion');
+});
+
 test('battle result copy is explicit and the result surface fully covers battle UI', () => {
   assert.ok(html.includes("textContent=win?'승리':'패배'"), 'Result title must say 승리 or 패배 directly');
   assert.ok(html.includes('background:radial-gradient(circle at 50% 45%,#211b12 0,#0b0d13 52%,#05070b 100%)'), 'Result overlay must have an opaque full-screen background');

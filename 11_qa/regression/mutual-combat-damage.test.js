@@ -23,7 +23,7 @@ test('교환 피해는 방어 카드의 반격 이동·타격 이펙트 후 적�
 
 test('자동 공격은 반격이 구분된 뒤 다음 카드 공격을 시작한다', () => {
   assert.ok(html.includes('function runCombatQueue(units,perform,done)'));
-  assert.ok(html.includes('perform(unit);const hasNext='));
+  assert.ok(html.includes('combatQueueHasNext=hasNext;combatBusyUntil=performance.now();perform(unit)'));
   assert.ok(html.includes('afterCombatSettles(next,hasNext)'));
   assert.ok(html.includes('postCombatPause:463'));
   assert.ok(!html.includes('PLAYER_AUTO_ATTACK_INTERVAL'));

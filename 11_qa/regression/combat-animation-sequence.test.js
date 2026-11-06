@@ -16,12 +16,27 @@ test('공격·반격·추가 효과·다음 교전은 공통 타임라인 순서
 });
 
 test('각 교전은 실제 연출 완료 후 0.5초 쉬고 다음 공격을 시작한다', () => {
-  assert.ok(html.includes('markCombatBusy(combatMs(Math.round(motion.duration*motion.hit)+1250))'));
+  assert.ok(html.includes('visualTail=combatQueueHasNext?1250:0'));
   assert.ok(html.includes('combatMs(COMBAT_TIMING.postCombatPause)'));
   assert.ok(html.includes('const delay=withPause?combatMs(COMBAT_TIMING.postCombatPause):0'));
   assert.ok(html.includes('runCombatQueue(attackers,unit=>'));
   assert.ok(html.includes('runCombatQueue(enemyUnits,unit=>'));
   assert.ok(!html.includes('PLAYER_AUTO_ATTACK_INTERVAL'));
+});
+
+test('마지막 카드는 판정 뒤 잔여 파티클 타이머를 다음 단계에 강제하지 않는다', () => {
+  assert.ok(html.includes('combatQueueHasNext=hasNext'));
+  assert.ok(html.includes('visualTail=combatQueueHasNext?1250:0'));
+  assert.ok(html.includes('if(combatQueueHasNext)markCombatBusy(combatMs(1250))'));
+  assert.ok(html.includes('afterCombatSettles(next,hasNext)'));
+});
+
+test('상대 공격도 콜백 기반 전투 큐가 끝난 뒤에만 턴을 넘긴다', () => {
+  const queuedEnemyTurn = html.slice(html.indexOf('enemyTurn=function(done)'), html.indexOf('function playCard('));
+  assert.ok(queuedEnemyTurn.includes('runCombatQueue(enemyUnits,unit=>'));
+  assert.ok(queuedEnemyTurn.includes('},done);'));
+  assert.ok(html.includes('enemyTurn(()=>beginNextRound(button))'));
+  assert.ok(html.includes('enemyTurn(()=>startPlayerTurn(button))'));
 });
 
 test('전투 종료 뒤 단계 전환과 상대 선공 준비는 별도의 짧은 지연만 사용한다', () => {
