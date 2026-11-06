@@ -61,6 +61,20 @@
       document.body.appendChild(ring);
       setTimeout(()=>ring.remove(),combatMs(620));
     }
+    function markUltimateTargets(nodes,label,color){
+      /* 궁극기 대상은 유닛뿐 아니라 영웅 아바타일 수도 있다. 링을 조금 더 크고 길게 보여준다. */
+      nodes.filter(Boolean).filter(node=>node.isConnected).forEach((node,i)=>setTimeout(()=>{
+        if(!node.isConnected)return;
+        const r=node.getBoundingClientRect(),ring=document.createElement('div');
+        ring.className='spell-target-ring ult';
+        ring.style.left=(r.left-7)+'px';ring.style.top=(r.top-7)+'px';
+        ring.style.width=(r.width+14)+'px';ring.style.height=(r.height+14)+'px';
+        if(color)ring.style.setProperty('--st-color',color);
+        if(label)ring.setAttribute('data-label',label);
+        document.body.appendChild(ring);
+        setTimeout(()=>ring.remove(),combatMs(900));
+      },i*combatMs(110)));
+    }
     function markSpellTargets(units,label,color){
       /* 마법이 누구에게 적용되는지 보여준다 — 피해 적용 전에 조준 링을 먼저 띄운다. */
       units.filter(Boolean).forEach((unit,i)=>setTimeout(()=>showSpellTargetRing(unit,label,color),i*combatMs(90)));
@@ -415,7 +429,7 @@
     })();
 
     /* 필드(.arena) 기준 연출 프레임: 스킬/마법/궁극기 오버레이가 생길 때마다 필드 위치로 맞춘다 */
-    const FIELD_OVERLAYS='.guardian-descent,.guardian-select,.difficulty-select,.cinematic-skill-fx,.ultimate-cutscene,.global-spell,.global-summon,.effect-narration,.awakening-proc-banner,.shatter-resonance-fx,.spell-target-ring,.desperate-notice,.initiative-banner';
+    const FIELD_OVERLAYS='.guardian-descent,.guardian-select,.cinematic-skill-fx,.ultimate-cutscene,.global-spell,.global-summon,.effect-narration,.awakening-proc-banner,.shatter-resonance-fx,.spell-target-ring,.desperate-notice,.initiative-banner';
     function syncFieldFrame(){const arena=document.querySelector('.arena');if(!arena)return;const r=arena.getBoundingClientRect(),st=document.documentElement.style;st.setProperty('--field-left',r.left+'px');st.setProperty('--field-top',r.top+'px');st.setProperty('--field-width',r.width+'px');st.setProperty('--field-height',r.height+'px');st.setProperty('--field-cx',(r.left+r.width/2)+'px');st.setProperty('--field-bottom',r.bottom+'px');}
     new MutationObserver(list=>{if(list.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&n.matches(FIELD_OVERLAYS))))syncFieldFrame();}).observe(document.body,{childList:true});
     addEventListener('resize',syncFieldFrame);syncFieldFrame();
