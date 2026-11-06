@@ -5,11 +5,14 @@ const path = require('node:path');
 
 const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
 
-test('컴퓨터도 궁극기 장착과 발동 카드를 플레이어에게 공개한다', () => {
-  assert.ok(html.includes('function showEnemyUltimateEquip(spec)'));
-  assert.ok(html.includes('ENEMY ULTIMATE EQUIP'));
+test('컴퓨터의 궁극기 장착은 전투 로그로, 발동은 카드로 플레이어에게 공개한다', () => {
+  /* 장착은 슬롯에 넣는 준비 동작이라 화면을 멈추지 않고 로그로만 알린다.
+     실제 발동은 판을 바꾸는 사건이므로 카드 연출을 유지한다. */
+  assert.ok(html.includes("writeLog('<strong>상대</strong>가 '+pick.card.name+'을(를) 궁극기로 장착했습니다.')"), '장착 사실은 로그로 반드시 공개해야 한다');
+  assert.ok(!html.includes('ENEMY ULTIMATE EQUIP'), '장착에 전역 카드 연출을 쓰지 않는다');
+  assert.ok(!html.includes("className='global-spell enemy-ultimate-equip'"), '장착 오버레이는 제거됐다');
   assert.ok(html.includes('function showEnemyUltimateActivation(spec)'));
-  assert.ok(html.includes('ENEMY ULTIMATE · LIMIT BREAK'));
+  assert.ok(html.includes('ENEMY ULTIMATE · LIMIT BREAK'), '실제 발동은 카드로 공개한다');
 });
 
 test('컴퓨터 궁극기도 전장 제물과 0/1 소진자 및 전역 도발을 사용한다', () => {
@@ -35,7 +38,12 @@ test('복수자는 궁극기 소진자가 쓰러진 뒤에만 강림한다 (체�
   // 사망 플래그는 전용 사망 컷(최초 소진자 한정)에서만 세워진다.
   assert.ok(html.includes("if(avengerSide==='player')firstUltimateSpentFallen=true;else enemyFirstUltimateSpentFallen=true;"), '사망 시점에 복수 자격이 생겨야 한다');
   // 체력 40 진입이 이미 지났어도 사망 시점에 다시 강림을 시도한다.
-  assert.ok(html.includes('queueEnemyUltimateAvenger(4200)'), '사망 컷이 끝난 뒤 이어서 강림해야 한다');
+  assert.ok(html.includes('queueEnemyUltimateAvenger(0)'), '사망 시점에 강림을 다시 시도해야 한다');
+  // 사망 컷은 연출 큐에 올라가 필드를 멈추고, 강림은 같은 우선순위로 그 뒤에 이어진다(FIFO).
+  assert.ok(html.includes("fxPresent('ultimate-spent-death'"), '사망 컷은 연출 큐를 통해 필드를 멈춰야 한다');
+  const cut = html.slice(html.indexOf("fxPresent('ultimate-spent-death'"));
+  assert.ok(cut.slice(0, cut.indexOf('}')+600).includes('priority:FX_PRIORITY.ultimate'), '강림과 같은 ultimate 우선순위여야 FIFO로 순서가 보장된다');
+  assert.ok(!html.includes('queueEnemyUltimateAvenger(4200)'), '컷신 길이를 상수로 추측하는 수동 지연은 없어야 한다');
   assert.ok(html.includes('function ensureEnemyAvengerSource()'), '동료 후보 확정 로직은 유지한다');
   assert.ok(html.includes('if(!ensureEnemyAvengerSource())return null'));
 });
