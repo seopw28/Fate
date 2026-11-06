@@ -64,8 +64,8 @@ const AWAKENING_OPTIONS = {
     B: { label: '연격', chance: 0.075, extraStrikes: 1 },
   },
   cheongryong: {
-    A: { label: '범람', chance: 0.27, manaMin: 4, manaMax: 5 },
-    B: { label: '순환', chance: 1.00, manaMin: 2, manaMax: 2 },
+    A: { label: '범람', chance: 0.18, manaMin: 8, manaMax: 10 },
+    B: { label: '순환', chance: 0.99, manaMin: 2, manaMax: 2 },
   },
   namu: {
     A: { label: '숲의 생명', chance: 1.00, hpGain: 1 },
