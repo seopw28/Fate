@@ -7,8 +7,9 @@ const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), '
 
 test('내 세트 마법은 발동 카드를 먼저 보여준 뒤 효과를 적용한다', () => {
   assert.ok(html.includes("global.className='global-spell'"));
-  assert.ok(html.includes("setTimeout(()=>{global.remove();castSpell(card)"));
-  assert.ok(html.includes('},MAGIC_REVEAL_MS)'));
+  assert.ok(html.includes("fxPresent('magic:'+magic.name"), '마법 공개는 연출 큐를 거쳐야 한다');
+  assert.ok(html.includes('hold:MAGIC_REVEAL_MS'), '공개 시간은 MAGIC_REVEAL_MS 동안 점유한다');
+  assert.ok(html.includes('.then(()=>{castSpell(card);'), '공개가 끝난 뒤에 효과를 적용해야 한다');
   assert.ok(!html.includes('castSpell(card);global.classList.add(\'resolved\')'));
 });
 
@@ -20,7 +21,8 @@ test('마법·함정 공개 카드는 궁극기 등 필드 조작부보다 앞�
 test('상대 마법도 중앙 발동 안내 후 실제 효과를 적용한다', () => {
   assert.ok(html.includes('function showEnemyMagicActivation(card,onResolve)'));
   assert.ok(html.includes("global.className='global-spell enemy-magic-activation'"));
-  assert.ok(html.includes("setTimeout(()=>{global.remove();onResolve()"));
+  assert.ok(html.includes("fxPresent('enemy-magic:'+card.name"), '상대 마법도 연출 큐를 거쳐야 한다');
+  assert.ok(html.includes('.then(()=>{onResolve();'), '공개가 끝난 뒤에 효과를 적용해야 한다');
   assert.ok(html.includes('resolveEnemySpell=function(card){return showEnemyMagicActivation(card,()=>resolveEnemySpellEffect(card));}'));
 });
 
@@ -40,12 +42,13 @@ test('동시에 준비된 내 마법은 각 카드의 최소 노출시간이 끝
 });
 
 test('마법 공개 레이어가 사라지고 효과 정산이 끝날 때까지 다른 진행을 멈춘다', () => {
-  assert.ok(html.includes("setTimeout(()=>{global.remove();castSpell(card)"));
+  assert.ok(html.includes('.then(()=>{castSpell(card);'));
   assert.ok(html.includes('setTimeout(()=>resolve(true),MAGIC_EFFECT_SETTLE_MS)'));
   assert.ok(html.includes('enemyTurn=function(done)'));
   assert.ok(html.includes('(async()=>{'));
   assert.ok(html.includes('await resolveEnemySetMagic();if(resultPending)'));
-  assert.ok(html.includes("setTimeout(()=>{global.remove();onResolve();setTimeout(resolve,ENEMY_MAGIC_EFFECT_SETTLE_MS);},ENEMY_MAGIC_REVEAL_MS)"));
+  assert.ok(html.includes('setTimeout(resolve,ENEMY_MAGIC_EFFECT_SETTLE_MS)'));
+  assert.ok(html.includes('hold:ENEMY_MAGIC_REVEAL_MS'));
 });
 
 test('내 함정과 상대 함정은 발동 시 카드 이름과 일러스트를 중앙에 공개한다', () => {
@@ -53,8 +56,9 @@ test('내 함정과 상대 함정은 발동 시 카드 이름과 일러스트를
   assert.ok(html.includes("global.className='global-spell trap-activation '+side"));
   assert.ok(html.includes("showTrapActivation(trap,'player')"));
   assert.ok(html.includes("showTrapActivation(trap,'enemy')"));
+  assert.ok(html.includes("fxPresent('trap:'+name"), '함정 공개도 연출 큐를 거쳐야 한다');
   assert.ok(html.includes("setTimeout(()=>global.classList.add('resolved'),900)"));
-  assert.ok(html.includes("setTimeout(()=>global.remove(),2300)"));
+  assert.ok(html.includes('hold:2300'), '함정 공개는 2300ms 동안 화면을 점유한다');
 });
 
 test('상대 함정은 세트 시 정체를 숨기고 발동 시에만 공개한다', () => {
