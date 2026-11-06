@@ -43,12 +43,13 @@
 
   // dx,dy: 공격자→대상 벡터, moveX,moveY: 접촉 지점까지 이동 거리, power: 0~1
   function build(name, { dx = 0, dy = 0, moveX = 0, moveY = 0, power = 0.5, side = 1 } = {}) {
-    const amp = 0.85 + power * 0.3;
+    /* 카드 동작을 키운다. 평타가 전투의 주연출이 된 만큼 '툭 스치는' 수준으로는 무게가 안 실린다 (2026-11-07) */
+    const amp = 1.12 + power * 0.42;
     const mx = moveX * amp, my = moveY * amp;
     let duration, hit, frames;
     switch (name) {
       case 'slam': { // 높이 뛰어올라 내려찍기
-        const lift = 48 + power * 42;
+        const lift = 66 + power * 58;
         duration = 760; hit = 0.48;
         frames = [frame(0, 0, 0), frame(0.26, -dx * 0.02, -lift - dy * 0.02, 1.12 + power * 0.04, -3),
           frame(0.5, mx, my, 1.12 + power * 0.06, 2), frame(0.6, mx * 0.94, my * 0.94, 1.02), frame(1, 0, 0)];
@@ -56,7 +57,7 @@
       }
       case 'bash': { // 한껏 웅크렸다가 묵직하게 들이받기
         duration = 800; hit = 0.42;
-        frames = [frame(0, 0, 0), frame(0.3, -dx * 0.1, -dy * 0.1, 0.9), frame(0.44, mx * 1.05, my * 1.05, 1.16 + power * 0.06),
+        frames = [frame(0, 0, 0), frame(0.3, -dx * 0.16, -dy * 0.16, 0.86), frame(0.44, mx * 1.05, my * 1.05, 1.16 + power * 0.06),
           frame(0.56, mx * 0.98, my * 0.98, 1.08), frame(0.78, mx * 0.35, my * 0.35, 1.02), frame(1, 0, 0)];
         break;
       }
@@ -95,10 +96,15 @@
           frame(0.58, mx * 0.9, my * 0.9, 1.03), frame(1, 0, 0)];
       }
     }
-    return { name, keyframes: frames, duration: Math.round(duration * (0.95 + power * 0.1)), hit, easing: EASING };
+    return { name, impact: impactKind(name), keyframes: frames, duration: Math.round(duration * (0.95 + power * 0.1)), hit, easing: EASING };
   }
 
-  const api = { WEIGHTS, powerFromAttack, pick, build };
+  /* 착탄 유형: 모션의 성격에 맞춰 타격 흔적을 나눈다. 전부 원소 폭발처럼 보이던 것을
+     베기(slash) / 가격(blunt) / 찌르기(pierce) 세 갈래로 가른다 (2026-11-07) */
+  const IMPACT = { spin: 'slash', swoop: 'slash', slam: 'blunt', bash: 'blunt', jab: 'pierce', lunge: 'pierce' };
+  const impactKind = (name) => IMPACT[name] || 'blunt';
+
+  const api = { WEIGHTS, powerFromAttack, pick, build, impactKind, IMPACT };
   root.FateMotions = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

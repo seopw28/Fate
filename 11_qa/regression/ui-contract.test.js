@@ -255,15 +255,37 @@ test('평타 연출은 피해량·반격·치명타를 시각으로 구분한다
   assert.ok(html.includes("line.style.setProperty('--hit',hitWeight.toFixed(3))"), '궤적에 피해 비중을 넘겨야 한다');
   assert.ok(html.includes('hitWeight=Math.max(0,Math.min(1,dealt/12))'), '피해량을 0~1로 정규화해 쓴다');
   // 반격은 같은 선이면 구분이 안 된다. 끊긴 질감으로 분리한다.
-  assert.ok(html.includes('.field-attack-line.counter{background:repeating-linear-gradient'), '반격은 끊긴 질감이어야 한다');
+  // 점선은 선이 끊겨 보여 품질이 떨어진다. 실선을 유지하되 심지 위치와 두께로 구분한다.
+  assert.ok(!html.includes('.field-attack-line.counter{background:repeating-linear-gradient'), '반격을 점선으로 되돌리지 말 것');
+  assert.ok(html.includes('.field-attack-line.counter{height:calc(2px + 3px*var(--hit,.3));background:linear-gradient'), '반격도 실선이어야 한다');
   assert.ok(html.includes("if(counter)line.classList.add('counter')"), '반격 궤적에 counter 표시를 해야 한다');
   // 치명타: 대상 체력을 넘기는 타격은 더 굵고 오래 남는다.
   assert.ok(html.includes('lethalHit=dealt>0&&targetHp>0&&dealt>=targetHp'), '치명타를 판정해야 한다');
   assert.ok(html.includes('.field-attack-line.lethal{'), '치명타 전용 스타일이 있어야 한다');
   // 착탄: 섬광 + 방사 파편.
   assert.ok(html.includes('.field-impact-burst'), '착탄 연출이 있어야 한다');
-  assert.ok(html.includes("burst.className='field-impact-burst'"), '교전마다 착탄 연출을 띄워야 한다');
+  assert.ok(html.includes("burst.className='field-impact-burst '+(motion.impact||'blunt')"), '교전마다 착탄 연출을 띄우고 유형을 붙여야 한다');
   assert.ok(html.includes('@keyframes impact-shard'), '방사 파편 애니메이션이 있어야 한다');
   // 반동: 때린 쪽도 반작용을 받는다.
   assert.ok(html.includes('if(attacker.isConnected&&hitWeight>0)attacker.animate('), '공격자 반동이 있어야 한다');
+});
+
+test('평타 착탄은 모션 성격에 따라 베기·가격·찌르기로 갈린다', () => {
+  // 마법사 덱이라 전부 원소 폭발처럼 보이던 것을 모션 그룹으로 가른다.
+  const motions = fs.readFileSync(path.resolve(__dirname, '../../05_game-client/battle/attack-motions.js'), 'utf8');
+  assert.ok(motions.includes("IMPACT = { spin: 'slash', swoop: 'slash', slam: 'blunt', bash: 'blunt', jab: 'pierce', lunge: 'pierce' }"), '모션별 착탄 유형 매핑이 있어야 한다');
+  assert.ok(motions.includes("impact: impactKind(name)"), '모션 객체가 착탄 유형을 실어 보내야 한다');
+  for (const kind of ['slash', 'blunt', 'pierce']) {
+    assert.ok(html.includes(`.field-impact-burst.${kind}`), `${kind} 전용 착탄 스타일이 있어야 한다`);
+  }
+  assert.ok(html.includes('@keyframes impact-slash'), '베기는 칼자국이 그어져야 한다');
+  assert.ok(html.includes('@keyframes impact-ring'), '가격은 링 파동이 퍼져야 한다');
+  assert.ok(html.includes('@keyframes impact-pierce'), '찌르기는 진행 방향으로 뻗어야 한다');
+  assert.ok(html.includes("burst.style.setProperty('--impact-angle'"), '찌르기 방향을 넘겨야 한다');
+});
+
+test('카드 평타 동작은 툭 스치지 않고 크게 움직인다', () => {
+  const motions = fs.readFileSync(path.resolve(__dirname, '../../05_game-client/battle/attack-motions.js'), 'utf8');
+  assert.ok(motions.includes('const amp = 1.12 + power * 0.42'), '모션 진폭이 1 이상이어야 한다');
+  assert.ok(motions.includes('const lift = 66 + power * 58'), '내려찍기는 충분히 높이 떠야 한다');
 });
