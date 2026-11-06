@@ -75,10 +75,11 @@ test('deck editor: a deck is designated as the main deck and the editor stays op
   assert.ok(!html.includes("다음 판부터 이 덱으로 싸웁니다.');closeCollection();") && !html.includes("셔플했습니다.');closeCollection();"), 'Designating the main deck must not close the deck editor');
 });
 
-test('deck exhaustion and result handoff follow the PRD', () => {
+test('deck exhaustion and result actions follow the PRD', () => {
   assert.ok(html.includes("<strong>덱 소진:</strong> 더 뽑지 않고 현재 손패와 전장으로 계속 싸웁니다."), 'An empty deck must skip drawing instead of ending the battle');
   assert.ok(!html.includes("finish(false,'덱이 비어 더 이상 카드를 뽑을 수 없습니다.')"), 'Deck exhaustion must not be a defeat condition');
-  assert.ok(html.includes("openCollection('codex');},2000)"), 'Battle results must hand off to character completion, not rank progression');
+  assert.ok(html.includes('onclick="openTierStatus(lastRankResult)"'), 'Battle results must offer the detailed tier result');
+  assert.ok(html.includes('onclick="restartBattleToAuraSelect()"'), 'Battle results must offer another battle');
 });
 
 test('battle result copy is explicit and the result surface fully covers battle UI', () => {
@@ -193,11 +194,11 @@ test('space switches hand tabs and Enter ends the turn', () => {
   }
 });
 
-test('최후의 저항: 최대 마나가 11로 늘어나고, 저항 상태가 해제되면 10으로 돌아간다', () => {
-  assert.ok(html.includes('const DESPERATE_HP_RATIO=.3'), 'Desperation must start at thirty percent');
-  assert.ok(html.includes('hp>0&&hp<=DESPERATE_HP'), 'Exactly thirty percent health must activate desperation');
-  assert.ok(html.includes('const DESPERATE_MANA_CAP = 11;'), 'Desperation mana cap must be eleven');
-  assert.ok(html.includes("maxMana=playerManaCap()===DESPERATE_MANA_CAP?DESPERATE_MANA_CAP:Math.min(MANA_CAP,maxMana+1)"), 'Turn start must set max mana to eleven while desperate');
-  assert.ok(html.includes("if(side==='player')applyDesperateMana(active);"), 'Entering/leaving desperation must update max mana');
-  assert.ok(html.includes("else if(maxMana>MANA_CAP){maxMana=MANA_CAP;mana=Math.min(mana,maxMana);"), 'Leaving desperation must return max mana to ten');
+test('최후의 저항: 체력 40 이하에서 발동하지만 최대 마나는 10을 유지한다', () => {
+  assert.ok(html.includes('const DESPERATE_HP_RATIO=.4'), 'Desperation must start at forty percent');
+  assert.ok(html.includes('hp>0&&hp<=DESPERATE_HP'), 'Exactly forty percent health must activate desperation');
+  assert.ok(html.includes('function playerManaCap(){return MANA_CAP;}'), 'Desperation must keep the normal mana cap');
+  assert.ok(html.includes('maxMana=Math.min(MANA_CAP,maxMana+1)'), 'Turn start must never grow beyond ten mana');
+  assert.ok(!html.includes('const DESPERATE_MANA_CAP = 11;'), 'The removed eleven-mana cap must not remain');
+  assert.ok(!html.includes('function applyDesperateMana'), 'Desperation must not mutate maximum mana');
 });

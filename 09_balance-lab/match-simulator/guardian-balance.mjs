@@ -33,6 +33,7 @@ const INITIATIVE = !args['no-initiative'];
 const HEAL_COUNTS_FOR_INITIATIVE = !!args['heal-counts'];/* 기본: 현무 회복분은 선공권 판정에서 제외(게임과 동일). --heal-counts 로 회복분도 포함 *//* --no-initiative: 선공권 규칙을 끄고 항상 내가 선공(상호 교대 없음) */
 const AWAKENING_SIM = !!args.awakening;
 const AWAKENING_MATCHUP = args['awakening-matchup'] ? String(args['awakening-matchup']) : '';
+const AWAKENING_POOL_ONLY = !!args['pool-only'];
 
 // ── 데이터 로드 ──────────────────────────────────────────────
 const sandbox = { globalThis: {} };
@@ -57,26 +58,26 @@ const shuffle = (arr, rnd) => { const a = arr.slice(); for (let i = a.length - 1
 
 // ── 규칙 상수 (dist/index.html 과 동일) ─────────────────────
 const HERO_HP = 100, MANA_CAP = 10, START_MANA = 3, FIELD_LIMIT = 6, HAND_LIMIT = 8, ROUND_CAP = 40;
-const AWAKEN_HP = 70;
+const AWAKEN_HP = 80;
 const AWAKENING_OPTIONS = {
   jujak: {
-    A: { label: '폭열', chance: 0.044, extraStrikes: 2 },
-    B: { label: '연격', chance: 0.075, extraStrikes: 1 },
+    A: { label: '폭열', chance: 0.055, extraStrikes: 2 },
+    B: { label: '연격', chance: 0.087, extraStrikes: 1 },
   },
   cheongryong: {
-    A: { label: '범람', chance: 0.15, manaMin: 8, manaMax: 8 },
-    B: { label: '순환', chance: 0.8, manaMin: 2, manaMax: 3 },
+    A: { label: '범람', chance: 0.14, manaMin: 7, manaMax: 7 },
+    B: { label: '순환', chance: 0.90, manaMin: 2, manaMax: 2 },
   },
   namu: {
     A: { label: '숲의 생명', chance: 1.00, hpGain: 1 },
     B: { label: '거목 수호', chance: 0.30, hpGain: 5, leftmostOnly: true },
   },
   baekho: {
-    A: { label: '절단 반격', chance: 0.70, ratio: 0.30, minDamage: 1, maxDamage: 3 },
+    A: { label: '절단 반격', chance: 0.80, ratio: 0.30, minDamage: 1, maxDamage: 3 },
     B: { label: '파쇄 공명', chance: 0.14, aoeDamage: 3 },
   },
   hyeonmu: {
-    A: { label: '암반 피부', chance: 0.70, damageReduction: 1, minCost: 4 },
+    A: { label: '암반 피부', chance: 0.57, damageReduction: 1, minCost: 4 },
     B: { label: '절대방어', chance: 0.055, avoidDamage: true },
   },
 };
@@ -255,16 +256,16 @@ function batch(playerGuardian, enemyPicker, games, playerAwakening = null, enemy
 }
 
 function seatAdjustedAwakeningPool(targetGuardian, targetOption, games) {
-  const others = IDS.filter(id => id !== targetGuardian);
+  const opponents = IDS.flatMap(id => ['A', 'B'].map(option => ({ id, option })))
+    .filter(({ id, option }) => id !== targetGuardian || option !== targetOption);
   const half = Math.floor(games / 2);
   let score = 0, rounds = 0;
   for (let i = 0; i < games; i++) {
-    const otherGuardian = others[Math.floor(rnd() * others.length)];
-    const otherOption = rnd() < 0.5 ? 'A' : 'B';
+    const opponent = opponents[Math.floor(rnd() * opponents.length)];
     const targetIsPlayer = i < half;
     const result = targetIsPlayer
-      ? playGame(targetGuardian, otherGuardian, rnd, targetOption, otherOption)
-      : playGame(otherGuardian, targetGuardian, rnd, otherOption, targetOption);
+      ? playGame(targetGuardian, opponent.id, rnd, targetOption, opponent.option)
+      : playGame(opponent.id, targetGuardian, rnd, opponent.option, targetOption);
     if (result.winner === 'draw') score += 0.5;
     else if ((targetIsPlayer && result.winner === 'player') || (!targetIsPlayer && result.winner === 'enemy')) score++;
     rounds += result.rounds;
@@ -305,7 +306,7 @@ if (AWAKENING_MATCHUP) {
 
 if (AWAKENING_SIM) {
   console.log(`[오라 지속 각성] 영웅 체력 ${AWAKEN_HP} 이하 자동 발동 · 판수 ${GAMES}/선택지 · seed ${SEED} · ${SYM ? '대칭 모드' : '게임 모드'}`);
-  console.log('상대: 나머지 4개 오라 무작위 · 상대 A/B 균등 선택 · 양쪽 좌석 50:50 보정');
+  console.log('상대: 자기 자신을 제외한 나머지 9개 각성 선택지 균등 · 양쪽 좌석 50:50 보정');
   const awakeningResults = {};
   for (const id of IDS) {
     awakeningResults[id] = {};
@@ -315,6 +316,7 @@ if (AWAKENING_SIM) {
       console.log(`  ${GUARDIANS[id].name.padEnd(8)} ${option} ${AWAKENING_OPTIONS[id][option].label.padEnd(8)} ${pct(result.rate)} ±${ci(result.win, result.games).toFixed(2)}  (평균 ${result.rounds.toFixed(1)}라운드)`);
     }
   }
+  if (AWAKENING_POOL_ONLY) process.exit(0);
   console.log('\n[같은 오라 A vs B 직접 대결]');
   for (const id of IDS) {
     const aFirst = batch(id, () => id, GAMES, 'A', () => 'B');

@@ -15,10 +15,11 @@
 - 새 연출은 `vw/vh/inset:0` 대신 `var(--field-width)`/`var(--field-height)` 기준으로 크기를 잡고, 오버레이 클래스는 `FIELD_OVERLAYS` 선택자에 추가한다.
 - 연출 타이틀은 단어 단위로 줄바꿈한다(`typeSkillTitle`이 `.title-word`로 묶음). 단어 중간에서 끊기면 안 된다.
 
-## Codex 이미지 생성 0순위 큐 (필수 상기)
-- Codex(`image_gen`) 한도가 회복되면 **가장 먼저** `06_assets/art-queue.md`의 남은 항목부터 만든다 (**P0 역전 마법 6장 `reversal.*`** — 지금 ✦ 자리표시. 보호막 이펙트·성격 오라 문양·그림 없는 마법·중복 사용 마법·토큰은 완료). 목록·프롬프트·반영 절차는 그 문서에 있다.
+## Codex 이미지 생성 큐
+- `06_assets/art-queue.md`에서 **미완료로 명시된 항목만** 이미지 생성 대상으로 취급한다. 완료 기록이 있거나 실파일·카드 데이터 연결이 확인된 항목을 미해결로 다시 보고하지 않는다.
+- 역전 마법 6장 `reversal.*`은 2026-11-05 생성·반영 완료했다. 게임용 WebP 6종은 `dist/assets/spells/generated/reversal-*-v1.webp`, 원본과 프롬프트는 `06_assets/source-art/spells/`에 있으며 카드 데이터에도 연결되어 있다.
 - 사용자가 직접 이미지를 주면 webp로 변환해 `dist/assets/spells|traps/generated/`에 넣는다. 기존 그림을 바꿀 때는 같은 파일 이름으로 덮어쓰지 말고 새 이름(`-v2` 등)을 쓴다 (브라우저 캐시).
-- Fate 작업을 시작·종료할 때 사용자에게 이 미해결 큐를 한 번 상기시킨다. Claude는 이미지를 생성할 수 없고, 코드로 그린 SVG 일러스트는 쓰지 않는다.
+- 이미지 큐를 사용자에게 자동으로 상기하지 않는다. 사용자가 에셋 현황을 묻거나 실제 미완료 항목이 현재 작업을 막을 때만 보고한다. Claude는 이미지를 생성할 수 없고, 코드로 그린 SVG 일러스트는 쓰지 않는다.
 
 ## 여러 세션 동시 작업 안전 규칙 (필수)
 - **저장소**: Fate는 독립 git 저장소다 (`github.com/seopw28/Fate`, private, `origin`). 2026-11-03 회사 저장소(product_analysis)에서 이력째 분리했고, 2026-11-05 폴더 위치를 `/Users/vex/Documents/git/pm-ai-system/sprints/current/crack-ccg-fate/Fate`로 옮겼다(기획 문서 옆). 옛 경로 `/Users/vex/Documents/git/Fate`는 이 폴더를 가리키는 바로가기(심볼릭 링크)다. pm-ai-system 저장소는 이 폴더를 .gitignore로 제외한다 — pm-ai-system에서 Fate 파일을 커밋하지 않는다. 경로는 저장소 루트 기준(`dist/index.html`, `Fate/` 접두사 없음). 원격 푸시는 SSH(`git@github.com:seopw28/Fate.git`)를 쓴다 — HTTPS는 큰 팩에서 끊긴다.

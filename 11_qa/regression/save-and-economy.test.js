@@ -235,6 +235,16 @@ test('쿠키조각은 젠돈·게임 승리에서 얻어 카드 뽑기에 직접
   assert.ok(!html.includes('작품 쿠키조각 교환소'), 'The removed work-bound exchange must not remain');
 });
 
+test('PvC 승리는 상대 재화를 갈취하지 않고 고정 클리어 보상을 지급한다', () => {
+  assert.ok(html.includes('const PVC_CLEAR_CRACKER_REWARD=200'));
+  assert.ok(html.includes("collectionState.crackers=(collectionState.crackers||0)+PVC_CLEAR_CRACKER_REWARD"));
+  assert.ok(html.includes('PvC 클리어 보상으로 크래커'));
+  assert.ok(!html.includes('enemyCrackers'));
+  assert.ok(!html.includes('VICTORY_STEAL'));
+  assert.ok(!html.includes('const stolen='));
+  assert.ok(!html.includes('크래커 200</div>'), '상대 HUD에 재화를 표시하지 않아야 한다');
+});
+
 test('궁극기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤에 적용한다', () => {
   assert.ok(html.includes('ULTIMATE_EFFECT_DELAY=ULTIMATE_OVERLAY_MS+30'), 'Effect delay must exceed the overlay duration');
   assert.ok(html.includes('},ULTIMATE_EFFECT_DELAY);setTimeout(()=>overlay.remove(),ULTIMATE_OVERLAY_MS);'), 'Effects must be scheduled with the named delay, not a fixed 900ms');
