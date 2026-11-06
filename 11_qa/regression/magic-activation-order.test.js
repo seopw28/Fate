@@ -6,7 +6,7 @@ const path = require('node:path');
 const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
 
 test('내 세트 마법은 발동 카드를 먼저 보여준 뒤 효과를 적용한다', () => {
-  assert.ok(html.includes("global.className='global-spell'"));
+  assert.ok(html.includes("global.className='global-spell owner-player'"), '내 마법은 소유자가 나임을 클래스로 드러내야 한다');
   assert.ok(html.includes("fxPresent('magic:'+magic.name"), '마법 공개는 연출 큐를 거쳐야 한다');
   assert.ok(html.includes('hold:MAGIC_REVEAL_MS'), '공개 시간은 MAGIC_REVEAL_MS 동안 점유한다');
   assert.ok(html.includes('.then(()=>{castSpell(card);'), '공개가 끝난 뒤에 효과를 적용해야 한다');
@@ -20,7 +20,7 @@ test('마법·함정 공개 카드는 궁극기 등 필드 조작부보다 앞�
 
 test('상대 마법도 중앙 발동 안내 후 실제 효과를 적용한다', () => {
   assert.ok(html.includes('function showEnemyMagicActivation(card,onResolve)'));
-  assert.ok(html.includes("global.className='global-spell enemy-magic-activation'"));
+  assert.ok(html.includes("global.className='global-spell enemy-magic-activation owner-enemy'"), '상대 마법은 소유자가 상대임을 클래스로 드러내야 한다');
   assert.ok(html.includes("fxPresent('enemy-magic:'+card.name"), '상대 마법도 연출 큐를 거쳐야 한다');
   assert.ok(html.includes('.then(()=>{onResolve();'), '공개가 끝난 뒤에 효과를 적용해야 한다');
   assert.ok(html.includes('resolveEnemySpell=function(card){return showEnemyMagicActivation(card,()=>resolveEnemySpellEffect(card));}'));
