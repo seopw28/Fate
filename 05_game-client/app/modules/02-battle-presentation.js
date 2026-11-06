@@ -61,6 +61,43 @@
       document.body.appendChild(ring);
       setTimeout(()=>ring.remove(),combatMs(620));
     }
+    /* 효과로 치워지는 카드는 그냥 사라지지 않고 목적지로 날아간다 —
+       "마법 효과로 움직이는 것"이라는 인지를 만든다 (2026-11-07). */
+    const CARD_DEPART_DEST={graveyard:{label:'묘지로',tag:'GRAVEYARD',color:'#c98bff',dy:.34},
+      deck:{label:'덱으로',tag:'DECK',color:'#8fd4ff',dy:-.3},
+      hand:{label:'손패로',tag:'HAND',color:'#7fe6a4',dy:.42}};
+    function sendCardTo(unit,where,name){
+      const dest=CARD_DEPART_DEST[where];
+      if(!unit?.isConnected||!dest)return 0;
+      const r=unit.getBoundingClientRect(),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,
+        /* 목적지는 필드 안쪽에 둔다. 화면 기준으로 잡으면 필드를 벗어난다 (CLAUDE.md). */
+        style=getComputedStyle(document.documentElement),
+        num=key=>parseFloat(style.getPropertyValue(key))||0,
+        fl=num('--field-left'),ft=num('--field-top'),fw=num('--field-width'),fh=num('--field-height'),
+        tx=fl+fw*.5,ty=ft+fh*(.5+dest.dy*.5),
+        flight=document.createElement('div'),marker=document.createElement('div'),
+        art=unit.dataset.art||'',emoji=unit.querySelector('.emoji')?.textContent?.trim()||'◆';
+      flight.className='card-depart';
+      flight.style.setProperty('--cd-color',dest.color);
+      flight.style.left=r.left+'px';flight.style.top=r.top+'px';
+      flight.style.width=r.width+'px';flight.style.height=r.height+'px';
+      flight.innerHTML=art?'<img src="'+art+'" alt="">':'<div class="cd-art">'+emoji+'</div>';
+      marker.className='card-depart-dest';
+      marker.style.setProperty('--cd-color',dest.color);
+      marker.style.left=tx+'px';marker.style.top=ty+'px';
+      marker.style.transform='translate(-50%,-50%)';
+      marker.innerHTML='<small>'+dest.tag+'</small><b>'+(name?name+' · ':'')+dest.label+'</b>';
+      document.body.appendChild(marker);document.body.appendChild(flight);
+      const dur=reduced?1:combatMs(620),
+        dx=tx-(r.left+r.width/2),dy=ty-(r.top+r.height/2);
+      flight.animate([{transform:'translate(0,0) scale(1) rotate(0)',opacity:1},
+        {transform:'translate('+(dx*.55)+'px,'+(dy*.45-26)+'px) scale(.78) rotate(-12deg)',opacity:1,offset:.55},
+        {transform:'translate('+dx+'px,'+dy+'px) scale(.16) rotate(16deg)',opacity:.1}],
+        {duration:dur,easing:'cubic-bezier(.3,.7,.2,1)',fill:'forwards'});
+      setTimeout(()=>flight.remove(),dur+40);
+      setTimeout(()=>marker.remove(),dur+360);
+      return dur;
+    }
     function markUltimateTargets(nodes,label,color){
       /* 궁극기 대상은 유닛뿐 아니라 영웅 아바타일 수도 있다. 링을 조금 더 크고 길게 보여준다. */
       nodes.filter(Boolean).filter(node=>node.isConnected).forEach((node,i)=>setTimeout(()=>{
@@ -437,7 +474,7 @@
     })();
 
     /* 필드(.arena) 기준 연출 프레임: 스킬/마법/궁극기 오버레이가 생길 때마다 필드 위치로 맞춘다 */
-    const FIELD_OVERLAYS='.guardian-descent,.guardian-select,.cinematic-skill-fx,.ultimate-cutscene,.global-spell,.global-summon,.effect-narration,.awakening-proc-banner,.shatter-resonance-fx,.spell-target-ring,.desperate-notice,.initiative-banner';
+    const FIELD_OVERLAYS='.guardian-descent,.guardian-select,.cinematic-skill-fx,.ultimate-cutscene,.global-spell,.global-summon,.effect-narration,.awakening-proc-banner,.shatter-resonance-fx,.spell-target-ring,.card-depart,.card-depart-dest,.desperate-notice,.initiative-banner';
     function syncFieldFrame(){const arena=document.querySelector('.arena');if(!arena)return;const r=arena.getBoundingClientRect(),st=document.documentElement.style;st.setProperty('--field-left',r.left+'px');st.setProperty('--field-top',r.top+'px');st.setProperty('--field-width',r.width+'px');st.setProperty('--field-height',r.height+'px');st.setProperty('--field-cx',(r.left+r.width/2)+'px');st.setProperty('--field-bottom',r.bottom+'px');}
     new MutationObserver(list=>{if(list.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&n.matches(FIELD_OVERLAYS))))syncFieldFrame();}).observe(document.body,{childList:true});
     addEventListener('resize',syncFieldFrame);syncFieldFrame();

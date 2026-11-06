@@ -1855,3 +1855,15 @@
     .effect-narration.ultimate strong { word-break:keep-all; }
     .spell-target-ring.ult { border-width:4px; animation-duration:.9s; }
     .spell-target-ring.ult::after { font-size:12px; max-width:190px; }
+
+    /* 카드 이동 연출 (2026-11-07)
+       효과로 치워지는 카드가 그냥 사라지면 "마법 때문에 움직였다"는 인지가 안 된다.
+       목적지(묘지/덱/손패) 표식을 필드 안에 띄우고, 카드 모양이 그쪽으로 날아가 꽂힌다. */
+    .card-depart { position:fixed; z-index:34; pointer-events:none; border-radius:9px; border:2px solid var(--cd-color,#cfa6ff); background:linear-gradient(160deg,#241a33,#120d1d); box-shadow:0 10px 26px #000b,0 0 20px var(--cd-color,#cfa6ff); overflow:hidden; }
+    .card-depart img { display:block; width:100%; height:100%; object-fit:cover; opacity:.92; }
+    .card-depart .cd-art { display:grid; place-items:center; width:100%; height:100%; font-size:28px; }
+    .card-depart-dest { position:fixed; z-index:34; pointer-events:none; display:grid; place-items:center; gap:2px; padding:7px 11px; border:2px solid var(--cd-color,#cfa6ff); border-radius:10px; background:#140e20f2; box-shadow:0 0 22px var(--cd-color,#cfa6ff); animation:cd-dest .95s ease-out both; }
+    .card-depart-dest b { color:#fff; font-size:12px; font-weight:950; letter-spacing:.04em; white-space:nowrap; }
+    .card-depart-dest small { color:var(--cd-color,#cfa6ff); font-size:9px; font-weight:900; letter-spacing:.16em; }
+    @keyframes cd-dest { 0%{opacity:0;transform:scale(.7)} 25%{opacity:1;transform:scale(1.06)} 70%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(.97)} }
+    @media(prefers-reduced-motion:reduce){ .card-depart-dest { animation-duration:.3s; } }
