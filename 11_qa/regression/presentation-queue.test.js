@@ -223,3 +223,16 @@ test('선택 연출이 대기열에 있으면 재생 중인 연출을 끊지 않
   q.advance(1500);
   assert.ok(onScreen.has('choice'), '마법이 끝난 뒤 선택 연출이 올라온다');
 });
+
+test('연출이 아직 끝나지 않았으면 미뤄둔 교전이 그대로 재개되면 안 된다', () => {
+  /* fieldAttack 게이트는 연출이 점유 중일 때 교전을 미룬다.
+     그런데 재시도 시점에 점유가 아직 안 풀렸을 수 있다 — 6초짜리 최후의 저항이나
+     유저 입력을 기다리는 각성 선택창은 160ms 뒤에도 그대로 떠 있다.
+     재시도가 점유를 다시 확인하지 않으면 연출 위로 교전이 겹친다. */
+  const gate = html.slice(html.indexOf('fieldAttack=function(...args)'), html.indexOf('const selectCardBeforeComebackRush'));
+  const retry = gate.slice(gate.indexOf('setTimeout(()=>{'), gate.indexOf('},wait)'));
+  assert.ok(
+    retry.includes('fxBusy()') || retry.includes('fxAwaitingChoice()'),
+    '재시도 시점에 연출 점유를 다시 확인해야 한다 (고정 대기 후 무조건 공격 금지)'
+  );
+});
