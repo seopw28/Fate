@@ -264,7 +264,7 @@ test('궁극기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다
 });
 
 test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 0/1 사용자를 배치한다', () => {
-  assert.ok(html.includes("if(fieldCount>=FIELD_CARD_LIMIT)return '내 전장 6장 · 궁극기 사용 불가'"));
+  assert.ok(!html.includes("if(fieldCount>=FIELD_CARD_LIMIT)return '내 전장 6장 · 궁극기 사용 불가'"));
   assert.ok(html.includes("if(fieldCount<1)return '제물로 삼을 아군 챔프 필요'"));
   assert.ok(html.includes(".at(-1),firstUse=!firstUltimateSpec"));
   assert.ok(html.includes("summonBattleToken(spec.name,0,1,spec.element,'ultimate-spent')"));
@@ -279,13 +279,15 @@ test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 
   assert.ok(html.includes("inset:auto auto auto 50%;top:-11px;width:auto;height:auto"), '전역 도발 배지는 공격 완료 오버레이의 inset을 초기화해야 한다');
 });
 
-test('궁극기 소진 0/1 카드가 죽으면 중앙 확대·분할 소멸 연출을 한 번 재생한다', () => {
+test('첫 궁극기 소진 0/1 카드만 죽을 때 복수의 중앙 확대·분할 소멸 연출을 한 번 재생한다', () => {
   assert.ok(html.includes('function showUltimateSpentDeath(unit)'));
-  assert.ok(html.includes("target.dataset.ultimateSpent)showUltimateSpentDeath(target)"));
+  assert.ok(html.includes("target.dataset.ultimateSpent==='first')showUltimateSpentDeath(target)"));
+  assert.ok(html.includes("unit.dataset.ultimateSpent!=='first'"));
   assert.ok(html.includes("unit.dataset.ultimateDeathFx==='true'"));
   assert.ok(html.includes('spent-death-half left'));
   assert.ok(html.includes('spent-death-half right'));
-  assert.ok(html.includes('소진자의 죽음이 복수를 부릅니다'));
+  assert.ok(html.includes('최초 소진자의 죽음이 단 한 번의 복수를 부릅니다'));
+  assert.ok(html.includes('performance.now()+4050'));
   assert.ok(html.includes('@keyframes spent-half-left'));
   assert.ok(html.includes('@keyframes spent-half-right'));
 });
@@ -306,6 +308,10 @@ test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복�
   assert.ok(html.includes('function resolveAvengerArrivalDamage(partner)'));
   assert.ok(html.includes('function showAvengerLandingImpact(unit,color)'));
   assert.ok(html.includes('showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral)'));
+  assert.ok(html.includes('.unit[data-effect="ultimate-avenger"]'), '복수자 카드만 전용 테두리와 오라를 사용해야 한다');
+  assert.ok(html.includes('.arena .unit[data-effect="ultimate-avenger"]>h4'), '복수자 이름은 전용 왕관형 명판을 사용해야 한다');
+  assert.ok(html.includes('@keyframes avenger-nameplate-forge'));
+  assert.ok(html.includes('@keyframes avenger-nameplate-sweep'));
   assert.ok(html.includes("wave.className='avenger-landing-impact'"));
   assert.ok(html.includes("arena?.animate([{transform:'none'},{transform:'translateY(13px) scale(.985)'"));
   assert.ok(html.includes("damageUnit(target,5,partner.el)"));
@@ -321,11 +327,11 @@ test('궁극기: 땅 궁극기는 회복이 아니라 절대방어(+강한 카�
   assert.ok(html.includes("absoluteDefense=false;turnNumber++;"), 'Absolute defense must expire when the next player turn starts');
 });
 
-test('궁극기: 화염은 상대 마무리 조건이 아니라 내 열세에서 열린다', () => {
-  assert.ok(html.includes("conditions={fire:'내 영웅 체력 '"), 'Fire ultimate UI must describe the player health comeback condition');
-  assert.ok(html.includes("if(spec.element==='fire')return playerHp<=Math.round(HERO_MAX_HP*.75)"), 'Fire ultimate must unlock from low player health');
-  const playerCondition = html.match(/function ultimateCondition\(spec\)\{[^}]+\}/)?.[0] || '';
-  assert.ok(!playerCondition.includes("enemyHp<="), 'Player fire ultimate must never depend on lowering the enemy hero first');
+test('궁극기: 속성별 전장·체력·성격 조합 조건 없이 역전 수단으로 사용할 수 있다', () => {
+  assert.ok(html.includes("condition:'추가 조건 없음'"));
+  assert.ok(html.includes('function ultimateCondition(){return true;}'));
+  assert.ok(html.includes('function enemyUltimateCondition(){return true;}'));
+  assert.ok(!html.includes("return new Set(allies.map(getElement)).size>=3"));
 });
 
 test('손패: 사용 가능 여부 우선, 같은 등급 안에서는 가치(비용>공격력>체력) 높은 카드가 위', () => {

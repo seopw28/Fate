@@ -56,7 +56,7 @@ test('initial battle hand is generated from validated card data', () => {
 });
 
 test('basic deck and opening hand follow the PRD composition', () => {
-  assert.ok(html.includes('BASIC_CHAMPION_COUNT=45,BASIC_SPELL_COUNT=9,BASIC_TRAP_COUNT=6,OPENING_HAND_SIZE=7'), 'Basic deck must be 45 champions, 9 spells, 6 traps with a seven-card opening hand');
+  assert.ok(html.includes('BASIC_CHAMPION_COUNT=45,BASIC_SPELL_COUNT=9,BASIC_TRAP_COUNT=6,OPENING_HAND_SIZE=6'), 'Basic deck must be 45 champions, 9 spells, 6 traps with a six-card opening hand');
   assert.ok(html.includes("fill('spell',BASIC_SPELL_COUNT,FEATURED_REVERSAL_IDS)||!fill('trap',BASIC_TRAP_COUNT)||!fill('champion',BASIC_CHAMPION_COUNT)"), 'Basic deck builder must enforce all three card counts');
   assert.ok(html.includes("const FEATURED_REVERSAL_IDS=['reversal.judgment','reversal.bulwark','reversal.giant-hunt','reversal.weight-toll','reversal.life-siphon','reversal.insight']"), 'Basic and demo decks must feature all six reversal spells');
   assert.ok(html.includes('역전 체험덱 자동편성'), 'Deck editor must expose the featured reversal deck preset');
