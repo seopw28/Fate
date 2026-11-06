@@ -164,6 +164,17 @@ test('덱은 같은 성격 오라 카드를 최대 30장까지만 허용한다',
   assert.ok(html.includes('같은 성격 오라는 최대 30장입니다.'), 'Deck editor must disclose the aura limit');
 });
 
+test('덱 편집은 큰 수량 버튼과 양방향 드래그를 제공한다', () => {
+  for (const token of [
+    'class="deck-row-actions"',
+    '덱에서 1장 제거',
+    "dragged={index:Number(node.dataset.index),from:node.classList.contains('deck-row')?'deck':'owned'}",
+    "deckList.addEventListener('drop'",
+    "ownedGrid.addEventListener('drop'",
+    '.deck-list{min-height:380px;max-height:460px}'
+  ]) assert.ok(html.includes(token), `Missing deck editing affordance: ${token}`);
+});
+
 test('self replication stays conditional and linear', () => {
   for (const token of [
     "data-effect=\"self-replicate\"",
