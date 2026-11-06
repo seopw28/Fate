@@ -314,18 +314,19 @@ test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복�
   assert.ok(html.includes('function showAvengerLandingImpact(unit,color)'));
   assert.ok(html.includes('showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral)'));
   assert.ok(html.includes('.unit[data-effect="ultimate-avenger"]'), '복수자 카드만 전용 테두리와 오라를 사용해야 한다');
-  assert.ok(html.includes('.arena .unit[data-effect="ultimate-avenger"]>h4'), '복수자 이름은 전용 왕관형 명판을 사용해야 한다');
+  assert.ok(html.includes('.arena .unit[data-effect="ultimate-avenger"]>h4'), '복수자도 기존 카드 이름 영역을 유지해야 한다');
   assert.ok(html.includes('function decorateAvengerUnit(unit)'));
   assert.ok(html.includes("crown.className='avenger-crown-vfx'"));
   assert.ok(html.includes("decorateAvengerUnit(unit);showAvengerArrival"));
-  assert.ok(html.includes('crown-body') && html.includes('crown-gem') && html.includes('crown-spark'));
-  assert.ok(html.includes('@keyframes avenger-nameplate-forge'));
-  assert.ok(html.includes('@keyframes avenger-nameplate-sweep'));
+  assert.ok(html.includes('assets/ui/avenger-crown-v1.webp'), '복수자는 투명 배경 왕관 이미지 자산을 사용해야 한다');
+  assert.ok(html.includes('.avenger-crown-vfx{position:absolute;z-index:13;left:50%;top:-80px'), '왕관은 카드 프레임 위로 돌출되어야 한다');
+  assert.ok(html.includes('.summon-zone:has(.unit[data-effect="ultimate-avenger"]) { overflow:visible; }'), '돌출된 왕관이 내 전장 슬롯에 잘리면 안 된다');
+  assert.equal(html.includes('crown-body'), false, 'CSS 도형 왕관을 다시 사용하면 안 된다');
   assert.ok(html.includes("wave.className='avenger-landing-impact'"));
   assert.ok(html.includes("arena?.animate([{transform:'none'},{transform:'translateY(13px) scale(.985)'"));
   assert.ok(html.includes("damageUnit(target,5,partner.el)"));
   assert.ok(html.includes('setTimeout(()=>resolveAvengerArrivalDamage(partner),3050)'));
-  assert.ok(html.includes("if(side==='player')queueFirstUltimateAvenger(0)"));
+  assert.ok(html.includes("if(side==='player')queueFirstUltimateAvenger(0);else queueEnemyUltimateAvenger(0)"));
 });
 
 test('궁극기: 땅 궁극기는 회복이 아니라 절대방어(+강한 카드는 부활)다', () => {
