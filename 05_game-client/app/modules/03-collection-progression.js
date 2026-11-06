@@ -1,0 +1,392 @@
+    /* ===== 컬렉션 3개 도메인: 덱 편집 / 도감 / 상점 ===== */
+    /* -- 덱 편집: 내 덱을 오라·비용·희귀도별로 나눠 본다 -- */
+    var deckInclude='all',deckGroupBy='element';
+    const ELEMENT_COLOR={fire:'#ff6a4a',water:'#4fb8ff',wind:'#5fd38a',neutral:'#cfd8e6',earth:'#d9a35b',ice:'#4fb8ff',thunder:'#cfd8e6'};/* 성격 오라 색과 같게 */
+    const DECK_GROUPS={
+      element:{label:'성격별',keys:['fire','water','wood','metal','earth'],of:i=>collectionCards[i][0],title:k=>elementLabel[k]},
+      cost:{label:'비용별',keys:['low','mid','high','top'],of:i=>{const c=Number(collectionCards[i][3]);return c<=2?'low':c<=4?'mid':c<=6?'high':'top';},title:k=>({low:'비용 1~2',mid:'비용 3~4',high:'비용 5~6',top:'비용 7 이상'})[k]},
+      rarity:{label:'희귀도별',keys:['legendary','rare','common'],of:i=>rarityByCard[i],title:k=>rarityLabel[k]}
+    };
+    function setDeckInclude(key){deckInclude=key;renderDeckBuilder();}
+    function setDeckGroup(key){deckGroupBy=key;renderDeckBuilder();}
+    function deckPanelMarkup(){
+      const kinds=[...new Set(draftDeck)],total=draftDeck.length,group=DECK_GROUPS[deckGroupBy];
+      const elementCounts=Object.keys(ELEMENT_COLOR).map(el=>({el,n:draftDeck.filter(i=>collectionCards[i][0]===el).length}));
+      const curve=[1,2,3,4,5,6,7,8].map(c=>draftDeck.filter(i=>{const cost=Number(collectionCards[i][3]);return c===8?cost>=8:cost===c;}).length),curveMax=Math.max(1,...curve);
+      const bar=total?elementCounts.filter(e=>e.n).map(e=>'<i style="flex:'+e.n+';background:'+ELEMENT_COLOR[e.el]+'" title="'+elementLabel[e.el]+' '+e.n+'장"></i>').join(''):'';
+      const legend=elementCounts.filter(e=>e.n).map(e=>'<span><i style="background:'+ELEMENT_COLOR[e.el]+'"></i>'+elementLabel[e.el]+' <b>'+e.n+'</b></span>').join('');
+      const curveHtml=curve.map((n,k)=>'<div title="비용 '+(k+1)+(k===7?'+':'')+' · '+n+'장"><b>'+(n||'')+'</b><i style="height:'+Math.round(n/curveMax*100)+'%"></i><small>'+(k===7?'8+':k+1)+'</small></div>').join('');
+      const toggle='<div class="deck-group-toggle">'+Object.entries(DECK_GROUPS).map(([key,g])=>'<button class="'+(deckGroupBy===key?'active':'')+'" onclick="setDeckGroup(\''+key+'\')">'+g.label+'</button>').join('')+'</div>';
+      const rowHtml=index=>{const card=collectionCards[index],count=countInDraft(index),maxCopies=Math.min(DECK_COPY_LIMIT,collectionState.owned[index]),canAdd=count<maxCopies&&total<60&&canAddAuraToDeck(draftDeck,index)&&(!collectionIsSpell[index]||spellCountIn(draftDeck)<SPELL_DECK_LIMIT);return '<div class="deck-row" data-index="'+index+'" draggable="true" title="보유 카드 영역으로 드래그해 제거"><img src="'+card[1]+'" alt=""><span>'+card[2]+'<small>'+elementLabel[card[0]]+' · 비용 '+card[3]+' · '+count+'장</small></span><div class="deck-row-actions"><button type="button" onclick="removeFromDraft('+index+')" aria-label="'+card[2]+' 덱에서 1장 제거">−</button><button type="button" onclick="addToDraft('+index+')" aria-label="'+card[2]+' 덱에 1장 추가" '+(canAdd?'':'disabled')+'>＋</button></div></div>';};
+      const sections=group.keys.map(key=>{const list=kinds.filter(i=>group.of(i)===key).sort((a,b)=>Number(collectionCards[a][3])-Number(collectionCards[b][3])||collectionCards[a][2].localeCompare(collectionCards[b][2],'ko'));if(!list.length)return '';const copies=list.reduce((sum,i)=>sum+countInDraft(i),0);return '<div class="deck-group"><div class="deck-group-head"><span>'+group.title(key)+'</span><b>'+copies+'장</b></div>'+list.map(rowHtml).join('')+'</div>';}).join('');
+      return '<div class="deck-summary"><span>카드 종류 <b>'+kinds.length+'</b></span><span>마법·함정 <b>'+spellCountIn(draftDeck)+' / '+SPELL_DECK_LIMIT+'</b></span><span>성격 <b>'+elementCounts.filter(e=>e.n).length+'</b></span></div>'+(total?'<div class="deck-comp"><div class="deck-bar">'+bar+'</div><div class="deck-legend">'+legend+'</div><div class="deck-curve-label">비용 곡선</div><div class="deck-curve">'+curveHtml+'</div></div>':'')+toggle+(sections||'<div class="gacha-empty">왼쪽 카드의 ＋ 버튼을 누르거나 이곳으로 드래그하세요.</div>');
+    }
+
+    /* -- 도감: 전체 카드 수집 현황 (캐릭터는 보유, 마법/함정은 전투에서 발견하면 등록) -- */
+    const CODEX_SEEN_KEY='fate.codex.v1';
+    var codexSeen=(()=>{try{return new Set(JSON.parse(localStorage.getItem(CODEX_SEEN_KEY)||'[]'));}catch(e){return new Set();}})(),codexType='all',codexStatus='all',codexRarity='all',codexSelected=null;
+    const CODEX_TYPE_LABEL={champion:'캐릭터',spell:'마법',trap:'함정'},CODEX_GLYPH={spell:'✦',trap:'⛨'};
+    function markCodexSeen(cardId){if(codexSeen.has(cardId))return;codexSeen.add(cardId);try{localStorage.setItem(CODEX_SEEN_KEY,JSON.stringify([...codexSeen]));}catch(e){}}
+    function codexEntries(){
+      const hasArt=asset=>/\.(png|webp|jpe?g|avif)$/i.test(asset||''),live=PrimalCardSet.cards.filter(c=>c.collectible!==false&&c.releaseState!=='prototype');
+      const champions=collectionCardDefs.map((def,i)=>({def,index:i,type:def.cardType,collected:collectionState.owned[i]>0||codexSeen.has(def.cardId),owned:collectionState.owned[i],art:hasArt(def.assetId)?'assets/'+def.assetId:''}));
+      const others=live.filter(c=>c.cardType!=='champion'&&!COLLECTION_CARD_IDS.includes(c.cardId)).sort((a,b)=>(a.cardType===b.cardType?0:a.cardType==='spell'?-1:1)).map(def=>({def,type:def.cardType,collected:codexSeen.has(def.cardId),owned:0,art:hasArt(def.assetId)?'assets/'+def.assetId:''}));
+      return [...champions,...others].map((entry,i)=>({...entry,no:i+1}));
+    }
+    function setCodexFilter(group,value){if(group==='type')codexType=value;if(group==='status')codexStatus=value;if(group==='rarity')codexRarity=value;renderCodex();}
+    function selectCodex(no){codexSelected=no;renderCodex();}
+    function codexArtMarkup(entry,large){return entry.art?'<img src="'+entry.art+'" alt="'+(entry.collected?entry.def.displayName:'')+'" class="'+(large?'creature-art':'')+'">':'<span class="codex-glyph">'+(CODEX_GLYPH[entry.type]||'✦')+'</span>';}
+    function highestEnhancementLevel(index){if(index===undefined||index===null||collectionIsSpell[index])return 0;const entry=enhancementEntry(index);for(let level=4;level>=1;level--)if(entry.levels[level]?.length)return level;return 0;}
+    function openEnhancementFor(index){switchCollectionView('enhance');enhanceLevel=Math.min(3,highestEnhancementLevel(index));enhanceSelected=index;renderEnhancement();}
+    function renderCodex(){
+      const view=document.querySelector('#codex-view');if(!view)return;
+      const all=codexEntries(),count=list=>list.filter(e=>e.collected).length;
+      const byType=type=>all.filter(e=>e.type===type),percent=Math.round(count(all)/all.length*100);
+      const characterEntries=all.filter(e=>e.type==='champion'),completed=characterEntries.filter(e=>highestEnhancementLevel(e.index)===4).length;
+      document.querySelector('#codex-summary').innerHTML='<div class="codex-total"><div class="codex-total-num"><b>'+count(all)+'</b><span> / '+all.length+'장 수집</span></div><div class="codex-progress" role="progressbar" aria-valuenow="'+percent+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+percent+'%"></i></div></div><div class="codex-stat"><small>캐릭터 완결</small><b>'+completed+'<span> / '+characterEntries.length+'</span></b></div>'+['champion','spell','trap'].map(type=>'<div class="codex-stat type-'+type+'"><small>'+CODEX_TYPE_LABEL[type]+'</small><b>'+count(byType(type))+'<span> / '+byType(type).length+'</span></b></div>').join('')+['legendary','rare','common'].map(r=>{const list=all.filter(e=>e.def.rarity===r);return '<div class="codex-stat rarity-'+r+'"><small>'+rarityLabel[r]+'</small><b>'+count(list)+'<span> / '+list.length+'</span></b></div>';}).join('');
+      const seg=(id,group,current,items)=>{document.querySelector(id).innerHTML=items.map(([key,label])=>'<button class="'+(current===key?'active':'')+'" onclick="setCodexFilter(\''+group+'\',\''+key+'\')">'+label+'</button>').join('');};
+      seg('#codex-type','type',codexType,[['all','전체'],['champion','캐릭터'],['spell','마법'],['trap','함정']]);
+      seg('#codex-status','status',codexStatus,[['all','전체'],['got','수집'],['missing','미수집']]);
+      seg('#codex-rarity','rarity',codexRarity,[['all','모든 등급'],['legendary','전설'],['rare','희귀'],['common','일반']]);
+      const visible=all.filter(e=>(codexType==='all'||e.type===codexType)&&(codexStatus==='all'||(codexStatus==='got')===e.collected)&&(codexRarity==='all'||e.def.rarity===codexRarity));
+      document.querySelector('#codex-grid').innerHTML=visible.map(e=>{const d=e.def,level=e.type==='champion'?highestEnhancementLevel(e.index):0;return '<button class="codex-card type-'+e.type+' rarity-'+d.rarity+(e.collected?' got':' missing')+(codexSelected===e.no?' selected':'')+'" onclick="selectCodex('+e.no+')" aria-label="'+(e.collected?d.displayName:'미수집 카드')+'"><span class="codex-no">No.'+String(e.no).padStart(3,'0')+'</span><span class="codex-type">'+CODEX_TYPE_LABEL[e.type]+'</span><div class="codex-art">'+codexArtMarkup(e)+(e.collected?'':'<span class="codex-lock">?</span>')+'</div><b class="codex-name">'+(e.collected?d.displayName:'???')+'</b><small>'+(e.collected?rarityLabel[d.rarity]+(e.type==='champion'?' · '+elementLabel[d.aura]:''):'미수집')+'</small>'+(e.collected&&e.owned?'<span class="codex-own">×'+e.owned+'</span>':'')+(e.collected&&e.type==='champion'?'<span class="completion-chip '+(level===4?'done':'')+'">'+(level===4?'★ 완결':'강화 '+level+' / 4')+'</span>':'')+'</button>';}).join('')||'<div class="gacha-empty">조건에 맞는 카드가 없습니다.</div>';
+      const pick=all.find(e=>e.no===codexSelected)||visible[0]||all[0],d=pick.def,effect=runtimeEffectKey(d);
+      const completionLevel=pick.type==='champion'?highestEnhancementLevel(pick.index):0,completion=pick.collected&&pick.type==='champion'?'<div class="codex-completion"><b>'+(completionLevel===4?'★ 애정 캐릭터 완결':'애정 캐릭터 완결 '+completionLevel+' / 4')+'</b><span>'+(completionLevel===4?'최종 강화까지 완성했습니다.':'동일 카드를 모아 다음 강화 목표에 도전하세요.')+'</span><button onclick="openEnhancementFor('+pick.index+')">'+(completionLevel===4?'완결 카드 확인':'강화 목표 이어가기')+'</button></div>':'';
+      document.querySelector('#codex-detail').innerHTML='<div class="codex-detail-art type-'+pick.type+' rarity-'+d.rarity+(pick.collected?' got':' missing')+'">'+codexArtMarkup(pick,true)+(pick.collected?'':'<span class="codex-lock">?</span>')+'</div><div class="codex-detail-meta"><small>No.'+String(pick.no).padStart(3,'0')+' · '+CODEX_TYPE_LABEL[pick.type]+' · '+rarityLabel[d.rarity]+'</small><h3>'+(pick.collected?d.displayName:'???')+'</h3>'+(pick.collected?'<div class="codex-detail-stats"><span>비용 <b>'+d.cost+'</b></span>'+(pick.type==='champion'?'<span>⚔ <b>'+d.stats.attack+'</b></span><span>♥ <b>'+d.stats.health+'</b></span><span>'+elementLabel[d.aura]+'</span>':'')+'</div><p>'+ruleHtml(runtimeRulesText(effect,d))+'</p><div class="codex-detail-state got">'+(pick.type==='champion'?'✔ 보유 '+pick.owned+'장':'✔ 발견함')+'</div>'+completion:'<p>아직 수집하지 못한 카드입니다.</p><div class="codex-detail-state missing">'+(pick.type==='champion'?'상점에서 카드를 뽑거나 합성으로 획득할 수 있습니다.':'카드 뽑기로 획득할 수 있습니다.')+'</div>')+'</div>';
+    }
+    (function(){
+      const baseCreate=createRuntimeBattleCard;
+      createRuntimeBattleCard=function(cardId){const card=baseCreate(cardId),def=cardDefinitionById.get(cardId);if(def&&def.cardType!=='champion')markCodexSeen(cardId);return card;};
+      document.querySelectorAll('.hand .card[data-card-id]').forEach(card=>{const def=cardDefinitionById.get(card.dataset.cardId);if(def&&def.cardType!=='champion')markCodexSeen(def.cardId);});
+    })();
+
+    /* ===== 합성: 서로 다른 카드와 중복 카드를 자유롭게 섞어 다른 카드 생성 ===== */
+    const SYNTH_BASE_CHANCE=[0,10,18,25,31,36,40,43,46,48],SYNTH_MAX_CHANCE=48,SYNTH_MAX_MATERIALS=9;/* 사용자 확정(2026-11-05): 재료 2~9장(3×3 칸), 기본 확률 2장 18% … 9장 48%, 연속 실패 보정을 받아도 최종 48%를 넘지 않는다. 회귀 테스트(save-and-economy)가 이 값을 고정한다 */
+    var synthSlots=[],synthBusy=false,synthFilter='all',synthSort='default',synthDupOnly=false,synthLast=null,synthFailureStreak=0;
+    function synthReserved(){return 1;}/* 합성 대상 원본 1장은 항상 남긴다. */
+    function synthSpare(index){return Math.max(0,collectionState.owned[index]-1-synthSlots.filter(value=>value===index).length);}
+    function synthChance(count=synthSlots.length){return Math.min(SYNTH_MAX_CHANCE,(SYNTH_BASE_CHANCE[count]||0)+synthFailureStreak*5);}
+    function synthPick(index){if(synthBusy||synthSlots.length>=SYNTH_MAX_MATERIALS||synthSpare(index)<=0)return;synthSlots.push(index);synthLast=null;sfx('ui-select');renderSynthesis();}
+    function synthRemove(position){if(synthBusy)return;synthSlots.splice(position,1);renderSynthesis();}
+    function setSynthFilter(value){synthFilter=value;renderSynthesis();}
+    function renderSynthesis(){
+      const slotsEl=document.querySelector('#synth-slots');if(!slotsEl)return;
+      document.querySelector('.synth-altar').classList.toggle('busy',synthBusy);
+      slotsEl.innerHTML='<div class="synth-slots-head"><b>재료 '+synthSlots.length+' / '+SYNTH_MAX_MATERIALS+'</b><small>'+(synthSlots.length<2?'카드를 2장 이상 넣으면 합성할 수 있습니다':'칸을 누르면 재료에서 뺍니다')+'</small></div>'+Array.from({length:SYNTH_MAX_MATERIALS},(_,pos)=>{const index=synthSlots[pos];if(index===undefined)return '<div class="synth-slot vacant" aria-hidden="true"><span>'+(pos+1)+'</span></div>';const card=collectionCards[index],rarity=rarityByCard[index];return '<button class="synth-slot filled '+rarity+'" onclick="synthRemove('+pos+')" title="'+card[2]+' · 눌러서 빼기"><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>'+(pos+1)+'</small></button>';}).join('');/* 재료 칸은 항상 SYNTH_MAX_MATERIALS(10)칸 */
+      const ready=synthSlots.length>=2,chance=synthChance();
+      document.querySelector('#synth-odds').innerHTML=synthBusy?'<div class="synth-odds-hint">합성 결과를 확인하고 있습니다…</div>':ready?'<div class="synth-odd rare"><small>성공 확률</small><b>'+chance+'%</b></div>'+(()=>{const g=synthGuaranteeRarity(synthSlots);return '<div class="synth-odd '+g+'" title="성공하면 재료 중 가장 높은 등급 이상의 카드가 나옵니다"><small>성공 시 최소 등급</small><b>'+rarityLabel[g]+'</b></div>';})()+'<div class="synth-odds-hint">재료 '+synthSlots.length+'장 · 연속 실패 보정 +'+(synthFailureStreak*5)+'%p · 최종 상한 '+SYNTH_MAX_CHANCE+'%</div>':'<div class="synth-odds-hint">재료 2~'+SYNTH_MAX_MATERIALS+'장에 따라 성공 확률이 '+SYNTH_BASE_CHANCE[2]+'%에서 '+SYNTH_BASE_CHANCE[SYNTH_MAX_MATERIALS]+'%까지 높아집니다.</div>';
+      const go=document.querySelector('#synth-go');go.disabled=!ready||synthBusy;go.textContent=synthBusy?'합성 중…':ready?'⚗ '+chance+'% 확률로 합성':'카드를 2장 이상 골라주세요';
+      const result=document.querySelector('#synth-result');
+      if(synthBusy)result.innerHTML='<div class="synth-card unknown synth-wait"><span>⚗</span><small>합성 중</small></div>';
+      else if(synthLast){const card=collectionCards[synthLast.index];result.innerHTML=synthLast.success?'<article class="synth-card synth-pop '+synthLast.rarity+'"><span class="new-badge">성공</span><img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+'</h4><small>'+rarityLabel[synthLast.rarity]+' 카드 소환</small></article>':'<div class="synth-card unknown"><span>×</span><small>합성 실패 · 다음 시도 +5%p</small></div>';}
+      else result.innerHTML='<div class="synth-card unknown"><span>?</span><small>합성 결과</small></div>';
+      const rarityOrder={common:0,rare:1,legendary:2},info=index=>{const owned=collectionState.owned[index],picked=synthSlots.filter(i=>i===index).length,free=Math.max(0,owned-1);return {index,owned,reserved:1,picked,free,left:free-picked};};
+      let list=collectionCards.map((_,index)=>info(index)).filter(c=>c.owned>1&&(synthFilter==='all'||rarityByCard[c.index]===synthFilter));
+      if(synthDupOnly)list=list.filter(c=>c.free>=2);
+      if(synthSort==='spare')list.sort((x,y)=>y.free-x.free||rarityOrder[rarityByCard[x.index]]-rarityOrder[rarityByCard[y.index]]);
+      const usable=list.filter(c=>c.free>0),blocked=list.filter(c=>c.free<=0),seg=[['all','전체'],['common','일반'],['rare','희귀'],['legendary','전설']];
+      document.querySelector('#synth-filter').innerHTML=seg.map(([key,label])=>'<button class="'+(synthFilter===key?'active':'')+'" onclick="setSynthFilter(\''+key+'\')">'+label+'</button>').join('');
+      document.querySelector('#synth-sort').innerHTML=[['default','기본 순'],['spare','여분 많은 순']].map(([key,label])=>'<button class="'+(synthSort===key?'active':'')+'" onclick="setSynthSort(\''+key+'\')">'+label+'</button>').join('')+'<button class="synth-dup '+(synthDupOnly?'active':'')+'" onclick="toggleSynthDup()" aria-pressed="'+synthDupOnly+'">여분 2장+만</button>';
+      const total=collectionCards.reduce((sum,_,i)=>sum+Math.max(0,collectionState.owned[i]-synthReserved(i)),0);
+      document.querySelector('#synth-count').textContent='합성 가능한 여분 '+total+'장';
+      const tile=c=>{const card=collectionCards[c.index],rarity=rarityByCard[c.index],isBlocked=c.free<=0,canAdd=!synthBusy&&synthSlots.length<SYNTH_MAX_MATERIALS&&c.left>0;
+        return '<div class="synth-pick '+rarity+(isBlocked?' locked':'')+(c.picked?' picked':'')+'">'+(c.picked?'<span class="synth-picked">선택 '+c.picked+'</span>':'')+'<button class="synth-pick-main" '+(canAdd?'':'disabled')+' onclick="synthPick('+c.index+')" aria-label="'+card[2]+' 재료로 추가"><span class="synth-spare">중복 '+c.left+'</span><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+'</small></button><div class="synth-have"><span>보유 <b>'+c.owned+'</b></span><span class="free on">보존 <b>1</b></span><span class="free '+(c.free>0?'on':'')+'">재료 <b>'+c.free+'</b></span></div><div class="synth-stepper"><button onclick="synthStep('+c.index+',-1)" '+(c.picked&&!synthBusy?'':'disabled')+' aria-label="하나 빼기">−</button><b>'+c.picked+'</b><button onclick="synthStep('+c.index+',1)" '+(canAdd?'':'disabled')+' aria-label="하나 더하기">＋</button><button class="max" onclick="synthStep('+c.index+','+SYNTH_MAX_MATERIALS+')" '+(canAdd&&c.left>=2?'':'disabled')+' title="최대 '+SYNTH_MAX_MATERIALS+'장 선택">MAX</button></div></div>';};
+      document.querySelector('#synth-grid').innerHTML=(usable.length?'<div class="synth-section">합성에 쓸 수 있는 카드 <b>'+usable.length+'</b></div>'+usable.map(tile).join(''):'')+(blocked.length?'<div class="synth-section blocked">덱에 편성된 카드 · 재료로 쓸 수 없음 <b>'+blocked.length+'</b></div>'+blocked.map(tile).join(''):'')||'<div class="gacha-empty">조건에 맞는 카드가 없습니다.</div>';
+    }
+    function setSynthSort(value){synthSort=value;renderSynthesis();}
+    function toggleSynthDup(){synthDupOnly=!synthDupOnly;renderSynthesis();}
+    function synthStep(index,delta){if(synthBusy)return;if(delta<0){const at=synthSlots.lastIndexOf(index);if(at>=0)synthSlots.splice(at,1);renderSynthesis();return;}let n=Math.min(delta,SYNTH_MAX_MATERIALS-synthSlots.length);while(n-->0&&synthSpare(index)>0)synthSlots.push(index);synthLast=null;sfx('ui-select');renderSynthesis();}
+    function synthAuto(){if(synthBusy)return;const order=collectionCards.map((_,i)=>i).filter(i=>collectionState.owned[i]>1).sort((x,y)=>collectionState.owned[y]-collectionState.owned[x]);synthSlots=[];for(const index of order){let count=Math.min(SYNTH_MAX_MATERIALS-synthSlots.length,collectionState.owned[index]-1);while(count-->0)synthSlots.push(index);if(synthSlots.length>=SYNTH_MAX_MATERIALS)break;}synthLast=null;sfx('ui-select');renderSynthesis();}
+    /* 합성 성공 시 최소 보장 등급 = 재료 중 가장 높은 등급 */
+    function synthGuaranteeRarity(slots){const rank={common:0,rare:1,legendary:2};return (slots||[]).map(i=>rarityByCard[i]).filter(Boolean).sort((a,b)=>rank[b]-rank[a])[0]||'common';}
+    function runSynthesis(){
+      if(synthBusy||synthSlots.length<2||synthSlots.length>SYNTH_MAX_MATERIALS)return;
+      const slots=[...synthSlots],count=slots.length,used=new Map();slots.forEach(index=>used.set(index,(used.get(index)||0)+1));if([...used].some(([index,amount])=>collectionState.owned[index]-1<amount)){synthSlots=[];renderSynthesis();return;}
+      const success=economyRandom.next()*100<synthChance(count),rarityRank={common:0,rare:1,legendary:2},targetRarity=slots.map(index=>rarityByCard[index]).sort((a,b)=>rarityRank[b]-rarityRank[a])[0];
+      used.forEach((amount,index)=>collectionState.owned[index]-=amount);if(success){const materialIds=new Set(slots),preferred=collectionCards.map((_,i)=>i).filter(i=>rarityByCard[i]===targetRarity&&!materialIds.has(i)),fallback=collectionCards.map((_,i)=>i).filter(i=>!materialIds.has(i)&&rarityRank[rarityByCard[i]]>=rarityRank[targetRarity]),pool=preferred.length?preferred:fallback,result=pool[Math.floor(economyRandom.next()*pool.length)];collectionState.owned[result]++;synthLast={index:result,success:true,rarity:rarityByCard[result]};synthFailureStreak=0;}else{synthLast={index:slots[0],success:false,rarity:targetRarity};synthFailureStreak++;}persistCollection();
+      const outcome=synthLast;synthBusy=true;synthSlots=[];synthLast=null;renderSynthesis();playSynthStage(slots);
+      [196,262,330,392,524,660,784,1047].forEach((f,k)=>tone(f,.26,'triangle',.05,f*1.4,k*.17));
+      setTimeout(()=>{synthBusy=false;synthLast=outcome;if(outcome.success){tone(outcome.rarity==='legendary'?1040:820,.4,'triangle',.09);renderCollection();revealSynthStage(outcome.index,true);}else{renderCollection();revealSynthFail(slots,count);}},1900);
+    }
+
+    /* ===== 강화: 같은 단계의 같은 챔프 카드 3장 → 다음 단계 카드 1장 ===== */
+    const ENHANCE_MATERIAL_COUNT=3,ENHANCE_RULES={0:{chance:50,label:'0차 → 1차',attackMax:1,healthMax:0},1:{chance:45,label:'1차 → 2차',attackMax:2,healthMax:0},2:{chance:40,label:'2차 → 3차',attackMax:2,healthMax:1},3:{chance:35,label:'3차 → 4차',attackMax:2,healthMax:2}};
+    var enhanceLevel=0,enhanceSelected=null,enhanceLast=null;
+    function enhancementEntry(index){const id=COLLECTION_CARD_IDS[index],store=collectionState.cardEnhancements||(collectionState.cardEnhancements={}),entry=store[id]||(store[id]={levels:[[],[],[],[],[]]});if(!Array.isArray(entry.levels)){entry.levels=[[],Array.isArray(entry.level1)?entry.level1:[],Array.isArray(entry.level2)?entry.level2:[],[],[]];delete entry.level1;delete entry.level2;}while(entry.levels.length<5)entry.levels.push([]);for(let level=1;level<=4;level++)entry.levels[level]=Array.isArray(entry.levels[level])?entry.levels[level]:[];return entry;}
+    function enhancementCount(index,level=enhanceLevel){const entry=enhancementEntry(index);return level===0?Math.max(0,collectionState.owned[index]-entry.levels.slice(1).reduce((sum,cards)=>sum+cards.length,0)):entry.levels[level].length;}
+    function rollEnhanceBonus(max){if(max<=0)return 0;const roll=economyRandom.next()*100;if(max===1)return roll<60?0:1;return roll<60?0:roll<90?1:2;}
+    function animateEnhancementEquip(index,from){const src=collectionCards[index]?.[1];if(!from||!from.width||!src||matchMedia('(prefers-reduced-motion: reduce)').matches)return;requestAnimationFrame(()=>{const slot=document.querySelector('#enhance-result .synth-card')||document.querySelector('#enhance-result'),to=slot?.getBoundingClientRect();if(!slot||!to?.width)return;const ghost=document.createElement('img');ghost.className='enhance-equip-fly';ghost.src=src;Object.assign(ghost.style,{left:from.left+'px',top:from.top+'px',width:from.width+'px',height:from.height+'px'});document.body.appendChild(ghost);const scale=Math.min(to.width/from.width,to.height/from.height),dx=to.left+(to.width-from.width*scale)/2-from.left,dy=to.top+(to.height-from.height*scale)/2-from.top;slot.style.visibility='hidden';ghost.animate([{transform:'translate(0,0) scale(1) rotate(0)',filter:'brightness(1)',opacity:.75},{transform:'translate('+(dx*.52)+'px,'+(dy*.45-70)+'px) scale('+((1+scale)*.56)+') rotate(-8deg)',filter:'brightness(1.65)',opacity:1,offset:.55},{transform:'translate('+dx+'px,'+dy+'px) scale('+scale+') rotate(0)',filter:'brightness(2.2)',opacity:1}],{duration:620,easing:'cubic-bezier(.2,.78,.18,1)',fill:'forwards'}).onfinish=()=>{ghost.remove();slot.style.visibility='';slot.classList.remove('enh-equip-land');void slot.offsetWidth;slot.classList.add('enh-equip-land');sfx('card-land','neutral',4);setTimeout(()=>slot.classList.remove('enh-equip-land'),850);};});}
+    function selectEnhancement(index,source){const fromNode=source?.querySelector?.('img')||source,from=fromNode?.getBoundingClientRect?.();enhanceSelected=index;enhanceLast=null;renderEnhancement();sfx('ui-select');animateEnhancementEquip(index,from);}
+    function setEnhanceLevel(level){enhanceLevel=level;enhanceSelected=null;enhanceLast=null;renderEnhancement();}
+    /* 대화 게이트: 이 캐릭터와 대화하는 페이지(characterId 기준)로 보낼 자리. 지금은 목업이라 안내만 잠깐 보여 준다 */
+    function withAndParticle(name){const last=String(name).trim().slice(-1),code=last.charCodeAt(0)-0xAC00;return name+(code>=0&&code<11172&&code%28!==0?'과':'와');}/* 받침 있으면 '과', 없으면 '와' */
+    function openWorkGate(button){if(!button||button.classList.contains('notice'))return;button.classList.add('notice');button.textContent='준비 중 · 대화 페이지는 아직 연결되지 않았습니다';clearTimeout(button._noticeTimer);button._noticeTimer=setTimeout(()=>{button.classList.remove('notice');button.textContent=button.dataset.label||'';},1800);}
+    function renderEnhancement(){
+      const grid=document.querySelector('#enhance-grid');if(!grid)return;const rule=ENHANCE_RULES[enhanceLevel],eligible=collectionCards.map((_,index)=>index).filter(index=>!collectionIsSpell[index]&&enhancementCount(index)>0);
+      document.querySelector('#enhance-level').innerHTML=[0,1,2,3].map(level=>'<button class="'+(enhanceLevel===level?'active':'')+'" onclick="setEnhanceLevel('+level+')">'+level+'차 → '+(level+1)+'차</button>').join('');
+      document.querySelector('#enhance-count').textContent='동일 카드 '+ENHANCE_MATERIAL_COUNT+'장 필요 · 성공률 '+rule.chance+'%';
+      grid.innerHTML=eligible.map(index=>{const card=collectionCards[index],count=enhancementCount(index),rarity=rarityByCard[index];return '<button class="synth-pick '+rarity+(enhanceSelected===index?' picked':'')+'" onclick="selectEnhancement('+index+',this)"><span class="synth-spare">'+enhanceLevel+'차 '+count+'장</span><img src="'+card[1]+'" alt="'+card[2]+'"><b>'+card[2]+'</b><small>비용 '+card[3]+' · ⚔ '+card[4]+' · ♥ '+card[5]+'</small></button>';}).join('')||'<div class="gacha-empty">이 단계에서 강화할 수 있는 챔프 카드가 없습니다.</div>';
+      const ready=enhanceSelected!==null&&enhancementCount(enhanceSelected)>=ENHANCE_MATERIAL_COUNT,go=document.querySelector('#enhance-go');go.disabled=!ready;if(ready)go.innerHTML='<span class="eg-main">✦ 강화하기</span><span class="eg-sub">성공 '+rule.chance+'% · 재료 '+ENHANCE_MATERIAL_COUNT+'장 · '+rule.label+'</span>';else go.textContent='같은 단계 카드 '+ENHANCE_MATERIAL_COUNT+'장을 고르세요';document.querySelector('#enhance-view .enhance-acquire')?.toggleAttribute('hidden',ready);/* 재료가 충분하면 '부족한 카드 얻기'는 숨긴다 */{/* 고른 카드의 원작으로 가는 게이트 버튼 (목업: 링크는 아직 동작하지 않는다) */const gate=document.querySelector('#enhance-gate'),def=enhanceSelected!==null?collectionCardDefs[enhanceSelected]:null;if(gate){gate.hidden=!def;if(def){gate.dataset.characterId=def.acquisition?.characterId||def.cardId;gate.dataset.label=withAndParticle(collectionCards[enhanceSelected][2])+' 대화하러 가기 ↗';if(!gate.classList.contains('notice'))gate.textContent=gate.dataset.label;}}}
+      const attack='공격력 +0~'+rule.attackMax,health=rule.healthMax?' · 체력 +0~'+rule.healthMax:'',bonusOdds=rule.attackMax===1&&rule.healthMax===0?'+0 60% · +1 40%':'+0 60% · +1 30% · +2 10%';document.querySelector('#enhance-odds').innerHTML='<div class="enh-outcome ok"><small>성공 시</small><b>'+attack.replace('공격력 ','⚔ ')+health.replace(' · 체력 ',' · ♥ ')+'</b><span>'+bonusOdds+'</span></div><div class="enh-outcome ng"><small>실패 시</small><b>'+(ENHANCE_MATERIAL_COUNT-1)+'장 소멸</b><span>'+enhanceLevel+'차 카드 1장 유지</span></div>';/* 성공/실패 결과를 두 칸으로. 성공 확률은 슬롯 카드의 원형 게이지에 표시 */
+      const result=document.querySelector('#enhance-result');if(enhanceLast){const card=collectionCards[enhanceLast.index],bonus='⚔ +'+enhanceLast.attack+' · ♥ +'+enhanceLast.health;result.innerHTML='<article class="synth-card '+(enhanceLast.success?'synth-pop ':'')+rarityByCard[enhanceLast.index]+'"><span class="new-badge">'+(enhanceLast.success?'성공':'실패')+'</span><img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+' · '+enhanceLast.level+'차</h4><small>'+(enhanceLast.success?bonus:(ENHANCE_MATERIAL_COUNT-1)+'장 소멸 · 단계 유지')+'</small></article>';}else result.innerHTML='<div class="synth-card unknown"><span>✦</span><small>'+rule.label+' 결과</small></div>';
+    }
+    function runEnhancement(){
+      const index=enhanceSelected,level=enhanceLevel,rule=ENHANCE_RULES[level];if(index===null||enhancementCount(index,level)<ENHANCE_MATERIAL_COUNT)return;const entry=enhancementEntry(index),success=economyRandom.next()*100<rule.chance,materials=level===0?Array(ENHANCE_MATERIAL_COUNT).fill({attack:0,health:0}):entry.levels[level].splice(0,ENHANCE_MATERIAL_COUNT),survivor=materials[0]||{attack:0,health:0};collectionState.owned[index]-=ENHANCE_MATERIAL_COUNT-1;
+      if(success){const upgraded={attack:rollEnhanceBonus(rule.attackMax),health:rollEnhanceBonus(rule.healthMax)};entry.levels[level+1].push(upgraded);enhanceLast={index,level:level+1,success,attack:upgraded.attack,health:upgraded.health};}else{if(level>0)entry.levels[level].push(survivor);enhanceLast={index,level,success,attack:survivor.attack,health:survivor.health};}
+      persistCollection();enhanceSelected=enhancementCount(index,level)>=ENHANCE_MATERIAL_COUNT?index:null;renderCollection();
+    }
+
+    /* 합성 무대: 화면 중앙에서 큰 마법진이 돌고 재료 카드가 빨려 들어간 뒤, 결과 카드를 크게 보여준다 */
+    const SYNTH_STAGE_SVG='<svg class="synth-circle" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="sc-ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9c8ff"/><stop offset="1" stop-color="#ffd77f"/></linearGradient><radialGradient id="sc-core"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#e1c0ff"/><stop offset="1" stop-color="#8a4fd6" stop-opacity="0"/></radialGradient></defs><circle class="sc-halo" cx="100" cy="100" r="96"/><g class="sc-outer"><circle cx="100" cy="100" r="94" class="line"/><circle cx="100" cy="100" r="82" class="thin"/><g class="tick"><line x1="185" y1="100" x2="193" y2="100"/><line x1="187.5" y1="109.2" x2="192.5" y2="109.7"/><line x1="186.1" y1="118.3" x2="191" y2="119.3"/><line x1="183.7" y1="127.2" x2="188.4" y2="128.7"/><line x1="180.4" y1="135.8" x2="185" y2="137.8"/><line x1="173.6" y1="142.5" x2="180.5" y2="146.5"/><line x1="171.2" y1="151.7" x2="175.2" y2="154.7"/><line x1="165.4" y1="158.9" x2="169.1" y2="162.2"/><line x1="158.9" y1="165.4" x2="162.2" y2="169.1"/><line x1="151.7" y1="171.2" x2="154.7" y2="175.2"/><line x1="142.5" y1="173.6" x2="146.5" y2="180.5"/><line x1="135.8" y1="180.4" x2="137.8" y2="185"/><line x1="127.2" y1="183.7" x2="128.7" y2="188.4"/><line x1="118.3" y1="186.1" x2="119.3" y2="191"/><line x1="109.2" y1="187.5" x2="109.7" y2="192.5"/><line x1="100" y1="185" x2="100" y2="193"/><line x1="90.8" y1="187.5" x2="90.3" y2="192.5"/><line x1="81.7" y1="186.1" x2="80.7" y2="191"/><line x1="72.8" y1="183.7" x2="71.3" y2="188.4"/><line x1="64.2" y1="180.4" x2="62.2" y2="185"/><line x1="57.5" y1="173.6" x2="53.5" y2="180.5"/><line x1="48.3" y1="171.2" x2="45.3" y2="175.2"/><line x1="41.1" y1="165.4" x2="37.8" y2="169.1"/><line x1="34.6" y1="158.9" x2="30.9" y2="162.2"/><line x1="28.8" y1="151.7" x2="24.8" y2="154.7"/><line x1="26.4" y1="142.5" x2="19.5" y2="146.5"/><line x1="19.6" y1="135.8" x2="15" y2="137.8"/><line x1="16.3" y1="127.2" x2="11.6" y2="128.7"/><line x1="13.9" y1="118.3" x2="9" y2="119.3"/><line x1="12.5" y1="109.2" x2="7.5" y2="109.7"/><line x1="15" y1="100" x2="7" y2="100"/><line x1="12.5" y1="90.8" x2="7.5" y2="90.3"/><line x1="13.9" y1="81.7" x2="9" y2="80.7"/><line x1="16.3" y1="72.8" x2="11.6" y2="71.3"/><line x1="19.6" y1="64.2" x2="15" y2="62.2"/><line x1="26.4" y1="57.5" x2="19.5" y2="53.5"/><line x1="28.8" y1="48.3" x2="24.8" y2="45.3"/><line x1="34.6" y1="41.1" x2="30.9" y2="37.8"/><line x1="41.1" y1="34.6" x2="37.8" y2="30.9"/><line x1="48.3" y1="28.8" x2="45.3" y2="24.8"/><line x1="57.5" y1="26.4" x2="53.5" y2="19.5"/><line x1="64.2" y1="19.6" x2="62.2" y2="15"/><line x1="72.8" y1="16.3" x2="71.3" y2="11.6"/><line x1="81.7" y1="13.9" x2="80.7" y2="9"/><line x1="90.8" y1="12.5" x2="90.3" y2="7.5"/><line x1="100" y1="15" x2="100" y2="7"/><line x1="109.2" y1="12.5" x2="109.7" y2="7.5"/><line x1="118.3" y1="13.9" x2="119.3" y2="9"/><line x1="127.2" y1="16.3" x2="128.7" y2="11.6"/><line x1="135.8" y1="19.6" x2="137.8" y2="15"/><line x1="142.5" y1="26.4" x2="146.5" y2="19.5"/><line x1="151.7" y1="28.8" x2="154.7" y2="24.8"/><line x1="158.9" y1="34.6" x2="162.2" y2="30.9"/><line x1="165.4" y1="41.1" x2="169.1" y2="37.8"/><line x1="171.2" y1="48.3" x2="175.2" y2="45.3"/><line x1="173.6" y1="57.5" x2="180.5" y2="53.5"/><line x1="180.4" y1="64.2" x2="185" y2="62.2"/><line x1="183.7" y1="72.8" x2="188.4" y2="71.3"/><line x1="186.1" y1="81.7" x2="191" y2="80.7"/><line x1="187.5" y1="90.8" x2="192.5" y2="90.3"/></g></g><g class="sc-mid"><circle cx="100" cy="100" r="76" class="dash"/><g class="fill"><polygon points="181,100 171.5,91.2 171.5,108.8"/><polygon points="158,158 150.9,156.6 149.5,149.5 156.6,150.9"/><polygon points="100,181 108.8,171.5 91.2,171.5"/><polygon points="42,158 43.4,150.9 50.5,149.5 49.1,156.6"/><polygon points="19,100 28.5,108.8 28.5,91.2"/><polygon points="42,42 49.1,43.4 50.5,50.5 43.4,49.1"/><polygon points="100,19 91.2,28.5 108.8,28.5"/><polygon points="158,42 156.6,49.1 149.5,50.5 150.9,43.4"/></g></g><g class="sc-star"><circle cx="100" cy="100" r="64" class="thin"/><g class="line2"><polygon points="100,36 155.4,132 44.6,132"/><polygon points="100,164 44.6,68 155.4,68"/></g></g><g class="sc-inner"><circle cx="100" cy="100" r="40" class="line"/><g class="fill"><polygon points="146,100 139.8,104.2 134,100 139.8,95.8"/><polygon points="132.5,132.5 125.2,131.1 124,124 131.1,125.2"/><polygon points="100,146 95.8,139.8 100,134 104.2,139.8"/><polygon points="67.5,132.5 68.9,125.2 76,124 74.8,131.1"/><polygon points="54,100 60.2,95.8 66,100 60.2,104.2"/><polygon points="67.5,67.5 74.8,68.9 76,76 68.9,74.8"/><polygon points="100,54 104.2,60.2 100,66 95.8,60.2"/><polygon points="132.5,67.5 131.1,74.8 124,76 125.2,68.9"/></g></g><g class="sc-oct"><polygon class="line2" points="100,74 110.6,89.4 126,100 110.6,110.6 100,126 89.4,110.6 74,100 89.4,89.4 100,74 110.6,89.4 126,100 110.6,110.6 100,126 89.4,110.6 74,100 89.4,89.4"/></g><g class="sc-spark s1"><circle cx="100" cy="6" r="3"/></g><g class="sc-spark s2"><circle cx="100" cy="194" r="2.4"/></g><g class="sc-spark s3"><circle cx="18" cy="100" r="2"/></g><circle class="sc-core" cx="100" cy="100" r="16" fill="url(#sc-core)"/></svg>';
+    function closeSynthStage(){document.querySelector('.synth-stage')?.remove();}
+    function playSynthStage(slots){closeSynthStage();const stage=document.createElement('div');stage.className='synth-stage casting';stage.setAttribute('role','dialog');stage.setAttribute('aria-label','합성 연출');
+      const mats=slots.map((index,i)=>{const card=collectionCards[index],angle=(-90+i*120)*Math.PI/180;return '<div class="stage-mat '+rarityByCard[index]+'" style="--x:'+(Math.cos(angle)*38).toFixed(1)+'vmin;--y:'+(Math.sin(angle)*38).toFixed(1)+'vmin;--d:'+(i*.12)+'s"><img src="'+card[1]+'" alt=""></div>';}).join('');
+      stage.innerHTML='<div class="stage-circle">'+SYNTH_STAGE_SVG+'</div>'+mats+'<div class="stage-flash"></div><div class="stage-result"></div><p class="stage-caption">마법진이 재료를 변환하고 있습니다…</p>';
+      stage.addEventListener('click',e=>{if(stage.classList.contains('revealed')&&(e.target===stage||e.target.closest('.stage-close')))closeSynthStage();});
+      document.body.appendChild(stage);}
+    function revealSynthStage(index,isNew){let stage=document.querySelector('.synth-stage');if(!stage){playSynthStage([]);stage=document.querySelector('.synth-stage');}const card=collectionCards[index],rarity=rarityByCard[index];
+      stage.classList.remove('casting');stage.classList.add('revealed',rarity);
+      stage.querySelector('.stage-result').innerHTML='<article class="stage-card '+rarity+'">'+(isNew?'<span class="new-badge">NEW</span>':'')+'<img src="'+card[1]+'" alt="'+card[2]+'"><h3>'+card[2]+'</h3><small>'+rarityLabel[rarity]+' · '+elementLabel[card[0]]+' · 비용 '+card[3]+' · ⚔ '+card[4]+' ♥ '+card[5]+'</small></article><button class="stage-close">확인</button>';
+      stage.querySelector('.stage-caption').textContent=isNew?'새로운 카드를 얻었습니다!':'합성 완료';}
+    /* 합성 실패 연출: 마법진이 붉게 무너지고 재료 카드가 부서져 흩어진 뒤, 잃은 재료와 다음 시도 확률 상승을 안내한다 */
+    function revealSynthFail(slots,count){let stage=document.querySelector('.synth-stage');if(!stage){playSynthStage(slots);stage=document.querySelector('.synth-stage');}
+      stage.classList.remove('casting');stage.classList.add('revealed','enh-fail','synth-fail');
+      const shards=document.createElement('div');shards.className='enh-shards';shards.innerHTML=Array.from({length:18},(_,i)=>'<i style="--a:'+(i*20)+'deg;--d:'+(150+(i%3)*70)+'px"></i>').join('');stage.insertBefore(shards,stage.querySelector('.stage-result'));
+      const next=synthChance(count),capped=next>=SYNTH_MAX_CHANCE,lost=slots.map(index=>'<span class="synth-lost '+rarityByCard[index]+'"><img src="'+collectionCards[index][1]+'" alt="'+collectionCards[index][2]+'"></span>').join('');
+      stage.querySelector('.stage-result').innerHTML='<div class="enh-banner">합성 실패</div><div class="synth-fail-box"><p class="sf-lost-title">재료 <b>'+slots.length+'장</b>이 마법진에 흡수되어 사라졌습니다</p><div class="sf-lost">'+lost+'</div><div class="sf-chance"><span>다음 합성 성공 확률</span><strong>+5%p</strong><small>연속 실패 '+synthFailureStreak+'회 · 같은 '+count+'장 합성 시 '+next+'%'+(capped?' (최대)':'')+'</small></div></div><button class="stage-close">확인</button>';
+      stage.querySelector('.stage-caption').textContent='마법진이 무너졌습니다… 실패할수록 다음 성공 확률이 오릅니다';
+      noise(.4,.07,240);tone(330,.22,'sawtooth',.05,160);tone(220,.42,'sawtooth',.05,90,.14);tone(147,.6,'sine',.08,62,.3);}
+    addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelector('.synth-stage.revealed'))closeSynthStage();});
+
+    /* 컬렉션 창이 열려 있는 동안 사운드 버튼을 창 머리 영역(크래커 옆)으로 옮기고, 닫으면 원래 자리로 되돌린다 */
+    (function(){
+      const baseOpen=openCollection,baseClose=closeCollection;let home=null,next=null;
+      openCollection=function(...args){const result=baseOpen.apply(this,args);const wrap=document.querySelector('.sound-wrap'),head=document.querySelector('.collection-head');if(wrap&&head&&!head.contains(wrap)){home=wrap.parentElement;next=wrap.nextSibling;head.insertBefore(wrap,head.querySelector('.modal-close'));}return result;};
+      closeCollection=function(...args){const wrap=document.querySelector('.sound-wrap');if(wrap&&home&&!home.contains(wrap)){toggleSoundPanel?.(false);home.insertBefore(wrap,next&&next.parentNode===home?next:null);}return baseClose.apply(this,args);};
+    })();
+    /* === 역전 마법: 상대 필드의 공격력 합·체력 합에 비례해 강해진다 — 밀릴수록 세다 (2026-11-05) ===
+       카드 데이터(03_card-data)의 effectId(reversal_*)와 amount(비율·수치)를 읽는다. 세트 마법이므로 '다음 필드 시작' 시점의 상대 필드를 기준으로 계산한다. */
+    const REVERSAL_SPELLS={
+      reversal_judgment:{key:'reversal-judgment',type:'역전 · 광역 피해',text:a=>'상대 필드 공격력 합의 '+(a===50?'절반':a+'%')+'을 모든 적에게 피해.'},
+      reversal_bulwark:{key:'reversal-bulwark',type:'역전 · 회복',text:a=>'상대 필드 공격력 합'+(a===100?'만큼':'의 '+a+'%만큼')+' 내 영웅 체력 회복.'},
+      reversal_giant_hunt:{key:'reversal-giant-hunt',type:'역전 · 분배 피해',text:a=>'상대 필드 체력 합의 '+a+'%를 적 전체에 나눠 피해.'},
+      reversal_weight_toll:{key:'reversal-weight-toll',type:'역전 · 광역 피해',text:a=>'모든 적에게 '+a+' 피해. 상대 필드 체력 '+REVERSAL_TOLL_STEP+'마다 비용 −1.'},
+      reversal_life_siphon:{key:'reversal-life-siphon',type:'역전 · 강화',text:a=>'상대 필드 체력 합의 '+(a===50?'절반':a+'%')+'만큼 내 가장 강한 챔프 체력 증가.'},
+      reversal_insight:{key:'reversal-insight',type:'역전 · 드로우',text:a=>'상대 필드 체력 '+a+'마다 카드 1장 (최대 '+REVERSAL_INSIGHT_MAX+'장).'}
+    },REVERSAL_TOLL_STEP=20,REVERSAL_INSIGHT_MAX=4,REVERSAL_BY_KEY=Object.fromEntries(Object.entries(REVERSAL_SPELLS).map(([id,spec])=>[spec.key,{id,...spec}]));
+    function reversalSpec(def){const effect=def?.effects?.find(e=>REVERSAL_SPELLS[e.effectId]);return effect?{...REVERSAL_SPELLS[effect.effectId],id:effect.effectId,amount:Number(effect.amount)||0}:null;}
+    /* 상대 필드 합계: 쓰러져 사라지는 중인 유닛은 뺀다. 공격력은 '⚔ 4' 같은 표시의 첫 숫자 */
+    function enemyFieldTotals(){const units=[...document.querySelectorAll('.arena .lane:first-child > .unit:not([data-destroyed="true"])')],first=(u,sel)=>Number((u.querySelector(sel)?.textContent.match(/\d+/)||[0])[0])||0;return {units,atk:units.reduce((sum,u)=>sum+first(u,'.stats span:first-child'),0),hp:units.reduce((sum,u)=>sum+first(u,'.stats span:last-child'),0)};}
+    function reversalDamageAll(units,amountFor,element,burnSource=''){units.forEach((unit,i)=>setTimeout(()=>{if(!unit.isConnected||unit.dataset.destroyed==='true')return;showUnitSpellFx(unit,element);setTimeout(()=>{if(!unit.isConnected)return;const result=damageUnit(unit,amountFor(i),element);if(burnSource&&element==='fire'&&!result.blocked&&result.hp>0)applyBurn(unit,1,burnSource);if(!result.blocked&&result.hp<=0){unit.dataset.destroyed='true';setTimeout(()=>unit.remove(),650);}},combatMs(260));},i*combatMs(130)));}
+    {
+      const runtimeEffectKeyBeforeReversal=runtimeEffectKey;
+      runtimeEffectKey=function(def){const spec=reversalSpec(def);return spec?spec.key:runtimeEffectKeyBeforeReversal(def);};
+      const runtimeRulesTextBeforeReversal=runtimeRulesText;
+      runtimeRulesText=function(effect,def){const spec=REVERSAL_BY_KEY[effect];if(spec){const amount=Number(def?.effects?.find(e=>e.effectId===spec.id)?.amount)||0;return spec.text(amount);}return runtimeRulesTextBeforeReversal(effect,def);};
+      const createRuntimeBattleCardBeforeReversal=createRuntimeBattleCard;
+      createRuntimeBattleCard=function(cardId){const card=createRuntimeBattleCardBeforeReversal(cardId),def=cardDefinitionById.get(cardId),spec=reversalSpec(def);if(spec){card.dataset.baseCost=String(def.cost);card.classList.add('reversal-spell');const type=card.querySelector('.type');if(type)type.textContent='✦ 마법 · 역전';/* 위쪽 배지는 짧게(✦ 장식과 겹치지 않게), 자세한 종류는 아래 칸에 */const stat=card.querySelector('.card-stats span');if(stat)stat.textContent=spec.type;}return card;};
+      /* 무게의 대가: 손패에 있는 동안 상대 필드 체력 합에 따라 비용이 내려간다 (최소 1) */
+      const updateCardAffordabilityBeforeReversal=updateCardAffordability;
+      updateCardAffordability=function(...args){const {hp}=enemyFieldTotals();document.querySelectorAll('.hand .card[data-effect="reversal-weight-toll"]').forEach(card=>{const base=Number(card.dataset.baseCost)||Number(card.querySelector('.cost')?.textContent)||0,cost=Math.max(1,base-Math.floor(hp/REVERSAL_TOLL_STEP)),node=card.querySelector('.cost');if(node&&node.textContent!==String(cost)){node.textContent=String(cost);card.classList.toggle('cost-reduced',cost<base);}});return updateCardAffordabilityBeforeReversal.apply(this,args);};
+      const castSpellBeforeReversal=castSpell;
+      castSpell=function(card){const spec=REVERSAL_BY_KEY[card?.dataset?.effect];if(!spec)return castSpellBeforeReversal(card);
+        const def=cardDefinitionById.get(card.dataset.cardId),amount=Number(def?.effects?.find(e=>e.effectId===spec.id)?.amount)||0,name=card.querySelector('h3')?.textContent||'역전 마법',element=getElement(card),{units,atk,hp}=enemyFieldTotals();
+        sfx('spell',spec.key==='reversal-bulwark'||spec.key==='reversal-life-siphon'?'heal':'offense');
+        if(spec.key==='reversal-judgment'){const damage=Math.floor(atk*amount/100);if(!units.length||damage<=0){writeLog('<strong>'+name+'</strong>: 상대 필드 공격력 합이 '+atk+'이라 효과가 없었습니다.');return;}reversalDamageAll(units,()=>damage,element);writeLog('<strong>'+name+'</strong>: 상대 필드 공격력 합 '+atk+' → 모든 적에게 '+damage+' 피해.');return;}
+        if(spec.key==='reversal-bulwark'){const heal=Math.floor(atk*amount/100),healed=healPlayerHero(heal);if(healed)showSkillEffect('heal',document.querySelector('.duel-hud .player .avatar'),name+' · 체력 +'+healed);writeLog('<strong>'+name+'</strong>: 상대 필드 공격력 합 '+atk+' → '+(healed?'내 영웅 체력 '+healed+' 회복.':'긴급 상태로 영웅 체력 회복 차단.'));return;}
+        if(spec.key==='reversal-giant-hunt'){const total=Math.floor(hp*amount/100);if(!units.length||total<=0){writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합이 '+hp+'이라 효과가 없었습니다.');return;}const base=Math.floor(total/units.length),extra=total%units.length;reversalDamageAll(units,i=>base+(i<extra?1:0),element);writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합 '+hp+'의 '+amount+'% = '+total+' 피해를 적 '+units.length+'장에 나눴습니다.');return;}
+        if(spec.key==='reversal-weight-toll'){if(!units.length){writeLog('<strong>'+name+'</strong>이(가) 발동했지만 대상이 없었습니다.');return;}reversalDamageAll(units,()=>amount,element,element==='fire'?'화염 마법':'');writeLog('<strong>'+name+'</strong>이(가) 모든 적에게 '+amount+' 피해를 주고 생존한 챔프에 화상 1을 남깁니다.');return;}
+        if(spec.key==='reversal-life-siphon'){const allies=[...document.querySelectorAll('.summon-zone .unit:not([data-destroyed="true"])')],atkOf=u=>Number((u.querySelector('.stats span:first-child')?.textContent.match(/\d+/)||[0])[0])||0,target=allies.sort((a,b)=>atkOf(b)-atkOf(a))[0],gain=Math.floor(hp*amount/100);if(!target||gain<=0){writeLog('<strong>'+name+'</strong>: '+(target?'상대 필드 체력 합이 '+hp+'이라':'강화할 내 챔프가 없어')+' 효과가 없었습니다.');return;}const hpNode=target.querySelector('.stats span:last-child'),now=Number((hpNode.textContent.match(/\d+/)||[0])[0])||0;hpNode.textContent='♥ '+(now+gain);target.dataset.maxHp=String((Number(target.dataset.maxHp)||now)+gain);showSkillEffect('heal',target,name+' · 체력 +'+gain);writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합 '+hp+' → <strong>'+target.querySelector('h4').textContent+'</strong>의 체력 +'+gain+'.');return;}
+        if(spec.key==='reversal-insight'){const count=Math.min(REVERSAL_INSIGHT_MAX,Math.floor(hp/Math.max(1,amount)));if(count<=0){writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합이 '+hp+'이라 뽑을 카드가 없었습니다.');return;}for(let i=0;i<count;i++)setTimeout(()=>{if(deck.length&&document.querySelectorAll('.hand .card').length<8)drawCard();},i*240);writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합 '+hp+' → 카드 '+count+'장을 뽑습니다.');return;}
+        return castSpellBeforeReversal(card);};
+    }
+    /* 화염 피해 마법의 공통 후속 효과. 카드 고유 화상(아마테라스)은 별도로 처리해 중복시키지 않는다. */
+    const FIRE_SPELL_BURN_EFFECTS=new Set(['lightning-strike','board-damage','comeback-flare','reversal-weight-toll']);
+    const runtimeRulesTextBeforeFireSpellBurn=runtimeRulesText;
+    runtimeRulesText=function(effect,def){if(effect==='black-flame')return '공격력이 가장 높은 적 챔프 1명에게 3 피해를 주고, 99턴간 대상 턴 시작마다 피해 3을 주는 정화 불가 화상을 부여합니다.';const text=runtimeRulesTextBeforeFireSpellBurn(effect,def);return def?.cardType==='spell'&&def.auraKey==='fire'&&FIRE_SPELL_BURN_EFFECTS.has(effect)?text+' 피해를 받고 생존한 적 챔프에게 화상 1.':text;};
+
+    /* ===== 덱 여러 개: 한 유저가 덱을 최대 MAX_DECKS개 저장하고, 그중 하나를 전투 덱으로 쓴다 =====
+       collectionState.deck = 지금 전투에 쓰는 덱(카드 순번 배열, 기존 로직 그대로)
+       collectionState.decks = [{name, ids:[cardId…]}] — 카드 목록이 바뀌어 순번이 밀려도 깨지지 않게 cardId로 저장
+       collectionState.activeDeck = 전투 덱으로 쓰는 덱 번호
+       덱 편집에서 고친 내용은 그 덱에 바로 저장되고, '이 덱으로 전투'(저장 버튼)를 눌러야 전투 덱이 바뀐다. */
+    var MAX_DECKS=MAX_DECKS||6,editingDeck=editingDeck||0;/* var: 이 줄보다 앞에서 실행되는 덱 불러오기(withSavedDecks)가 먼저 쓰므로 const 금지 */
+    function readSavedDecks(){try{const raw=JSON.parse(localStorage.getItem('primal-collection-v1'));return raw&&Array.isArray(raw.decks)?{decks:raw.decks,activeDeck:raw.activeDeck}:null;}catch(e){return null;}}
+    function deckIdsOf(indexes){return (indexes||[]).map(i=>COLLECTION_CARD_IDS[i]).filter(Boolean);}
+    function deckIndexesOf(ids){const at=new Map(COLLECTION_CARD_IDS.map((id,i)=>[id,i]));return (ids||[]).map(id=>at.get(id)).filter(i=>i!==undefined);}
+    function draftOfDeck(i){return deckIndexesOf(collectionState.decks?.[i]?.ids);}
+    function withSavedDecks(saved,state){
+      const decks=(saved?.decks||[]).filter(d=>d&&Array.isArray(d.ids)).slice(0,MAX_DECKS||6).map((d,i)=>({name:String(d.name||('덱 '+(i+1))).trim().slice(0,16)||('덱 '+(i+1)),ids:d.ids.filter(id=>typeof id==='string')}));
+      if(!decks.length)decks.push({name:'덱 1',ids:deckIdsOf(state.deck)});/* 기존 사용자: 지금 쓰던 덱을 '덱 1'로 옮긴다 */
+      const active=Number.isInteger(saved?.activeDeck)&&saved.activeDeck>=0&&saved.activeDeck<decks.length?saved.activeDeck:0;
+      state.decks=decks;state.activeDeck=active;editingDeck=active;
+      try{localStorage.setItem('primal-collection-v1',JSON.stringify({...state,cardIds:COLLECTION_CARD_IDS}));}catch(e){}/* 불러오기가 덱 목록 없이 덮어쓴 저장을 바로 되돌린다 */
+      return state;}
+    function deckEditorOpen(){return Boolean(document.querySelector('#collection-modal.show'))&&Boolean(collectionState.decks?.[editingDeck]);}
+    function storeDraft(){if(!deckEditorOpen())return;collectionState.decks[editingDeck].ids=deckIdsOf(draftDeck);persistCollection();}
+    function nextDeckName(){const used=new Set(collectionState.decks.map(d=>d.name));let n=collectionState.decks.length+1;while(used.has('덱 '+n))n++;return '덱 '+n;}
+    function selectDeck(i){if(i===editingDeck||!collectionState.decks[i])return;storeDraft();editingDeck=i;draftDeck=draftOfDeck(i);renderDeckBuilder();}
+    function createDeck(){if(collectionState.decks.length>=MAX_DECKS)return;storeDraft();collectionState.decks.push({name:nextDeckName(),ids:[]});editingDeck=collectionState.decks.length-1;draftDeck=[];persistCollection();renderDeckBuilder();}
+    function duplicateDeck(){if(collectionState.decks.length>=MAX_DECKS)return;storeDraft();const src=collectionState.decks[editingDeck];collectionState.decks.push({name:(src.name+' 사본').slice(0,16),ids:[...src.ids]});editingDeck=collectionState.decks.length-1;draftDeck=draftOfDeck(editingDeck);persistCollection();renderDeckBuilder();}
+    function deleteDeck(){const decks=collectionState.decks;if(decks.length<=1||editingDeck===collectionState.activeDeck)return;if(!confirm('「'+decks[editingDeck].name+'」 덱을 삭제할까요? 되돌릴 수 없습니다.'))return;decks.splice(editingDeck,1);if(collectionState.activeDeck>editingDeck)collectionState.activeDeck--;editingDeck=collectionState.activeDeck;draftDeck=draftOfDeck(editingDeck);persistCollection();renderDeckBuilder();}
+    function startDeckTabRename(i){if(!collectionState.decks?.[i])return;if(i!==editingDeck)selectDeck(i);const bar=document.querySelector('#deck-switcher'),tab=bar?.querySelector('.deck-tab[data-deck="'+i+'"]'),label=tab?.querySelector('b');if(!label)return;window.getSelection?.().removeAllRanges();
+      const input=document.createElement('input');input.className='deck-tab-rename';input.maxLength=16;input.value=collectionState.decks[i].name;input.setAttribute('aria-label','덱 이름');label.replaceWith(input);input.focus();input.select();let done=false;
+      const finish=save=>{if(done)return;done=true;if(save)renameDeck(input.value);renderDeckBar();};
+      input.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();finish(true);}else if(e.key==='Escape'){e.preventDefault();finish(false);}});
+      ['click','dblclick','mousedown'].forEach(type=>input.addEventListener(type,e=>e.stopPropagation()));input.addEventListener('blur',()=>finish(true));}
+    function renameDeck(value){const name=String(value).trim().slice(0,16);if(!name||!collectionState.decks[editingDeck])return;collectionState.decks[editingDeck].name=name;persistCollection();renderDeckBar();}
+    function sameDeckCards(a,b){if(!Array.isArray(a)||!Array.isArray(b)||a.length!==b.length)return false;const x=[...a].sort((p,q)=>p-q),y=[...b].sort((p,q)=>p-q);return x.every((v,i)=>v===y[i]);}
+    function escapeDeckName(text){return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);}
+    function renderDeckBar(){const bar=document.querySelector('#deck-switcher');if(!bar||!collectionState.decks)return;const decks=collectionState.decks,active=collectionState.activeDeck;
+      bar.innerHTML='<div class="deck-tabs" role="tablist" aria-label="내 덱 목록">'+decks.map((d,i)=>{const n=i===editingDeck?draftDeck.length:deckIndexesOf(d.ids).length;return '<button class="deck-tab'+(i===editingDeck?' editing':'')+(i===active?' active':'')+(n===60?' complete':'')+'" role="tab" aria-selected="'+(i===editingDeck)+'" data-deck="'+i+'" title="더블클릭해 이름 바꾸기" onclick="selectDeck('+i+')"><b>'+escapeDeckName(d.name)+'</b><small>'+(i===active?'<em>메인 덱</em> · ':'')+n+' / 60장</small></button>';}).join('')+(decks.length<MAX_DECKS?'<button class="deck-tab add" onclick="createDeck()" title="새 덱 만들기 (최대 '+MAX_DECKS+'개)">＋ 새 덱</button>':'')+'</div>'
+        +'<div class="deck-manage"><label>덱 이름 <input id="deck-name" maxlength="16" value="'+escapeDeckName(decks[editingDeck].name)+'"></label><button onclick="duplicateDeck()" '+(decks.length>=MAX_DECKS?'disabled':'')+'>복제</button><button onclick="deleteDeck()" '+(decks.length<=1||editingDeck===active?'disabled title="메인 덱은 삭제할 수 없습니다"':'')+'>삭제</button></div>';
+      const input=bar.querySelector('#deck-name');input.addEventListener('change',e=>renameDeck(e.target.value));input.addEventListener('keydown',e=>{if(e.key==='Enter')e.target.blur();e.stopPropagation();});
+      /* 덱 탭 이름을 더블클릭하면 그 자리에서 고친다: Enter·바깥 클릭=저장, Esc=취소. 탭은 다시 그려지므로 막대(bar)에 한 번만 위임해 둔다 */
+      if(!bar.dataset.renameBound){bar.dataset.renameBound='1';bar.addEventListener('dblclick',e=>{const tab=e.target.closest('.deck-tab[data-deck]');if(!tab||tab.querySelector('.deck-tab-rename'))return;e.preventDefault();startDeckTabRename(Number(tab.dataset.deck));});}
+      const title=document.querySelector('#deck-panel-title');if(title)title.textContent=decks[editingDeck].name+(editingDeck===active?' · 메인 덱':'');}
+    (function(){
+      const baseRender=renderDeckBuilder,baseSave=saveBattleDeck;
+      renderDeckBuilder=function(...args){const result=baseRender.apply(this,args);if(collectionState.decks){storeDraft();renderDeckBar();const save=document.querySelector('#deck-save');if(save&&draftDeck.length===60&&!deckAuraLimitExceeded(draftDeck)){const isMain=editingDeck===collectionState.activeDeck,applied=isMain&&sameDeckCards(draftDeck,collectionState.deck);save.textContent=isMain?(applied?'✓ 메인 덱':'메인 덱에 변경 반영'):'메인 덱으로 지정';save.disabled=applied;save.classList.toggle('is-main',applied);}}return result;};
+      saveBattleDeck=function(...args){if(collectionState.decks&&draftDeck.length===60&&!deckAuraLimitExceeded(draftDeck)){collectionState.decks[editingDeck].ids=deckIdsOf(draftDeck);collectionState.activeDeck=editingDeck;}return baseSave.apply(this,args);};
+    })();
+
+    /* 대전 중 덱 편집: 편집은 허용하고, 저장한 덱은 다음 판부터 적용된다는 안내를 덱 편집 안에 보여준다 */
+    (function(){const base=renderDeckBuilder;renderDeckBuilder=function(...a){const r=base.apply(this,a);const view=document.querySelector('#deck-view');if(!view)return r;let note=view.querySelector('.deck-battle-note');if(guardianChosen){if(!note){note=document.createElement('div');note.className='deck-battle-note';view.insertBefore(note,view.firstChild);}note.textContent='대전이 진행 중입니다 · 지금 고친 덱은 다음 판부터 적용됩니다';}else note?.remove();return r;};})();
+
+    /* 덱 편집: 보유 카드를 더블클릭하면 1장 넣고, 카드 그림이 덱 패널의 해당 줄로 날아간다 */
+    (function(){
+      const grid=document.querySelector('#owned-grid');if(!grid)return;
+      function flyToDeck(fromRect,src,index){const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,row=document.querySelector('#deck-rows .deck-row[data-index="'+index+'"]'),dest=(row||document.querySelector('.deck-list')).getBoundingClientRect();
+        if(row){row.classList.remove('deck-row-pulse');void row.offsetWidth;row.classList.add('deck-row-pulse');}
+        const count=document.querySelector('#build-count');if(count){count.classList.remove('count-bump');void count.offsetWidth;count.classList.add('count-bump');}
+        if(reduced||!src)return;const ghost=document.createElement('img');ghost.className='deck-fly';ghost.src=src;Object.assign(ghost.style,{left:fromRect.left+'px',top:fromRect.top+'px',width:fromRect.width+'px',height:fromRect.height+'px'});document.body.appendChild(ghost);
+        const dx=dest.left+(row?8:dest.width/2-fromRect.width*.12)-fromRect.left,dy=dest.top+(row?dest.height/2-fromRect.height*.12:40)-fromRect.top;
+        ghost.animate([{transform:'translate(0,0) scale(1) rotate(0)',opacity:1,offset:0},{transform:'translate('+dx*.45+'px,'+(dy*.45-60)+'px) scale(.6) rotate(-8deg)',opacity:1,offset:.45},{transform:'translate('+dx+'px,'+dy+'px) scale(.24) rotate(4deg)',opacity:.2,offset:1}],{duration:520,easing:'cubic-bezier(.3,.7,.3,1)'}).onfinish=()=>ghost.remove();}
+      grid.addEventListener('dblclick',e=>{const card=e.target.closest('.owned-card[data-index]');if(!card||e.target.closest('button'))return;e.preventDefault();window.getSelection?.().removeAllRanges();
+        const index=Number(card.dataset.index),before=draftDeck.length,img=card.querySelector('img'),rect=(img||card).getBoundingClientRect(),src=img?.getAttribute('src');
+        addToDraft(index);
+        if(draftDeck.length>before){sfx?.('ui-select');flyToDeck(rect,src,index);}
+        else{const again=document.querySelector('#owned-grid .owned-card[data-index="'+index+'"]')||card;again.classList.remove('add-denied');void again.offsetWidth;again.classList.add('add-denied');}});
+      const help=document.querySelector('.deck-help');if(help&&!help.textContent.includes('더블클릭'))help.textContent='보유 카드를 더블클릭하거나 ＋ 버튼·드래그로 넣고, 덱 목록을 눌러(또는 보유 카드 영역으로 드래그해) 뺍니다.';
+    })();
+
+    /* 강화 화면 보조: 3장 이상인 카드만 활성(위쪽), 나머지는 흐리게(아래쪽) · 클릭하면 카드가 왼쪽 슬롯으로 날아가 들어간다 */
+    (function(){
+      if(typeof renderEnhancement!=='function')return;
+      const NEED=()=>typeof ENHANCE_MATERIAL_COUNT==='number'?ENHANCE_MATERIAL_COUNT:3,idxOf=btn=>Number((/selectEnhancement\((\d+)/.exec(btn.getAttribute('onclick')||'')||[])[1]);
+      const base=renderEnhancement;
+      renderEnhancement=function(...a){const r=base.apply(this,a);const grid=document.querySelector('#enhance-grid');if(!grid)return r;
+        const buttons=[...grid.querySelectorAll('button.synth-pick')];if(!buttons.length)return r;const need=NEED();
+        if(enhanceSelected!==null&&enhancementCount(enhanceSelected)<need&&!enhanceLast){enhanceSelected=null;}
+        const ready=[],short=[];buttons.forEach(btn=>{const i=idxOf(btn),n=enhancementCount(i);btn.dataset.index=i;btn.title=n>=need?'클릭하면 강화 슬롯에 장착됩니다':'같은 단계 카드가 '+need+'장 있어야 강화할 수 있습니다';
+          const tag=btn.querySelector('.synth-spare');if(tag)tag.textContent=n+' / '+need+'장';
+          if(n>=need){btn.disabled=false;btn.classList.remove('enh-short');ready.push(btn);}else{btn.disabled=true;btn.classList.add('enh-short');btn.classList.remove('picked');short.push(btn);}});
+        grid.innerHTML='';const head=(text,cnt,cls)=>{const h=document.createElement('div');h.className='synth-section'+(cls?' '+cls:'');h.innerHTML=text+' <b>'+cnt+'</b>';return h;};
+        if(ready.length){grid.appendChild(head('강화할 수 있는 카드',ready.length));ready.forEach(b=>grid.appendChild(b));}
+        if(short.length){grid.appendChild(head(need+'장 미만 · 강화 불가',short.length,'blocked'));short.forEach(b=>grid.appendChild(b));}
+        if(!ready.length&&short.length)grid.insertBefore(Object.assign(document.createElement('div'),{className:'gacha-empty enh-none',textContent:'이 단계에서 '+need+'장 이상 모은 카드가 없습니다.'}),grid.firstChild);
+        const slot=document.querySelector('#enhance-result');if(slot&&!enhanceLast&&enhanceSelected!==null){const card=collectionCards[enhanceSelected],n=enhancementCount(enhanceSelected);slot.innerHTML='<article class="synth-card enh-slot '+rarityByCard[enhanceSelected]+'"><span class="new-badge">'+n+'장 보유</span><img src="'+card[1]+'" alt="'+card[2]+'"><h4>'+card[2]+' · '+enhanceLevel+'차</h4><small class="enh-mats" title="재료 '+need+'장 소모">재료 '+Array.from({length:need},(_,k)=>'<i class="'+(k<n?'on':'')+'"></i>').join('')+(n>need?'<em>+'+(n-need)+'</em>':'')+'</small><span class="enh-chance" style="--p:'+ENHANCE_RULES[enhanceLevel].chance+'" title="같은 단계의 같은 카드 '+need+'장을 다음 단계 카드 1장으로 강화합니다. 실패하면 '+(need-1)+'장이 소멸하고 같은 단계 카드 1장만 남습니다."><b>'+ENHANCE_RULES[enhanceLevel].chance+'%</b><small>성공</small></span></article>';}
+        return r;};
+      renderEnhancement();
+    })();
+
+    /* 강화 연출: 화면 중앙 무대에서 재료 3장이 마법진으로 빨려 들어간 뒤 성공(금빛 폭발)·실패(균열·붉은 파편)를 보여준다 */
+    (function(){
+      if(typeof runEnhancement!=='function'||typeof SYNTH_STAGE_SVG!=='string')return;
+      const base=runEnhancement;let busy=false;
+      function close(){document.querySelector('.synth-stage.enh-stage')?.remove();}
+      runEnhancement=function(...a){if(busy)return;const index=enhanceSelected,level=enhanceLevel,before=enhanceLast;
+        if(index===null||enhancementCount(index,level)<(typeof ENHANCE_MATERIAL_COUNT==='number'?ENHANCE_MATERIAL_COUNT:3))return base.apply(this,a);
+        const card=collectionCards[index];close();busy=true;
+        const stage=document.createElement('div');stage.className='synth-stage enh-stage casting';stage.setAttribute('role','dialog');stage.setAttribute('aria-label','강화 연출');
+        const materialCount=typeof ENHANCE_MATERIAL_COUNT==='number'?ENHANCE_MATERIAL_COUNT:3,mats=Array.from({length:materialCount},(_,i)=>{const ang=(-90+i*360/materialCount)*Math.PI/180;return '<div class="stage-mat '+rarityByCard[index]+'" style="--x:'+(Math.cos(ang)*36).toFixed(1)+'vmin;--y:'+(Math.sin(ang)*36).toFixed(1)+'vmin;--d:'+(i*.09)+'s"><img src="'+card[1]+'" alt=""></div>';}).join('');
+        stage.innerHTML='<div class="stage-circle">'+SYNTH_STAGE_SVG+'</div>'+mats+'<div class="stage-flash"></div><div class="enh-shards"></div><div class="stage-result"></div><p class="stage-caption">'+level+'차 → '+(level+1)+'차 강화 중…</p>';
+        stage.addEventListener('click',e=>{if(stage.classList.contains('revealed')&&(e.target===stage||e.target.closest('.stage-close')))close();});
+        document.body.appendChild(stage);
+        [262,330,392,524,660].forEach((f,k)=>tone(f,.24,'triangle',.05,f*1.35,k*.2));
+        const result=base.apply(this,a);const out=enhanceLast&&enhanceLast!==before?enhanceLast:null;
+        const slot=document.querySelector('#enhance-result');if(slot)slot.style.visibility='hidden';
+        setTimeout(()=>{busy=false;if(slot)slot.style.visibility='';if(!out){close();return;}
+          const ok=out.success,r=rarityByCard[out.index],c=collectionCards[out.index];
+          stage.classList.remove('casting');stage.classList.add('revealed',ok?'enh-success':'enh-fail');
+          if(!ok){const sh=stage.querySelector('.enh-shards');sh.innerHTML=Array.from({length:14},(_,i)=>'<i style="--a:'+(i*360/14)+'deg;--d:'+(140+(i%3)*60)+'px"></i>').join('');}
+          stage.querySelector('.stage-result').innerHTML='<div class="enh-banner">'+(ok?'강화 성공':'강화 실패')+'</div><article class="stage-card '+r+'"><span class="new-badge">'+(ok?out.level+'차':'단계 유지')+'</span><img src="'+c[1]+'" alt="'+c[2]+'"><h3>'+c[2]+' · '+out.level+'차</h3><small>'+(ok?'⚔ +'+out.attack+' · ♥ +'+out.health:'재료 '+(ENHANCE_MATERIAL_COUNT-1)+'장 소멸 · '+out.level+'차 카드 1장 유지')+'</small></article><button class="stage-close">확인</button>';
+          stage.querySelector('.stage-caption').textContent=ok?'카드가 한 단계 강해졌습니다!':'아쉽게도 강화에 실패했습니다';
+          if(ok){tone(784,.3,'triangle',.08);tone(1047,.45,'triangle',.09,1568,.12);}else{noise(.35,.06,260);tone(220,.4,'sawtooth',.05,90);tone(147,.5,'sine',.07,70,.15);}
+        },1750);
+        return result;};
+      addEventListener('keydown',e=>{if(e.key==='Escape'&&document.querySelector('.synth-stage.enh-stage.revealed'))close();});
+    })();
+
+    /* 강화 단계 표시: 카드 앞면 네 귀퉁이 끝을 작게 칠한다 (1차=1곳 … 4차=4곳, 왼위→오위→오아래→왼아래). 최소한으로만 보이게 */
+    (function(){
+      if(typeof renderEnhancement!=='function')return;
+      const ids=()=>typeof COLLECTION_CARD_IDS!=='undefined'?COLLECTION_CARD_IDS:[];
+      const AURA_HEX={fire:'#ff6a4a',water:'#4fb8ff',wood:'#5fd38a',wind:'#5fd38a',metal:'#cfd8e6',neutral:'#cfd8e6',earth:'#d9a35b',ice:'#4fb8ff',thunder:'#cfd8e6'};
+      function auraColorOf(index){const def=typeof cardDefinitionById!=='undefined'?cardDefinitionById.get(ids()[index]):null;return AURA_HEX[def?.aura]||AURA_HEX[collectionCards[index]?.[0]]||'';}
+      function topTier(index){const e=collectionState.cardEnhancements?.[ids()[index]],lv=e&&Array.isArray(e.levels)?e.levels:[];for(let t=4;t>=1;t--)if(Array.isArray(lv[t])&&lv[t].length)return t;return 0;}
+      function mark(el,tier,index){if(!el)return;tier=Math.max(0,Math.min(4,Number(tier)||0));const prev=el.querySelector(':scope > .enh-tier');if(prev&&prev.dataset.t===String(tier)&&!prev.classList.contains('rewrite'))return;prev?.remove();const m=document.createElement('span');m.className='enh-tier';const col=index!==undefined&&index!==null?auraColorOf(index):'';if(col)m.style.setProperty('--tier-c',col);m.dataset.t=String(tier);m.setAttribute('aria-label','강화 '+ROMAN[tier]);m.innerHTML='<b class="enh-roman">'+ROMAN[tier]+'</b>';el.appendChild(m);}
+      const ROMAN=['I','II','III','IV','V'];const codexTierView=new Map();/* 0차(강화 전)=I … 4차=V */
+      const baseEnh=renderEnhancement;renderEnhancement=function(...a){const r=baseEnh.apply(this,a);
+        document.querySelectorAll('#enhance-grid button.synth-pick').forEach(b=>mark(b,enhanceLevel,b.dataset.index!==undefined?Number(b.dataset.index):undefined));
+        const slot=document.querySelector('#enhance-result .synth-card:not(.unknown)');if(slot)mark(slot,enhanceLast?enhanceLast.level:enhanceLevel,enhanceLast?enhanceLast.index:enhanceSelected);return r;};
+      if(typeof renderSynthesis==='function'){const baseSynth=renderSynthesis;renderSynthesis=function(...a){const r=baseSynth.apply(this,a);document.querySelectorAll('#synth-grid .synth-pick').forEach(t=>{const i=Number((/synthPick\((\d+)\)/.exec(t.querySelector('[onclick*="synthPick"]')?.getAttribute('onclick')||'')||[])[1]);if(Number.isFinite(i))mark(t,topTier(i),i);});return r;};}
+      if(typeof renderDeckBuilder==='function'){const baseDeck=renderDeckBuilder;renderDeckBuilder=function(...a){const r=baseDeck.apply(this,a);document.querySelectorAll('#owned-grid .owned-card[data-index]').forEach(c=>mark(c,topTier(Number(c.dataset.index)),Number(c.dataset.index)));return r;};}
+      if(typeof renderCodex==='function'&&typeof codexEntries==='function'){const baseCodex=renderCodex;renderCodex=function(...a){const r=baseCodex.apply(this,a);const byNo=new Map(codexEntries().map(e=>[e.no,e]));const at=new Map(ids().map((id,i)=>[id,i]));
+        document.querySelectorAll('#codex-grid .codex-card').forEach(c=>{const no=Number((/selectCodex\((\d+)\)/.exec(c.getAttribute('onclick')||'')||[])[1]),e=byNo.get(no);if(e&&e.collected&&e.type==='champion'){const idx=at.get(e.def.cardId),top=topTier(idx),view=Math.min(top,codexTierView.get(e.def.cardId)??top);mark(c,view,idx);c.querySelector('.completion-chip')?.remove();c.querySelector(':scope > .tier-pick')?.remove();
+          const img=c.querySelector('.codex-art img');if(img)img.src=tierArtOf(e.def,view);
+          const pick=document.createElement('span');pick.className='tier-pick';pick.setAttribute('role','group');pick.setAttribute('aria-label','강화 단계별 일러스트 보기');pick.innerHTML=ROMAN.map((r,t)=>'<b role="button" tabindex="'+(t<=top?0:-1)+'" class="'+(t<=top?'on':'off')+(t===view?' sel':'')+'" data-t="'+t+'" title="'+(t<=top?r+' 일러스트 보기':r+' 미달성')+'">'+r+'</b>').join('');c.appendChild(pick);}});
+        const sel=byNo.get(codexSelected);if(sel&&sel.collected&&sel.type==='champion'){const idx=at.get(sel.def.cardId),view=Math.min(topTier(idx),codexTierView.get(sel.def.cardId)??topTier(idx)),art=document.querySelector('#codex-detail .codex-detail-art img');if(art)art.src=tierArtOf(sel.def,view);const box=document.querySelector('#codex-detail .codex-detail-art');if(box)mark(box,view,idx);}
+        return r;};}
+      /* 단계별 일러스트: 카드 데이터에 tierAssets:[I,II,III,IV,V]가 있으면 그 단계 그림, 없으면 기본 그림 */
+      function tierArtOf(def,t){const list=Array.isArray(def?.tierAssets)?def.tierAssets:null;const own=list&&list[t];return own?(/^(assets|https?:)/.test(own)?own:'assets/'+own):'assets/'+def.assetId;}
+      document.addEventListener('click',ev=>{const b=ev.target.closest?.('#codex-grid .tier-pick b');if(!b)return;ev.stopPropagation();ev.preventDefault();if(!b.classList.contains('on'))return;const card=b.closest('.codex-card'),no=Number((/selectCodex\((\d+)\)/.exec(card.getAttribute('onclick')||'')||[])[1]),e=codexEntries().find(x=>x.no===no);if(!e)return;codexTierView.set(e.def.cardId,Number(b.dataset.t));codexSelected=no;renderCodex();},true);
+      new MutationObserver(()=>{const card=document.querySelector('.synth-stage.enh-stage.revealed .stage-card');if(card&&!card.querySelector('.enh-tier')&&enhanceLast){mark(card,enhanceLast.level,enhanceLast.index);if(enhanceLast.success&&enhanceLast.level>0){card.querySelector('.enh-tier')?.classList.add('rewrite');animateNewTier(card,enhanceLast.level);}}}).observe(document.body,{childList:true,subtree:true});
+      /* 전투: 덱을 만들 때 그 카드로 가진 강화 단계를 높은 것부터 배정하고(장수만큼), 손패 카드·필드 유닛 귀퉁이에 오라 색으로 표시한다. 능력치 보너스는 아직 적용하지 않는다 */
+      function tierPoolFor(cardId){const lv=collectionState.cardEnhancements?.[cardId]?.levels;const out=[];if(Array.isArray(lv))for(let t=4;t>=1;t--)(Array.isArray(lv[t])?lv[t]:[]).forEach(()=>out.push(t));return out;}
+      if(typeof deckEntry==='function'){let pool=null;const baseEntry=deckEntry;deckEntry=function(index,...rest){const e=baseEntry.call(this,index,...rest);if(!e||e.spell)return e;if(!pool){pool=new Map();queueMicrotask(()=>{pool=null;});}if(!pool.has(e.cardId))pool.set(e.cardId,tierPoolFor(e.cardId));const t=pool.get(e.cardId).shift();if(t)e.enhTier=t;return e;};}
+      function tierEl(el,tier){if(!el||!(tier>0))return;el.dataset.enhTier=String(tier);}
+      function markBattle(){document.querySelectorAll('.hand .card.summon-card, .arena .unit').forEach(el=>{const t=String(Number(el.dataset.enhTier)||0),cur=el.querySelector(':scope > .enh-tier');if(!cur||cur.dataset.t!==t)mark(el,Number(t));});}
+      if(typeof drawCard==='function'){const baseDraw=drawCard;drawCard=function(...a){const next=Array.isArray(deck)?deck[0]:null,before=new Set(document.querySelectorAll('.hand .card'));const r=baseDraw.apply(this,a);if(next&&next.enhTier){const fresh=[...document.querySelectorAll('.hand .card')].find(c=>!before.has(c));tierEl(fresh,next.enhTier);markBattle();}return r;};}
+      /* 이미 만들어진 첫 판 덱(이 코드보다 먼저 생성됨)과 시작 손패에도 배정한다: 손패의 같은 카드부터, 남은 단계는 덱 순서대로 */
+      (function(){if(!Array.isArray(deck))return;const pools=new Map();
+        const assigned=new Map();deck.forEach(e=>{if(e&&e.enhTier){const l=assigned.get(e.cardId)||[];l.push(e.enhTier);assigned.set(e.cardId,l);}});
+        const free=id=>{if(!pools.has(id)){const all=tierPoolFor(id);(assigned.get(id)||[]).forEach(t=>{const k=all.indexOf(t);if(k>=0)all.splice(k,1);});pools.set(id,all);}return pools.get(id);};
+        document.querySelectorAll('.hand .card.summon-card[data-card-id]').forEach(card=>{if(card.dataset.enhTier)return;const t=free(card.dataset.cardId).shift();tierEl(card,t);});
+        deck.forEach(e=>{if(e&&!e.spell&&!e.enhTier&&e.cardId){const t=free(e.cardId).shift();if(t)e.enhTier=t;}});})();
+      new MutationObserver(markBattle).observe(document.body,{childList:true,subtree:true});markBattle();
+      /* 강화 성공: 새로 얻은 단계의 귀퉁이 하나가 카드가 자리 잡은 뒤 빛나며 칠해진다 */
+      function animateNewTier(card,level){const box=card.querySelector('.enh-tier');if(!box)return;box.classList.add('rewrite');box.innerHTML='<b class="enh-roman old">'+ROMAN[level-1]+'</b><b class="enh-roman new">'+ROMAN[level]+'</b><b class="tier-spark"></b>';setTimeout(()=>tone(523,.12,'triangle',.04,392),420);setTimeout(()=>{tone(1319,.18,'triangle',.06,1760);tone(1976,.22,'sine',.035,2637,.06);},720);}
+    })();
+
+    /* 개발용 ?enhanceTest[=장수]: 보유 챔프 앞 8종에 0~3차 재료를 단계마다 N장(기본 6)씩 채운다 (localhost에서만) */
+    (function(){
+      if(typeof DEV_MODE==='undefined'||!DEV_MODE||typeof enhancementEntry!=='function')return;
+      const params=new URLSearchParams(location.search);if(!params.has('enhanceTest'))return;
+      const per=Math.max(5,Math.min(30,Math.floor(Number(params.get('enhanceTest'))||6))),inDeck=[...new Set((collectionState.deck||[]).filter(i=>!collectionIsSpell[i]))],picks=[...inDeck,...collectionCards.map((_,i)=>i).filter(i=>!collectionIsSpell[i]&&!inDeck.includes(i))].slice(0,Math.max(8,inDeck.length));/* 메인 덱에 든 챔프부터 — 그래야 전투에서 강화 카드가 나온다 */
+      picks.forEach((i,k)=>{const e=enhancementEntry(i);for(let lv=1;lv<=3;lv++)e.levels[lv]=Array.from({length:per},(_,n)=>({attack:Math.min(lv,(n+k)%3),health:lv>=2?(n%2):0}));e.levels[4]=[];if(inDeck.includes(i)){/* 덱 카드마다 최고 단계를 I~V로 돌려가며 정해, 전투에 I~V가 고르게 섞이게 (그 아래 단계는 강화 재료로 남김) */const top=k%5;for(let lv=top+1;lv<=4;lv++)e.levels[lv]=[];if(top===4)e.levels[4]=[{attack:2,health:2},{attack:2,health:2}];}/* 메인 덱 카드는 4차 1장도: 전투 손패·필드에서 I~IV가 보이게 */
+        const used=e.levels.slice(1).reduce((sum,cards)=>sum+cards.length,0);collectionState.owned[i]=Math.max(collectionState.owned[i]||0,used+per);});
+      persistCollection();params.delete('enhanceTest');history.replaceState(null,'',location.pathname+(params.toString()?'?'+params:'')+location.hash);
+      setTimeout(()=>writeLog?.('<strong>개발용</strong> 강화 재료를 채웠습니다: 챔프 '+picks.length+'종(메인 덱 '+inDeck.length+'종 포함) × 0~3차 각 '+per+'장, 메인 덱 카드는 4차 1장 추가. 다음 판부터 전투 카드에 I~IV가 표시됩니다.'),0);
+    })();
+
+    /* 강화 화면 표기 통일: 'N차'(0~4) → 로마 숫자 I~V. 강화 화면과 강화 결과 무대 안의 글자만 바꾼다 */
+    (function(){
+      if(typeof renderEnhancement!=='function')return;
+      const R=['I','II','III','IV','V'],conv=t=>t.replace(/([0-4])\s*차/g,(_,n)=>R[Number(n)]).replace(/같은 단계/g,'같은 등급').replace(/단계 유지/g,'등급 유지');
+      function romanize(root){if(!root)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode())){if(/[0-4]\s*차|같은 단계|단계 유지/.test(n.nodeValue))n.nodeValue=conv(n.nodeValue);}root.querySelectorAll('[title],[aria-label]').forEach(el=>{['title','aria-label'].forEach(a=>{const v=el.getAttribute(a);if(v&&/[0-4]\s*차/.test(v))el.setAttribute(a,conv(v));});});}
+      const base=renderEnhancement;renderEnhancement=function(...a){const r=base.apply(this,a);romanize(document.querySelector('#enhance-view'));return r;};
+      new MutationObserver(list=>{for(const m of list){const t=m.target.nodeType===1?m.target:m.target.parentElement;const stage=t?.closest?.('.enh-stage')||[...m.addedNodes].find(n=>n.nodeType===1&&n.classList?.contains('enh-stage'));if(stage){romanize(stage);break;}}}).observe(document.body,{childList:true,subtree:true,characterData:true});
+      renderEnhancement();
+    })();
+
+    /* 컬렉션 바로가기: 상단 개별 버튼과 주소 링크(#덱편집 #도감 #합성 #강화 #상점 또는 #deck #codex #synth #enhance #shop)로 해당 탭을 바로 연다 */
+    (function(){
+      const HASH={'덱편집':'deck','deck':'deck','도감':'codex','codex':'codex','합성':'synth','synth':'synth','강화':'enhance','enhance':'enhance','상점':'gacha','shop':'gacha','gacha':'gacha'},NAME={deck:'덱편집',codex:'도감',synth:'합성',enhance:'강화',gacha:'상점'};
+      window.openCollectionDirect=function(view){openCollection(view);try{history.replaceState(null,'','#'+NAME[view]);}catch(e){}syncNav(view);};
+      function syncNav(view){document.querySelectorAll('.top-nav-btn').forEach(b=>b.classList.toggle('current',b.dataset.view===view));}
+      function fromHash(){const key=decodeURIComponent(location.hash.replace(/^#/,''));const v=HASH[key];if(v){openCollection(v);syncNav(v);}}
+      if(typeof switchCollectionView==='function'){const base=switchCollectionView;switchCollectionView=function(view,...a){const r=base.call(this,view,...a);if(document.querySelector('#collection-modal.show')){try{history.replaceState(null,'','#'+NAME[view]);}catch(e){}syncNav(view);}return r;};}
+      if(typeof closeCollection==='function'){const baseClose=closeCollection;closeCollection=function(...a){const r=baseClose.apply(this,a);try{if(HASH[decodeURIComponent(location.hash.replace(/^#/,''))])history.replaceState(null,'',location.pathname+location.search);}catch(e){}syncNav('');return r;};}
+      addEventListener('hashchange',fromHash);setTimeout(fromHash,0);
+    })();

@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '../..');
 const output = resolve(root, 'dist/runtime');
+const appSource = resolve(root, '05_game-client/app');
 await mkdir(output, { recursive: true });
 await Promise.all([
   copyFile(resolve(root, '04_game-engine/src/engine.js'), resolve(output, 'engine.js')),
@@ -26,10 +27,23 @@ for (const card of cardSet.cards) {
 const battleStarter = JSON.parse(await readFile(resolve(root, '03_card-data/sets/battle-starter.json'), 'utf8'));
 const cardsJs = `globalThis.PrimalCardSet = Object.freeze(${JSON.stringify(cardSet)});\nglobalThis.PrimalBattleStarter = Object.freeze(${JSON.stringify(battleStarter)});\n`;
 await writeFile(resolve(output, 'cards.js'), cardsJs);
-// 브라우저가 옛 카드 데이터를 캐시해 두고 계속 쓰지 않도록, index.html의 cards.js 주소 버전을 내용 해시로 갱신한다.
+// HTML/CSS/앱 로직의 정본은 05_game-client/app 아래에 둔다. dist는 항상 이 소스에서 재생성한다.
 const indexPath = resolve(root, 'dist/index.html');
-const indexHtml = await readFile(indexPath, 'utf8');
+const [shell, styles, appManifest] = await Promise.all([
+  readFile(resolve(appSource, 'index.shell.html'), 'utf8'),
+  readFile(resolve(appSource, 'styles.css'), 'utf8'),
+  readFile(resolve(appSource, 'app.sources.json'), 'utf8').then(JSON.parse)
+]);
+if (!Array.isArray(appManifest) || !appManifest.length) throw new Error('app.sources.json must list client modules');
+const app = (await Promise.all(appManifest.map(name => readFile(resolve(appSource, 'modules', name), 'utf8')))).join('');
+if (!shell.includes('<!-- FATE:STYLES -->') || !shell.includes('<!-- FATE:APP -->')) {
+  throw new Error('05_game-client/app/index.shell.html is missing build placeholders');
+}
+const indexHtml = shell
+  .replace('<!-- FATE:STYLES -->', `<style>${styles}</style>`)
+  .replace('<!-- FATE:APP -->', `<script>${app}</script>`);
+// 브라우저가 옛 카드 데이터를 캐시해 두고 계속 쓰지 않도록 cards.js 주소에 내용 해시를 붙인다.
 const cardsVersion = createHash('sha1').update(cardsJs).digest('hex').slice(0, 10);
 const bumped = indexHtml.replace(/runtime\/cards\.js\?v=[^"']*/, `runtime/cards.js?v=${cardsVersion}`);
-if (bumped !== indexHtml) await writeFile(indexPath, bumped);
-console.log('Built deterministic runtime into dist/runtime');
+await writeFile(indexPath, bumped);
+console.log('Built deterministic client and runtime into dist/');

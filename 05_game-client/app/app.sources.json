@@ -1,0 +1,6 @@
+[
+  "00-platform-adapters.js",
+  "01-battle-core.js",
+  "02-battle-presentation.js",
+  "03-collection-progression.js"
+]

@@ -15,6 +15,27 @@ test('element affinity is removed: damage ignores elements', () => {
   assert.deepEqual(engine.calculateDamage(10, 'neutral', 'fire'), { damage: 10, modifier: 1, label: '' });
 });
 
+test('health damage resolution is pure, clamped, and reports actual damage', () => {
+  assert.deepEqual(engine.resolveHealthDamage(10, 4), {
+    healthBefore: 10,
+    healthAfter: 6,
+    damageApplied: 4,
+    defeated: false
+  });
+  assert.deepEqual(engine.resolveHealthDamage(3, 10), {
+    healthBefore: 3,
+    healthAfter: 0,
+    damageApplied: 3,
+    defeated: true
+  });
+  assert.deepEqual(engine.resolveHealthDamage(-2, -5), {
+    healthBefore: 0,
+    healthAfter: 0,
+    damageApplied: 0,
+    defeated: true
+  });
+});
+
 test('priority rejects out-of-turn actions', () => {
   const state = engine.createMatchState({ players: [{ playerId: 'a' }, { playerId: 'b' }] });
   assert.deepEqual(engine.validateAction(state, { type: engine.ACTIONS.PLAY_CARD, player: 1, cardId: 'core.test', cost: 0 }), { ok: false, reason: 'NO_PRIORITY' });

@@ -33,7 +33,7 @@ test('난이도는 자원 보정 없이 판단력과 실수율로만 구분된�
   assert.ok(html.includes('enemyMana=ENEMY_AI.manaMirrorsPlayer?Math.min(MANA_CAP,maxMana)'));
   assert.ok(html.includes("if(enemyDifficulty==='normal')return targets[Math.floor(engineAdapter.random()*targets.length)]"));
   assert.ok(html.includes("if(enemyDifficulty==='hell')writeLog('<strong>헬 AI 판단:"));
-  assert.ok(html.includes("enemyDifficulty==='normal'?(Math.random()<.5?'A':'B'):tactical[enemyGuardian]"));
+  assert.ok(html.includes("enemyDifficulty==='normal'?(engineAdapter.random()<.5?'A':'B'):tactical[enemyGuardian]"));
   assert.ok(html.includes("unit.classList.add('exhausted')"), '상대도 소환한 턴에는 공격하지 않아야 한다');
   assert.ok(html.includes("document.querySelector('#enemy-difficulty').textContent=config.label"));
   assert.ok(!html.includes('manaOffset'));

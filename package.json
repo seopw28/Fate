@@ -3,14 +3,16 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
+    "build": "npm run build:runtime",
     "build:runtime": "node 12_tools/build-scripts/build-runtime.mjs",
+    "check:source": "node 12_tools/build-scripts/check-client-source.mjs",
     "validate:cards": "node 03_card-data/validators/validate-cards.mjs",
     "validate:effects": "node effects/scripts/validate-effects.mjs",
     "test:engine": "node --test 04_game-engine/tests/*.test.js",
     "test:platform": "node --test 10_platform/tests/*.test.js",
     "test:ui-contract": "node --test 11_qa/regression/*.test.js",
     "ngrok": "node 12_tools/dev-server/serve-ngrok.mjs",
-    "test": "npm run validate:cards && npm run validate:effects && npm run test:engine && npm run test:platform && npm run test:ui-contract",
+    "test": "npm run build && npm run check:source && npm run validate:cards && npm run validate:effects && npm run test:engine && npm run test:platform && npm run test:ui-contract",
     "qa:overflow": "python3 -I 12_tools/qa/check-text-overflow.py",
     "qa:economy": "python3 -I 12_tools/qa/check-economy-flow.py",
     "qa:battle": "python3 -I 12_tools/qa/check-battle-regressions.py"

@@ -26,5 +26,12 @@ test('컴퓨터도 최후의 저항에서 추가 드로우와 복수자를 얻�
   assert.ok(html.includes('function summonEnemyUltimateAvenger()'));
   assert.ok(html.includes("effect:'ultimate-avenger'"));
   assert.ok(html.includes('setTimeout(()=>resolveEnemyAvengerArrivalDamage(partner),3050)'));
-  assert.ok(html.includes("else queueEnemyUltimateAvenger(0)"));
+  assert.ok(html.includes("else{ensureEnemyAvengerSource();queueEnemyUltimateAvenger(0);}"));
+});
+
+test('상대가 궁극기를 쓰기 전이어도 체력 40 이하에서 복수 기준을 확보해 강림한다', () => {
+  assert.ok(html.includes('function ensureEnemyAvengerSource()'));
+  assert.ok(html.includes('const pool=[...enemyHand,...enemyDeck].filter(card=>!card.spell&&card.art)'));
+  assert.ok(html.includes('if(!ensureEnemyAvengerSource())return null'));
+  assert.ok(html.includes("else{ensureEnemyAvengerSource();queueEnemyUltimateAvenger(0);}"));
 });

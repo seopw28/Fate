@@ -7,7 +7,7 @@
   2. `npm run qa:overflow` → `OK: 넘침 없음`이어야 통과. FAIL이면 수정 후 재실행.
 - 버튼에 `white-space:nowrap` 금지(줄바꿈 허용), 고정 폭/높이 상자에는 가장 긴 문구 상태(마나 10 필요, 긴 캐릭터명 등)로 확인.
 - 동적으로 바뀌는 문구는 `12_tools/qa/check-text-overflow.py`의 `STATES`에 해당 상태를 추가한다.
-- `dist/index.html`의 "지마켓산스 넘침 방지" CSS 블록은 삭제 금지.
+- `05_game-client/app/styles.css`의 "지마켓산스 넘침 방지" CSS 블록은 삭제 금지. `dist/index.html`은 `npm run build`로 생성한다.
 - 검사기는 pseudo-element(::before 아이콘) 겹침은 못 잡으므로 스크린샷으로 눈으로도 확인.
 
 ## 스킬/마법/궁극기 연출은 필드 기준 (필수)
@@ -22,10 +22,11 @@
 - 이미지 큐를 사용자에게 자동으로 상기하지 않는다. 사용자가 에셋 현황을 묻거나 실제 미완료 항목이 현재 작업을 막을 때만 보고한다. Claude는 이미지를 생성할 수 없고, 코드로 그린 SVG 일러스트는 쓰지 않는다.
 
 ## 여러 세션 동시 작업 안전 규칙 (필수)
-- **저장소**: Fate는 독립 git 저장소다 (`github.com/seopw28/Fate`, private, `origin`). 2026-11-03 회사 저장소(product_analysis)에서 이력째 분리했고, 2026-11-05 폴더 위치를 `/Users/vex/Documents/git/pm-ai-system/sprints/current/crack-ccg-fate/Fate`로 옮겼다(기획 문서 옆). 옛 경로 `/Users/vex/Documents/git/Fate`는 이 폴더를 가리키는 바로가기(심볼릭 링크)다. pm-ai-system 저장소는 이 폴더를 .gitignore로 제외한다 — pm-ai-system에서 Fate 파일을 커밋하지 않는다. 경로는 저장소 루트 기준(`dist/index.html`, `Fate/` 접두사 없음). 원격 푸시는 SSH(`git@github.com:seopw28/Fate.git`)를 쓴다 — HTTPS는 큰 팩에서 끊긴다.
-여러 Claude 세션이 같은 `dist/index.html`을 동시에 고치고 커밋한다. 한 세션의 실수가 다른 세션들의 미커밋 작업을 지운 사고가 있었다 (2026-11-03: 파일 0바이트 덮어쓰기, 남의 작업이 섞인 커밋, 이미 커밋된 수정을 되돌린 커밋).
-- **자동 보호 훅**: `.claude/settings.json`의 `12_tools/guard/index-guard.py`가 모든 도구 실행 전에 index.html을 `~/.cache/fate/index-backups/`에 백업하고, 실행 후 파일이 사라지거나·200KB 미만·직전 백업의 절반 미만·`</html>` 잘림이면 즉시 복원하고 경고한다. 경고가 뜨면 방금 명령을 멈추고 원인부터 확인한다. 일부러 크게 줄일 때만 `FATE_INDEX_GUARD=off`.
-- **파일 쓰기**: 스크립트로 고칠 때는 `cp` 백업 → 끝까지 읽기 → 메모리에서 변환 → 임시 파일에 쓰기 → `os.replace` 순서만 쓴다. `open(f,'w').write(g(open(f).read()))`처럼 같은 파일을 한 줄에서 읽고 쓰는 코드는 금지 (쓰기 열기가 먼저 실행돼 파일이 비워진다).
-- **커밋은 내 변경만**: `git add dist/index.html`은 다른 세션의 미커밋 작업까지 커밋한다. "HEAD 버전에 내 변경만 다시 적용한 파일"을 `git hash-object -w` → `git update-index --cacheinfo`로 올려 커밋한다. 작업 시작 시 스냅샷과의 diff를 HEAD에 덧대는 방식은, 그사이 다른 세션이 같은 파일을 고치면 남의 작업이 섞이므로 쓰지 않는다.
+- **저장소**: Fate는 독립 git 저장소다 (`github.com/seopw28/Fate`, private, `origin`). 2026-11-03 회사 저장소(product_analysis)에서 이력째 분리했고, 2026-11-05 폴더 위치를 `/Users/vex/Documents/git/pm-ai-system/sprints/current/crack-ccg-fate/Fate`로 옮겼다(기획 문서 옆). 옛 경로 `/Users/vex/Documents/git/Fate`는 이 폴더를 가리키는 바로가기(심볼릭 링크)다. pm-ai-system 저장소는 이 폴더를 .gitignore로 제외한다 — pm-ai-system에서 Fate 파일을 커밋하지 않는다. 경로는 저장소 루트 기준이며 원격 푸시는 SSH(`git@github.com:seopw28/Fate.git`)를 쓴다.
+- **클라이언트 정본**: `05_game-client/app/index.shell.html`, `styles.css`, `modules/*.js`가 정본이다. `dist/index.html`을 직접 수정하지 말고 `npm run build`로 생성한다. 모듈 결합 순서는 `app.sources.json`에서 관리한다.
+- 여러 세션은 같은 `dist/index.html`이 아니라 역할별 소스 모듈을 나눠 수정한다. 빌드 전에 `git diff -- 05_game-client/app dist/index.html`로 다른 세션 변경을 확인하고, 빌드 결과가 타인의 소스 변경까지 포함할 수 있음을 인지한다.
+- **자동 보호 훅**: `.claude/settings.json`의 `12_tools/guard/index-guard.py`는 생성된 index.html의 손상을 막는 마지막 안전망이다. 경고가 뜨면 소스와 빌드 과정을 확인하며, `dist`를 복구한 뒤 소스 반영을 생략하면 안 된다.
+- **파일 쓰기**: 생성물은 `npm run build`만 사용한다. 소스 파일을 스크립트로 대량 변환할 때는 전체 읽기 → 메모리 변환 → 임시 파일 → 원자적 교체 순서를 지킨다.
+- **커밋은 내 변경만**: 담당 소스와 그 소스에서 생성된 `dist`만 커밋한다. 커밋 전 `npm test`와 `git diff --cached --stat`을 확인하고, 다른 세션의 미커밋 소스나 생성물이 섞이면 중단한다.
 - **커밋 직전 확인**: ① `git log -1`로 HEAD가 작업 시작 때와 같은지 ② `git diff --cached --stat`으로 남이 스테이징한 파일이 섞이지 않았는지 ③ `git diff HEAD -- 파일`에서 내 변경만 보이는지(특히 지운 줄이 의도한 것인지) ④ `node --check`로 스크립트 문법. `patch`가 `Reversed`/`FAILED` 경고를 내면 즉시 중단한다.
 - **사고가 나면**: 숨기지 말고 사용자에게 알리고, `ListAgents`로 다른 Fate 세션을 찾아 `SendMessage`로 무엇이 빠졌을 수 있는지 알린다.
