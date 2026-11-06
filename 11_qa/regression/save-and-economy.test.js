@@ -132,6 +132,15 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("if(!playerGuardian)return '성격 오라 필요'"), 'No-aura mode must not receive an aura awakening');
   assert.ok(html.includes("fieldGuardianUltimate.id='field-guardian-ultimate'"), 'Guardian awakening must render beside the field ultimate condition');
   assert.ok(html.includes('.arena.guardian-awakened.guardian-awakened-namu'), 'Wood awakening must have its own field aura color');
+  assert.ok(html.includes("showAwakeningProc(side,'jujak',label,'추가 공격 '+count+'회',attacker)"), 'Fire awakening must visibly announce its extra attacks');
+  assert.ok(html.includes("showAwakeningProc('player','cheongryong',name,'마나 +'+gain"), 'Water awakening must visibly announce recovered mana');
+  assert.ok(html.includes("showAwakeningProc(side,'namu',config.name||'나무의 오라'"), 'Wood awakening must visibly announce health growth');
+  assert.ok(html.includes("showShatterResonance(defender,targets,power,side)"), 'Shatter Resonance must use a dedicated field-wide activation effect');
+  assert.ok(html.includes("showAwakeningProc(side,'baekho',metalAura.name||'절단 반격'"), 'Sever Counter must visibly announce its counter damage');
+  assert.ok(html.includes("showAwakeningProc(side,'hyeonmu','암반 피부'"), 'Rock Skin must visibly announce damage reduction');
+  assert.ok(html.includes("showAwakeningProc(side,'hyeonmu','절대방어'"), 'Absolute Defense must visibly announce damage nullification');
+  assert.ok(html.includes("playAudio('metal',.72,.68)"), 'Shatter Resonance must have a distinct heavy metal sound');
+  assert.ok(html.includes(".shatter-resonance-fx{"), 'Shatter Resonance must have dedicated field VFX styling');
 });
 
 test('경제: 기권은 패배로 처리하되 성격 오라 선택에 따른 별도 재화 차감은 없다', () => {

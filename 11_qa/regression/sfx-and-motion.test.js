@@ -506,6 +506,22 @@ test('스킬 고유 소리: 아주르 썬더폴은 번개만, 빙결 계열은 �
   assert.ok(html.includes("['champion-control','frost-nova'].includes(card?.dataset?.effect))muteSfx(['spell','magic','hit:water'],1800)"), 'Frost spells must only have frost sounds');
 });
 
+test('번개 마법: 카드 오라와 무관하게 연쇄번개는 전용 전기 VFX·SFX로 타격한다', () => {
+  assert.ok(html.includes("function spellEffectElement(effect,cardElement){if(effect==='chain-lightning')return 'thunder'"), 'Chain lightning must resolve to the thunder semantic element');
+  assert.ok(html.includes("showUnitSpellFx(unit,spellElement)"), 'Resolved semantic element must drive each target VFX');
+  assert.ok(html.includes("damageUnit(unit,Math.max(1,spellAmount-(chain?i:0)),spellElement)"), 'Resolved semantic element must drive each target impact');
+  assert.ok(html.includes("if(kind==='hit'&&variant==='thunder'){if(soundOn)fateSfx.playLightning(hitPan);return;}"), 'Thunder impacts must use the dedicated lightning sample');
+  assert.ok(html.includes("thunder?{src:'assets/vfx/cinematic/lightning-strike-v'"), 'Thunder targets must use approved lightning artwork, not generic light blades');
+  assert.ok(!html.includes("SFX_ELEMENT_ALIAS={ice:'water',thunder:'wind'}"), 'Thunder must never be aliased to wind');
+});
+
+test('마법 의미 매핑: 불 공격과 심연 제어는 내부 공용 effectId 때문에 번개·빙결로 오인되지 않는다', () => {
+  assert.ok(html.includes("if(effect==='lightning-strike')return cardElement==='neutral'||cardElement==='thunder'?'thunder':cardElement"), 'Fire spirit must retain fire presentation');
+  assert.ok(html.includes("if(effect==='freeze-strongest')return cardElement==='water'||cardElement==='ice'?'ice':cardElement"), 'Only water/ice control may use frost presentation');
+  assert.ok(html.includes("else if(effect==='freeze-strongest')showCinematicSkillEffect('eclipse'"), 'Non-frost strongest-target control must use the dark cinematic');
+  assert.ok(html.includes("{thunder:'lightning',fire:'fire',water:'lightning',wind:'gust',earth:'earth',ice:'frost'}"), 'Lightning-strike family must choose cinematic from semantic element');
+});
+
 test('스킬 소리 검사 스크립트가 있다 (실제 브라우저로 소리 구성을 확인)', () => {
   const script = fs.readFileSync(path.join(root, '12_tools/qa/check-skill-sounds.py'), 'utf8');
   for (const token of ['playLightning', 'playFrost', 'playHit:water', 'frozen-chain', 'frost-nova', 'INDEX_OVERRIDE']) assert.ok(script.includes(token), `check-skill-sounds.py must cover ${token}`);
@@ -535,7 +551,7 @@ test('오라 시네마틱: 불·빙결·대지·암흑 기술은 전용 투명 �
     assert.ok(html.includes(label), `${label} must be connected to elemental combat`);
   }
   assert.ok(html.includes("effect==='black-flame')showCinematicSkillEffect('eclipse'"), 'Black flame must open with the eclipse cinematic');
-  assert.ok(html.includes("effect==='frost-nova'||effect==='freeze-strongest'||effect==='champion-control')showCinematicSkillEffect('frost'"), 'Frost control spells must open with the frost cinematic');
+  assert.ok(html.includes("effect==='frost-nova'||effect==='champion-control'||(effect==='freeze-strongest'&&semanticElement==='ice')"), 'Only actual frost control spells must open with the frost cinematic');
 });
 
 test('보호막 이미지: 유지 오라와 파괴 버스트가 실제 피해 처리에 연결된다', () => {
