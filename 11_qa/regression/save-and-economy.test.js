@@ -287,6 +287,9 @@ test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복�
   assert.ok(html.includes("source.name+'의 복수를 하고 말겠어!'"));
   assert.ok(html.includes('AVENGER DESCENT'));
   assert.ok(html.includes('showAvengerArrival(partner,firstUltimateSpec,unit)'));
+  assert.ok(html.includes('function resolveAvengerArrivalDamage(partner)'));
+  assert.ok(html.includes("damageUnit(target,5,partner.el)"));
+  assert.ok(html.includes('setTimeout(()=>resolveAvengerArrivalDamage(partner),1450)'));
   assert.ok(html.includes("if(side==='player')summonFirstUltimateAvenger()"));
 });
 
@@ -315,8 +318,9 @@ test('최후의 저항: 내 턴 시작에 덱에서 카드를 1장 더 받는다
   assert.ok(html.includes("if(desperateActive('player')&&deck.length&&document.querySelectorAll('.hand .card').length<8){drawCard();"), 'Extra draw must respect deck and hand limits');
 });
 
-test('최후의 저항: 처음 발동된 내 턴에 한해 마법카드 1장을 즉시 발동', () => {
-  assert.ok(html.includes("desperateQuickCastTurn=battlePhase==='setup'?turnNumber:turnNumber+1"), 'Window must be the first player turn of desperation');
-  assert.ok(html.includes("return desperateQuickCastTurn===turnNumber&&!desperateQuickCastUsed&&battlePhase==='setup';"), 'Quick cast is once, only in that turn');
-  assert.ok(html.includes("if(quickCast){desperateQuickCastUsed=true;"), 'Playing a spell in the window must cast it instead of setting it');
+test('최후의 저항: 마법카드 즉시 발동 보상은 제거하고 기존 세팅 규칙을 유지한다', () => {
+  assert.ok(!html.includes('desperateQuickCast'));
+  assert.ok(!html.includes('quick-cast-badge'));
+  assert.ok(!html.includes('if(quickCast)'));
+  assert.ok(html.includes("if(isTrap||isSpell){setMagic(card);}"));
 });
