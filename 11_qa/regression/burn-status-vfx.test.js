@@ -8,7 +8,7 @@ const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), '
 test('일반 화상은 부여 순간부터 카드 하단의 지속 불꽃을 표시한다', () => {
   assert.match(html, /\.unit\[data-aura-burn\],\.unit\[data-burn\]/);
   assert.match(html, /function applyBurn\(target\).*?syncAuraBurnVfx\(target\)/s);
-  assert.match(html, /검은 불꽃 · 화상 \+3.*?syncAuraBurnVfx|syncAuraBurnVfx\(target\).*?검은 불꽃 · 화상 \+3/s);
+  assert.match(html, /function applyEternalBlackFlame\(target.*?syncAuraBurnVfx\(target\).*?꺼지지 않는 불꽃/s);
   assert.match(html, /bottom:-15px/);
 });
 

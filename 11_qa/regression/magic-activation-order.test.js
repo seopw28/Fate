@@ -11,6 +11,11 @@ test('내 세트 마법은 발동 카드를 먼저 보여준 뒤 효과를 적�
   assert.ok(html.includes('},820)'));
 });
 
+test('마법·함정 공개 카드는 궁극기 등 필드 조작부보다 앞에 표시된다', () => {
+  assert.ok(html.includes('.field-action-dock{position:absolute;z-index:13;'));
+  assert.ok(html.includes('.global-spell { z-index:30; }'));
+});
+
 test('상대 마법도 중앙 발동 안내 후 실제 효과를 적용한다', () => {
   assert.ok(html.includes('function showEnemyMagicActivation(card,onResolve)'));
   assert.ok(html.includes("global.className='global-spell enemy-magic-activation'"));
@@ -19,7 +24,8 @@ test('상대 마법도 중앙 발동 안내 후 실제 효과를 적용한다', 
 });
 
 test('동시에 준비된 상대 마법은 발동 연출이 겹치지 않게 순차 처리한다', () => {
-  assert.ok(html.includes('setTimeout(()=>resolveEnemySpell(card),order*2300)'));
+  assert.ok(html.includes('setTimeout(()=>resolveEnemySpell(card),order*COMBAT_TIMING.spellGap)'));
+  assert.ok(html.includes('due.length*COMBAT_TIMING.spellGap'));
 });
 
 test('내 함정과 상대 함정은 발동 시 카드 이름과 일러스트를 중앙에 공개한다', () => {

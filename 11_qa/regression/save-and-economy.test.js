@@ -140,7 +140,7 @@ test('오라 각성: 체력 80 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("className='aura-burn-vfx'"));
   assert.ok(html.includes("className='aura-burn-badge'"));
   assert.ok(html.includes("delete target.dataset.auraBurnTurns"), 'Burn duration must clear after expiry or cleanse');
-  assert.ok(html.includes("unit.dataset.auraBurnTurns=String(remaining)"), 'Burn duration must count down once per owner turn');
+  assert.ok(html.includes("unit.dataset[eternal?'eternalBurnTurns':'auraBurnTurns']=String(remaining)"), 'Burn duration must count down once per owner turn, including eternal black flame');
   assert.ok(html.includes("showAwakeningProc('player','cheongryong',name,'마나 +'+gain"), 'Water awakening must visibly announce recovered mana');
   assert.ok(html.includes("showAwakeningProc(side,'namu',config.name||'나무의 오라'"), 'Wood awakening must visibly announce health growth');
   assert.ok(html.includes("showAwakeningProc(side,'baekho',config.name||'생존 경험'"), 'Metal awakening must announce attack growth');
