@@ -132,9 +132,9 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
 
 test('경제: 기권은 패배로 처리하되 성격 오라 선택에 따른 별도 재화 차감은 없다', () => {
   const surrender = html.slice(html.indexOf('function surrenderBattle('), html.indexOf('function finish('));
-  assert.ok(surrender.includes("showBattleResult(false,'기권했습니다. 기권은 패배로 계산됩니다.',true)"), 'Surrender must show a defeat through the new-game return path');
+  assert.ok(surrender.includes("showBattleResult(false,'기권했습니다. 기권은 패배로 계산됩니다.')"), 'Surrender must show the shared defeat and tier result');
   assert.ok(surrender.includes('settleRank(false)'), 'Surrender must settle as a defeat');
-  assert.ok(html.includes('setTimeout(restartBattleToAuraSelect,1600)'), 'A surrender must return to the aura-select start path');
+  assert.ok(!html.includes('setTimeout(restartBattleToAuraSelect,1600)'), 'A surrender must wait for the replay choice');
   assert.ok(html.includes("next.searchParams.delete('guardian')") && html.includes("next.searchParams.delete('skipIntro')"), 'A new battle must clear QA options that bypass aura selection');
   assert.ok(!surrender.includes('animateCrackerTransfer'), 'Surrender must not run its own cracker transfer');
   assert.ok(!html.includes('if(!win&&(challengeMode||forfeit))'), 'Guardian choice and surrender must not add a defeat currency penalty');
@@ -172,10 +172,11 @@ test('핵심가치: 상점 획득은 캐릭터별 어필 영상과 다시 보기
   assert.ok(html.includes("if(collectionIsSpell[index])return"), 'Magic and traps must not be treated as character videos');
 });
 
-test('핵심가치: 전투 결과는 랭크보다 캐릭터 완결로 연결한다', () => {
+test('전투 결과는 티어 현황과 다시 하기 선택을 제공한다', () => {
   assert.ok(html.includes('캐릭터 체험전 · 오라 역전'), 'Battle chrome must emphasize the character and aura experience');
-  assert.ok(html.includes("openCollection('codex');},2000)"), 'Result alert must hand off to character completion after two seconds');
-  assert.ok(html.includes('캐릭터 완결 현황'), 'The result CTA must expose character completion');
+  assert.ok(html.includes('이전 티어') && html.includes('현재 티어'), 'Result alert must show tier movement');
+  assert.ok(html.includes('한 판 더 플레이하시겠습니까?'), 'Result alert must ask whether to replay');
+  assert.ok(!html.includes("openCollection('codex');},2000)"), 'Result alert must not open the codex automatically');
 });
 
 test('핵심가치: 도감은 캐릭터별 4차 강화 완결 진척을 보여준다', () => {

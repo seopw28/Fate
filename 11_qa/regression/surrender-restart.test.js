@@ -5,12 +5,13 @@ const path = require('node:path');
 
 const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
 
-test('기권은 일반 전투 렌더링 종료와 무관하게 결과를 표시하고 새 게임으로 복귀한다', () => {
+test('기권은 패배·티어 결과를 표시하고 사용자가 다시 하기를 선택할 때까지 기다린다', () => {
   const surrender = html.slice(html.indexOf('function surrenderBattle('), html.indexOf('function showBattleResult('));
   assert.ok(surrender.includes('resultPending=true'), '기권 즉시 예약된 전투 동작을 중단해야 한다');
-  assert.ok(surrender.includes("showBattleResult(false,'기권했습니다. 기권은 패배로 계산됩니다.',true)"), '기권 패배 결과가 새 게임 복귀 경로로 표시되어야 한다');
-  assert.ok(!surrender.includes("setBattlePhase('ended')"), '기권 복귀가 전투 렌더링 정리에 의존하면 안 된다');
-  assert.ok(html.includes('setTimeout(restartBattleToAuraSelect,1600)'), '결과 표시 후 오라 선택 시작 경로를 새로 불러와야 한다');
+  assert.ok(surrender.includes("showBattleResult(false,'기권했습니다. 기권은 패배로 계산됩니다.')"), '기권도 공통 패배·티어 결과를 표시해야 한다');
+  assert.ok(surrender.includes('settleBattleUi()'), '기권 시에도 전투 UI를 종료 상태로 정리해야 한다');
+  assert.ok(!html.includes('setTimeout(restartBattleToAuraSelect,1600)'), '사용자 선택 없이 새 판으로 자동 이동하면 안 된다');
+  assert.ok(html.includes('onclick="restartBattleToAuraSelect()">다시 하기</button>'), '결과 화면에 명시적인 다시 하기 선택지가 있어야 한다');
   assert.ok(html.includes("next.searchParams.delete('guardian')") && html.includes("next.searchParams.delete('skipIntro')"), '자동 오라 선택용 QA 옵션이 다음 판까지 남으면 안 된다');
 });
 
