@@ -31,8 +31,8 @@ const SEED = Number(args.seed) || 1;
 const SYM = (args.mode || 'symmetric') !== 'game';
 const INITIATIVE = !args['no-initiative'];
 const HEAL_COUNTS_FOR_INITIATIVE = !!args['heal-counts'];/* 기본: 현무 회복분은 선공권 판정에서 제외(게임과 동일). --heal-counts 로 회복분도 포함 *//* --no-initiative: 선공권 규칙을 끄고 항상 내가 선공(상호 교대 없음) */
-const AWAKENING_SIM = !!args.awakening;
 const AWAKENING_MATCHUP = args['awakening-matchup'] ? String(args['awakening-matchup']) : '';
+const AWAKENING_SIM = !!args.awakening || !!AWAKENING_MATCHUP;
 const AWAKENING_POOL_ONLY = !!args['pool-only'];
 
 // ── 데이터 로드 ──────────────────────────────────────────────
@@ -61,8 +61,8 @@ const HERO_HP = 100, MANA_CAP = 10, START_MANA = 3, FIELD_LIMIT = 6, HAND_LIMIT 
 const AWAKEN_HP = 80;
 const AWAKENING_OPTIONS = {
   jujak: {
-    A: { label: '불길 확산', chance: 0.80, burnDamage: 1 },
-    B: { label: '업화', chance: 0.50, burnDamage: 2 },
+    A: { label: '불길 확산', chance: 0.40, burnDamage: 1, burnTurns: 5 },
+    B: { label: '업화', chance: 0.20, burnDamage: 3, burnTurns: 2 },
   },
   cheongryong: {
     A: { label: '범람', chance: 0.045, manaMin: 7, manaMax: 7 },
@@ -153,9 +153,15 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
     if (target.hp > 0 && proc(attackerSide, 'jujak')) {
       const fire = auraConfig(attackerSide, 'jujak');
       target.auraBurnDamage = Math.max(target.auraBurnDamage || 0, fire.burnDamage || 1);
+      target.auraBurnTurns = Math.max(target.auraBurnTurns || 0, fire.burnTurns || 2);
     }
     // 카드 교전은 방어자의 생사와 무관하게 양쪽이 상대 공격력만큼 피해를 주고받는다.
     damageUnit(attackerSide, unit, returnDamage);
+    if (unit.hp > 0 && returnDamage > 0 && proc(defenderSide, 'jujak')) {
+      const fire = auraConfig(defenderSide, 'jujak');
+      unit.auraBurnDamage = Math.max(unit.auraBurnDamage || 0, fire.burnDamage || 1);
+      unit.auraBurnTurns = Math.max(unit.auraBurnTurns || 0, fire.burnTurns || 2);
+    }
   }
   function attack(attackerSide, defenderSide, unit) {
     strike(attackerSide, defenderSide, unit);
@@ -177,7 +183,11 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
   function tickAuraBurn(side) {
     side.field.slice().forEach(unit => {
       const burn = unit.auraBurnDamage || 0;
-      if (burn > 0) damageUnit(side, unit, burn);
+      if (burn > 0 && unit.auraBurnTurns > 0) {
+        damageUnit(side, unit, burn);
+        unit.auraBurnTurns--;
+        if (unit.auraBurnTurns <= 0) unit.auraBurnDamage = 0;
+      }
     });
   }
   function healHero(side) { const before = side.hp; side.hp = Math.min(HERO_HP, side.hp + GUARDIANS.hyeonmu.amount); side.healed += side.hp - before; }

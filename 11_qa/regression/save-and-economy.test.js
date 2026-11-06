@@ -88,9 +88,10 @@ test('금속의 오라: 맨 왼쪽 챔프가 생존 경험으로 공격력을 �
   assert.ok(html.includes("badge.textContent=front.dataset.metalExperienced==='true'?'단련 완료':'생존 '+turns+'턴 · '+Math.round(chance*100)+'%'"), 'The current survival chance must be visible');
 });
 
-test('오라 밸런스: 불 화상 50%, 대지 치명타 생존 1.5%, 나무 체력 성장 78%', () => {
-  assert.ok(html.includes("chance:.50,burnDamage:1,short:'화상'"));
-  assert.ok(html.includes("target.dataset.auraBurn=String(damage)"), 'Fire burn must persist as a non-stacking status');
+test('오라 밸런스: 불 공격·반격 화상 30%, 대지 치명타 생존 1.5%, 나무 체력 성장 78%', () => {
+  assert.ok(html.includes("chance:.30,burnDamage:1,burnTurns:2,short:'화상'"));
+  assert.ok(html.includes("target.dataset.auraBurn=String(Math.max(Number(target.dataset.auraBurn)||0,damage))"), 'Fire burn damage must persist without additive stacking');
+  assert.ok(html.includes("target.dataset.auraBurnTurns=String(Math.max(Number(target.dataset.auraBurnTurns)||0,turns))"), 'Reapplying burn must refresh rather than stack its duration');
   assert.ok(html.includes("afterHp>0&&afterHp<beforeHp)applyAuraBurn(attackerSide,defender)"), 'Burn requires actual combat damage and a surviving champion');
   assert.ok(html.includes("hyeonmu:{name:'대지의 오라',label:'대지',title:'무던',seal:'땅',color:'#d9a35b',sigil:'assets/auras/earth-sigil.svg',chance:.015,maxProcs:1"));
   assert.ok(html.includes("namu:{name:'나무의 오라',label:'나무',title:'발전',seal:'목',color:'#5fd38a',sigil:'assets/auras/wood-sigil.svg',chance:.78,short:'체력 성장'"));
@@ -108,8 +109,8 @@ test('오라 각성: 체력 80 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes('playerHp<=GUARDIAN_AWAKEN_HP'), 'Runtime must detect the awakening health threshold');
   assert.ok(html.includes("guardianAwakenChoice=choice"), 'The selected awakening branch must be stored');
   assert.ok(html.includes('const guardianAwakenActive=side=>Boolean(guardianAwakenChoiceOf(side))'), 'Awakening must remain active for either side after selection');
-  assert.ok(html.includes("jujak:{A:{name:'불길 확산',chance:.80,burnDamage:1"));
-  assert.ok(html.includes("B:{name:'업화',chance:.50,burnDamage:2"));
+  assert.ok(html.includes("jujak:{A:{name:'불길 확산',chance:.40,burnDamage:1,burnTurns:5"));
+  assert.ok(html.includes("B:{name:'업화',chance:.20,burnDamage:3,burnTurns:2"));
   assert.ok(html.includes("A:{name:'범람',chance:.045,manaMin:7,manaMax:7"));
   assert.ok(html.includes("B:{name:'순환',chance:.27,manaMin:2,manaMax:2"));
   assert.ok(html.includes("A:{name:'숲의 생명',chance:1,hpGain:2"));
@@ -134,7 +135,12 @@ test('오라 각성: 체력 80 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("if(!playerGuardian)return '성격 오라 필요'"), 'No-aura mode must not receive an aura awakening');
   assert.ok(html.includes("fieldGuardianUltimate.id='field-guardian-ultimate'"), 'Guardian awakening must render beside the field ultimate condition');
   assert.ok(html.includes('.arena.guardian-awakened.guardian-awakened-namu'), 'Wood awakening must have its own field aura color');
-  assert.ok(html.includes("showAwakeningProc(side,'jujak',label,'대상 턴 시작마다 피해 '+damage,target)"), 'Fire awakening must visibly announce persistent burn');
+  assert.ok(html.includes("showAwakeningProc(side,'jujak',label,turns+'턴간 턴 시작마다 피해 '+damage,target)"), 'Fire awakening must visibly announce damage and duration');
+  assert.ok(html.includes("guardianOfSide(defenderSide)==='jujak')applyAuraBurn(defenderSide,attacker)"), 'Fire aura must also roll burn from mutual-damage counters');
+  assert.ok(html.includes("className='aura-burn-vfx'"));
+  assert.ok(html.includes("className='aura-burn-badge'"));
+  assert.ok(html.includes("delete target.dataset.auraBurnTurns"), 'Burn duration must clear after expiry or cleanse');
+  assert.ok(html.includes("unit.dataset.auraBurnTurns=String(remaining)"), 'Burn duration must count down once per owner turn');
   assert.ok(html.includes("showAwakeningProc('player','cheongryong',name,'마나 +'+gain"), 'Water awakening must visibly announce recovered mana');
   assert.ok(html.includes("showAwakeningProc(side,'namu',config.name||'나무의 오라'"), 'Wood awakening must visibly announce health growth');
   assert.ok(html.includes("showAwakeningProc(side,'baekho',config.name||'생존 경험'"), 'Metal awakening must announce attack growth');
