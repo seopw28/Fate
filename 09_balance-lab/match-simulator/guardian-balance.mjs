@@ -73,7 +73,7 @@ const AWAKENING_OPTIONS = {
   },
   baekho: {
     A: { label: '절단 반격', chance: 0.70, ratio: 0.30, minDamage: 1, maxDamage: 3 },
-    B: { label: '땅울림', chance: 0.15, aoeDamage: 3 },
+    B: { label: '땅울림', chance: 0.14, aoeDamage: 3 },
   },
   hyeonmu: {
     A: { label: '절대방어', chance: 0.035, avoidDamage: true },

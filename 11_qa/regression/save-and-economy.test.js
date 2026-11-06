@@ -112,7 +112,7 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("B:{name:'순환',chance:.99,manaMin:2,manaMax:2"), 'Water must offer the 99% reliable mana branch');
   assert.ok(html.includes("A:{name:'숲의 생명',chance:1,hpGain:1"), 'Wood must offer guaranteed whole-field growth');
   assert.ok(html.includes("B:{name:'거목 수호',chance:.30,hpGain:5,leftmostOnly:true"), 'Wood must offer low-frequency, high-impact growth for the leftmost ally');
-  assert.ok(html.includes("B:{name:'땅울림',chance:.15,aoeDamage:3"), 'Metal must offer a rare but stronger whole-field counter distinct from its single-target branch');
+  assert.ok(html.includes("B:{name:'땅울림',chance:.14,aoeDamage:3"), 'Metal must offer a rare but stronger whole-field counter distinct from its single-target branch');
   assert.ok(html.includes("A:{name:'절단 반격',chance:.7,ratio:.3,minDamage:1,maxDamage:3"), 'Metal must offer a frequent low-damage single-target counter');
   assert.ok(html.includes("A:{name:'절대방어',chance:.035,avoidDamage:true"), 'Earth must offer a very-low-chance absolute defense');
   assert.ok(html.includes("B:{name:'불굴',chance:.095,maxProcs:2,reviveRatio:0"), 'Earth must offer a stronger version of its base lethal survival');
