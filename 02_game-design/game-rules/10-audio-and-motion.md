@@ -144,16 +144,12 @@
 
 ## 3. 배경음악
 
-| 성격 오라 | 일반 전투(calm) | 최후의 저항(crisis) |
+| 상황 | 곡 | 파일 |
 |---|---|---|
-| 불 · 주작 | `fire_calm_v4.mp3` | `fire_crisis_v2.mp3` |
-| 물 · 청룡 | `water_calm_v2.mp3` | `water_crisis_v7.mp3` |
-| 나무 · 거목 | `wood_calm_v2.mp3` | `wood_crisis_v7.mp3` |
-| 대지 · 현무 | `earth_calm_v9.mp3` | `earth_crisis_v3.mp3` |
-| 금속 · 백호 | `metal_calm_v7.mp3` | `metal_crisis_v5.mp3` |
+| 기본 | Vex - 최후 결전 (BPM 125) | `dist/assets/audio/bgm-final-battle.mp3` |
+| 최후의 저항 시작 후 | Vex - 각성 (BPM 145) | `dist/assets/audio/bgm-awakening.mp3` |
 
-- 원본은 `/Users/vex/Documents/git/Suno/output/{element}`에서 `Past` 폴더를 제외한 현재 버전을 가져옵니다. 배포 파일은 `dist/assets/audio/`에 둡니다.
-- `earth_calm_v9.mp3`는 별도 Suno 파일이 아니라 이 변경 직전 게임의 기본 BGM(`bgm-final-battle.mp3`)을 동일 음원으로 보존한 파일이며, 오라 선택 전 기본값이자 대지 오라의 calm곡입니다. `earth_calm_v8.mp3`도 현재 원본 보존을 위해 함께 배포하지만 게임 재생 목록에는 넣지 않습니다.
-- 오라 선택 직후 해당 원소의 calm곡을 재생합니다. 어느 편이든 영웅 체력이 최대치의 40% 이하가 되면 **플레이어가 선택한 오라와 같은 원소의 crisis곡**으로 1.6초 크로스페이드합니다 (`selectAuraBgm`, `switchToAwakeningBgm`, `BGM_CROSSFADE_MS`).
-- 한 번 최후의 저항 상태에 진입하면 해당 배틀 동안 영웅 본체 체력 회복 자체가 잠기므로 crisis곡은 배틀 종료까지 유지됩니다. 챔피언 카드 회복은 이 제한과 무관합니다. 새 게임에서 오라를 다시 선택하면 해당 calm곡으로 돌아갑니다.
-- 사운드 패널의 배경음악 슬라이더는 모든 원소별 calm/crisis곡에 동일하게 적용됩니다. 곡별 체감 음량은 실제 플레이 청취 후 별도 보정합니다.
+- 전투감을 일관되게 유지하기 위해 성격 오라와 관계없이 같은 기본 전투곡을 사용합니다.
+- 어느 편이든 영웅 체력이 최대치의 40% 이하가 되면 각성 곡으로 **1.6초 크로스페이드**합니다 (`switchToAwakeningBgm`, `BGM_CROSSFADE_MS`).
+- 한 번 최후의 저항 상태에 진입하면 해당 배틀 동안 영웅 본체 체력 회복 자체가 잠깁니다. 따라서 각성 곡으로 전환된 뒤 회복으로 긴급 상태가 해제되는 경우가 없으며, 각성 곡은 배틀 종료까지 유지됩니다. 챔피언 카드 회복은 이 제한과 무관합니다. 다시 시작(새로고침)하면 기본 곡으로 돌아갑니다.
+- 두 곡의 평균 음량은 비슷하므로(−14.4 dB / −13.9 dB) 볼륨 보정은 하지 않습니다. 사운드 패널의 배경음악 슬라이더가 두 곡에 똑같이 적용됩니다.
