@@ -37,7 +37,7 @@
 | 덱 크기 | 정확히 60장 | `saveBattleDeck` |
 | 같은 카드 덱 최대 장수 | 7장 (보유 수 이하) | `addToDraft` |
 | 마법/함정 슬롯 | 2칸 | `setMagicCards` |
-| 궁극기 | 배틀당 횟수 제한 없음. 맨 왼쪽 아군을 제물로 삼고 궁극기 사용자는 순서 변경 불가 0/1로 맨 왼쪽에 남음 | [04](04-ultimate-and-comeback.md) |
+| 궁극기 | 배틀당 횟수 제한 없음. 맨 오른쪽 아군을 제물로 삼고 궁극기 사용자는 순서 변경 불가 0/1로 맨 오른쪽에 남아 전역 도발 | [04](04-ultimate-and-comeback.md) |
 | 혈마나 해금 | 3턴부터 | `BLOOD_MANA_UNLOCK_TURN` |
 | 시작 크래커 | 300 | `defaultCollectionState` |
 

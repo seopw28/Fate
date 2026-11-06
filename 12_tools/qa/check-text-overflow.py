@@ -70,6 +70,7 @@ STATES = [
     ("궁극기 대기", "ultimateState=ultimateSpec(document.querySelector('.hand .card')); ultimateUsed=false; renderFieldUltimateAction()"),
     ("궁극기 재사용 대기", "ultimateState=ultimateSpec(document.querySelector('.hand .card')); ultimateUsed=false; lastUltimateTurn=turnNumber; renderUltimate(); renderFieldUltimateAction()"),
     ("궁극기 소진자 사망", "const u=document.querySelector('.summon-zone .unit');if(u){u.dataset.ultimateSpent='first';u.dataset.art=u.querySelector('img')?.src||'';showUltimateSpentDeath(u)}"),
+    ("복수자 강림", "const u=document.querySelector('.summon-zone .unit');if(u)showAvengerArrival({name:'복수자 세리나',art:u.dataset.art||u.querySelector('img')?.src||'',el:'fire'},{name:'최초 궁극기 사용자'},u)"),
     ("궁극기 세팅 모드", "ultimateState=null; ultimateUsed=false; battlePhase='setup'; setHandFilter('champion'); armUltimateSetting()"),
     ("마법 세팅 모드", "battlePhase='setup'; setHandFilter('spell'); armMagicSetting()"),
     ("최후의 저항 즉시 발동 마법", "battlePhase='setup'; desperateQuickCastTurn=turnNumber; desperateQuickCastUsed=false; setHandFilter('spell'); updateMana()"),

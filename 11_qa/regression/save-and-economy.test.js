@@ -251,17 +251,19 @@ test('궁극기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다
   assert.ok(html.includes('lastUltimateTurn=turnNumber;'), 'Activation must record the turn it was used');
 });
 
-test('궁극기: 맨 왼쪽 아군을 제물로 순서 고정 0/1 사용자를 배치하고 전장 6장에서는 잠긴다', () => {
+test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 0/1 사용자를 배치한다', () => {
   assert.ok(html.includes("if(fieldCount>=FIELD_CARD_LIMIT)return '내 전장 6장 · 궁극기 사용 불가'"));
   assert.ok(html.includes("if(fieldCount<1)return '제물로 삼을 아군 챔프 필요'"));
-  assert.ok(html.includes(".at(0),firstUse=!firstUltimateSpec"));
+  assert.ok(html.includes(".at(-1),firstUse=!firstUltimateSpec"));
   assert.ok(html.includes("summonBattleToken(spec.name,0,1,spec.element,'ultimate-spent')"));
-  assert.ok(html.includes('lane.prepend(unit)'));
   assert.ok(html.includes("unit.dataset.ultimateSpent=firstUse?'first':'later'"));
+  assert.ok(html.includes("unit.dataset.ultimateAggro='true'"));
   assert.ok(html.includes("unit.dataset.orderLocked='true'"));
   assert.ok(html.includes("unit.draggable=battlePhase==='setup'&&!locked"));
   assert.ok(html.includes("unit.dataset.orderLocked==='true'"));
   assert.ok(html.includes("target?.dataset.orderLocked==='true'"));
+  assert.ok(html.includes("if(locked&&summonDropZone.lastElementChild!==locked)summonDropZone.append(locked)"));
+  assert.ok(html.includes("const ultimateAggro=targets.find(u=>u.dataset.ultimateAggro==='true');if(ultimateAggro)return ultimateAggro"));
 });
 
 test('궁극기 소진 0/1 카드가 죽으면 중앙 확대·분할 소멸 연출을 한 번 재생한다', () => {
@@ -281,6 +283,10 @@ test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복�
   assert.ok(html.includes('if(avengerSummoned||!firstUltimateSpec||!firstUltimateCompanion)return null'));
   assert.ok(html.includes("attack=firstUltimateSpec.attack+3,hp=firstUltimateSpec.hp+10"));
   assert.ok(html.includes("summonBattleToken(partner.name,attack,hp,partner.el,'ultimate-avenger')"));
+  assert.ok(html.includes('function showAvengerArrival(partner,source,unit)'));
+  assert.ok(html.includes("source.name+'의 복수를 하고 말겠어!'"));
+  assert.ok(html.includes('AVENGER DESCENT'));
+  assert.ok(html.includes('showAvengerArrival(partner,firstUltimateSpec,unit)'));
   assert.ok(html.includes("if(side==='player')summonFirstUltimateAvenger()"));
 });
 
