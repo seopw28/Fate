@@ -2357,7 +2357,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       cheongryong:{A:{name:'범람',chance:.15,manaMin:8,manaMax:8,desc:'비용 2 이상 카드 사용 시 15% 확률로 마나 8 회복',ui:['비용 2 이상 카드 사용 시','15% 확률로 마나 8 회복']},B:{name:'순환',chance:.99,manaMin:2,manaMax:2,desc:'비용 2 이상 카드 사용 시 99% 확률로 마나 2 회복',ui:['비용 2 이상 카드 사용 시','99% 확률로 마나 2 회복']}},
       namu:{A:{name:'숲의 생명',chance:1,hpGain:1,desc:'내 턴 시작 시 전장에 있는 모든 아군의 최대·현재 체력 +1',ui:['내 턴 시작 시','모든 아군 최대·현재 체력 +1']},B:{name:'거목 수호',chance:.30,hpGain:5,leftmostOnly:true,desc:'내 턴 시작 시 30% 확률로 가장 왼쪽 아군의 최대·현재 체력 +5',ui:['내 턴 시작 시 30% 확률로','가장 왼쪽 아군 최대·현재 체력 +5']}},
       baekho:{A:{name:'절단 반격',chance:.7,ratio:.3,minDamage:1,maxDamage:3,desc:'생존 시 70% 확률로 공격자에게 공격력 30% 반격 · 피해 1~3',ui:['공격을 받고 생존 시 70% 확률로','공격력 30% 반격 · 피해 1~3']},B:{name:'파쇄 공명',chance:.14,aoeDamage:3,desc:'생존 시 14% 확률로 적 전장 전체에 피해 3',ui:['공격을 받고 생존 시 14% 확률로','적 전장 전체에 피해 3']}},
-      hyeonmu:{A:{name:'암반 피부',chance:.75,damageReduction:1,desc:'피해를 받을 때 75% 확률로 피해 1 감소 · 최소 피해 1',ui:['피해를 받을 때 75% 확률로','피해 1 감소 · 최소 피해 1']},B:{name:'절대방어',chance:.045,avoidDamage:true,desc:'피해를 받을 때 4.5% 확률로 피해를 완전히 무효화',ui:['피해를 받을 때 4.5% 확률로','해당 피해 완전 무효화']}}
+      hyeonmu:{A:{name:'암반 피부',chance:.7,damageReduction:1,desc:'피해를 받을 때 70% 확률로 피해 1 감소 · 최소 피해 1',ui:['피해를 받을 때 70% 확률로','피해 1 감소 · 최소 피해 1']},B:{name:'절대방어',chance:.05,avoidDamage:true,desc:'피해를 받을 때 5% 확률로 피해를 완전히 무효화',ui:['피해를 받을 때 5% 확률로','해당 피해 완전 무효화']}}
     };
     let guardianAwakenUsed=false,guardianAwakenChoice=null,enemyGuardianAwakenChoice=null,guardianAwakenPrompted=false;
     const guardianAwakenChoiceOf=side=>side==='player'?guardianAwakenChoice:enemyGuardianAwakenChoice;
