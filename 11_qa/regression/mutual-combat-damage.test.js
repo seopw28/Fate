@@ -21,6 +21,13 @@ test('교환 피해는 방어 카드의 반격 이동·타격 이펙트 후 적�
   assert.ok(html.includes("setTimeout(()=>attacker.remove(),900)"), '사망 카드는 반격 피격을 보여 준 뒤 제거해야 한다');
 });
 
+test('자동 공격은 반격이 구분된 뒤 다음 카드 공격을 시작한다', () => {
+  assert.ok(html.includes('const PLAYER_AUTO_ATTACK_INTERVAL = 1150;'));
+  assert.ok(html.includes('combatMs(index*PLAYER_AUTO_ATTACK_INTERVAL)'));
+  assert.ok(html.includes('combatMs(attackers.length*PLAYER_AUTO_ATTACK_INTERVAL+250)'));
+  assert.ok(!html.includes('combatMs(index*900)'));
+});
+
 test('상대가 공격해도 내 카드 공격력만큼 교환 피해가 반드시 적용되고 숫자로 표시된다', () => {
   assert.ok(html.includes('function showExchangeDamageNumber(target,damage,blocked)'));
   assert.ok(html.includes("badge.textContent=blocked?'교환 0 · 보호막':damage>0?'교환 −'+damage:'교환 0'"));

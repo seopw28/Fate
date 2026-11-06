@@ -52,3 +52,11 @@ test('상대도 챔프 능력·마법·함정·궁극기를 같은 자원 규칙
   assert.ok(html.includes("triggerEnemyTrap('player_summon',{unit})"));
   assert.ok(html.includes("triggerEnemyTrap('enemy_hero_attacked',{attacker:selected,damage})"));
 });
+
+test('상대 필드가 비어 있으면 마법·궁극기보다 챔피언 소환을 우선한다', () => {
+  assert.ok(html.includes('function summonEnemyPriorityChampion(lane)'));
+  assert.ok(html.includes("if(lane.querySelector(':scope > .unit:not([data-destroyed=\"true\"])'))return false"));
+  const turn = html.slice(html.indexOf('function enemyTurn(){'), html.indexOf('function selectUnit('));
+  assert.ok(turn.indexOf('summonEnemyPriorityChampion(lane)') < turn.indexOf('equipEnemyUltimate()'));
+  assert.ok(turn.indexOf('summonEnemyPriorityChampion(lane)') < turn.indexOf('setEnemyMagic()'));
+});

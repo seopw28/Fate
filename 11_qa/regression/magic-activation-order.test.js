@@ -21,3 +21,17 @@ test('상대 마법도 중앙 발동 안내 후 실제 효과를 적용한다', 
 test('동시에 준비된 상대 마법은 발동 연출이 겹치지 않게 순차 처리한다', () => {
   assert.ok(html.includes('setTimeout(()=>resolveEnemySpell(card),order*2300)'));
 });
+
+test('내 함정과 상대 함정은 발동 시 카드 이름과 일러스트를 중앙에 공개한다', () => {
+  assert.ok(html.includes("function showTrapActivation(trap,side='player')"));
+  assert.ok(html.includes("global.className='global-spell trap-activation '+side"));
+  assert.ok(html.includes("showTrapActivation(trap,'player')"));
+  assert.ok(html.includes("showTrapActivation(trap,'enemy')"));
+  assert.ok(html.includes("setTimeout(()=>global.classList.add('resolved'),900)"));
+  assert.ok(html.includes("setTimeout(()=>global.remove(),2300)"));
+});
+
+test('상대 함정은 세트 시 정체를 숨기고 발동 시에만 공개한다', () => {
+  assert.ok(html.includes('상대</strong>가 함정 카드를 뒤집어 세트했습니다.'));
+  assert.ok(!html.includes("(card.trap?'함정':'마법')+' <strong>'+card.name+'</strong>을(를) 세트했습니다."));
+});
