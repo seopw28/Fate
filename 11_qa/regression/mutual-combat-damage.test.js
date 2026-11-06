@@ -21,6 +21,12 @@ test('교환 피해는 방어 카드의 반격 이동·타격 이펙트 후 적�
   assert.ok(html.includes("setTimeout(()=>attacker.remove(),900)"), '사망 카드는 반격 피격을 보여 준 뒤 제거해야 한다');
 });
 
+test('방어함 표시는 전용 방패 연출과 동시에 방어 사운드를 반드시 재생한다', () => {
+  assert.ok(html.includes("function showDefenseShield(target,label){if(!target)return;sfx('shield');"));
+  assert.ok(html.includes("if(kind==='shield'&&String(label).startsWith('방어함')){showDefenseShield(target,label);return;}"));
+  assert.ok(!html.includes("if(defense.defended){sfx('shield');showSkillEffect('shield',defender,'방어함 "));
+});
+
 test('자동 공격은 반격이 구분된 뒤 다음 카드 공격을 시작한다', () => {
   assert.ok(html.includes('function runCombatQueue(units,perform,done)'));
   assert.ok(html.includes('combatQueueHasNext=hasNext;combatBusyUntil=performance.now();perform(unit)'));
