@@ -288,6 +288,10 @@ test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복�
   assert.ok(html.includes('AVENGER DESCENT'));
   assert.ok(html.includes('showAvengerArrival(partner,firstUltimateSpec,unit)'));
   assert.ok(html.includes('function resolveAvengerArrivalDamage(partner)'));
+  assert.ok(html.includes('function showAvengerLandingImpact(unit,color)'));
+  assert.ok(html.includes('showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral)'));
+  assert.ok(html.includes("wave.className='avenger-landing-impact'"));
+  assert.ok(html.includes("arena?.animate([{transform:'none'},{transform:'translateY(13px) scale(.985)'"));
   assert.ok(html.includes("damageUnit(target,5,partner.el)"));
   assert.ok(html.includes('setTimeout(()=>resolveAvengerArrivalDamage(partner),1450)'));
   assert.ok(html.includes("if(side==='player')summonFirstUltimateAvenger()"));
