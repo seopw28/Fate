@@ -1,0 +1,21 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
+
+test('치명적인 상대 공격은 타격 순간에 판정하고 이후 예약 공격을 중단한다', () => {
+  const enemyTurn = html.slice(html.indexOf('function enemyTurn('), html.indexOf('function selectUnit('));
+  assert.ok(enemyTurn.includes('if(resultPending||!unit.isConnected'), '종료 후 예약된 상대 공격이 실행되면 안 된다');
+  assert.ok(enemyTurn.includes("showSummonAttack(unit,'내 영웅',damage,()=>"), '본체 피해는 타격 콜백에서 처리해야 한다');
+  assert.ok(enemyTurn.indexOf("showSummonAttack(unit,'내 영웅',damage,()=>") < enemyTurn.indexOf('playerHp=Math.max(0,playerHp-damage)'), 'HP가 공격 연출보다 먼저 줄면 안 된다');
+  assert.ok(html.includes('showSummonAttack=function(unit,enemyName,damage,onImpact){showSummonAttackBeforePassion(unit,enemyName,damage,onImpact)'), '불 오라 래퍼도 타격 콜백을 전달해야 한다');
+});
+
+test('승패 확정 시 전투 UI를 종료 상태로 정리하고 결과를 즉시 표시한다', () => {
+  const finish = html.slice(html.indexOf('function settleBattleUi('), html.indexOf('function triggerBattlecry('));
+  assert.ok(finish.includes("end.textContent='전투 종료'"));
+  assert.ok(finish.includes("document.querySelectorAll('.initiative-banner,.effect-narration,.aura-awaken-choice')"));
+  assert.ok(!finish.includes('animateCrackerTransfer(stolen'), '승리 결과가 보상 이동 연출 완료를 기다리면 안 된다');
+});
