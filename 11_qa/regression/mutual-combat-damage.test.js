@@ -9,6 +9,12 @@ test('카드 대 카드 교전은 양쪽이 상대 공격력만큼 피해를 받
   assert.ok(html.includes('const resolveDuelBeforeMutualDamage=resolveDuel'));
   assert.ok(html.includes('returnDamage=Math.max(0,defenderAttack)'));
   assert.ok(!html.includes('calculateDamageBeforeDuel(Math.max(0,(Number(base)||0)-1)'));
-  assert.ok(html.includes('damageUnit(attacker,returnDamage,getElement(defender))'));
+  assert.ok(html.includes('applyNumericExchangeDamage(attacker,returnDamage,getElement(defender))'));
   assert.ok(html.includes("attacker.dataset.destroyed='true';triggerDeathrattle(attacker)"));
+});
+
+test('교환 피해는 반격 이펙트 없이 체력 수치로만 처리한다', () => {
+  assert.ok(html.includes('function applyNumericExchangeDamage(target,damage,element)'));
+  assert.ok(html.includes('impact=()=>{};shieldBreakFx=()=>{};showSkillEffect=()=>{};showAwakeningProc=()=>{};sfx=()=>{}'));
+  assert.ok(html.includes('applyNumericExchangeDamage(attacker,returnDamage,getElement(defender))'));
 });
