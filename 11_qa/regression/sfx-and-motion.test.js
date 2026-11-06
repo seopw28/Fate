@@ -575,10 +575,23 @@ test('마법 시네마틱: 회복·아케인·보이드 계열은 전용 자산�
   assert.ok(html.includes("['bounce','resurrect','global-destroy'].includes(effect))showSpellCinematicEffect('void'"), 'Recall, resurrection, and destruction spells must use the void gate');
 });
 
-test('배경음악: 최후의 저항이 시작되면 각성 BGM으로 크로스페이드한다', () => {
-  const html = require('node:fs').readFileSync(require('node:path').join(__dirname, '../../dist/index.html'), 'utf8');
-  assert.ok(html.includes("awakening:new Audio('assets/audio/bgm-awakening.mp3')"), 'Awakening track must be loaded');
-  assert.ok(require('node:fs').existsSync(require('node:path').join(__dirname, '../../dist/assets/audio/bgm-awakening.mp3')), 'Awakening mp3 must be shipped');
+test('배경음악: 오라별 calm곡을 쓰고 최후의 저항에서 같은 원소 crisis곡으로 전환한다', () => {
+  const html = fs.readFileSync(path.join(__dirname, '../../dist/index.html'), 'utf8');
+  const tracks = [
+    'earth_calm_v9.mp3', 'earth_crisis_v3.mp3',
+    'fire_calm_v4.mp3', 'fire_crisis_v2.mp3',
+    'water_calm_v2.mp3', 'water_crisis_v7.mp3',
+    'wood_calm_v2.mp3', 'wood_crisis_v7.mp3',
+    'metal_calm_v7.mp3', 'metal_crisis_v5.mp3'
+  ];
+  for (const track of tracks) {
+    assert.ok(html.includes(`assets/audio/${track}`), `${track} must be loaded`);
+    assert.ok(fs.existsSync(path.join(__dirname, '../../dist/assets/audio', track)), `${track} must be shipped`);
+  }
+  assert.ok(html.includes("const auraBgmKeys={jujak:'fire',cheongryong:'water',namu:'wood',hyeonmu:'earth',baekho:'metal'}"));
+  assert.ok(html.includes('let bgm=bgmTracks.earthCalm'), 'The preserved current BGM must be the default earth calm v9 track');
+  assert.ok(html.includes("function selectAuraBgm(id){switchBgmTrack(auraBgmTrack(id,'calm'));}"));
+  assert.ok(html.includes("function switchToAwakeningBgm(){switchBgmTrack(auraBgmTrack(playerGuardian,'crisis'));}"));
   assert.ok(html.includes('if(active){switchToAwakeningBgm();'), 'Desperation start must switch the BGM');
 });
 

@@ -276,6 +276,7 @@ test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 
   assert.ok(html.includes("target?.dataset.orderLocked==='true'"));
   assert.ok(html.includes("if(locked&&summonDropZone.lastElementChild!==locked)summonDropZone.append(locked)"));
   assert.ok(html.includes("const ultimateAggro=targets.find(u=>u.dataset.ultimateAggro==='true');if(ultimateAggro)return ultimateAggro"));
+  assert.ok(html.includes("inset:auto auto auto 50%;top:-11px;width:auto;height:auto"), '전역 도발 배지는 공격 완료 오버레이의 inset을 초기화해야 한다');
 });
 
 test('궁극기 소진 0/1 카드가 죽으면 중앙 확대·분할 소멸 연출을 한 번 재생한다', () => {
@@ -308,8 +309,8 @@ test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복�
   assert.ok(html.includes("wave.className='avenger-landing-impact'"));
   assert.ok(html.includes("arena?.animate([{transform:'none'},{transform:'translateY(13px) scale(.985)'"));
   assert.ok(html.includes("damageUnit(target,5,partner.el)"));
-  assert.ok(html.includes('setTimeout(()=>resolveAvengerArrivalDamage(partner),1450)'));
-  assert.ok(html.includes("if(side==='player')summonFirstUltimateAvenger()"));
+  assert.ok(html.includes('setTimeout(()=>resolveAvengerArrivalDamage(partner),3050)'));
+  assert.ok(html.includes("if(side==='player')queueFirstUltimateAvenger(0)"));
 });
 
 test('궁극기: 땅 궁극기는 회복이 아니라 절대방어(+강한 카드는 부활)다', () => {
