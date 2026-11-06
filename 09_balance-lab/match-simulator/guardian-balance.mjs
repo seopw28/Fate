@@ -76,8 +76,8 @@ const AWAKENING_OPTIONS = {
     B: { label: '파쇄 공명', chance: 0.14, aoeDamage: 3 },
   },
   hyeonmu: {
-    A: { label: '암반 피부', chance: 0.99, damageReduction: 1 },
-    B: { label: '절대방어', chance: 0.035, avoidDamage: true },
+    A: { label: '암반 피부', chance: 0.95, damageReduction: 1 },
+    B: { label: '절대방어', chance: 0.04, avoidDamage: true },
   },
 };
 for (const override of String(args['awakening-override'] || '').split(',').filter(Boolean)) {
