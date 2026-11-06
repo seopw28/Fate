@@ -199,7 +199,7 @@ test('연결: 스크립트 로드, 피격음 교체, 평타 모션/소리, 칸 �
   assert.ok(html.includes('<script src="runtime/sfx-variety.js"></script>') && html.includes('<script src="runtime/attack-motions.js"></script>'), 'Both modules must be loaded');
   assert.ok(html.includes("if(kind==='hit'&&soundOn){fateSfx.playHit(variant,strength,hitPan);return;}"), 'Hit sound must route through the variety engine');
   assert.ok(html.includes('hitPan=panFor(target);sfx(\'hit\',element,damage)'), 'Hit sound must be panned toward the target');
-  assert.ok(html.includes('const motion=pickAttackMotion(attacker,dx,dy,moveX,moveY);attacker.animate(motion.keyframes'), 'Attacks must use the varied motion');
+  assert.ok(html.includes('const motion=pickAttackMotion(attacker,dx,dy,moveX,moveY)') && html.includes('attacker.animate(motion.keyframes'), 'Attacks must use the varied motion');
   assert.ok(html.includes('combatMs(Math.round(motion.duration*motion.hit))'), 'Impact must land at the motion contact point');
   assert.ok(html.includes('.summon-zone:has(.field-attacker) { overflow:visible; }'), 'Attack motion must not be clipped by the field');
   const build = fs.readFileSync(path.join(root, '12_tools/build-scripts/build-runtime.mjs'), 'utf8');

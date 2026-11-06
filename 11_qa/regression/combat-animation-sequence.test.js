@@ -6,20 +6,22 @@ const path = require('node:path');
 const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
 
 test('공격·반격·추가 효과·다음 교전은 공통 타임라인 순서로 실행된다', () => {
-  assert.ok(html.includes('counterDelay:1000,guardianReaction:2100,followUpDelay:2900,duelGap:4600,lastDuelSettle:3200,phaseTransition:250,initiativeLeadIn:500'));
+  assert.ok(html.includes('counterDelay:1000,guardianReaction:2100,followUpDelay:2900,postCombatPause:463,phaseTransition:250,initiativeLeadIn:500'));
   assert.ok(html.includes('const COMBAT_TIME_SCALE = 1.08'));
   assert.ok(html.includes('},COMBAT_TIMING.counterDelay);'));
   assert.ok(html.includes('},COMBAT_TIMING.followUpDelay);'));
   assert.ok(html.includes('},COMBAT_TIMING.guardianReaction);'));
-  assert.ok(html.includes('const PLAYER_AUTO_ATTACK_INTERVAL = COMBAT_TIMING.duelGap;'));
-  assert.ok(html.includes('combatMs(i*COMBAT_TIMING.duelGap)'));
+  assert.ok(html.includes('function runCombatQueue(units,perform,done)'));
+  assert.ok(html.includes('afterCombatSettles(next,hasNext)'));
 });
 
-test('마지막 교전은 다음 카드용 간격을 기다리지 않고 정산 직후 턴을 넘긴다', () => {
-  assert.ok(html.includes('(attackers.length-1)*PLAYER_AUTO_ATTACK_INTERVAL+COMBAT_TIMING.lastDuelSettle'));
-  assert.ok(html.includes('(enemyUnits.length-1)*COMBAT_TIMING.duelGap+COMBAT_TIMING.lastDuelSettle'));
-  assert.ok(!html.includes('attackers.length*PLAYER_AUTO_ATTACK_INTERVAL+250'));
-  assert.ok(!html.includes('enemyUnits.length*COMBAT_TIMING.duelGap+700'));
+test('각 교전은 실제 연출 완료 후 0.5초 쉬고 다음 공격을 시작한다', () => {
+  assert.ok(html.includes('markCombatBusy(combatMs(Math.round(motion.duration*motion.hit)+1250))'));
+  assert.ok(html.includes('combatMs(COMBAT_TIMING.postCombatPause)'));
+  assert.ok(html.includes('const delay=withPause?combatMs(COMBAT_TIMING.postCombatPause):0'));
+  assert.ok(html.includes('runCombatQueue(attackers,unit=>'));
+  assert.ok(html.includes('runCombatQueue(enemyUnits,unit=>'));
+  assert.ok(!html.includes('PLAYER_AUTO_ATTACK_INTERVAL'));
 });
 
 test('전투 종료 뒤 단계 전환과 상대 선공 준비는 별도의 짧은 지연만 사용한다', () => {

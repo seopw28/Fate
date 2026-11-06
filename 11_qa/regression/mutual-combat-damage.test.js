@@ -22,10 +22,11 @@ test('교환 피해는 방어 카드의 반격 이동·타격 이펙트 후 적�
 });
 
 test('자동 공격은 반격이 구분된 뒤 다음 카드 공격을 시작한다', () => {
-  assert.ok(html.includes('const PLAYER_AUTO_ATTACK_INTERVAL = COMBAT_TIMING.duelGap;'));
-  assert.ok(html.includes('combatMs(index*PLAYER_AUTO_ATTACK_INTERVAL)'));
-  assert.ok(html.includes('combatMs((attackers.length-1)*PLAYER_AUTO_ATTACK_INTERVAL+COMBAT_TIMING.lastDuelSettle)'));
-  assert.ok(!html.includes('combatMs(index*900)'));
+  assert.ok(html.includes('function runCombatQueue(units,perform,done)'));
+  assert.ok(html.includes('perform(unit);const hasNext='));
+  assert.ok(html.includes('afterCombatSettles(next,hasNext)'));
+  assert.ok(html.includes('postCombatPause:463'));
+  assert.ok(!html.includes('PLAYER_AUTO_ATTACK_INTERVAL'));
 });
 
 test('상대가 공격해도 내 카드 공격력만큼 교환 피해가 반드시 적용되고 숫자로 표시된다', () => {
