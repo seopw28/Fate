@@ -246,6 +246,8 @@ test('궁극기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다
   assert.ok(html.includes('const ULTIMATE_COOLDOWN_TURNS=3;'), 'Cooldown must be a single named constant');
   assert.ok(html.includes('const cooldown=ULTIMATE_COOLDOWN_TURNS-(auraUltimateMatch(ultimateState)?AURA_ULTIMATE_COOLDOWN_REDUCTION:0);'), 'Cooldown must come from the named constant, shortened only by aura resonance');
   assert.ok(html.includes('turnNumber<lastUltimateTurn+cooldown'), 'Lock reason must enforce the cooldown');
+  assert.ok(html.includes("const resonance=auraUltimateBoost(ultimateState),cost=ultimateManaCost(ultimateState),minTurn=ultimateMinTurn(ultimateState),firstTurnUnlocked=guardianAwakenActive('player')&&firstUltimateTurn===null"), 'Aura awakening must unlock only the first ultimate minimum turn');
+  assert.ok(html.includes("!ultimateBloodOverride&&!firstTurnUnlocked&&turnNumber<minTurn"), 'Later ultimates must still enforce their minimum turn');
   assert.ok(html.includes('const AURA_ULTIMATE_COOLDOWN_REDUCTION=1;'), 'Aura resonance shortens the cooldown by one turn');
   assert.ok(html.includes('function ultimateManaCost(spec){return spec?Math.max(1,spec.cost-(auraUltimateMatch(spec)'), 'Aura resonance always reduces ultimate mana, not only while awakened');
   assert.ok(html.includes('lastUltimateTurn=turnNumber;'), 'Activation must record the turn it was used');
@@ -280,7 +282,10 @@ test('궁극기 소진 0/1 카드가 죽으면 중앙 확대·분할 소멸 연�
 test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복수자로 한 번 등장한다', () => {
   assert.ok(html.includes('function matchFirstUltimateCompanion(spec)'));
   assert.ok(html.includes("!card.spell&&card.el===spec.element&&card.name!==spec.name"));
-  assert.ok(html.includes('if(avengerSummoned||!firstUltimateSpec||!firstUltimateCompanion)return null'));
+  assert.ok(html.includes('function seedAvengerFromLatestFallenUltimate()'));
+  assert.ok(html.includes('[...allyGraveyard].reverse().find(card=>card.art&&cardDefByArt.has(card.art))'));
+  assert.ok(html.includes('if(!firstUltimateSpec)seedAvengerFromLatestFallenUltimate()'));
+  assert.ok(html.includes('if(!firstUltimateSpec||!firstUltimateCompanion)return null'));
   assert.ok(html.includes("attack=firstUltimateSpec.attack+3,hp=firstUltimateSpec.hp+10"));
   assert.ok(html.includes("summonBattleToken(partner.name,attack,hp,partner.el,'ultimate-avenger')"));
   assert.ok(html.includes('function showAvengerArrival(partner,source,unit)'));
