@@ -107,7 +107,7 @@ test('오라 각성: 체력 70 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes('playerHp<=GUARDIAN_AWAKEN_HP'), 'Runtime must detect the awakening health threshold');
   assert.ok(html.includes("guardianAwakenChoice=choice"), 'The selected awakening branch must be stored');
   assert.ok(html.includes('const guardianAwakenActive=side=>Boolean(guardianAwakenChoiceOf(side))'), 'Awakening must remain active for either side after selection');
-  assert.ok(html.includes("jujak:{A:{name:'폭열',chance:.042,extraStrikes:2"), 'Fire must offer the balanced triple-strike branch');
+  assert.ok(html.includes("jujak:{A:{name:'폭열',chance:.044,extraStrikes:2"), 'Fire must offer the balanced triple-strike branch');
   assert.ok(html.includes("A:{name:'범람',chance:.15,manaMin:8,manaMax:8"), 'Water must offer a rare fixed 8-mana branch');
   assert.ok(html.includes("B:{name:'순환',chance:.99,manaMin:2,manaMax:2"), 'Water must offer the 99% reliable mana branch');
   assert.ok(html.includes("A:{name:'숲의 생명',chance:1,hpGain:1"), 'Wood must offer guaranteed whole-field growth');

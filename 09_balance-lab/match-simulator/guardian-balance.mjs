@@ -60,7 +60,7 @@ const HERO_HP = 100, MANA_CAP = 10, START_MANA = 3, FIELD_LIMIT = 6, HAND_LIMIT 
 const AWAKEN_HP = 70;
 const AWAKENING_OPTIONS = {
   jujak: {
-    A: { label: '폭열', chance: 0.042, extraStrikes: 2 },
+    A: { label: '폭열', chance: 0.044, extraStrikes: 2 },
     B: { label: '연격', chance: 0.075, extraStrikes: 1 },
   },
   cheongryong: {
