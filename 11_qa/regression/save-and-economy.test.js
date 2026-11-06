@@ -116,7 +116,8 @@ test('오라 각성: 체력 80 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("A:{name:'숲의 생명',chance:1,hpGain:2"));
   assert.ok(html.includes("B:{name:'거목 수호',chance:.35,hpGain:5,leftmostOnly:true"));
   assert.ok(html.includes("A:{name:'숙련 가속',survivalStep:.42,maxChance:1,attackGain:4"));
-  assert.ok(html.includes("B:{name:'연속베기',continuousSlashRatio:.5"));
+  assert.ok(html.includes("B:{name:'연속베기',continuousSlashChance:.10,continuousSlashRatio:.5"));
+  assert.ok(html.includes("engineAdapter.random()<(metal.continuousSlashChance??1)"), 'Continuous Slash must use the shared seeded RNG at its configured chance');
   assert.ok(html.includes("opponents.find(unit=>unit!==defender)||opponents.find(unit=>unit===defender)"), 'Continuous Slash must prefer a different champion and fall back to the original target');
   assert.ok(html.includes("{ratio:metal.continuousSlashRatio,noCounter:true,continuousSlash:true}"), 'The follow-up slash must deal reduced damage without causing a second counterattack');
   assert.ok(html.includes('if(options.noCounter)return'), 'Combat must support a counter-free awakening follow-up');

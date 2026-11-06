@@ -74,7 +74,7 @@ const AWAKENING_OPTIONS = {
   },
   baekho: {
     A: { label: '숙련 가속', survivalStep: 0.42, maxChance: 1.00, attackGain: 4 },
-    B: { label: '초경도 단련', survivalStep: 0.32, maxChance: 0.95, attackGain: 6 },
+    B: { label: '연속베기', continuousSlashRatio: 0.50, continuousSlashChance: 0.10 },
   },
   hyeonmu: {
     A: { label: '암반 피부', chance: 0.12, damageReduction: 1, minCost: 4 },
@@ -143,18 +143,19 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
     side.hp -= dmg;
     if (AWAKENING_SIM && !side.awakened && side.awakeningChoice && side.hp <= AWAKEN_HP && side.hp > 0) side.awakened = true;
     if (side.hp <= 0 && !winner) winner = side === P ? 'enemy' : 'player'; }
-  function strike(attackerSide, defenderSide, unit) {
+  function strike(attackerSide, defenderSide, unit, { target: chosenTarget = null, ratio = 1, counter = true } = {}) {
     if (winner || unit.hp <= 0) return;
     const targets = alive(defenderSide);
-    if (!targets.length) { hitHero(defenderSide, unit.atk); return; }
-    const target = targets[0];
+    if (!targets.length) { hitHero(defenderSide, unit.atk); return null; }
+    const target = chosenTarget && targets.includes(chosenTarget) ? chosenTarget : targets[0];
     const returnDamage = target.atk;
-    damageUnit(defenderSide, target, unit.atk);
+    damageUnit(defenderSide, target, Math.ceil(unit.atk * ratio));
     if (target.hp > 0 && proc(attackerSide, 'jujak')) {
       const fire = auraConfig(attackerSide, 'jujak');
       target.auraBurnDamage = Math.max(target.auraBurnDamage || 0, fire.burnDamage || 1);
       target.auraBurnTurns = Math.max(target.auraBurnTurns || 0, fire.burnTurns || 2);
     }
+    if (!counter) return target;
     // 카드 교전은 방어자의 생사와 무관하게 양쪽이 상대 공격력만큼 피해를 주고받는다.
     damageUnit(attackerSide, unit, returnDamage);
     if (unit.hp > 0 && returnDamage > 0 && proc(defenderSide, 'jujak')) {
@@ -162,9 +163,15 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
       unit.auraBurnDamage = Math.max(unit.auraBurnDamage || 0, fire.burnDamage || 1);
       unit.auraBurnTurns = Math.max(unit.auraBurnTurns || 0, fire.burnTurns || 2);
     }
+    return target;
   }
   function attack(attackerSide, defenderSide, unit) {
-    strike(attackerSide, defenderSide, unit);
+    const primary = strike(attackerSide, defenderSide, unit);
+    const metal = auraConfig(attackerSide, 'baekho');
+    if (!primary || winner || unit.hp <= 0 || attackerSide.guardian !== 'baekho' || !metal.continuousSlashRatio || rnd() >= (metal.continuousSlashChance ?? 1)) return;
+    const remaining = alive(defenderSide);
+    const followUp = remaining.find(target => target !== primary) || remaining.find(target => target === primary);
+    if (followUp) strike(attackerSide, defenderSide, unit, { target: followUp, ratio: metal.continuousSlashRatio, counter: false });
   }
   // 나무의 오라: 자기 턴 시작에 필드의 카드마다 독립적으로 chance 확률로 체력 +1
   function growNamu(side) { if (side.guardian !== 'namu' || !GUARDIANS.namu) return; const cfg = auraConfig(side, 'namu'), targets = cfg.leftmostOnly ? side.field.slice(0, 1) : side.field; targets.forEach(u => { if (rnd() < cfg.chance) { const gain = cfg.hpGain || 1; u.hp += gain; u.maxHp += gain; } }); }
@@ -174,6 +181,7 @@ function playGame(playerGuardian, enemyGuardian, rnd, playerAwakening = null, en
     const front = alive(side)[0];
     if (!front || front.metalExperienced) return;
     const cfg = auraConfig(side, 'baekho');
+    if (cfg.continuousSlashRatio) return;
     const chance = Math.min(cfg.maxChance, (front.survivalTurns || 0) * cfg.survivalStep);
     if (rnd() >= chance) return;
     front.atk += cfg.attackGain;
