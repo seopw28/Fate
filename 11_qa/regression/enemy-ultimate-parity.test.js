@@ -28,7 +28,9 @@ test('컴퓨터도 최후의 저항에서 추가 드로우와 복수자를 얻�
   assert.ok(html.includes('function queueEnemyUltimateAvenger(delay=0)'));
   assert.ok(html.includes('function summonEnemyUltimateAvenger()'));
   assert.ok(html.includes("effect:'ultimate-avenger'"));
-  assert.ok(html.includes('setTimeout(()=>resolveEnemyAvengerArrivalDamage(partner),3050)'));
+  /* 언제 터뜨리는지(고정 지연 / 컷신 종료 연동)는 연출 사정으로 바뀐다 — 불변식은
+     '강림이 충격파 피해로 이어진다'는 것뿐이다. 순서 보장은 avenger-overlap 이 검사한다. */
+  assert.ok(/afterAvengerArrival\(showAvengerArrival\(partner,enemyFirstUltimateSpec,unit\)[\s\S]{0,120}resolveEnemyAvengerArrivalDamage\(partner\)/.test(html), '상대 강림도 충격파로 이어져야 한다');
 });
 
 test('복수자는 궁극기 소진자가 쓰러진 뒤에만 강림한다 (체력 40 진입만으로는 오지 않는다)', () => {

@@ -330,7 +330,7 @@ test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복�
   assert.ok(html.includes("wave.className='avenger-landing-impact'"));
   assert.ok(html.includes("arena?.animate([{transform:'none'},{transform:'translateY(13px) scale(.985)'"));
   assert.ok(html.includes("damageUnit(target,5,partner.el)"));
-  assert.ok(html.includes('setTimeout(()=>resolveAvengerArrivalDamage(partner),3050)'));
+  assert.ok(/afterAvengerArrival\(showAvengerArrival\(partner,firstUltimateSpec,unit\)[\s\S]{0,120}resolveAvengerArrivalDamage\(partner\)/.test(html), '강림이 충격파 피해로 이어져야 한다');
   assert.ok(html.includes("if(side==='player')queueFirstUltimateAvenger(0);else{ensureEnemyAvengerSource();queueEnemyUltimateAvenger(0);}"));
 });
 

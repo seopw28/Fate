@@ -113,3 +113,45 @@ test('각성 모달이 이미 떠 있으면 강림은 모달 뒤에 깔리지 �
   q.fxRelease();
   assert.deepEqual(live, ['avenger-arrival'], '선택 후 강림이 온전히 재생된다');
 });
+
+/* 사용자 보고: "등장 컷씬 때문에 광역공격 이펙트를 시각적으로 놓친다".
+   고정 3050ms 로 띄우면 컷신이 큐에서 밀렸을 때 피해가 컷신 뒤에 가려진다. */
+test('복수 충격파는 등장 컷신이 끝난 뒤에 터진다', () => {
+  assert.ok(!html.includes('resolveAvengerArrivalDamage(partner),3050'), '고정 지연으로 되돌리지 말 것');
+  assert.ok(!html.includes('resolveEnemyAvengerArrivalDamage(partner),3050'), '상대 쪽도 고정 지연 금지');
+  assert.ok(html.includes('afterAvengerArrival(showAvengerArrival(partner,firstUltimateSpec,unit)'), '내 강림은 컷신 종료에 이어 붙인다');
+  assert.ok(html.includes('afterAvengerArrival(showAvengerArrival(partner,enemyFirstUltimateSpec,unit)'), '상대 강림도 마찬가지');
+  const fn = html.slice(html.indexOf('function afterAvengerArrival'));
+  assert.ok(/presented\.then\(fire\)/.test(fn.slice(0, 700)), 'fxPresent 가 끝날 때를 기다려야 한다');
+  assert.ok(/reason==='cleared'\)return/.test(fn.slice(0, 700)), '전투가 치워졌으면 피해를 넣지 않는다');
+});
+
+test('컷신이 큐에서 밀려도 충격파는 컷신 뒤에 온다', async () => {
+  /* 핵심 회귀: 강림 앞에 다른 연출이 있으면 고정 지연은 컷신 '도중'에 터진다. */
+  const q = loadQueue();
+  const order = [];
+  q.fxPresent('앞선 연출', () => {order.push('앞선연출:시작'); return () => order.push('앞선연출:끝');},
+    {priority: 40, hold: 2000});
+  const arrival = q.fxPresent('avenger-arrival:복수자', () => {order.push('컷신:시작'); return () => order.push('컷신:끝');},
+    {priority: 40, hold: 2850});
+  arrival.then(reason => {if (reason !== 'cleared') order.push('충격파(' + reason + ')');});
+
+  q.advance(3050);/* 예전 고정 지연 시점 — 이 때는 아직 컷신이 돌고 있어야 한다 */
+  await Promise.resolve();
+  assert.ok(!order.some(e => e.startsWith('충격파')), '3050ms 에는 아직 터지면 안 된다: ' + order.join(' > '));
+  q.advance(5000);
+  await Promise.resolve();/* then 은 마이크로태스크라 가상 시계 진행만으론 안 돈다 */
+  assert.deepEqual(order, ['앞선연출:시작','앞선연출:끝','컷신:시작','컷신:끝','충격파(done)']);
+});
+
+test('전투가 치워지면 충격파는 터지지 않는다', async () => {
+  const q = loadQueue();
+  const order = [];
+  const arrival = q.fxPresent('avenger-arrival:복수자', () => () => order.push('컷신:끝'), {priority: 40, hold: 2850});
+  arrival.then(reason => {if (reason !== 'cleared') order.push('충격파');});
+  q.advance(100);
+  q.fxClear();
+  q.advance(5000);
+  await Promise.resolve();
+  assert.ok(!order.includes('충격파'), '보드가 치워진 뒤에는 피해가 없어야 한다');
+});
