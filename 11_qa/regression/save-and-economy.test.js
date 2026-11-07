@@ -269,8 +269,24 @@ test('궁극기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다
   assert.ok(html.includes('turnNumber<lastUltimateTurn+cooldown'), 'Lock reason must enforce the cooldown');
   assert.ok(html.includes("const resonance=auraUltimateBoost(ultimateState),cost=ultimateManaCost(ultimateState),minTurn=ultimateMinTurn(ultimateState),firstTurnUnlocked=guardianAwakenActive('player')&&firstUltimateTurn===null"), 'Aura awakening must unlock only the first ultimate minimum turn');
   assert.ok(html.includes("!firstTurnUnlocked&&turnNumber<minTurn"), 'Later ultimates must still enforce their minimum turn');
-  /* 혈마나 궁극기(체력으로 대기 무시)는 2026-11-07 제거했다. 우회 경로가 되살아나면 잡는다. */
+  /* 혈마나 궁극기는 2026-11-07 제거했고, 게임 규칙으로 금지다 — 체력으로 궁극기의 마나·턴·대기를
+     대신하거나 앞당길 수 없다. 이름을 바꿔 되살아나도 잡히도록 식별자가 아니라 불변식을 본다. */
   assert.ok(!html.includes('ultimateBloodOverride') && !html.includes('fireBloodUltimate'), '혈마나 궁극기 우회 경로를 되살리지 말 것');
+  assert.ok(html.includes("if(mana<cost)return '마나 '+cost+' 필요'"), '궁극기는 마나가 모자라면 그대로 막혀야 한다 (혈마나 대납 금지)');
+  {
+    /* activateUltimate 은 일반 마나만 차감한다. 체력을 깎는 코드가 섞이면 혈마나 대납이다. */
+    const fn = html.slice(html.indexOf('function activateUltimate()'));
+    const body = fn.slice(0, fn.indexOf('sendUltimateToGraveyard'));
+    assert.ok(body.includes('mana-=spec.cost'), '궁극기 비용은 일반 마나에서만 나간다');
+    assert.ok(!/playerHp\s*-=/.test(body), '궁극기 발동이 영웅 체력을 지불하면 안 된다');
+    assert.ok(!/bloodMana/i.test(body), '궁극기 발동 경로에 혈마나가 끼어들면 안 된다');
+  }
+  {
+    /* 잠금 사유 판정에도 체력으로 푸는 예외가 없어야 한다. */
+    const fn = html.slice(html.indexOf('function ultimateLockReason()'));
+    const body = fn.slice(0, 1400);
+    assert.ok(!/playerHp/.test(body), '궁극기 잠금 판정이 영웅 체력을 조건으로 쓰면 안 된다');
+  }
   assert.ok(html.includes('const AURA_ULTIMATE_COOLDOWN_REDUCTION=1;'), 'Aura resonance shortens the cooldown by one turn');
   assert.ok(html.includes('function ultimateManaCost(spec){return spec?Math.max(1,spec.cost-(auraUltimateMatch(spec)'), 'Aura resonance always reduces ultimate mana, not only while awakened');
   assert.ok(html.includes('lastUltimateTurn=turnNumber;'), 'Activation must record the turn it was used');
