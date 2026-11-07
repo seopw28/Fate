@@ -467,7 +467,15 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         const base={fire:260,water:390,wind:520,earth:180,neutral:310}[variant]||310;noise(.18,.035,1800);[1,1.25,1.5].forEach((ratio,i)=>tone(base*ratio*pitch,.32,'sine',.035,base*ratio*1.8,i*.045));return;
       }
       if(kind==='trap'){noise(.12,.05,760);tone(88,.38,'square',.055,42);tone(740*pitch,.1,'triangle',.04,210*pitch,.07);return;}
-      if(kind==='shield'){/* 공격·피격음 위에서도 들리는 짧고 단단한 방어 임팩트 */playAudio('metal',.62,.78*pitch);noise(.075,.075,1850);tone(118,.22,'square',.075,72*pitch);tone(520,.16,'triangle',.055,910*pitch,.025);tone(980,.12,'sine',.04,620*pitch,.055);return;}
+      if(kind==='shield'){/* 방어함 = 돌맹이가 부딪히는 '퍽'. 노란 암석 이펙트에 맞춰 금속 울림(metal-impact + 520·980Hz 링)을 걷어냈다.
+           돌은 쇠와 달리 여음이 없다 — 짧은 돌가루 파열(2600Hz)로 부딪힌 순간을 세우고, 중저역 몸통(196→82Hz)을
+           0.1초 안에 끊어 '퍽'으로 닫는다. 바닥 울림(62Hz)만 아주 짧게 남겨 무게를 준다 (2026-11-07) */
+        noise(.03,.085,2600);/* 돌 표면이 깨지며 튀는 가루 — 어택 */
+        noise(.085,.065,760,.004);/* 둔탁한 몸통 */
+        tone(196*pitch,.1,'triangle',.085,82*pitch);/* '퍽'의 중심 — 빠르게 떨어져 울리지 않는다 */
+        tone(62*pitch,.14,'sine',.07,38*pitch,.006);/* 바닥을 치는 무게 */
+        noise(.13,.022,320,.05);/* 잔 돌가루가 흩어지는 꼬리 */
+        return;}
       if(kind==='frost-cast'){[1568,1976,2349,2793].forEach((f,i)=>tone(f*pitch,.42,'sine',.026,f*1.02,i*.055));noise(.5,.022,6200,.02);tone(220*pitch,.5,'triangle',.03,110*pitch);return;}
       if(kind==='frost-shatter'){noise(.07,.07,6800);noise(.28,.05,4200,.03);[2637,2093,1568,1175].forEach((f,i)=>tone(f*pitch,.12,'triangle',.03,f*.55,i*.045));tone(120*pitch,.22,'sine',.06,52,.02);return;}
       if(kind==='thunder'){/* 전기 효과음: 치직 하는 스파크 + 쩌렁 울리는 낙뢰 */
