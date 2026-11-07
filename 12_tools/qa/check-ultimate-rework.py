@@ -40,7 +40,7 @@ CHECKS = [
  ("세팅하면 대전 덱의 같은 카드를 모두 묘지로 보낸다. 취소해도 손패로 돌아올 뿐 덱 사본은 돌아오지 않는다",
   "(()=>{playerHp=70;awakenGateOpened.player=true;const c=__q.card(__q.notFireId),art=cardArtwork(c),proto=deck.find(d=>!d.spell);deck.push({...proto,art},{...proto,art});const before=deck.filter(d=>d.art===art).length,gy0=allyGraveyard.length;"
   "setUltimate(c);const after=deck.filter(d=>d.art===art).length,gy=allyGraveyard.filter(d=>d.art===art).length;const handBefore=document.querySelectorAll('.hand .card').length;cancelUltimate();"
-  "const back=document.querySelectorAll('.hand .card').length===handBefore+1&&!ultimateState;return {ok:before===2&&after===0&&gy===2&&allyGraveyard.length===gy0+2&&back&&deck.filter(d=>d.art===art).length===0,before,after,gy,back};})()"),
+  "const back=document.querySelectorAll('.hand .card').length===handBefore+1&&!ultimateState;return {ok:before>=2&&after===0&&gy===before&&allyGraveyard.length===gy0+before&&back&&deck.filter(d=>d.art===art).length===0,before,after,gy,back};})()"),
  ("사용 가능 턴·강한 카드 분류가 없다: 1턴에도 마나만 맞으면 발동되고, 비용은 내 최대 마나다",
   "(async()=>{playerHp=70;turnNumber=1;__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);const cost=ultimateState.cost,max=maxMana,lock=ultimateLockReason();mana=max-1;const short=ultimateLockReason();mana=max;"
   "return {ok:cost===max&&lock===''&&short==='마나 '+max+' 필요'&&!('minTurn' in ultimateState)&&!('strong' in ultimateState),cost,max,lock,short};})()"),
