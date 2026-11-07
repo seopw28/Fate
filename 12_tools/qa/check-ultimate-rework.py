@@ -84,17 +84,25 @@ CHECKS = [
   "(()=>{const btn=__q.endBtn();const draw=(arrived,handTrim)=>{ultimateLedger.player.arrived=arrived;__q.trim();if(handTrim)while(document.querySelectorAll('.hand .card').length<7)__q.card(__q.notFireId);const d=deck.length;startPlayerTurn(btn);return d-deck.length;};"
   "const one=draw(1,false),two=draw(2,false),full=draw(2,true);const e=deck.splice(0,deck.length-1);__q.trim();ultimateLedger.player.arrived=2;const lastDeck=deck.length;startPlayerTurn(btn);"
   "return {ok:one===1&&two===2&&full<=1,one,two,full,lastDeck};})()"),
- ("묘지 재사용: 덱이 비면 체력 10을 내고 묘지(소진자·복수자 제외)를 섞어 새 덱으로 쓴다",
-  "(()=>{__q.trim();const protos=deck.filter(d=>!d.spell).slice(0,3);allyGraveyard.length=0;protos.forEach(p=>allyGraveyard.push(graveRecordFromDeckCard(p)));allyGraveyard.push({name:'소진자',art:protos[0].art,element:'fire',attack:20,maxHp:1,effect:'ultimate-spent'},{name:'복수자',art:protos[1].art,element:'fire',attack:9,maxHp:20,effect:'ultimate-avenger'});"
-  "deck.length=0;playerHp=50;drawCard();const left=allyGraveyard.map(x=>x.effect);return {ok:playerHp===40&&deck.length===2&&left.length===2&&left.every(e=>/ultimate-(spent|avenger)/.test(e)),hp:playerHp,deck:deck.length,left};})()"),
- ("묘지 재사용 체력 경계: 11이면 가능(→1), 10 이하면 불가(드로우 없이 종료), 묘지가 비면 불가",
-  "(()=>{__q.trim();const p=deck.find(d=>!d.spell);const seed=()=>{allyGraveyard.length=0;allyGraveyard.push(graveRecordFromDeckCard(p),graveRecordFromDeckCard(p));deck.length=0;};"
-  "seed();playerHp=11;drawCard();const at11={hp:playerHp,deck:deck.length};seed();playerHp=10;drawCard();const at10={hp:playerHp,deck:deck.length};allyGraveyard.length=0;deck.length=0;playerHp=60;drawCard();const empty={hp:playerHp,deck:deck.length};"
-  "return {ok:at11.hp===1&&at11.deck===1&&at10.hp===10&&at10.deck===0&&empty.hp===60&&empty.deck===0,at11,at10,empty};})()"),
- ("컴퓨터도 같은 묘지 재사용을 한다(체력 10 초과일 때만, 소진자·복수자 제외)",
-  "(()=>{const p=enemyDeck.find(d=>!d.spell);enemyGraveyard.length=0;enemyGraveyard.push(graveRecordFromDeckCard(p),graveRecordFromDeckCard(p),{name:'소진자',art:p.art,effect:'ultimate-spent'});enemyDeck.length=0;enemyHand.length=0;enemyHp=50;enemyDraw();"
-  "const a={hp:enemyHp,deck:enemyDeck.length,hand:enemyHand.length};enemyGraveyard.length=0;enemyGraveyard.push(graveRecordFromDeckCard(p));enemyDeck.length=0;enemyHp=10;enemyDraw();"
-  "return {ok:a.hp===40&&a.deck===1&&a.hand===1&&enemyHp===10&&enemyDeck.length===0&&enemyHand.length===1,a,hp:enemyHp};})()"),
+ ("자동 드로우는 묘지를 재사용하지 않는다(덱이 비면 그냥 건너뜀)",
+  "(()=>{__q.trim();const p=deck.find(d=>!d.spell);allyGraveyard.length=0;allyGraveyard.push(graveRecordFromDeckCard(p),graveRecordFromDeckCard(p));deck.length=0;playerHp=50;drawCard();"
+  "return {ok:playerHp===50&&deck.length===0&&allyGraveyard.length===2,hp:playerHp,deck:deck.length};})()"),
+ ("카드 뽑기: 덱에 챔프가 없으면 예/아니오를 묻고, 예면 체력 10으로 묘지 챔프(소진자·복수자 제외)를 덱에 섞은 뒤 이어서 뽑는다",
+  "(()=>{setBattlePhase('setup');[...document.querySelectorAll('.hand .card')].forEach(c=>c.remove());const protos=deck.filter(d=>!d.spell).slice(0,3),spells=deck.filter(d=>d.spell).slice(0,2);allyGraveyard.length=0;protos.forEach(p=>allyGraveyard.push(graveRecordFromDeckCard(p)));allyGraveyard.push({name:'소진자',art:protos[0].art,element:'fire',attack:20,maxHp:1,effect:'ultimate-spent'},{name:'복수자',art:protos[1].art,element:'fire',attack:9,maxHp:20,effect:'ultimate-avenger'});"
+  "deck.length=0;deck.push(...spells);playerHp=50;drawActionsUsed=0;mana=10;updateMana();const modal=document.querySelector('#recycle-modal');useDrawAction();const asked=modal.classList.contains('show')&&playerHp===50&&mana===10;answerRecyclePrompt(true);"
+  "const left=allyGraveyard.map(x=>x.effect);return {ok:asked&&!modal.classList.contains('show')&&playerHp===40&&deck.length===4&&mana===8&&document.querySelectorAll('.hand .summon-card').length===1&&left.length===2&&left.every(e=>/ultimate-(spent|avenger)/.test(e)),asked,hp:playerHp,deck:deck.length,mana,left};})()"),
+ ("카드 뽑기: 아니오면 재사용 없이 남은 덱에서 뽑고, 덱이 비어 있으면 아무것도 하지 않는다(마나도 쓰지 않음)",
+  "(()=>{setBattlePhase('setup');__q.trim();const p=deck.find(d=>!d.spell),spells=deck.filter(d=>d.spell).slice(0,2);allyGraveyard.length=0;allyGraveyard.push(graveRecordFromDeckCard(p));deck.length=0;deck.push(...spells);playerHp=50;drawActionsUsed=0;mana=10;updateMana();"
+  "useDrawAction();answerRecyclePrompt(false);const a={hp:playerHp,deck:deck.length,mana};__q.trim();deck.length=0;drawActionsUsed=0;mana=10;useDrawAction();const asked=document.querySelector('#recycle-modal').classList.contains('show');answerRecyclePrompt(false);"
+  "return {ok:a.hp===50&&a.deck===1&&a.mana===8&&asked&&playerHp===50&&deck.length===0&&mana===10&&allyGraveyard.length===1,a,asked,hp:playerHp,deck:deck.length,mana};})()"),
+ ("묘지 재사용 체력 경계: 11이면 묻고 예→1, 10 이하면 묻지 않고 남은 덱에서 그냥 뽑는다",
+  "(()=>{setBattlePhase('setup');const p=deck.find(d=>!d.spell),sp=deck.find(d=>d.spell);const seed=hp=>{__q.trim();allyGraveyard.length=0;allyGraveyard.push(graveRecordFromDeckCard(p),graveRecordFromDeckCard(p));deck.length=0;deck.push(sp);playerHp=hp;drawActionsUsed=0;mana=10;updateMana();};const modal=document.querySelector('#recycle-modal');"
+  "seed(11);useDrawAction();const asked11=modal.classList.contains('show');answerRecyclePrompt(true);const at11={hp:playerHp,deck:deck.length};seed(10);useDrawAction();const asked10=modal.classList.contains('show');const at10={hp:playerHp,deck:deck.length};"
+  "return {ok:asked11&&at11.hp===1&&at11.deck===2&&!asked10&&at10.hp===10&&at10.deck===0,asked11,at11,asked10,at10};})()"),
+ ("컴퓨터도 같은 조건(덱에 챔프 없음·체력 10 초과)이면 턴 시작에 묘지 챔프를 덱에 섞는다(임시: 항상 예)",
+  "(()=>{const p=enemyDeck.find(d=>!d.spell),sp=enemyDeck.find(d=>d.spell);enemyGraveyard.length=0;enemyGraveyard.push(graveRecordFromDeckCard(p),graveRecordFromDeckCard(p),{name:'소진자',art:p.art,effect:'ultimate-spent'});enemyDeck.length=0;enemyDeck.push(sp);enemyHand.length=0;enemyHp=50;enemyRecycleIfNoChampion();enemyDraw();"
+  "const a={hp:enemyHp,deck:enemyDeck.length,champ:enemyHand.filter(c=>!c.spell).length};enemyGraveyard.length=0;enemyGraveyard.push(graveRecordFromDeckCard(p));enemyDeck.length=0;enemyHp=10;enemyRecycleIfNoChampion();const b={hp:enemyHp,deck:enemyDeck.length};enemyHp=50;enemyDraw();"
+  "return {ok:a.hp===40&&a.deck===2&&a.champ===1&&b.hp===10&&b.deck===0&&enemyHp===50&&enemyDeck.length===0,a,b};})()"),
  ("BGM: 체력 40 이하만으로는 바뀌지 않고, 어느 쪽이든 복수자가 처음 등장하면 각성곡으로 바뀌어 유지된다",
   "(async()=>{playerHp=30;enemyHp=30;" + (WAIT % 700) + "const before=bgm===bgmTracks.main;__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
   "const u=__q.spent();damageUnit(u,99,'fire');u.dataset.destroyed='true';" + (WAIT % 60) + "u.remove();const btn=__q.endBtn();startPlayerTurn(btn);fxClear?.();startPlayerTurn(btn);fxClear?.();const mid=bgm===bgmTracks.main;startPlayerTurn(btn);" + (WAIT % 60) +
