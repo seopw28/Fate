@@ -152,3 +152,45 @@ test('문양이 있을 때는 껍데기 배경이 문양을 덮지 않는다', (
   assert.ok(/background:\s*none/.test(rule), '불투명 그라데이션을 비워야 문양이 보인다');
   assert.ok(/box-shadow:\s*none/.test(rule), '테두리 그림자도 비워야 문양 테두리와 겹치지 않는다');
 });
+
+/* 각성은 체력 80 이하에서 '자동으로' 열리고 있었다. 배틀당 한 번뿐인 선택인데 저절로
+   일어나면 '내가 쓴 것'으로 읽히지 않고, 가운데 사용 버튼도 의미를 잃는다 (2026-11-07 PM 요청). */
+test('체력 80 이하가 되어도 패널을 자동으로 열지 않는다', () => {
+  const at = html.indexOf('function checkGuardianAwakeningThreshold()');
+  assert.ok(at > 0, '임계 검사 함수가 있어야 한다');
+  const fn = html.slice(at, html.indexOf('\n', at));
+  /* 플레이어 분기에서 바로 패널을 여는 호출이 있으면 수동 발동이 아니다. */
+  const playerBranch = fn.slice(0, fn.indexOf('enemyGuardian'));
+  assert.ok(!playerBranch.includes('activateGuardianAwakening()'),
+    '플레이어 쪽은 버튼을 눌러야 열린다 — 임계점에서 바로 열면 안 된다');
+  assert.ok(playerBranch.includes('announceGuardianAwakenReady()'), '준비됐다는 알림만 해야 한다');
+  /* 상대(AI)는 누를 주체가 없으므로 자동 발동이 유지돼야 한다. */
+  assert.ok(fn.includes('chooseEnemyGuardianAwakening()'), '상대는 종전대로 자동 발동한다');
+});
+
+test('각성 버튼을 누르면 같은 소리가 3번 울려 사이렌으로 읽힌다', () => {
+  const at = html.indexOf('function playAwakenSiren()');
+  assert.ok(at > 0, '사이렌 함수가 있어야 한다');
+  const fn = html.slice(at, html.indexOf('\n', at));
+  assert.ok(/i<3/.test(fn), '3번 반복해야 사이렌으로 읽힌다');
+  /* tone() 의 delay 는 ctx.currentTime 에 더하는 초 단위다. ms(300 등)를 넘기면
+     2·3번째가 몇 분 뒤로 밀려 영영 들리지 않는다 — 실측으로 잡은 회귀다. */
+  const gap = html.match(/AWAKEN_SIREN_GAP_S=([\d.]+)/);
+  assert.ok(gap, '간격 상수는 초 단위 이름이어야 한다');
+  assert.ok(Number(gap[1]) > 0 && Number(gap[1]) < 2,
+    '간격이 초 단위로 1초 안쪽이어야 사이렌이 된다 (현재 ' + gap[1] + ')');
+  /* 버튼을 눌러 발동하는 경로에서 울려야 한다. */
+  const act = html.indexOf('function activateGuardianAwakening()');
+  assert.ok(act > 0 && html.slice(act, act + 400).includes('playAwakenSiren()'),
+    '각성 발동 시 사이렌이 울려야 한다');
+});
+
+test('선택 패널이 열려 있는 동안에는 각성 버튼을 다시 누를 수 없다', () => {
+  const at = html.indexOf('function renderFieldGuardianUltimateAction()');
+  assert.ok(at > 0);
+  const fn = html.slice(at, html.indexOf('\n', at));
+  assert.ok(/choosing=Boolean\(document\.querySelector\('\.aura-awaken-choice'\)\)/.test(fn),
+    '패널이 열렸는지 봐야 한다');
+  assert.ok(/button\.disabled=active\|\|choosing\|\|!ready/.test(fn),
+    '패널이 열린 동안 버튼이 잠겨야 중복 발동이 막힌다');
+});

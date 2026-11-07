@@ -967,6 +967,14 @@
     .field-guardian-ultimate::before { content:'오라 각성'; display:block; margin-bottom:2px; color:#aaa3c8; font-size:11px; font-weight:900; letter-spacing:.12em; }
     .field-guardian-ultimate small { color:#9992af; font-size:11px; font-weight:600; letter-spacing:0; line-height:1.3; }
     .field-guardian-ultimate.ready { border-color:#b9a6ff; color:#f3edff; box-shadow:0 0 22px #8f6cff55,inset 0 1px #ffffff18; animation:guardian-awaken-ready 1.4s ease-in-out infinite; }
+    /* 각성이 막 가능해진 순간 한 번만 크게 번쩍인다 — 상시 pulse(.ready)만으로는
+       '방금 열렸다'는 전환이 안 읽힌다. 1회 재생이라 배경 소음이 되지 않는다. */
+    .field-guardian-ultimate.just-ready { animation:guardian-awaken-just-ready .62s ease-out 3; }
+    @keyframes guardian-awaken-just-ready {
+      0%{box-shadow:0 0 0 0 #c9a6ffcc,0 0 22px #8f6cff55}
+      60%{box-shadow:0 0 0 14px #c9a6ff00,0 0 46px #b58bffaa}
+      100%{box-shadow:0 0 0 0 #c9a6ff00,0 0 22px #8f6cff55}}
+    @media(prefers-reduced-motion:reduce){ .field-guardian-ultimate.just-ready{animation:none} }
     .field-guardian-ultimate.active { border-color:#dfc2ff; background:linear-gradient(135deg,#4d3268dd,#243754ee); color:#fff; box-shadow:0 0 28px #bd7dff66; }
     .field-guardian-ultimate:disabled { cursor:default; opacity:.78; }
     .field-guardian-ultimate[hidden] { display:none!important; }
