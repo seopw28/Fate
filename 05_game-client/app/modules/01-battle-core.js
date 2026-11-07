@@ -30,8 +30,8 @@
 let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 챔프·내 영웅이 피해를 받지 않는다(내 턴 시작에 해제) */
     const ULTIMATE_MAX_USES = Infinity;/* 배틀당 횟수 제한 없음: 사용 가능 턴·마나·장착할 챔프 카드가 자연스러운 제한이다 */
     /* 궁극기 수치 (2026-11-07 PM 확정): 사용 가능 턴·재사용 대기·재세팅 대기·강한 카드 분류는 폐지했다.
-       비용은 발동 시점의 내 최대 마나, 오라 공명이면 비용 −2 · 소진자 공격 +2 · 체력 +2. 소진자 = 카드 기본 공격력 +15 / 체력 1, 복수자 = 소진자 기본 능력치 +7 / +15. */
-    const ULTIMATE_SPENT_ATTACK_BONUS=15,ULTIMATE_SPENT_HP=1,ULTIMATE_RESONANCE_STAT=2,ULTIMATE_RESONANCE_COST=2,AVENGER_ATTACK_BONUS=7,AVENGER_HP_BONUS=15,AVENGER_HERO_DAMAGE=7,AVENGER_ARRIVAL_TURNS=3,AVENGER_RESET_TURNS=2,AVENGER_EXTRA_DRAW_AT=2,GRAVEYARD_RECYCLE_HP_COST=10,ULTIMATE_UNLOCK_HP=85;
+       비용은 발동 시점의 내 최대 마나, 오라 공명이면 비용 −2 · 소진자 공격 +2 · 체력 +2. 소진자 = 카드 기본 공격력 +10 / 체력 1, 복수자 = 소진자 기본 능력치 +7 / +15. */
+    const ULTIMATE_SPENT_ATTACK_BONUS=10,ULTIMATE_SPENT_HP=1,ULTIMATE_RESONANCE_STAT=2,ULTIMATE_RESONANCE_COST=2,AVENGER_ATTACK_BONUS=7,AVENGER_HP_BONUS=15,AVENGER_HERO_DAMAGE=7,AVENGER_ARRIVAL_TURNS=3,AVENGER_RESET_TURNS=2,AVENGER_EXTRA_DRAW_AT=2,GRAVEYARD_RECYCLE_HP_COST=10,ULTIMATE_UNLOCK_HP=85;
     let ultimateArmed = false;
     let draggedUltimateCard = null;
     let draggedFieldUnit = null;
