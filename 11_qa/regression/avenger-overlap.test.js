@@ -193,3 +193,21 @@ test('컷신이 큐에 밀려도 카드가 먼저 보이지 않는다', async ()
   assert.ok(order.indexOf('카드 숨김') < order.indexOf('컷신:시작'), '숨김이 컷신 시작보다 앞서야 한다');
   assert.ok(order.indexOf('카드 등장') > order.indexOf('컷신:끝'), '등장은 컷신이 끝난 뒤여야 한다');
 });
+
+/* 사용자 요청: 최후의 저항 중앙 컷인을 걷고 복수자 등장에 초점을 맞춘다.
+   버프 설명은 작은 토스트로만 남긴다. */
+test('최후의 저항은 중앙 컷인 대신 작은 토스트로 알린다', () => {
+  assert.ok(!html.includes("class=\"desperate-notice\"") && !html.includes("'desperate-notice'"), '중앙 컷인을 되살리지 말 것');
+  assert.ok(!html.includes('dn-explain') && !html.includes('dn-slash'), '컷인 설명 블록도 남기지 말 것');
+  assert.ok(html.includes("toast.className='desperate-toast'"), '토스트로 알려야 한다');
+  /* 버프가 작동하는데 알 길이 없으면 안 된다 — 문장은 남긴다. */
+  assert.ok(html.includes('소환한 턴에 바로 공격하고') && html.includes('카드를 1장 더'), '역전 돌진·추가 드로우를 문장으로 알려야 한다');
+  assert.ok(html.includes('.desperate-toast'), 'FIELD_OVERLAYS 에 등록돼야 한다 (CLAUDE.md 필드 기준 규칙)');
+});
+
+test('복수자 대기는 안내가 떠 있는 동안으로 맞춘다', () => {
+  /* 중앙 컷인(6초) 기준 3600ms 를 그대로 두면 토스트가 끝나고 빈 화면을 기다린다. */
+  assert.ok(html.includes('const DESPERATE_TOAST_MS=2000'), '안내 길이를 상수로 둬야 한다');
+  assert.ok(html.includes('desperateNoticeUntil=performance.now()+DESPERATE_TOAST_MS'), '복수자 대기는 안내 길이를 따라야 한다');
+  assert.ok(!/desperateNoticeUntil=performance\.now\(\)\+3600/.test(html), '옛 고정 3600ms 로 되돌리지 말 것');
+});
