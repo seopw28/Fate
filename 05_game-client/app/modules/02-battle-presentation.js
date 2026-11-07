@@ -342,7 +342,12 @@
       ghost.style.setProperty('--aw-dy',(ty-(r.top+r.height/2)).toFixed(1)+'px');
       /* 문양은 작게 유지하고 그 둘레에 빛 영역을 둔다 — 빛이 공의 2배 크기로 함께 이동한다. */
       ghost.innerHTML='<i class="awaken-glow"></i><b class="awaken-face"></b>';
-      ghost.querySelector('.awaken-face').textContent=avatar.textContent;
+      /* 오라 문양은 텍스트가 아니라 .aura-mark 안의 <img> SVG 다. textContent 로 베끼면
+         빈 문자열이 와서 '문양 없는 구체'만 날아갔다 (2026-11-07 실측: textContent === "").
+         노드를 통째로 복제해야 문양과 회전 테두리, --ac 색이 함께 따라온다. */
+      const face=ghost.querySelector('.awaken-face'),mark=avatar.querySelector('.aura-mark');
+      if(mark){face.appendChild(mark.cloneNode(true));face.classList.add('has-mark');}
+      else face.textContent=avatar.textContent;
       document.body.appendChild(ghost);
       /* 원본은 날아가는 동안 자리를 비운다 — 둘이 동시에 보이면 분신처럼 읽힌다. */
       avatar.classList.add('awaken-departing');

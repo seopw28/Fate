@@ -129,3 +129,26 @@ test('모션 최소화에서는 날지 않고 바로 연다', () => {
   assert.ok(fn.includes("matchMedia('(prefers-reduced-motion: reduce)').matches)return 0"), '모션 최소화면 비행 시간 0');
   assert.ok(html.includes('if(!flight)overlay.classList.remove'), '비행이 없으면 즉시 열려야 한다');
 });
+
+/* 오라 문양은 텍스트가 아니라 .aura-mark 안의 <img> SVG 다. textContent 로 베끼면
+   빈 문자열이 와서 문양 없는 구체만 날아갔다 (2026-11-07 실측: avatar.textContent === ""). */
+test('날아가는 구체는 프로필의 오라 문양 노드를 복제해 간다', () => {
+  const at = html.indexOf('function flyAwakenAvatar(color)');
+  assert.ok(at > 0, '비행 헬퍼가 있어야 한다');
+  const fn = html.slice(at, at + 2400);
+  assert.ok(fn.includes(".querySelector('.aura-mark')"), '문양 노드를 프로필에서 찾아야 한다');
+  assert.ok(/cloneNode\(true\)/.test(fn), '문양은 통째로 복제해야 테두리와 --ac 색이 함께 간다');
+  /* textContent 단독 대입으로 되돌아가면(문양이 사라지면) 여기서 걸린다. */
+  const takesTextOnly = /face\.textContent\s*=\s*avatar\.textContent/.test(fn)
+    && !/cloneNode\(true\)/.test(fn);
+  assert.equal(takesTextOnly, false, 'textContent 만으로는 SVG 문양이 복사되지 않는다');
+});
+
+test('문양이 있을 때는 껍데기 배경이 문양을 덮지 않는다', () => {
+  assert.ok(html.includes('.awaken-face.has-mark'), '문양 있는 상태를 구분하는 클래스가 있어야 한다');
+  const at = html.indexOf('.awaken-flight .awaken-face.has-mark');
+  assert.ok(at > 0, 'has-mark 규칙이 있어야 한다');
+  const rule = html.slice(at, html.indexOf('}', at));
+  assert.ok(/background:\s*none/.test(rule), '불투명 그라데이션을 비워야 문양이 보인다');
+  assert.ok(/box-shadow:\s*none/.test(rule), '테두리 그림자도 비워야 문양 테두리와 겹치지 않는다');
+});
