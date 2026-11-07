@@ -268,7 +268,9 @@ test('궁극기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다
   assert.ok(html.includes('const cooldown=ULTIMATE_COOLDOWN_TURNS-(auraUltimateMatch(ultimateState)?AURA_ULTIMATE_COOLDOWN_REDUCTION:0);'), 'Cooldown must come from the named constant, shortened only by aura resonance');
   assert.ok(html.includes('turnNumber<lastUltimateTurn+cooldown'), 'Lock reason must enforce the cooldown');
   assert.ok(html.includes("const resonance=auraUltimateBoost(ultimateState),cost=ultimateManaCost(ultimateState),minTurn=ultimateMinTurn(ultimateState),firstTurnUnlocked=guardianAwakenActive('player')&&firstUltimateTurn===null"), 'Aura awakening must unlock only the first ultimate minimum turn');
-  assert.ok(html.includes("!ultimateBloodOverride&&!firstTurnUnlocked&&turnNumber<minTurn"), 'Later ultimates must still enforce their minimum turn');
+  assert.ok(html.includes("!firstTurnUnlocked&&turnNumber<minTurn"), 'Later ultimates must still enforce their minimum turn');
+  /* 혈마나 궁극기(체력으로 대기 무시)는 2026-11-07 제거했다. 우회 경로가 되살아나면 잡는다. */
+  assert.ok(!html.includes('ultimateBloodOverride') && !html.includes('fireBloodUltimate'), '혈마나 궁극기 우회 경로를 되살리지 말 것');
   assert.ok(html.includes('const AURA_ULTIMATE_COOLDOWN_REDUCTION=1;'), 'Aura resonance shortens the cooldown by one turn');
   assert.ok(html.includes('function ultimateManaCost(spec){return spec?Math.max(1,spec.cost-(auraUltimateMatch(spec)'), 'Aura resonance always reduces ultimate mana, not only while awakened');
   assert.ok(html.includes('lastUltimateTurn=turnNumber;'), 'Activation must record the turn it was used');
