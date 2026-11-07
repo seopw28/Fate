@@ -48,7 +48,8 @@ test('묘지 재사용: 덱에 챔프가 없을 때 카드 뽑기를 누르면 �
   assert.ok(html.includes("if(!enemyDeck.length)break;"), '컴퓨터 자동 드로우도 재사용하지 않는다');
   assert.ok(html.includes("if(needsRecyclePrompt()){openRecyclePrompt();return;}"), '카드 뽑기에서 묻는다');
   assert.ok(html.includes('HP 10을 이용하여 묘지에서 덱을 가져오시겠습니까?'));
-  assert.ok(html.includes('enemyRecycleIfNoChampion();enemyDraw();'), '컴퓨터는 턴 시작에 같은 조건이면 예');
+  assert.ok(!html.includes('enemyRecycleIfNoChampion'), '컴퓨터도 턴 시작 자동 재사용을 하지 않는다 (2026-11-08)');
+  assert.ok(html.includes("if(!deckHasChampion(enemyDeck)&&canRecycleGraveyard('enemy'))recycleGraveyardIntoDeck('enemy');if(!enemyDeck.length)return false;"), '컴퓨터는 카드 뽑기 행동에서만, 같은 조건이면 예');
 });
 
 test('체력 40% 기준 효과(역전 돌진·영웅 회복 잠금·최후의 저항)는 하나도 남지 않고 카드 자체의 돌진 효과는 유지한다', () => {

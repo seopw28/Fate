@@ -80,8 +80,9 @@ test('basic deck and opening hand follow the PRD composition', () => {
   assert.ok(html.includes("fill('spell',BASIC_SPELL_COUNT,FEATURED_REVERSAL_IDS)||!fill('trap',BASIC_TRAP_COUNT)||!fill('champion',BASIC_CHAMPION_COUNT,HERO_PRESSURE_DECK_IDS,true)"), 'Basic deck builder must enforce all three card counts');
   assert.ok(html.includes("const FEATURED_REVERSAL_IDS=['reversal.judgment','reversal.bulwark','reversal.giant-hunt','reversal.weight-toll','reversal.life-siphon','reversal.insight']"), 'Basic and demo decks must feature all six reversal spells');
   assert.ok(html.includes('역전 체험덱 자동편성'), 'Deck editor must expose the featured reversal deck preset');
-  assert.ok(html.includes('guaranteed.length<2') && html.includes('!deck[i].spell&&deck[i].cost<=STARTING_MANA'), 'Opening hand must guarantee two low-cost champions');
+  assert.ok(html.includes('guaranteed.length<2') && html.includes('!pile[i].spell&&pile[i].cost<=STARTING_MANA'), 'Opening hand must guarantee two low-cost champions');
   assert.ok(html.includes('card.spell&&!card.trap&&card.cost<=STARTING_MANA') && html.includes('if(cheapMagic>=0)guaranteed.push(cheapMagic)'), 'Opening hand must guarantee one low-cost non-trap magic card when available');
+  assert.ok(html.includes('takeCards(deck,openingHandIndexes(deck))') && html.includes('takeCards(enemyDeck,openingHandIndexes(enemyDeck))'), 'Player and computer opening hands use the same guarantee (2026-11-08)');
   assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(buildBasicDeck(starterOwnedCards())).map(deckEntry)'), 'Computer opponent must use the basic deck');
 });
 
@@ -251,7 +252,7 @@ test('최대 마나는 항상 10 상한이다', () => {
 
 test('상대는 카드를 한 장씩 간격을 두고 내려놓는다 (같은 프레임 동시 등장 금지)', () => {
   assert.ok(html.includes('const ENEMY_PLAY_GAP_MS=340'), '카드 간 간격 상수가 있어야 한다');
-  const turn = html.slice(html.indexOf('const openSlots=FIELD_CARD_LIMIT', html.indexOf('enemyTurnMaxMana=enemyMana;')));
+  const turn = html.slice(html.indexOf('let placedBefore=lane.querySelectorAll', html.indexOf('enemyTurnMaxMana=enemyMana;')));
   assert.ok(turn.includes('await new Promise(resolve=>setTimeout(resolve,combatMs(ENEMY_PLAY_GAP_MS)))'), '카드 사이에 실제 대기가 있어야 한다');
   assert.ok(!turn.slice(0, turn.indexOf('arrangeEnemyLane')).includes('.forEach(data=>{enemyMana-=data.cost;enemySummonUnit(lane,data);})'), '동기 forEach로 한꺼번에 깔면 안 된다');
   assert.ok(turn.includes('let placedBefore=lane.querySelectorAll'), '전개 우선 소환 직후에도 같은 간격을 둬야 한다');
