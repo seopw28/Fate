@@ -463,9 +463,9 @@
     const CANCEL_HINT = '더블클릭 · 손패로 드래그하면 세팅 취소';
     const playCardBeforeCancel = playCard;
     playCard = function(card){
-      const before = {mana, hp: playerHp, blood: bloodManaUses, count: setMagicCards.length};
+      const before = {mana, hp: playerHp, blood: bloodManaUses, battleBlood: bloodManaBattleUses, count: setMagicCards.length};
       playCardBeforeCancel(card);
-      if(setMagicCards.length > before.count) setMagicCards[setMagicCards.length-1].refund = {mana: before.mana-mana, hp: before.hp-playerHp, blood: bloodManaUses-before.blood};
+      if(setMagicCards.length > before.count) setMagicCards[setMagicCards.length-1].refund = {mana: before.mana-mana, hp: before.hp-playerHp, blood: bloodManaUses-before.blood, battleBlood: bloodManaBattleUses-before.battleBlood};
     };
     const setUltimateBeforeCancel = setUltimate;
     setUltimate = function(card){ const had = ultimateState; setUltimateBeforeCancel(card); if(!had && ultimateState){ultimateState.card=card;ultimateState.personality=card.dataset.persona||'';} };
@@ -485,7 +485,7 @@
       setMagicCards.splice(setMagicCards.indexOf(magic), 1);
       const refund = magic.refund || {mana:0, hp:0, blood:0};
       mana = Math.min(maxMana, mana + refund.mana);
-      if(refund.hp){ playerHp = Math.min(HERO_MAX_HP, playerHp + refund.hp); bloodManaUses = Math.max(0, bloodManaUses - refund.blood); document.querySelector('#player-health').style.width = (playerHp/HERO_MAX_HP*100)+'%'; }
+      if(refund.hp){ playerHp = Math.min(HERO_MAX_HP, playerHp + refund.hp); bloodManaUses = Math.max(0, bloodManaUses - refund.blood); bloodManaBattleUses = Math.max(0, bloodManaBattleUses - (refund.battleBlood||0)); document.querySelector('#player-health').style.width = (playerHp/HERO_MAX_HP*100)+'%'; }
       renderMagicSlots(); updateMana();
       writeLog('<strong>'+magic.name+'</strong> 세팅을 취소하고 손패로 되돌렸습니다.'+(refund.mana?' 마나 '+refund.mana+' 환급.':'')+(refund.hp?' 체력 '+refund.hp+' 복구.':''));
     }
