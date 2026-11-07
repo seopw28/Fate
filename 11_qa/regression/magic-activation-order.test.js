@@ -82,3 +82,14 @@ test('마법 2칸과 함정 1칸을 종류별로 고정하고, 찬 종류의 손
   assert.ok(html.includes('updateCardAffordability = function(...args){ const result = updateCardAffordabilityBeforeMagicBlock.apply(this,args); syncMagicHandSlotAvailability(); return result; }'), '손패 재정렬 후에도 비활성 표시가 유지돼야 한다');
   assert.ok(!html.includes("content:'슬롯 2/2 · 세팅 불가'"), '공격력·체력을 가리는 글자 띠는 쓰지 않는다');
 });
+
+test('세팅한 마법은 턴 종료 즉시 발동하고, 궁극기는 세팅 다음 턴부터 발동한다 (2026-11-07)', () => {
+  assert.ok(html.includes('async function resolveEndTurnMagic(button)'), '턴 종료 시 내 마법을 정산하는 함수가 있어야 한다');
+  assert.ok(html.includes('resolveEndTurnMagic(button).then(proceed)'), '마법 정산이 끝난 뒤 내 챔프가 공격해야 한다');
+  assert.ok(!html.includes("triggerTrap('field_state');resolveNextFieldMagic();"), '내 턴 시작에 마법을 발동하면 안 된다');
+  const turn = html.slice(html.indexOf('enemyTurnMaxMana=enemyMana;'));
+  assert.ok(turn.indexOf('await resolveEnemySetMagic()') > turn.indexOf('const laneSettle=arrangeEnemyLane(lane)'), '상대 마법은 상대 턴 끝(교전 직전)에 발동해야 한다');
+  assert.ok(turn.indexOf('await resolveEnemySetMagic()') < turn.indexOf('runCombatQueue('), '상대 마법은 상대 교전보다 먼저 발동해야 한다');
+  assert.ok(html.includes("if(ultimateJustEquipped('player',ultimateState))return '다음 턴부터 발동';"), '세팅한 턴에는 궁극기를 발동할 수 없어야 한다');
+  assert.ok(html.includes("ultimateJustEquipped('enemy',spec))return false;"), '컴퓨터도 세팅한 턴에는 궁극기를 발동하지 않는다');
+});

@@ -251,7 +251,7 @@ test('최대 마나는 항상 10 상한이다', () => {
 
 test('상대는 카드를 한 장씩 간격을 두고 내려놓는다 (같은 프레임 동시 등장 금지)', () => {
   assert.ok(html.includes('const ENEMY_PLAY_GAP_MS=340'), '카드 간 간격 상수가 있어야 한다');
-  const turn = html.slice(html.indexOf('const openSlots=FIELD_CARD_LIMIT', html.indexOf('await resolveEnemySetMagic()')));
+  const turn = html.slice(html.indexOf('const openSlots=FIELD_CARD_LIMIT', html.indexOf('enemyTurnMaxMana=enemyMana;')));
   assert.ok(turn.includes('await new Promise(resolve=>setTimeout(resolve,combatMs(ENEMY_PLAY_GAP_MS)))'), '카드 사이에 실제 대기가 있어야 한다');
   assert.ok(!turn.slice(0, turn.indexOf('arrangeEnemyLane')).includes('.forEach(data=>{enemyMana-=data.cost;enemySummonUnit(lane,data);})'), '동기 forEach로 한꺼번에 깔면 안 된다');
   assert.ok(turn.includes('let placedBefore=lane.querySelectorAll'), '전개 우선 소환 직후에도 같은 간격을 둬야 한다');
@@ -360,7 +360,7 @@ test('상대 턴의 행동들은 한 프레임에 몰리지 않고 한 박자씩
   // 무슨 일이 벌어졌는지 읽을 틈이 없다.
   assert.ok(html.includes('const ENEMY_ACTION_BEAT_MS=200'), '행동 사이 최소 간격 상수가 있어야 한다');
   // 실제로 쓰이는 경로는 async enemyTurn 재정의본이다. 거기서 한 줄 몰아 호출이 되살아나면 안 된다.
-  const turn = html.slice(html.indexOf('await resolveEnemySetMagic()'));
+  const turn = html.slice(html.indexOf('enemyTurnMaxMana=enemyMana;'));
   assert.ok(!turn.slice(0, turn.indexOf('runCombatQueue')).includes("summonEnemyPriorityChampion(lane);equipEnemyUltimate()"), '다섯 행동을 한 줄에 몰아 호출하지 말 것');
   for (const fn of ['triggerEnemyTrap', 'summonEnemyPriorityChampion', 'equipEnemyUltimate', 'castEnemyUltimate', 'setEnemyMagic']) {
     assert.ok(html.includes(`await beat(()=>${fn}(`), `${fn}은 한 박자를 두고 실행해야 한다`);
@@ -371,7 +371,7 @@ test('상대 턴의 행동들은 한 프레임에 몰리지 않고 한 박자씩
 });
 
 test('궁극기 세팅은 오라 각성 선택을 마친 뒤에만, 두 번째부터는 직전 복수자가 쓰러지고 주인의 턴이 두 번 시작된 뒤에만 가능하다', () => {
-  assert.ok(html.includes('ULTIMATE_UNLOCK_HP=80') && html.includes('const GUARDIAN_AWAKEN_HP=ULTIMATE_UNLOCK_HP;'), '각성 버튼과 같은 체력 80 기준을 쓴다');
+  assert.ok(html.includes('ULTIMATE_UNLOCK_HP=85') && html.includes('const GUARDIAN_AWAKEN_HP=ULTIMATE_UNLOCK_HP;'), '각성 버튼과 같은 체력 85 기준을 쓴다');
   assert.ok(html.includes("function ultimateAwakenGateOpen(side='player'){return awakenGateOpened[side];}"), '체력이 아니라 각성 선택 완료로 열린다');
   assert.ok(html.includes('guardianAwakenChoice=choice;awakenGateOpened.player=true;') && html.includes('enemyGuardianAwakenChoice=choice;awakenGateOpened.enemy=true;'), '유저·컴퓨터 모두 각성 선택 시점에 열린다');
   assert.ok(html.includes("{reason:'복수자 생존 중'") && html.includes("'다음 세팅까지 '+(ledger.cooldownUntil-ledger.turns)+'턴'"), '복수자 생존 중 / 다음 세팅까지 N턴 잠금');

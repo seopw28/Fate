@@ -13,7 +13,7 @@ const html = fs.readFileSync(path.join(root, 'dist/index.html'), 'utf8');
 test('궁극기 수치 상수가 PM 확정값이다 (소진자 +15/1, 복수자 +7/+15, T+2, 공명 −2/+2/+2, 재사용 체력 10)', () => {
   const m = html.match(/const ULTIMATE_SPENT_ATTACK_BONUS=(\d+),ULTIMATE_SPENT_HP=(\d+),ULTIMATE_RESONANCE_STAT=(\d+),ULTIMATE_RESONANCE_COST=(\d+),AVENGER_ATTACK_BONUS=(\d+),AVENGER_HP_BONUS=(\d+),AVENGER_HERO_DAMAGE=(\d+),AVENGER_ARRIVAL_TURNS=(\d+),AVENGER_RESET_TURNS=(\d+),AVENGER_EXTRA_DRAW_AT=(\d+),GRAVEYARD_RECYCLE_HP_COST=(\d+),ULTIMATE_UNLOCK_HP=(\d+);/);
   assert.ok(m, '상수 선언을 찾을 수 없다');
-  assert.deepEqual(m.slice(1).map(Number), [15, 1, 2, 2, 7, 15, 7, 3, 2, 2, 10, 80]);
+  assert.deepEqual(m.slice(1).map(Number), [15, 1, 2, 2, 7, 15, 7, 3, 2, 2, 10, 85]);
 });
 
 test('각성 선택 전 세팅 불가 · 소진자 생존 중 세팅 불가는 버튼 경로와 카드 경로 모두 같은 판정을 쓴다', () => {

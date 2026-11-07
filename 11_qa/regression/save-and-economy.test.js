@@ -106,8 +106,8 @@ test('물의 오라: 27% 확률로 마나 1~2를 회복한다', () => {
   assert.ok(html.includes("const rollPoseidonMana=side=>{const config=guardianAuraConfig(side,'cheongryong');return engineAdapter.randomInt(config.manaMin,config.manaMax);}"), 'Runtime recovery must roll the base or awakened configured range');
 });
 
-test('오라 각성: 체력 80 이하에서 양자택일하고 배틀 종료까지 유지한다', () => {
-  assert.ok(html.includes('ULTIMATE_UNLOCK_HP=80') && html.includes('const GUARDIAN_AWAKEN_HP=ULTIMATE_UNLOCK_HP;'), 'Awakening must unlock at 80 hero HP');
+test('오라 각성: 체력 85 이하에서 양자택일하고 배틀 종료까지 유지한다', () => {
+  assert.ok(html.includes('ULTIMATE_UNLOCK_HP=85') && html.includes('const GUARDIAN_AWAKEN_HP=ULTIMATE_UNLOCK_HP;'), 'Awakening must unlock at 85 hero HP');
   assert.ok(html.includes('playerHp<=GUARDIAN_AWAKEN_HP'), 'Runtime must detect the awakening health threshold');
   assert.ok(html.includes("guardianAwakenChoice=choice"), 'The selected awakening branch must be stored');
   assert.ok(html.includes('const guardianAwakenActive=side=>Boolean(guardianAwakenChoiceOf(side))'), 'Awakening must remain active for either side after selection');
@@ -291,7 +291,7 @@ test('궁극기: 전장이 가득 찼을 때만 맨 오른쪽 아군을 제물�
   assert.ok(!html.includes("if(fieldCount>=FIELD_CARD_LIMIT)return '내 전장 6장 · 궁극기 사용 불가'"));
   assert.ok(!html.includes('제물로 삼을 아군 챔프 필요'), '제물 필요 잠금 문구는 폐지됐다');
   assert.ok(html.includes('full=lane.querySelectorAll(\':scope > .unit:not(.unit-dying)\').length>=FIELD_CARD_LIMIT,victim=full?'), '전장이 가득 찼을 때만 제물을 정한다 (양쪽 공통)');
-  assert.ok(html.includes('const spec=enemyUltimate;if(!spec||!enemyUltimateCondition(spec))return false;'), '컴퓨터 발동 조건에 제물 필요가 없다');
+  assert.ok(html.includes("const spec=enemyUltimate;if(!spec||!enemyUltimateCondition(spec)||ultimateJustEquipped('enemy',spec))return false;"), '컴퓨터 발동 조건에 제물 필요가 없다');
   assert.ok(html.includes("ULTIMATE_SPENT_ATTACK_BONUS=15,ULTIMATE_SPENT_HP=1"));
   assert.ok(html.includes("attack:(Number(spec.baseAttack)||0)+ULTIMATE_SPENT_ATTACK_BONUS+bonus,hp:ULTIMATE_SPENT_HP+bonus"), '소진자 = 카드 기본 공격력 +15 / 체력 1 (공명 +2/+2)');
   assert.ok(html.includes("summonBattleToken(spec.name,stats.attack,stats.hp,spec.element,'ultimate-spent')"));
