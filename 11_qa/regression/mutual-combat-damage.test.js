@@ -75,7 +75,11 @@ test('피해를 막은 연출은 방어함이 아니어도 방어 사운드가 �
      소리 조건이 라벨 접두사에 묶여 있던 탓이라, 다시 좁아지지 않도록 고정한다. */
   assert.ok(html.includes('const DAMAGE_BLOCK_LABELS='), '막은 연출 목록이 있어야 한다');
   assert.ok(html.includes("const blocksDamage=label=>DAMAGE_BLOCK_LABELS.some(word=>String(label).includes(word))"));
-  assert.ok(html.includes("if(kind==='shield'&&blocksDamage(label))"), '소리 조건은 라벨 접두사가 아니라 막았는지로 판단해야 한다');
+  assert.ok(/if\(kind==='shield'&&\(?blocksDamage\(label\)/.test(html), '소리 조건은 라벨 접두사가 아니라 막았는지로 판단해야 한다');
+  /* 보호막을 실제로 걸었는데 라벨에 '보호막'이 없으면 소리가 빠진다 — 뮤테의 세라피나('힐링
+     블레스')가 그랬다. 라벨뿐 아니라 걸린 상태도 함께 본다 (2026-11-07) */
+  assert.ok(html.includes("target?.dataset?.shield==='true'"), '보호막이 걸린 상태도 방어음 조건이어야 한다');
+  assert.ok(html.includes("'힐링 블레스 · 보호막 · +'"), '힐링 블레스는 보호막을 준다는 것이 라벨에 드러나야 한다');
   const list = html.match(/const DAMAGE_BLOCK_LABELS=\[([^\]]*)\]/)[1];
   for (const word of ['방어함', '보호막', '철벽', '무적', '절대방어']) {
     assert.ok(list.includes(word), word + '으로 막은 연출도 소리가 나야 한다');
