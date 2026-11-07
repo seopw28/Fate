@@ -49,3 +49,11 @@ test('복수자는 궁극기 소진자가 쓰러진 뒤에만 강림한다 (체�
   assert.ok(html.includes('function ensureEnemyAvengerSource()'), '동료 후보 확정 로직은 유지한다');
   assert.ok(html.includes('if(!ensureEnemyAvengerSource())return null'));
 });
+
+test('컴퓨터 상대도 두 번째 궁극기부터 6턴 세팅 대기를 받는다', () => {
+  /* 유저만 막으면 상대만 궁극기를 연달아 올려 빈도가 비대칭이 된다. */
+  assert.ok(html.includes('function enemyUltimateSettingLocked()'), '상대 세팅 잠금 판정이 있어야 한다');
+  assert.ok(/enemyLastUltimateTurn!==null&&turnNumber<enemyLastUltimateTurn\+ULTIMATE_RESET_TURNS/.test(html),
+    '유저와 같은 상수·직전 사용 기준이어야 한다');
+  assert.ok(html.includes('if(enemyUltimate)return;if(enemyUltimateSettingLocked())return;'), '장착 경로에서 실제로 막아야 한다');
+});
