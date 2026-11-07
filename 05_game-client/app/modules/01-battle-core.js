@@ -531,21 +531,17 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         const base={fire:260,water:390,wind:520,earth:180,neutral:310}[variant]||310;noise(.18,.035,1800);[1,1.25,1.5].forEach((ratio,i)=>tone(base*ratio*pitch,.32,'sine',.035,base*ratio*1.8,i*.045));return;
       }
       if(kind==='trap'){noise(.12,.05,760);tone(88,.38,'square',.055,42);tone(740*pitch,.1,'triangle',.04,210*pitch,.07);return;}
-      if(kind==='shield'){/* 방어함 = '따닥' 2연타. 한 방으로는 다른 전투음에 묻혀 잘 안 들렸다 —
-           같은 소리를 짧은 간격으로 두 번 내면 길이가 아니라 '반복'으로 인지돼 훨씬 선명하게 잡힌다.
-           두 번째는 살짝 높고 작게 내 메아리가 아니라 다단히트로 들리게 한다.
-           저역(150Hz 아래)은 작은 스피커가 못 내보내고 피격·화상음과도 겹치므로, 몸통은 귀가 가장
-           예민한 1~3kHz에 두고 120Hz 한 겹만 무게로 남긴다 (2026-11-07) */
-        const SHIELD_HIT_GAP=.085;/* 이보다 짧으면 한 소리로 뭉치고, 길면 두 번 맞은 것처럼 끊긴다 */
-        [0,1].forEach(hit=>{
-          const at=hit*SHIELD_HIT_GAP,v=hit?.86:1,fp=hit?1.12:1;/* 2타는 0.86배 음량 · 1.12배 음정 */
-          noise(.032,.3*v,3600*fp,at);/* 돌이 깨지며 튀는 순간 — 가장 먼저 꽂히는 어택 */
-          tone(1950*pitch*fp,.075,'triangle',.3*v,950*pitch*fp,at);/* 몸통 */
-          tone(980*pitch*fp,.09,'square',.2*v,440*pitch*fp,at+.004);/* 단단함을 주는 배음 */
-          noise(.06,.16*v,1200*fp,at+.004);/* 둔탁한 질감 */
-          tone(120*pitch,.09,'sine',.11*v,70*pitch,at+.004);/* 무게는 한 겹만 */
-        });
-        noise(.12,.055,560,SHIELD_HIT_GAP+.05);/* 2타 뒤에만 남는 꼬리 */
+      if(kind==='shield'){/* 방어막 = 결계가 차오르는 '부웅'. 앞서 1950Hz 몸통 + square 배음으로 올렸더니
+           잘 들리긴 해도 장난감 삑삑이처럼 들려 방어로 안 읽혔다 — 1.5~3kHz 는 귀에 꽂히지만
+           '막는다'는 질감이 없다. 이 게임의 마법·소환음이 모두 80~600Hz sine/sawtooth 스윕인 것에
+           맞춰, 낮은 데서 차올라 자리잡는 스윕으로 바꾼다. 음량은 유지하되 대역을 내렸다.
+           다단히트(2연타)는 타격에는 맞지만 결계에는 안 맞아 거둔다 (2026-11-07) */
+        noise(.2,.05,900);/* 기운이 모이는 바람 — 어택을 세우지 않고 깔아준다 */
+        tone(110*pitch,.46,'sine',.3,275*pitch);/* 차오르는 몸통: 낮은 데서 올라와 자리잡는다 */
+        tone(220*pitch,.42,'triangle',.17,412*pitch,.02);/* 한 옥타브 위로 두께를 준다 */
+        tone(55*pitch,.5,'sine',.14,82*pitch,.01);/* 바닥 무게 */
+        tone(660*pitch,.3,'sine',.055,495*pitch,.07);/* 결계가 맺히는 배음 — 살짝만 */
+        noise(.34,.03,420,.1);/* 울림이 번지는 꼬리 */
         return;}
       if(kind==='frost-cast'){[1568,1976,2349,2793].forEach((f,i)=>tone(f*pitch,.42,'sine',.026,f*1.02,i*.055));noise(.5,.022,6200,.02);tone(220*pitch,.5,'triangle',.03,110*pitch);return;}
       if(kind==='frost-shatter'){noise(.07,.07,6800);noise(.28,.05,4200,.03);[2637,2093,1568,1175].forEach((f,i)=>tone(f*pitch,.12,'triangle',.03,f*.55,i*.045));tone(120*pitch,.22,'sine',.06,52,.02);return;}
