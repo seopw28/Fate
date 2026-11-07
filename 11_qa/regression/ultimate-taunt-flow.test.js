@@ -26,7 +26,11 @@ test('전역 도발은 화상과 구분되는 두꺼운 짙은 회색 장갑 테
 
 test('치명상을 받은 도발 카드는 반격·사망 제거가 끝나기 전에 다음 공격으로 넘기지 않는다', () => {
   assert.ok(html.includes("defender.dataset.destroyed='true';markCombatBusy(combatMs(COMBAT_TIMING.counterDelay+1100))"));
-  assert.ok(html.includes('triggerDeathrattle(defender);defender.remove();'));
+  /* 제거 함수 이름이 아니라 '유언 뒤에 제거한다'는 순서를 본다. 2026-11-07 에 제거를
+     removeFieldUnit(교전이 멎은 뒤로 미룸)으로 옮기면서, 이름을 박아둔 단정이 멀쩡한
+     개선에 깨졌다. 공격 중 빈 자리가 생겨 맞는 카드가 옆으로 밀리던 문제를 고친 변경이다. */
+  assert.ok(/triggerDeathrattle\(defender\);(defender\.remove\(\)|removeFieldUnit\(defender\))/.test(html),
+    '유언을 처리한 뒤에 전장에서 뺀다');
 });
 
 test('공격력 0 궁극기 소진자는 카드와 영웅에게 실제 피해 0을 준다', () => {

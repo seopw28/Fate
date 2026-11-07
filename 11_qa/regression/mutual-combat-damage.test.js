@@ -18,7 +18,10 @@ test('교환 피해는 방어 카드의 반격 이동·타격 이펙트 후 적�
   assert.ok(!html.includes('impact=()=>{};shieldBreakFx=()=>{};showSkillEffect=()=>{};showAwakeningProc=()=>{};sfx=()=>{}'));
   assert.ok(html.includes("fieldAttack(defender,attacker,{label:'반격 '+returnDamage+' 피해',counter:true,onImpact:()=>"));
   assert.ok(html.includes('const outcome=applyNumericExchangeDamage(attacker,returnDamage,defenderElement)'));
-  assert.ok(html.includes("setTimeout(()=>attacker.remove(),900)"), '사망 카드는 반격 피격을 보여 준 뒤 제거해야 한다');
+  /* 핵심은 '900ms 뒤'라는 간격이다 — 반격 피격을 보여 준 뒤에 치운다는 뜻이다.
+     제거 호출 이름은 바뀔 수 있으므로(2026-11-07 removeFieldUnit 도입) 간격만 고정한다. */
+  assert.ok(/setTimeout\(\(\)=>(attacker\.remove\(\)|removeFieldUnit\(attacker\)),900\)/.test(html),
+    '사망 카드는 반격 피격을 보여 준 뒤(900ms) 제거해야 한다');
 });
 
 test('방어함 표시는 전용 방패 연출과 동시에 방어 사운드를 반드시 재생한다', () => {
