@@ -221,14 +221,16 @@
     @keyframes shard-out { 0%{transform:translate(0,0) rotate(var(--angle)) scaleX(.25);opacity:0} 12%{opacity:1} 100%{transform:translate(var(--dx),var(--dy)) rotate(var(--angle)) scaleX(1.4);opacity:0} }
     @keyframes wisp-rise { 0%{transform:translate(0,0) scale(.25);opacity:0} 20%{opacity:.8} 100%{transform:translate(var(--dx),var(--dy)) scale(1.5);opacity:0} }
 /* 피격 반응: 맞은 쪽은 때린 방향 그대로 밀려난다 — 내가 때리면 위로, 적이 때리면 아래로.
-       --knock-x/y는 fieldAttack이 공격자→대상 벡터와 피해량으로 계산해 넣는다(세로 부호 포함).
-       아래 fallback 값은 공격자 좌표가 없는 예외 경로에서만 쓰인다. 밀려나는 구간을 길게 잡고 되돌아오는 길을 더 느리게 해 무게를 남긴다 (2026-11-07) */
+       --knock-x/y는 impact()가 피격 시점마다 대상 기준으로 확정해 넣는다(세로 부호 포함).
+       평타·반격은 fieldAttack이 공격자→대상 벡터로 먼저 넣은 값을 쓴다.
+       아래 fallback은 두 경로가 모두 건너뛰어진 경우에만 쓰이므로 세로 성분을 0으로 두어
+       '항상 위로 솟는' 잘못된 방향을 만들지 않는다. 밀려나는 구간을 길게 잡고 되돌아오는 길을 더 느리게 해 무게를 남긴다 (2026-11-07) */
     @keyframes target-hit {
       0%{transform:translate(0) scale(1);filter:brightness(1)}
-      16%{transform:translate(calc(var(--knock-x,6px)*.55),calc(var(--knock-y,-10px)*.55)) scale(.955);filter:brightness(2.15) saturate(1.4)}
-      38%{transform:translate(var(--knock-x,6px),var(--knock-y,-10px)) scale(.975);filter:brightness(1.5) saturate(1.2)}
-      62%{transform:translate(calc(var(--knock-x,6px)*.46),calc(var(--knock-y,-10px)*.46)) scale(1.02);filter:brightness(1.22)}
-      82%{transform:translate(calc(var(--knock-x,6px)*.14),calc(var(--knock-y,-10px)*.14)) scale(1.005)}
+      16%{transform:translate(calc(var(--knock-x,6px)*.55),calc(var(--knock-y,0px)*.55)) scale(.955);filter:brightness(2.15) saturate(1.4)}
+      38%{transform:translate(var(--knock-x,6px),var(--knock-y,0px)) scale(.975);filter:brightness(1.5) saturate(1.2)}
+      62%{transform:translate(calc(var(--knock-x,6px)*.46),calc(var(--knock-y,0px)*.46)) scale(1.02);filter:brightness(1.22)}
+      82%{transform:translate(calc(var(--knock-x,6px)*.14),calc(var(--knock-y,0px)*.14)) scale(1.005)}
       100%{transform:translate(0) scale(1);filter:brightness(1)}
     }
     @media(prefers-reduced-motion:reduce){ .impact-ray,.particle.shard,.element-wisp,.asset-fx,.attack-trail{display:none}.arena.impact,.unit.hit-react,.avatar.hit-react{animation:none}.shockwave{animation-duration:.18s}.screen-flash{animation-duration:.18s} }

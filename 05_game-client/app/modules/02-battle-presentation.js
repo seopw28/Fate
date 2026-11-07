@@ -12,6 +12,31 @@
     sfx=function(kind,variant='neutral',strength=3){if(soundOn&&sfxIsMuted(kind,variant))return;if(kind==='hit'&&soundOn){fateSfx.playHit(variant,strength,hitPan);return;}if(soundOn&&(kind==='frost-cast'||kind==='frost-shatter')&&fateSfx.playFrost(kind==='frost-cast'?'cast':'shatter'))return;return sfxBeforeVariety(kind,variant,strength);};
     function impact(target,damage,element='fire'){
       hitPan=panFor(target);sfx('hit',element,damage); const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches; const color=impactPalette[element]||impactPalette.fire;const hero=target.classList.contains('avatar');if(hero)heroHealthImpact(target,damage);/* 영웅 직접 피해: 체력바·화면 테두리에 더해, 아바타 자리에 오라 타격 이펙트를 작게 낸다(화면 전체 번쩍임·어둡힘·필드 흔들림은 생략) */ if(!hero){const arena=document.querySelector('.arena'); arena.classList.remove('impact'); void arena.offsetWidth; arena.classList.add('impact');slowCombatAnimations(arena);}const r=target.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+      /* 밀려나는 방향은 '맞은 쪽이 누구인지'가 정한다 — 내 카드는 아래로, 적 카드는 위로.
+         fieldAttack(평타·반격)은 공격자→대상 벡터로 --knock-x/y를 미리 넣지만, 마법·화상·광역·사망유발
+         피해는 damageUnit에서 바로 impact로 들어와 그 좌표가 없었다. 그래서 (1) 한 번도 평타를 안 맞은
+         카드는 CSS 폴백 -10px으로 '항상 위'로 솟고 (2) 전에 맞았던 카드는 그때의 값이 그대로 남아
+         엉뚱한 방향으로 튀었다. 여기서 피격 시점마다 대상 기준으로 다시 확정해 두 경우를 모두 없앤다.
+         아레나는 적 레인이 위 / 내 소환존이 아래이므로 내 카드(+)·적 카드(−)로 부호가 갈린다.
+         영웅 아바타도 같은 규칙을 따른다 (2026-11-07) */
+      {const mine=!!target.closest('.summon-zone')||!!target.closest('.player'),
+             dir=mine?1:-1,
+             weight=Math.max(0,Math.min(1,(Number(damage)||0)/12)),
+             reach=16+38*weight;
+       if(!target.style.getPropertyValue('--knock-src')||target.style.getPropertyValue('--knock-src')!=='field'){
+         target.style.setProperty('--knock-x','0px');
+         target.style.setProperty('--knock-y',(dir*reach*1.5).toFixed(1)+'px');}
+       target.style.removeProperty('--knock-src');}
+      /* 평타 돌진·반동은 element.animate()(WAAPI)로 transform을 돌린다. WAAPI는 CSS 애니메이션보다
+         우선순위가 높아, 그게 아직 돌고 있으면 hit-react(CSS target-hit)가 transform을 전혀 못 잡는다.
+         반격이 특히 어긋나 보인 이유가 이것 — 되받아친 내 카드는 직전에 자기 돌진·반동이 돌고 있어
+         밀려나는 모션이 통째로 먹혔고, 화면에는 돌진 복귀 움직임만 남아 방향이 거꾸로 읽혔다.
+         피격 모션이 이기도록 대상의 transform 계열 WAAPI를 먼저 거둔다 (2026-11-07) */
+      if(target.getAnimations)target.getAnimations().forEach(anim=>{
+        if(anim.animationName)return;/* CSS 애니메이션(hit-react 자신 포함)은 건드리지 않는다 */
+        let touchesTransform=false;
+        try{touchesTransform=(anim.effect?.getKeyframes()||[]).some(frame=>'transform' in frame);}catch(e){}
+        if(touchesTransform)try{anim.cancel();}catch(e){}});
       target.classList.remove('hit-react'); void target.offsetWidth; target.classList.add('hit-react');slowCombatAnimations(target);setTimeout(()=>target.classList.remove('hit-react'),combatMs(700));/* 밀려났다 돌아오는 길(0.68초)을 끝까지 보여준 뒤 해제한다 */
       if(!hero){const vignette=document.createElement('div'); vignette.className='impact-vignette'; vignette.style.setProperty('--x',x+'px'); vignette.style.setProperty('--y',y+'px'); document.body.appendChild(vignette);slowCombatAnimations(vignette);setTimeout(()=>vignette.remove(),combatMs(700));
       const flash=document.createElement('div'); flash.className='fx screen-flash'; flash.style.background='radial-gradient(circle at '+x+'px '+y+'px,#fff9 0, '+color+'44 13%,transparent 44%)'; document.body.appendChild(flash);slowCombatAnimations(flash);setTimeout(()=>flash.remove(),combatMs(500));}
