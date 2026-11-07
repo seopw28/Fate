@@ -90,7 +90,7 @@ test('마법은 손패에서 더블클릭하면 마나로만 즉시 발동하고
   assert.ok(html.includes('blocked=spellOnly?mana<cost:!quote.affordable'), '마법은 혈마나 없이 마나로만 쓸 수 있어야 한다');
   const turn = html.slice(html.indexOf('enemyTurnMaxMana=enemyMana;'));
   const setAt = turn.indexOf('await beat(()=>setEnemyMagic())'), resolveAt = turn.indexOf('await resolveEnemySetMagic()');
-  assert.ok(resolveAt > setAt && resolveAt < turn.indexOf('const openSlots=FIELD_CARD_LIMIT'), '상대 마법은 쓰는 즉시 발동해야 한다');
+  assert.ok(resolveAt > setAt && resolveAt < turn.indexOf('let placedBefore=lane.querySelectorAll'), '상대 마법은 쓰는 즉시 발동해야 한다');
   assert.ok(html.includes("(event==='field_state'&&magic.effect==='global-destroy')"), '대재앙은 대기 턴이 찬 내 턴 시작에 발동하는 함정이다');
   assert.ok(html.includes("if(ultimateJustEquipped('player',ultimateState))return '다음 턴부터 발동';"), '세팅한 턴에는 궁극기를 발동할 수 없어야 한다');
   assert.ok(html.includes("ultimateJustEquipped('enemy',spec))return false;"), '컴퓨터도 세팅한 턴에는 궁극기를 발동하지 않는다');

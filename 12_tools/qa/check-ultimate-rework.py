@@ -56,14 +56,14 @@ CHECKS = [
   "(async()=>{const proto=enemyDeck.find(d=>!d.spell);const lane=document.querySelector('.arena .lane:first-child');awakenGateOpened.enemy=true;enemyHp=70;enemyTurnMaxMana=maxMana=5;const run=async(n)=>{lane.innerHTML='';enemyGraveyard.length=0;ultimateLedger.enemy.spent=null;for(let i=0;i<n;i++)enemySummonUnit(lane,{name:'적'+i,art:proto.art,el:'earth',atk:2,hp:5,cost:1});enemyMana=5;enemyUltimate=enemyUltimateSpec({...proto,atkFinal:proto.atk});const ok=castEnemyUltimate();const units=[...lane.querySelectorAll(':scope > .unit:not(.unit-dying)')];return {n,ok,count:units.length,lastSpent:units.at(-1)?.dataset.effect==='ultimate-spent',grave:enemyGraveyard.length};};"
   "const r0=await run(0),r3=await run(3),r6=await run(5);"
   "return {ok:r0.ok&&r0.count===1&&r0.lastSpent&&r0.grave===0&&r3.ok&&r3.count===4&&r3.lastSpent&&r3.grave===0&&r6.ok&&r6.count===5&&r6.lastSpent&&r6.grave===1,r0,r3,r6};})()"),
- ("소진자: 카드 기본 공격력 +15 / 체력 1 / 130% / 즉시 공격 가능 / 맨 오른쪽 고정 / 전역 도발",
+ ("소진자: 카드 기본 공격력 +10 / 체력 1 / 130% / 즉시 공격 가능 / 맨 오른쪽 고정 / 전역 도발",
   "(async()=>{__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);__q.ripe();const base=ultimateState.baseAttack;fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
   "const u=__q.spent();const lane=document.querySelector('.summon-zone');"
   "const r={atk:u&&__q.atk(u),hp:u&&__q.hp(u),exhausted:u?.classList.contains('exhausted'),last:u===lane.lastElementChild,scale:u&&getComputedStyle(u).scale,locked:u?.dataset.orderLocked,aggro:u?.dataset.ultimateAggro,base};"
-  "return {ok:!!u&&r.atk===base+15&&r.hp===1&&r.exhausted===false&&r.last&&r.scale==='1.3'&&r.locked==='true'&&r.aggro==='true'&&battlePhase==='setup',...r};})()"),
+  "return {ok:!!u&&r.atk===base+10&&r.hp===1&&r.exhausted===false&&r.last&&r.scale==='1.3'&&r.locked==='true'&&r.aggro==='true'&&battlePhase==='setup',...r};})()"),
  ("오라 공명(카드 성격 = 내 오라 불): 비용 −2, 소진자 공격 +2 · 체력 +2",
   "(async()=>{__q.ready();maxMana=6;mana=6;const c=__q.card(__q.fireId);setUltimate(c);__q.ripe();const base=ultimateState.baseAttack,cost=ultimateState.cost,res=auraUltimateMatch(ultimateState);fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
-  "const u=__q.spent();return {ok:res&&cost===4&&mana===2&&__q.atk(u)===base+15+2&&__q.hp(u)===3,res,cost,mana,atk:__q.atk(u),hp:__q.hp(u),base};})()"),
+  "const u=__q.spent();return {ok:res&&cost===4&&mana===2&&__q.atk(u)===base+10+2&&__q.hp(u)===3,res,cost,mana,atk:__q.atk(u),hp:__q.hp(u),base};})()"),
  ("소진자가 안 죽으면 다음 궁극기를 세팅할 수 없고 잠금 사유가 표시된다",
   "(async()=>{__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);__q.ripe();fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
   "const c2=__q.card(__q.notFireId);turnNumber+=10;setUltimate(c2);__q.ripe();const reason=ultimateSettingLockReason();renderUltimate();const btn=document.querySelector('#ultimate-panel .ultimate-slot-empty');"
@@ -101,10 +101,11 @@ CHECKS = [
   "(()=>{setBattlePhase('setup');const p=deck.find(d=>!d.spell),sp=deck.find(d=>d.spell);const seed=hp=>{__q.trim();allyGraveyard.length=0;allyGraveyard.push(graveRecordFromDeckCard(p),graveRecordFromDeckCard(p));deck.length=0;deck.push(sp);playerHp=hp;drawActionsUsed=0;mana=10;updateMana();};const modal=document.querySelector('#recycle-modal');"
   "seed(11);useDrawAction();const asked11=modal.classList.contains('show');answerRecyclePrompt(true);const at11={hp:playerHp,deck:deck.length};seed(10);useDrawAction();const asked10=modal.classList.contains('show');const at10={hp:playerHp,deck:deck.length};"
   "return {ok:asked11&&at11.hp===1&&at11.deck===2&&!asked10&&at10.hp===10&&at10.deck===0,asked11,at11,asked10,at10};})()"),
- ("컴퓨터도 같은 조건(덱에 챔프 없음·체력 10 초과)이면 턴 시작에 묘지 챔프를 덱에 섞는다(임시: 항상 예)",
-  "(()=>{const p=enemyDeck.find(d=>!d.spell),sp=enemyDeck.find(d=>d.spell);enemyGraveyard.length=0;enemyGraveyard.push(graveRecordFromDeckCard(p),graveRecordFromDeckCard(p),{name:'소진자',art:p.art,effect:'ultimate-spent'});enemyDeck.length=0;enemyDeck.push(sp);enemyHand.length=0;enemyHp=50;enemyRecycleIfNoChampion();enemyDraw();"
-  "const a={hp:enemyHp,deck:enemyDeck.length,champ:enemyHand.filter(c=>!c.spell).length};enemyGraveyard.length=0;enemyGraveyard.push(graveRecordFromDeckCard(p));enemyDeck.length=0;enemyHp=10;enemyRecycleIfNoChampion();const b={hp:enemyHp,deck:enemyDeck.length};enemyHp=50;enemyDraw();"
-  "return {ok:a.hp===40&&a.deck===2&&a.champ===1&&b.hp===10&&b.deck===0&&enemyHp===50&&enemyDeck.length===0,a,b};})()"),
+ ("컴퓨터도 카드 뽑기 행동에서만, 같은 조건(덱에 챔프 없음·체력 10 초과)이면 묘지 챔프를 덱에 섞는다(예). 자동 드로우는 재사용하지 않는다",
+  "(()=>{const p=enemyDeck.find(d=>!d.spell),sp=enemyDeck.find(d=>d.spell);enemyGraveyard.length=0;enemyGraveyard.push(graveRecordFromDeckCard(p),graveRecordFromDeckCard(p),{name:'소진자',art:p.art,effect:'ultimate-spent'});enemyDeck.length=0;enemyDeck.push(sp);enemyHand.length=0;enemyHp=50;enemyMana=10;enemyDrawActionsUsed=0;enemyTurnsTaken=1;"
+  "enemyAutoDraw();const auto={hp:enemyHp,deck:enemyDeck.length,yard:enemyGraveyard.length,hand:enemyHand.length};enemyHand.length=0;enemyDeck.length=0;enemyDeck.push(sp);performEnemyDrawAction();"
+  "const a={hp:enemyHp,deck:enemyDeck.length,champ:enemyHand.filter(c=>!c.spell).length,mana:enemyMana};enemyGraveyard.length=0;enemyGraveyard.push(graveRecordFromDeckCard(p));enemyDeck.length=0;enemyHp=10;enemyHand.length=0;enemyMana=10;enemyDrawActionsUsed=0;const drew=performEnemyDrawAction();const b={hp:enemyHp,deck:enemyDeck.length,drew,mana:enemyMana};enemyHp=50;enemyDrawActionsUsed=0;"
+  "return {ok:auto.hp===50&&auto.deck===0&&auto.yard===3&&auto.hand===1&&a.hp===40&&a.deck===2&&a.champ===1&&a.mana===8&&b.hp===10&&b.deck===0&&!b.drew&&b.mana===10,auto,a,b};})()"),
  ("BGM: 체력 40 이하만으로는 바뀌지 않고, 어느 쪽이든 복수자가 처음 등장하면 각성곡으로 바뀌어 유지된다",
   "(async()=>{playerHp=30;enemyHp=30;" + (WAIT % 700) + "const before=bgm===bgmTracks.main;__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);__q.ripe();fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
   "const u=__q.spent();damageUnit(u,99,'fire');u.dataset.destroyed='true';" + (WAIT % 60) + "u.remove();const btn=__q.endBtn();startPlayerTurn(btn);fxClear?.();startPlayerTurn(btn);fxClear?.();const mid=bgm===bgmTracks.main;startPlayerTurn(btn);" + (WAIT % 60) +
@@ -129,7 +130,7 @@ CHECKS = [
   "(async()=>{const rec={name:'소진',art:deck.find(d=>!d.spell).art,element:'fire',baseAttack:3,baseHp:4};const shown=()=>document.querySelector('#result').classList.contains('show');"
   "playerHp=7;updateHeroHealth();ultimateLedger.enemy.pending.push({rec,due:ultimateLedger.enemy.turns+1});advanceUltimateLedger('enemy');"
   "for(let i=0;i<100&&!shown();i++)await __q.wait(100);const lose=shown()&&playerHp===0&&document.querySelector('#result').classList.contains('lose');return {ok:lose,lose,playerHp};})()"),
- ("컴퓨터 대칭: 각성 전 세팅 불가 → 열리면 장착(덱 사본 처리) → 비용 = 최대 마나 → 소진자 +15/1 → 쓰러지면 2번째 턴에 +7/+15 복수자",
+ ("컴퓨터 대칭: 각성 전 세팅 불가 → 열리면 장착(덱 사본 처리) → 비용 = 최대 마나 → 소진자 +10/1 → 쓰러지면 2번째 턴에 +7/+15 복수자",
   "(async()=>{const proto=enemyDeck.find(d=>!d.spell);const base=baseCardStatsByArt(proto.art);enemyHand.length=0;enemyHand.push({...proto,atkFinal:proto.atk});enemyDeck.push({...proto},{...proto});"
   "enemyHp=100;enemyUltimate=null;equipEnemyUltimate();const closed=!enemyUltimate;enemyHp=70;awakenGateOpened.enemy=true;equipEnemyUltimate();const equipped=!!enemyUltimate,left=enemyDeck.filter(d=>d.art===proto.art).length;"
   "enemyTurnMaxMana=maxMana=7;enemyMana=7;summonBattleToken;const lane=document.querySelector('.arena .lane:first-child');enemySummonUnit(lane,{name:'제물',art:proto.art,el:'earth',atk:2,hp:5,cost:1});"
@@ -139,7 +140,7 @@ CHECKS = [
   "advanceUltimateLedger('enemy');advanceUltimateLedger('enemy');const noneYet=!lane.querySelector('.unit[data-effect=\"ultimate-avenger\"]');advanceUltimateLedger('enemy');" + (WAIT % 60) +
   "const a=lane.querySelector('.unit[data-effect=\"ultimate-avenger\"]');"
   "const ex2={closed,equipped,left,cost,res,mana,sAtk,sHp,ex,pend,lock,noneYet,aAtk:a&&__q.atk(a),aHp:a&&__q.hp(a),base};"
-  "return {ok:closed&&equipped&&left===0&&cost===(res?5:7)&&mana===7-cost&&sAtk===base.atk+15+(res?2:0)&&sHp===(res?3:1)&&ex===false&&pend===3&&lock==='복수자 강림까지 3턴'&&noneYet&&!!a&&ex2.aAtk===base.atk+7&&ex2.aHp===base.hp+15,...ex2};})()"),
+  "return {ok:closed&&equipped&&left===0&&cost===(res?5:7)&&mana===7-cost&&sAtk===base.atk+10+(res?2:0)&&sHp===(res?3:1)&&ex===false&&pend===3&&lock==='복수자 강림까지 3턴'&&noneYet&&!!a&&ex2.aAtk===base.atk+7&&ex2.aHp===base.hp+15,...ex2};})()"),
  ("5칸 가득 찬 전장(양쪽 130% 소진자·복수자 포함): 카드끼리·독(각성/궁극기 표시)·마나 바와 겹침 0, 전장 밖으로 안 나가고 카드 사이 간격이 있다",
   "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');el.innerHTML='';zo.innerHTML='';const proto=enemyDeck.find(d=>!d.spell);"
   "const en=(name,effect)=>enemySummonUnit(el,{name,art:proto.art,el:'water',atk:20,hp:3,cost:1,effect});en('적1');en('적2');en('적3','ultimate-avenger');en('적4','ultimate-spent');en('적5');"
@@ -169,6 +170,18 @@ CHECKS = [
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<150&&!finished;i++)await __q.wait(100);await __q.wait(200);"
   "const r={noTaunt,taunted,normalTarget,heroDmg:p0-playerHp,minesUntouched:mine.every((u,i)=>__q.hp(u)===hp0[i])};"
   "return {ok:noTaunt&&taunted&&normalTarget&&r.heroDmg===6&&r.minesUntouched,...r};})()"),
+ ("소진자가 쓰러지는 연출 순서(실제 enemyTurn·endTurn 경로): 적중 → 반격 → 죽음 컷씬 → 컷 종료 → 카드 제거. 다른 연출이 적중을 늦춰도 같은 순서",
+  "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');const proto=enemyDeck.find(d=>!d.spell);const ev=[];const s0=()=>performance.now();"
+  "const obs=new MutationObserver(ms=>ms.forEach(m=>{m.addedNodes.forEach(n=>{if(n.nodeType!==1)return;const c=String(n.className||'');if(/ultimate-spent-death/.test(c))ev.push('cut');if(n.parentElement===log&&/맞받아쳐/.test(n.textContent))ev.push('counter');if(n.parentElement===log&&/을\\(를\\) 공격해/.test(n.textContent))ev.push('hit');});m.removedNodes.forEach(n=>{if(n.nodeType!==1)return;if(/ultimate-spent-death/.test(String(n.className||'')))ev.push('cutend');if(n.classList?.contains('unit')&&n.dataset.ultimateSpent==='true')ev.push('removed');});}));obs.observe(document.body,{childList:true,subtree:true});"
+  "const reset=async()=>{fxClear();combatPresentationUntil=0;combatPresentationSlot=0;document.querySelectorAll('.ultimate-spent-death').forEach(n=>n.remove());el.innerHTML='';zo.innerHTML='';ev.length=0;ultimateLedger.player.spent=null;ultimateLedger.enemy.spent=null;ultimateLedger.player.pending=[];ultimateLedger.enemy.pending=[];await __q.wait(300);};"
+  "const wait=async(name)=>{for(let i=0;i<200&&!ev.includes(name);i++)await __q.wait(100);await __q.wait(200);};"
+  "const mineSpent=()=>{const s=summonBattleToken('내 소진자',6,1,'fire','ultimate-spent');s.dataset.ultimateSpent='true';s.dataset.ultimateAggro='true';s.dataset.orderLocked='true';registerUltimateSpent('player',s,{name:'내 소진자',art:proto.art,element:'fire',baseAttack:3,baseHp:3});summonBattleToken('아군',3,5,'water');return s;};"
+  "const want='hit,counter,cut,cutend,removed';const out={};"
+  "await reset();mineSpent();const h=enemySummonUnit(el,{name:'적',art:proto.art,el:'water',atk:5,hp:30,cost:1});h.classList.remove('exhausted');enemyHand.length=0;enemyMana=0;enemyTurn(()=>{});await wait('removed');out.enemyTurn=ev.join();const pend1=ultimateLedger.player.pending.length;"
+  "await reset();mineSpent();const h2=enemySummonUnit(el,{name:'적',art:proto.art,el:'water',atk:5,hp:30,cost:1});h2.classList.remove('exhausted');enemyHand.length=0;enemyMana=0;fxPresent('dummy-banner',()=>()=>{},{priority:FX_PRIORITY.banner,hold:2600});enemyTurn(()=>{});await wait('removed');out.enemyTurnBusyFx=ev.join();"
+  "await reset();const es=enemySummonUnit(el,{name:'적 소진자',art:proto.art,el:'fire',atk:6,hp:1,cost:0,effect:'ultimate-spent'});es.dataset.ultimateSpent='true';es.dataset.ultimateAggro='true';es.dataset.orderLocked='true';registerUltimateSpent('enemy',es,{name:'적 소진자',art:proto.art,element:'fire',baseAttack:3,baseHp:3});const m=summonBattleToken('내 챔프',5,9,'water');m.classList.remove('exhausted');endTurn(document.querySelector('.turn-actions .end'));await wait('removed');out.playerAttack=ev.join();"
+  "await reset();const sp=summonBattleToken('마법맞는소진자',6,1,'fire','ultimate-spent');sp.dataset.ultimateSpent='true';registerUltimateSpent('player',sp,{name:'x',art:proto.art,element:'fire',baseAttack:3,baseHp:3});damageUnit(sp,9,'fire');await __q.wait(400);out.noCounter=ev.join();obs.disconnect();"
+  "return {ok:out.enemyTurn===want&&out.enemyTurnBusyFx===want&&out.playerAttack===want&&out.noCounter==='cut'&&pend1===1,pend1,...out};})()"),
  ("컴퓨터 턴 흐름: 강림 시점의 enemyTurn 이 오류 없이 복수자를 내려놓고 공격 목록에 포함한다",
   "(async()=>{const proto=enemyDeck.find(d=>!d.spell);ultimateLedger.enemy.pending.push({rec:{name:proto.name,art:proto.art,element:proto.el,baseAttack:3,baseHp:4},due:ultimateLedger.enemy.turns+1});"
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<120&&!finished;i++)await __q.wait(100);" + (WAIT % 100) + "const a=document.querySelector('.arena .lane:first-child .unit[data-effect=\"ultimate-avenger\"]');"

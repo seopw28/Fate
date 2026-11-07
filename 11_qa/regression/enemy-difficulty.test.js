@@ -31,8 +31,11 @@ test('배치 전에는 초보자로 시작하고 티어·최근 전적으로 단
 
 test('난이도는 자원 보정 없이 판단력과 실수율로만 구분된다', () => {
   assert.ok(html.includes('enemyMana=ENEMY_AI.manaMirrorsPlayer?Math.min(MANA_CAP,maxMana)'));
-  assert.ok(html.includes("if(enemyDifficulty==='normal')return targets[Math.floor(engineAdapter.random()*targets.length)]"));
-  assert.ok(html.includes("if(enemyDifficulty==='hell')writeLog('<strong>헬 AI 판단:"));
+  /* 2026-11-08: 공격 대상은 난이도와 무관하게 유저와 같은 규칙이다(소진자 도발 > 일반 도발 > 맨 왼쪽). 난이도 분기가 남아 있으면 안 된다 */
+  const target = html.slice(html.indexOf('function chooseEnemyAttackTarget('), html.indexOf('const LANE_SLIDE_MS'));
+  assert.ok(target.includes('return targets[0]||null'));
+  assert.ok(!target.includes('enemyDifficulty') && !target.includes('engineAdapter.random'), '대상 선택에 난이도·무작위가 없어야 한다');
+  assert.ok(!html.includes('헬 AI 판단'));
   assert.ok(html.includes("enemyDifficulty==='normal'?(engineAdapter.random()<.5?'A':'B'):tactical[enemyGuardian]"));
   assert.ok(html.includes("unit.classList.add('exhausted')"), '상대도 소환한 턴에는 공격하지 않아야 한다');
   assert.ok(!html.includes('manaOffset'));
@@ -45,7 +48,7 @@ test('상대도 챔프 능력·마법·함정·궁극기를 같은 자원 규칙
   assert.ok(html.includes('function resolveEnemySpell(card)'));
   assert.ok(html.includes('function triggerEnemyTrap(event,context={})'));
   assert.ok(html.includes('function castEnemyUltimate()'));
-  assert.ok(html.includes("enemyMana-=card.cost;enemySetMagic.push"));
+  assert.ok(html.includes("if(card.cost<=enemyMana)enemyMana-=card.cost;else enemyPayCost(card.cost,\'함정 세팅\');enemyCardPlayedHook(card.cost);enemySetMagic.push"));
   assert.ok(html.includes('const cost=enemyUltimateManaCost(spec);if(enemyMana<cost)return false;enemyMana-=cost;'), '상대도 발동 시점의 최대 마나만큼 마나를 쓴다');
   assert.ok(!html.includes('spec.minTurn') && !html.includes('enemyLastUltimateTurn'), '사용 가능 턴·재사용 대기는 폐지됐다');
   assert.ok(html.includes("triggerEnemyTrap('player_summon',{unit})"));

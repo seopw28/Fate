@@ -15,7 +15,7 @@ test('컴퓨터의 궁극기 장착은 전투 로그로, 발동은 카드로 플
   assert.ok(html.includes('ENEMY ULTIMATE · LIMIT BREAK'), '실제 발동은 카드로 공개한다');
 });
 
-test('컴퓨터 궁극기도 전장 제물과 소진자(기본 공격력 +15 / 체력 1) 및 전역 도발을 사용한다', () => {
+test('컴퓨터 궁극기도 전장 제물과 소진자(기본 공격력 +10 / 체력 1) 및 전역 도발을 사용한다', () => {
   assert.ok(html.includes('function sendEnemyUltimateToGraveyard(spec)'));
   assert.ok(html.includes("effect:'ultimate-spent'"));
   assert.ok(html.includes("unit.dataset.ultimateAggro='true'"));
