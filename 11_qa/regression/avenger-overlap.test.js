@@ -42,11 +42,14 @@ test('복수자 강림은 연출 큐를 탄다', () => {
 });
 
 test('강림이 끊겨도 유닛이 안 보이는 채로 남지 않는다', () => {
-  /* 강림 중 unit.visibility='hidden'으로 숨기므로, cleanup에서 반드시 되돌려야 한다. */
+  /* 강림 중 unit.visibility='hidden'으로 숨기므로, cleanup에서 반드시 되돌려야 한다.
+     cleanup 시그니처는 reason 을 받는 형태로 바뀔 수 있어 괄호 안을 고정하지 않는다. */
   const fn = html.slice(html.indexOf("fxPresent('avenger-arrival:'+partner.name"));
-  const cleanup = fn.slice(fn.indexOf('return ()=>{'), fn.indexOf('{priority:FX_PRIORITY.ultimate'));
+  const cleanup = fn.slice(fn.search(/return (?:\(\)|reason|[a-zA-Z]+)=>\{/), fn.indexOf('{priority:FX_PRIORITY.ultimate'));
   assert.ok(cleanup.includes("unit.style.visibility=''"), 'cleanup에서 유닛을 되살려야 한다');
-  assert.ok(cleanup.includes('clearTimeout(landTimer)') && cleanup.includes('clearTimeout(sfxTimer)'), '내부 타이머도 정리해야 한다');
+  assert.ok(cleanup.includes('clearTimeout(sfxTimer)'), '예약해둔 타이머는 정리해야 한다');
+  /* 전투가 치워진 경우에도 '보이게 되돌리기'는 먼저 해야 한다 — return 보다 앞에 와야 한다. */
+  assert.ok(cleanup.indexOf("unit.style.visibility=''") < cleanup.indexOf("reason==='cleared'"), '되돌리기가 조기 반환보다 앞서야 한다');
 });
 
 test('강림도 필드 오버레이로 등록된다', () => {
@@ -154,4 +157,39 @@ test('전투가 치워지면 충격파는 터지지 않는다', async () => {
   q.advance(5000);
   await Promise.resolve();
   assert.ok(!order.includes('충격파'), '보드가 치워진 뒤에는 피해가 없어야 한다');
+});
+
+/* 사용자 보고: "등장을 먼저 하고 컷씬을 보여주면 이미 등장을 다했는데 뒷북치는것 같다".
+   컷신 → 등장 순서를 고정한다. */
+test('복수자는 컷신이 끝난 뒤에 등장한다', () => {
+  const fn = html.slice(html.indexOf('function showAvengerArrival'));
+  const head = fn.slice(0, fn.indexOf("fxPresent('avenger-arrival:"));
+  assert.ok(head.includes("unit.style.visibility='hidden'"), '큐에 넣기 전에 숨겨야 큐가 밀려도 카드가 안 보인다');
+  const body = fn.slice(0, fn.indexOf('{priority:FX_PRIORITY.ultimate'));
+  assert.ok(!/setTimeout\([^)]*showAvengerLandingImpact/.test(body), '착지를 컷신 도중 타이머로 띄우지 말 것');
+  const cleanup = body.slice(body.search(/return (?:\(\)|reason|[a-zA-Z]+)=>\{/));
+  assert.ok(cleanup.includes('showAvengerLandingImpact'), '착지 연출은 컷신이 끝난 뒤(cleanup)에 와야 한다');
+});
+
+test('충격파는 착지 연출이 읽힌 뒤에 터진다', () => {
+  assert.ok(html.includes('const AVENGER_LANDING_MS=720'), '착지 길이를 상수로 둬야 한다');
+  const fn = html.slice(html.indexOf('function afterAvengerArrival'));
+  assert.ok(/AVENGER_LANDING_MS\s*\+\s*\d+\)/.test(fn.slice(0, 700)), '충격파는 착지 길이만큼 기다려야 한다');
+});
+
+test('컷신이 큐에 밀려도 카드가 먼저 보이지 않는다', async () => {
+  /* 핵심 회귀: 숨기기가 start 콜백 안에 있으면 큐 대기 동안 카드가 전장에 그대로 보인다. */
+  const q = loadQueue();
+  const order = [];
+  q.fxPresent('앞선 연출', () => {order.push('앞선연출:시작'); return () => order.push('앞선연출:끝');},
+    {priority: 40, hold: 2000});
+  order.push('카드 숨김');/* 소스상 fxPresent 호출 전에 숨긴다 */
+  const arrival = q.fxPresent('avenger-arrival:복수자', () => {order.push('컷신:시작'); return () => {order.push('컷신:끝'); order.push('카드 등장');};},
+    {priority: 40, hold: 2850});
+  arrival.then(() => {});
+  q.advance(8000);
+  await Promise.resolve();
+  assert.deepEqual(order, ['앞선연출:시작','카드 숨김','앞선연출:끝','컷신:시작','컷신:끝','카드 등장']);
+  assert.ok(order.indexOf('카드 숨김') < order.indexOf('컷신:시작'), '숨김이 컷신 시작보다 앞서야 한다');
+  assert.ok(order.indexOf('카드 등장') > order.indexOf('컷신:끝'), '등장은 컷신이 끝난 뒤여야 한다');
 });

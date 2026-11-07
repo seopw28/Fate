@@ -360,28 +360,41 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function sendUltimateToGraveyard(spec){const lane=document.querySelector('.summon-zone'),victim=[...lane.querySelectorAll(':scope > .unit:not([data-destroyed="true"])')].at(-1),firstUse=!firstUltimateSpec;if(!victim)return null;if(firstUse){firstUltimateSpec={...spec};firstUltimateCompanion=matchFirstUltimateCompanion(spec);}const victimName=victim.querySelector('h4')?.textContent||'아군 챔프';retireFieldUnit(victim);victim.remove();const unit=summonBattleToken(spec.name,0,1,spec.element,'ultimate-spent');if(!unit)return null;unit.dataset.art=spec.art;unit.dataset.ultimateSpent=firstUse?'first':'later';unit.dataset.ultimateAggro='true';unit.dataset.orderLocked='true';unit.querySelector('.emoji').innerHTML='<img class="creature-art" src="'+spec.art+'" alt="'+spec.name+'">';updateFieldReorderState();showSkillEffect('burn',unit,'궁극기 소진 · 0/1 · 전역 도발');writeLog('<strong>'+victimName+'</strong>을(를) 제물로 보내고 <strong>'+spec.name+'</strong>을(를) 공격력 0 · 체력 1로 맨 오른쪽에 고정했습니다. 소진자가 살아 있는 동안 상대의 모든 기본 공격은 소진자만 노립니다.');if(firstUse&&desperateActive('player'))queueFirstUltimateAvenger(520);return unit;}
     /* 강림 컷신이 끝난 뒤 충격파를 터뜨린다. 컷신이 걷힌 다음 프레임에 넣어야
        화면이 비워진 뒤 피해 연출이 보인다. */
+    const AVENGER_LANDING_MS=720;/* 착지 애니메이션 길이 — 충격파가 이보다 일찍 오면 겹친다 */
     function afterAvengerArrival(presented,run){
+      /* 컷신이 끝나면 착지 연출(720ms)이 시작된다. 충격파는 그게 읽힌 뒤에 터뜨린다 —
+         바로 겹치면 '등장'과 '광역 피해'가 한 덩어리로 뭉개진다 (2026-11-07) */
       const fire=reason=>{if(reason==='cleared')return;setTimeout(()=>{
         /* 충격파가 도는 동안 교전이 끼어들지 않게 한다. 컷신이 큐에서 밀리면
            강림 시점에 잡아둔 고정 창(+4100ms)은 이미 지나 있다. */
         combatPresentationUntil=Math.max(combatPresentationUntil,performance.now()+1200);
-        run();},90);};
+        run();},AVENGER_LANDING_MS+120);};
       if(presented&&typeof presented.then==='function')presented.then(fire);
       else fire('done');
     }
     function showAvengerArrival(partner,source,unit){document.querySelectorAll('.avenger-arrival').forEach(node=>node.remove());const colors={fire:'#ff4c55',water:'#56c8ff',ice:'#a6ecff',wind:'#70ffd0',thunder:'#ffe14d',earth:'#ffd06b',neutral:'#d89aff'},fx=document.createElement('div');fx.className='avenger-arrival';fx.style.setProperty('--avenger',colors[partner.el]||colors.neutral);fx.setAttribute('role','img');fx.setAttribute('aria-label',partner.name+' 복수자 강림');fx.innerHTML='<div class="avenger-aura"></div><img class="avenger-portrait" alt=""><div class="avenger-copy"><small>AVENGER DESCENT</small><strong></strong><q></q><span>공격력 +3 · 체력 +10 · 적 전장 전체 5 피해</span></div>';fx.querySelector('.avenger-portrait').src=partner.art;fx.querySelector('.avenger-portrait').alt=partner.name;fx.querySelector('.avenger-copy strong').textContent=partner.name+' · 복수자 강림';fx.querySelector('.avenger-copy q').textContent=source.name+'의 복수를 하고 말겠어!';/* 강림도 연출 큐를 탄다 — 큐 밖에 있어서 오라 각성 모달(z-index 520)이
        재생 중인 강림(430) 위에 덮이는 문제가 있었다. 사망 컷과 같은 ultimate
        우선순위라 선점 없이 FIFO로 '사망 → 강림' 순서가 보장된다 (2026-11-07). */
+    /* 컷신 → 등장 순서를 지킨다. 두 가지를 고쳤다 (2026-11-07):
+       (1) 숨기기를 큐에 넣기 전에 한다 — start 콜백 안에서 숨기면 컷신이 큐에 밀리는 동안
+           카드가 전장에 그대로 보여, 등장을 다 해놓고 컷신이 뒷북을 친다.
+       (2) 착지를 컷신이 끝난 뒤로 옮긴다 — 예전엔 1350ms 에 내려놓아서 컷신이 1.5초 남은
+           상태에서 등장이 이미 끝나 있었다. */
+    unit.style.visibility='hidden';
     return fxPresent('avenger-arrival:'+partner.name,()=>{
       document.body.appendChild(fx);
       if(typeof syncFieldFrame==='function')syncFieldFrame();
       unit.style.visibility='hidden';
-      const landTimer=setTimeout(()=>{if(unit.isConnected){unit.style.visibility='';showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral);borderImpact(unit,colors[partner.el]||colors.neutral);unit.animate([{transform:'translateY(-70px) scale(1.35)',opacity:0,filter:'brightness(3)'},{transform:'translateY(8px) scale(.96)',opacity:1,filter:'brightness(1.6)',offset:.72},{transform:'none',opacity:1,filter:'none'}],{duration:720,easing:'cubic-bezier(.16,.82,.2,1)'});}},1350);
       const sfxTimer=setTimeout(()=>{noise(.65,.08,340);tone(72,1.1,'sawtooth',.12,38);sfx('ultimate','avenger',8);},620);
-      return ()=>{clearTimeout(landTimer);clearTimeout(sfxTimer);
-        /* 중간에 끊겨도 유닛이 안 보이는 채로 남지 않게 한다. */
-        if(unit.isConnected)unit.style.visibility='';
-        fx.remove();};
+      return reason=>{clearTimeout(sfxTimer);fx.remove();
+        /* 끊기든 끝나든 카드가 안 보이는 채로 남지 않게 한다. */
+        if(!unit.isConnected)return;
+        unit.style.visibility='';
+        /* 전투가 치워졌으면 보드가 사라질 참이라 연출 없이 되돌리기만 한다. */
+        if(reason==='cleared')return;
+        showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral);
+        borderImpact(unit,colors[partner.el]||colors.neutral);
+        unit.animate([{transform:'translateY(-70px) scale(1.35)',opacity:0,filter:'brightness(3)'},{transform:'translateY(8px) scale(.96)',opacity:1,filter:'brightness(1.6)',offset:.72},{transform:'none',opacity:1,filter:'none'}],{duration:720,easing:'cubic-bezier(.16,.82,.2,1)'});};
     },{priority:FX_PRIORITY.ultimate,hold:2850});}
     function showAvengerLandingImpact(unit,color){const arena=document.querySelector('.arena'),stage=document.querySelector('.stage-column'),rect=unit.getBoundingClientRect(),x=rect.left+rect.width/2,y=rect.top+rect.height*.82,wave=document.createElement('div'),flash=document.createElement('div');wave.className='avenger-landing-impact';flash.className='avenger-landing-flash';[wave,flash].forEach(node=>{node.style.setProperty('--impact-x',x+'px');node.style.setProperty('--impact-y',y+'px');node.style.setProperty('--impact-color',color);document.body.appendChild(node);});arena?.animate([{transform:'none'},{transform:'translateY(13px) scale(.985)',filter:'brightness(1.8)',offset:.12},{transform:'translate(-12px,-5px) rotate(-.35deg)',offset:.25},{transform:'translate(11px,4px) rotate(.3deg)',offset:.38},{transform:'translate(-8px,-3px)',offset:.52},{transform:'translate(6px,2px)',offset:.66},{transform:'translate(-3px,1px)',offset:.8},{transform:'none',filter:'none'}],{duration:980,easing:'ease-out'});stage?.animate([{transform:'none'},{transform:'translateY(7px)',offset:.16},{transform:'translateX(-6px)',offset:.34},{transform:'translateX(5px)',offset:.5},{transform:'none'}],{duration:900,easing:'ease-out'});noise(.8,.13,180);tone(48,1.15,'sine',.16,28);tone(92,.7,'sawtooth',.07,42,.04);setTimeout(()=>{wave.remove();flash.remove();},1100);}
     function resolveAvengerArrivalDamage(partner){const enemies=[...document.querySelectorAll('.arena .lane:first-child > .unit:not([data-destroyed="true"])')];enemies.forEach((target,index)=>setTimeout(()=>{if(!target.isConnected||target.dataset.destroyed==='true')return;showUnitSpellFx(target,partner.el);showSkillEffect('burn',target,'복수 충격파 · 5 피해');const result=damageUnit(target,5,partner.el);if(!result.blocked&&result.hp<=0){target.dataset.destroyed='true';triggerDeathrattle(target);setTimeout(()=>target.remove(),700);}},index*110));if(enemies.length)writeLog('<strong>복수 충격파:</strong> '+partner.name+'이 등장하며 상대 전장 전체에 5 피해를 입혔습니다.');}
