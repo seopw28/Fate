@@ -17,9 +17,10 @@
          사망유발 피해는 damageUnit에서 바로 impact로 들어와 그 좌표가 없고, 예전에는 (1) 값이 없으면
          CSS 폴백으로 '항상 위'로 솟고 (2) 전에 맞았던 카드는 그때 값이 남아 엉뚱한 방향으로 튀었다.
          마법·함정은 애초에 밀어낼 방향이 없으니 방향을 만들지 않고 밀림을 0으로 지운다 (2026-11-07) */
-      {/* 평타·반격(fieldAttack)만 --knock-src=field를 남기므로 그것이 근접 타격의 유일한 표식이다.
-          밀림이 없어도 번쩍임·흔들림·파편으로 피격은 충분히 읽힌다. */
-       const melee=target.style.getPropertyValue('--knock-src')==='field';
+      {const melee=target.style.getPropertyValue('--knock-src')==='field';
+       /* 마법·함정은 때린 몸이 없으니 밀어낼 방향 자체가 없다. 억지로 방향을 만들면 보는 사람은
+          '어디서 밀렸지?'가 되므로, 밀림은 0으로 두고 번쩍임·흔들림만으로 피격을 알린다.
+          평타·반격(fieldAttack)만 --knock-src=field를 남기므로 그것이 근접 타격의 유일한 표식이다. */
        if(!melee){target.style.setProperty('--knock-x','0px');target.style.setProperty('--knock-y','0px');}
        target.style.removeProperty('--knock-src');}
       /* 평타 돌진·반동은 element.animate()(WAAPI)로 transform을 돌린다. WAAPI는 CSS 애니메이션보다
@@ -303,7 +304,44 @@
     function guardianAwakenSummary(){if(!playerGuardian)return '각성 능력';if(!guardianAwakenChoice)return '체력 80 이하에서 강화 선택';const option=GUARDIAN_AWAKEN_OPTIONS[playerGuardian][guardianAwakenChoice];return option.name+' · '+option.desc;}
     function chooseGuardianAwakening(choice){const options=GUARDIAN_AWAKEN_OPTIONS[playerGuardian];if(guardianAwakenChoice||!options?.[choice])return;guardianAwakenChoice=choice;guardianAwakenUsed=true;fxRelease();const summary=guardianAwakenSummary();playGuardianDescent(playerGuardian,summary);showSkillEffect('rush',document.querySelector('.duel-hud .player .avatar'),options[choice].name+' · 지속 각성');sfx('ultimate','neutral',7);writeLog('<strong>'+GUARDIANS[playerGuardian].name+' 각성:</strong> '+summary+' 효과가 배틀 종료까지 유지됩니다.');renderUltimate();}
     function chooseEnemyGuardianAwakening(){if(enemyGuardianAwakenChoice||!enemyGuardian||enemyHp>GUARDIAN_AWAKEN_HP)return;const ownCount=document.querySelectorAll('.arena .lane:first-child > .unit:not([data-destroyed="true"])').length,foeCount=document.querySelectorAll('.summon-zone > .unit:not([data-destroyed="true"])').length,tactical={jujak:foeCount>=3?'A':'B',cheongryong:enemyMana<=3?'A':'B',namu:ownCount>=3?'A':'B',baekho:foeCount>=3?'B':'A',hyeonmu:ownCount>=3?'A':'B'},choice=enemyDifficulty==='normal'?(engineAdapter.random()<.5?'A':'B'):tactical[enemyGuardian],option=GUARDIAN_AWAKEN_OPTIONS[enemyGuardian][choice];enemyGuardianAwakenChoice=choice;showSkillEffect('rush',document.querySelector('.duel-hud .enemy .avatar'),option.name+' · 상대 지속 각성');writeLog('<strong>상대 '+GUARDIANS[enemyGuardian].name+' 각성:</strong> '+option.name+' · '+option.desc+(enemyDifficulty!=='normal'?' · 현재 전장에 맞춰 선택했습니다.':'')+' 효과가 배틀 종료까지 유지됩니다.');renderUltimate();}
-    function activateGuardianAwakening(){if(guardianAwakenChoice||playerHp>GUARDIAN_AWAKEN_HP||!playerGuardian||document.querySelector('.aura-awaken-choice'))return;guardianAwakenPrompted=true;const g=GUARDIANS[playerGuardian],options=GUARDIAN_AWAKEN_OPTIONS[playerGuardian],overlay=document.createElement('div');overlay.className='aura-awaken-choice';overlay.style.setProperty('--awaken-color',g.color);overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label',g.name+' 각성 선택');overlay.innerHTML='<div class="aura-awaken-choice-panel">'+auraMark(playerGuardian)+'<small>HP 80 · AURA AWAKENING</small><h2>'+g.name+' 각성</h2><p>하나를 선택하면 이번 배틀이 끝날 때까지 유지됩니다.</p><div class="aura-awaken-options">'+['A','B'].map(key=>'<button class="aura-awaken-option" data-awaken="'+key+'"><b>'+options[key].name+'</b><span class="aura-awaken-desc">'+(options[key].ui||[options[key].desc]).map(line=>'<span>'+line+'</span>').join('')+'</span><em>'+key+' 선택</em></button>').join('')+'</div></div>';overlay.addEventListener('click',event=>{const button=event.target.closest('[data-awaken]');if(button)chooseGuardianAwakening(button.dataset.awaken);});fxPresent('aura-awaken-choice',()=>{document.body.appendChild(overlay);if(typeof syncFieldFrame==='function')syncFieldFrame();overlay.querySelector('button')?.focus();return ()=>overlay.remove();},{priority:FX_PRIORITY.choice,hold:0});}
+    /* 각성 진입: 체력바 옆 프로필이 빛나며 필드 중앙으로 날아간다.
+       각성 모달이 아무 맥락 없이 화면에 튀어나와 '어디서 온 건지' 읽히지 않던 문제를 없앤다.
+       고스트는 아바타의 실제 좌표에서 출발하므로 HUD 위치가 바뀌어도 따라간다 (2026-11-07). */
+    const AWAKEN_FLIGHT_MS=620;
+    function flyAwakenAvatar(color){const avatar=document.querySelector('.duel-hud .player .avatar');
+      if(!avatar||matchMedia('(prefers-reduced-motion: reduce)').matches)return 0;
+      if(typeof syncFieldFrame==='function')syncFieldFrame();
+      const r=avatar.getBoundingClientRect(),cs=getComputedStyle(document.documentElement),
+            num=name=>parseFloat(cs.getPropertyValue(name))||0,
+            tx=num('--field-left')+num('--field-width')*.5,ty=num('--field-top')+num('--field-height')*.5,
+            ghost=document.createElement('div');
+      ghost.className='awaken-flight';ghost.setAttribute('aria-hidden','true');
+      ghost.style.setProperty('--aw-color',color);
+      ghost.style.left=r.left+'px';ghost.style.top=r.top+'px';
+      ghost.style.width=r.width+'px';ghost.style.height=r.height+'px';
+      ghost.style.setProperty('--aw-dx',(tx-(r.left+r.width/2)).toFixed(1)+'px');
+      ghost.style.setProperty('--aw-dy',(ty-(r.top+r.height/2)).toFixed(1)+'px');
+      ghost.textContent=avatar.textContent;
+      document.body.appendChild(ghost);
+      /* 원본은 날아가는 동안 자리를 비운다 — 둘이 동시에 보이면 분신처럼 읽힌다. */
+      avatar.classList.add('awaken-departing');
+      tone(300,.5,'sine',.045,760,0);
+      setTimeout(()=>{ghost.remove();avatar.classList.remove('awaken-departing');},AWAKEN_FLIGHT_MS);
+      return AWAKEN_FLIGHT_MS;}
+    function activateGuardianAwakening(){if(guardianAwakenChoice||playerHp>GUARDIAN_AWAKEN_HP||!playerGuardian||document.querySelector('.aura-awaken-choice'))return;guardianAwakenPrompted=true;const g=GUARDIANS[playerGuardian],options=GUARDIAN_AWAKEN_OPTIONS[playerGuardian],overlay=document.createElement('div');overlay.className='aura-awaken-choice';overlay.style.setProperty('--awaken-color',g.color);overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label',g.name+' 각성 선택');overlay.innerHTML='<div class="aura-awaken-choice-panel">'+auraMark(playerGuardian)+'<small>HP 80 · AURA AWAKENING</small><h2>'+g.name+' 각성</h2><p>하나를 선택하면 이번 배틀이 끝날 때까지 유지됩니다.</p><div class="aura-awaken-options">'+['A','B'].map(key=>'<button class="aura-awaken-option" data-awaken="'+key+'"><b>'+options[key].name+'</b><span class="aura-awaken-desc">'+(options[key].ui||[options[key].desc]).map(line=>'<span>'+line+'</span>').join('')+'</span><em>'+key+' 선택</em></button>').join('')+'</div></div>';overlay.addEventListener('click',event=>{const button=event.target.closest('[data-awaken]');if(button)chooseGuardianAwakening(button.dataset.awaken);});fxPresent('aura-awaken-choice',()=>{
+      /* 프로필이 먼저 날아가고, 그것이 도착한 자리에서 선택 패널이 피어난다.
+         비행 중에는 버튼을 누를 수 없게 둔다 — 연출을 끝까지 보여주고 받는다 (A안). */
+      const flight=flyAwakenAvatar(g.color);
+      overlay.classList.add('arriving');
+      document.body.appendChild(overlay);
+      if(typeof syncFieldFrame==='function')syncFieldFrame();
+      const landTimer=setTimeout(()=>{overlay.classList.remove('arriving');overlay.querySelector('button')?.focus();},flight);
+      if(!flight)overlay.classList.remove('arriving');
+      return ()=>{clearTimeout(landTimer);overlay.remove();
+        /* 중간에 끊겨도 HUD 프로필이 사라진 채로 남지 않게 한다. */
+        document.querySelector('.duel-hud .player .avatar')?.classList.remove('awaken-departing');
+        document.querySelectorAll('.awaken-flight').forEach(node=>node.remove());};
+    },{priority:FX_PRIORITY.choice,hold:0});}
     function checkGuardianAwakeningThreshold(){if(!guardianChosen||resultPending)return;if(playerGuardian&&!guardianAwakenChoice&&playerHp<=GUARDIAN_AWAKEN_HP)activateGuardianAwakening();if(enemyGuardian&&!enemyGuardianAwakenChoice&&enemyHp<=GUARDIAN_AWAKEN_HP)chooseEnemyGuardianAwakening();}
     setInterval(checkGuardianAwakeningThreshold,120);
     /* 오라 각성 연출: 궁극기급 무게감. 필드 위에 성격 색의 빛기둥과 문양이 내려앉고 충격파가 퍼지며 아군 전체가 같은 색으로 빛난다. */
@@ -496,7 +534,7 @@
     })();
 
     /* 필드(.arena) 기준 연출 프레임: 스킬/마법/궁극기 오버레이가 생길 때마다 필드 위치로 맞춘다 */
-    const FIELD_OVERLAYS='.guardian-descent,.guardian-select,.cinematic-skill-fx,.ultimate-cutscene,.global-spell,.global-summon,.effect-narration,.awakening-proc-banner,.shatter-resonance-fx,.spell-target-ring,.card-depart,.card-depart-dest,.avenger-arrival,.desperate-notice,.initiative-banner';
+    const FIELD_OVERLAYS='.guardian-descent,.guardian-select,.awaken-flight,.cinematic-skill-fx,.ultimate-cutscene,.global-spell,.global-summon,.effect-narration,.awakening-proc-banner,.shatter-resonance-fx,.spell-target-ring,.card-depart,.card-depart-dest,.avenger-arrival,.desperate-notice,.initiative-banner';
     function syncFieldFrame(){const arena=document.querySelector('.arena');if(!arena)return;const r=arena.getBoundingClientRect(),st=document.documentElement.style;st.setProperty('--field-left',r.left+'px');st.setProperty('--field-top',r.top+'px');st.setProperty('--field-width',r.width+'px');st.setProperty('--field-height',r.height+'px');st.setProperty('--field-cx',(r.left+r.width/2)+'px');st.setProperty('--field-bottom',r.bottom+'px');}
     new MutationObserver(list=>{if(list.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&n.matches(FIELD_OVERLAYS))))syncFieldFrame();}).observe(document.body,{childList:true});
     addEventListener('resize',syncFieldFrame);syncFieldFrame();
