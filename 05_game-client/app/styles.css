@@ -1947,3 +1947,14 @@
       .duel-hud .avatar.awaken-departing{opacity:1;transform:none}
       .aura-awaken-choice,.aura-awaken-choice-panel{animation:none}
       .aura-awaken-choice.arriving .aura-awaken-choice-panel{opacity:1;transform:none}}
+
+/* 묘지 재사용 확인 (2026-11-07): 덱에 챔프가 없을 때 카드 뽑기를 누르면 묻는다 */
+.recycle-modal { position:fixed; inset:0; z-index:380; display:none; place-items:center; padding:24px; background:#02050acc; backdrop-filter:blur(6px); }
+.recycle-modal.show { display:grid; }
+.recycle-panel { max-width:480px; word-break:keep-all; padding:24px 26px; border:1px solid #c98bff88; border-radius:14px; background:var(--panel); color:var(--text); text-align:center; box-shadow:0 0 32px #c98bff44; }
+.recycle-panel h2 { margin:0 0 10px; font-size:18px; line-height:1.45; }
+.recycle-panel p { margin:0 0 18px; color:var(--muted); font-size:13px; }
+.recycle-actions { display:flex; gap:10px; justify-content:center; }
+.recycle-actions button { min-width:96px; padding:10px 16px; border-radius:10px; border:1px solid var(--line); font-weight:700; cursor:pointer; }
+.recycle-yes { background:linear-gradient(180deg,#d9b2ff,#9b5fe0); color:#1a0f26; border-color:#c98bff; }
+.recycle-no { background:#232a36; color:var(--text); }

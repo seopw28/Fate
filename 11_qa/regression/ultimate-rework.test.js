@@ -41,11 +41,14 @@ test('복수자는 소진자 사망 시점의 턴 수 +2 에 강림하고, 강�
   assert.ok(!html.includes('if(active){switchToAwakeningBgm();'), '체력 40 이하는 BGM 전환 조건이 아니다');
 });
 
-test('묘지 재사용: 덱이 비면 체력 10을 내고(10 초과일 때만) 소진자·복수자를 뺀 묘지를 섞어 새 덱으로 쓴다', () => {
+test('묘지 재사용: 덱에 챔프가 없을 때 카드 뽑기를 누르면 예/아니오로 묻고, 자동 드로우는 재사용하지 않는다', () => {
   assert.ok(html.includes('function canRecycleGraveyard(side){return heroHpOf(side)>GRAVEYARD_RECYCLE_HP_COST&&recyclableGraveyard(side).length>0;}'));
   assert.ok(html.includes("!/^ultimate-(spent|avenger)$/.test(card.effect||'')"));
-  assert.ok(html.includes("function drawCard(){ if(!deck.length&&!recycleGraveyardIntoDeck('player')){"));
-  assert.ok(html.includes("if(!enemyDeck.length&&!recycleGraveyardIntoDeck('enemy'))break;"));
+  assert.ok(html.includes("function drawCard(){ if(!deck.length){"), '자동 드로우는 재사용하지 않는다');
+  assert.ok(html.includes("if(!enemyDeck.length)break;"), '컴퓨터 자동 드로우도 재사용하지 않는다');
+  assert.ok(html.includes("if(needsRecyclePrompt()){openRecyclePrompt();return;}"), '카드 뽑기에서 묻는다');
+  assert.ok(html.includes('HP 10을 이용하여 묘지에서 덱을 가져오시겠습니까?'));
+  assert.ok(html.includes('enemyRecycleIfNoChampion();enemyDraw();'), '컴퓨터는 턴 시작에 같은 조건이면 예');
 });
 
 test('체력 40% 기준 효과(역전 돌진·영웅 회복 잠금·최후의 저항)는 하나도 남지 않고 카드 자체의 돌진 효과는 유지한다', () => {
