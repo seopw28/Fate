@@ -308,7 +308,9 @@
        고스트는 아바타의 실제 좌표에서 출발하므로 HUD 위치가 바뀌어도 따라간다 (2026-11-07). */
     /* 620ms 는 '야구공 투구'처럼 휙 지나가 각성이 인지되지 않았다.
        빛이 퍼지는 뜸(flare) → 천천히 비행 순서로 나눠 무게를 준다 (2026-11-07). */
-    const AWAKEN_FLARE_MS=620,AWAKEN_TRAVEL_MS=1180,AWAKEN_FLIGHT_MS=AWAKEN_FLARE_MS+AWAKEN_TRAVEL_MS;
+    /* 빛이 일순간에 끝나면 '어? 저게 뭐지?' 하고 볼 틈이 없다. 퍼진 상태를 충분히 유지한 뒤
+       출발하고, 빛은 고스트에 붙어 함께 날아온다 (PM 피드백 2026-11-07). */
+    const AWAKEN_FLARE_MS=1500,AWAKEN_TRAVEL_MS=1180,AWAKEN_FLIGHT_MS=AWAKEN_FLARE_MS+AWAKEN_TRAVEL_MS;
     function flyAwakenAvatar(color){const avatar=document.querySelector('.duel-hud .player .avatar');
       if(!avatar||matchMedia('(prefers-reduced-motion: reduce)').matches)return 0;
       if(typeof syncFieldFrame==='function')syncFieldFrame();
@@ -316,7 +318,8 @@
             num=name=>parseFloat(cs.getPropertyValue(name))||0,
             tx=num('--field-left')+num('--field-width')*.5,ty=num('--field-top')+num('--field-height')*.5,
             ghost=document.createElement('div');
-      /* 프로필에서 빛이 전역으로 번지는 순간 — 이게 없으면 작은 점이 날아가는 것으로만 보인다. */
+      /* 프로필에서 빛이 전역으로 번지는 순간 — 이게 없으면 작은 점이 날아가는 것으로만 보인다.
+         번짐이 끝난 뒤에도 고스트가 자기 빛(.awaken-glow)을 달고 날아가 계속 인지된다. */
       const flare=document.createElement('div');flare.className='awaken-flare';flare.setAttribute('aria-hidden','true');
       flare.style.setProperty('--aw-color',color);
       flare.style.left=(r.left+r.width/2)+'px';flare.style.top=(r.top+r.height/2)+'px';
@@ -328,7 +331,9 @@
       ghost.style.width=r.width+'px';ghost.style.height=r.height+'px';
       ghost.style.setProperty('--aw-dx',(tx-(r.left+r.width/2)).toFixed(1)+'px');
       ghost.style.setProperty('--aw-dy',(ty-(r.top+r.height/2)).toFixed(1)+'px');
-      ghost.textContent=avatar.textContent;
+      /* 문양은 작게 유지하고 그 둘레에 빛 영역을 둔다 — 빛이 공의 2배 크기로 함께 이동한다. */
+      ghost.innerHTML='<i class="awaken-glow"></i><b class="awaken-face"></b>';
+      ghost.querySelector('.awaken-face').textContent=avatar.textContent;
       document.body.appendChild(ghost);
       /* 원본은 날아가는 동안 자리를 비운다 — 둘이 동시에 보이면 분신처럼 읽힌다. */
       avatar.classList.add('awaken-departing');

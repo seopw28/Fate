@@ -33,7 +33,7 @@ test('고스트는 도착할 때까지 보인다 (날아가는 내내 투명하�
   const late = kf.match(/(\d+)%\{[^}]*opacity:1\}/g) || [];
   const lastOpaque = Math.max(...late.map(m => parseInt(m, 10)));
   assert.ok(lastOpaque >= 80, '도착 직전(80% 이후)까지 불투명해야 보인다 — 실제: ' + lastOpaque + '%');
-  assert.ok(/88%\{transform:translate\(var\(--aw-dx\),var\(--aw-dy\)\)[^}]*opacity:1\}/.test(kf),
+  assert.ok(/92%\{transform:translate\(var\(--aw-dx\),var\(--aw-dy\)\)[^}]*opacity:1\}/.test(kf),
     '불투명 상태로 도착 지점까지 이동해야 한다');
 });
 
@@ -44,11 +44,24 @@ test('프로필에서 빛이 전역으로 번진 뒤에 날아간다', () => {
   const flareKf = html.slice(html.indexOf('@keyframes awaken-flare{'), html.indexOf('@keyframes awaken-flare-ring'));
   assert.ok(/scale\(165\)/.test(flareKf), '화면 전체로 번져야 인지된다');
   const kf = html.slice(html.indexOf('@keyframes awaken-fly'));
-  assert.ok(/14%\{transform:translate\(0,0\) scale\(2\.6\)/.test(kf.slice(0, 400)), '제자리에서 먼저 부푼다');
-  assert.ok(/34%\{transform:translate\(0,0\)/.test(kf.slice(0, 400)), '빛이 퍼지는 동안은 출발하지 않는다');
-  assert.ok(/animation:awaken-fly 1\.8s/.test(html), '천천히 날아야 한다');
+  assert.ok(/9%\{transform:translate\(0,0\) scale\(2\.6\)/.test(kf.slice(0, 400)), '제자리에서 먼저 부푼다');
+  /* 빛이 일순간에 끝나면 볼 틈이 없다 — 퍼진 상태를 한참 유지한 뒤 출발해야 한다. */
+  assert.ok(/56%\{transform:translate\(0,0\)/.test(kf.slice(0, 400)), '퍼진 상태를 절반 넘게 유지한다');
+  assert.ok(/animation:awaken-fly 2\.68s/.test(html), '천천히 날아야 한다');
   assert.ok(/\.awaken-flare,?[^{]*\{display:none\}|\.awaken-flight,\.awaken-flare\{display:none\}/.test(html),
     '모션 최소화에서는 빛도 끈다');
+});
+
+test('빛은 고스트에 붙어 함께 날아오고, 프로필의 2배 크기다', () => {
+  /* 빛이 출발점에 남아 사라지면 '공만 날아온다'로 보인다. 문양은 작게 유지하고
+     그 둘레의 빛이 같이 이동해야 계속 인지된다 (PM 피드백 2026-11-07).
+     실측: 빛/프로필 = 2.0~2.3배, 이동 중에도 유지. */
+  assert.ok(html.includes("ghost.innerHTML='<i class=\"awaken-glow\"></i><b class=\"awaken-face\"></b>'"),
+    '빛과 문양이 고스트의 자식이어야 함께 움직인다');
+  assert.ok(/\.awaken-flight \.awaken-glow\{[^}]*width:200%;height:200%/.test(html), '빛은 프로필의 2배');
+  assert.ok(/\.awaken-flight \.awaken-face\{[^}]*width:100%/.test(html), '문양은 키우지 않는다');
+  /* 별도 fixed 요소로 두면 출발점에 남는다 — 자식이어야 transform 을 함께 받는다. */
+  assert.ok(!/\.awaken-glow\{position:fixed/.test(html), '빛이 고스트와 분리되면 안 된다');
 });
 
 test('날아가는 동안 원본 프로필은 자리를 비운다', () => {
@@ -63,7 +76,7 @@ test('패널은 비행이 끝난 뒤에 열리고 그 전에는 누를 수 없�
   /* 도착 시점은 비행 시간에서 와야 한다 — 숫자를 따로 박으면 둘이 어긋난다. */
   assert.ok(html.includes("setTimeout(()=>{overlay.classList.remove('arriving')"), '도착하면 풀린다');
   assert.ok(html.includes('},flight)'), '대기 시간은 비행 시간이어야 한다');
-  assert.ok(html.includes('AWAKEN_FLARE_MS=620,AWAKEN_TRAVEL_MS=1180'), '빛 번짐과 비행을 나눈 상수');
+  assert.ok(html.includes('AWAKEN_FLARE_MS=1500,AWAKEN_TRAVEL_MS=1180'), '빛 번짐과 비행을 나눈 상수');
   assert.ok(html.includes('AWAKEN_FLIGHT_MS=AWAKEN_FLARE_MS+AWAKEN_TRAVEL_MS'), '전체 시간은 두 구간의 합이어야 어긋나지 않는다');
   /* 패널 자체의 bloom 애니메이션이 opacity 를 잡아 arriving 의 정적 값을 덮어쓴 적이 있다.
      도착 전에는 애니메이션을 꺼야 실제로 숨겨진다 (브라우저 실측으로 잡힌 버그). */
