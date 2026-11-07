@@ -5,6 +5,17 @@
 > 마지막 확인: 2026-11-06 (보호막 이펙트, 역전 마법 6장, 그림 없는 마법·함정 모두 완료 상태 확인).
 > 이 큐는 `CLAUDE.md`, `06_assets/README.md`, `02_game-design/game-rules/09-decisions-and-open-issues.md`, `npm run validate:cards`의 경고에서 가리킨다.
 
+## 미완료 P0 — 드로우 마법 대체 2장 (2026-11-08 요청)
+
+**왜**: 카드를 뽑는 마법은 카드 뽑기 기능과 겹쳐 같은 cardId에 다른 효과를 넣었다. 이름이 바뀌어 기존 그림이 맞지 않는다. 이미지는 사용자가 밖에서 생성해 전달한다.
+
+| 카드 | cardId | 지금 쓰는 임시 그림 | 만들 파일 |
+|---|---|---|---|
+| 마력 흡수 | `tower.arcane-insight` | 아케인 인사이트 `spells/generated/arcane-insight.png` | `dist/assets/spells/generated/mana-drain-v1.webp` |
+| 프리즘 탄막 | `arcana.prism-revelation` | 프리즘 계시 `spells/generated/prism-revelation.webp` | `dist/assets/spells/generated/prism-barrage-v1.webp` |
+
+프롬프트: [`06_assets/source-art/spells/replace-draw-2026-11-08-prompts.md`](source-art/spells/replace-draw-2026-11-08-prompts.md)
+
 ## 완료 — 마나 증가 마법 대체 2장 (2026-11-08 요청, 2026-11-08 반영)
 
 **왜**: 최대 마나를 영구히 늘리는 마법은 카드 뽑기 기능이 있어 매력이 낮아, 같은 cardId에 다른 효과를 넣었다. 이름이 바뀌어 기존 그림이 맞지 않는다. 이미지는 사용자가 밖에서 생성해 전달한다.

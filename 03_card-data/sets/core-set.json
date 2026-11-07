@@ -650,19 +650,19 @@
     {
       "schemaVersion": 1,
       "cardId": "tower.arcane-insight",
-      "displayName": "아케인 인사이트",
-      "nameKey": "card.tower_arcane_insight",
+      "displayName": "마력 흡수",
+      "nameKey": "card.tower_mana_drain",
       "cardType": "spell",
       "cost": 2,
       "rarity": "common",
       "stats": null,
       "effects": [
         {
-          "effectId": "draw",
-          "trigger": "next_round_start",
-          "target": "self",
-          "amount": 2,
-          "duration": "instant"
+          "effectId": "drain_attack",
+          "trigger": "on_cast",
+          "target": "strongest_enemy",
+          "amount": 3,
+          "duration": "match"
         }
       ],
       "assetId": "spells/generated/arcane-insight.png",

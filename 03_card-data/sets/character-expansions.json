@@ -4517,18 +4517,19 @@
     {
       "schemaVersion": 1,
       "cardId": "arcana.prism-revelation",
-      "nameKey": "card.arcana_prism_revelation",
-      "displayName": "프리즘 계시",
+      "nameKey": "card.arcana_prism_barrage",
+      "displayName": "프리즘 탄막",
       "cardType": "spell",
       "cost": 2,
       "rarity": "common",
       "stats": null,
       "effects": [
         {
-          "effectId": "draw",
-          "trigger": "next_round_start",
-          "target": "self",
+          "effectId": "arcane_missiles",
+          "trigger": "on_cast",
+          "target": "random_enemies",
           "amount": 2,
+          "hits": 3,
           "duration": "instant"
         }
       ],

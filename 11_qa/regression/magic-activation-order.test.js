@@ -95,3 +95,12 @@ test('마법은 손패에서 더블클릭하면 마나로만 즉시 발동하고
   assert.ok(html.includes("if(ultimateJustEquipped('player',ultimateState))return '다음 턴부터 발동';"), '세팅한 턴에는 궁극기를 발동할 수 없어야 한다');
   assert.ok(html.includes("ultimateJustEquipped('enemy',spec))return false;"), '컴퓨터도 세팅한 턴에는 궁극기를 발동하지 않는다');
 });
+
+test('소환을 막거나 되돌리는 카드는 쓴 쪽과 관계없이 양쪽 영웅에게 1 피해를 준다 (2026-11-08)', () => {
+  assert.ok(html.includes('const SUMMON_DENY_RECOIL=1;'), '반동 피해 상수');
+  assert.ok(html.includes("playerHp=Math.max(0,playerHp-SUMMON_DENY_RECOIL);enemyHp=Math.max(0,enemyHp-SUMMON_DENY_RECOIL);"), '양쪽 영웅 모두 피해');
+  assert.ok(html.includes("을 상대 손패로 돌려보냈습니다.');summonDenyRecoil("), '내 되돌리기 마법');
+  assert.ok(html.includes("의 소환을 무효화했습니다.');summonDenyRecoil("), '내 소환 무효 함정');
+  assert.ok(html.includes("setTimeout(()=>strongest.remove(),350);summonDenyRecoil(card.name);"), '컴퓨터 되돌리기 마법');
+  assert.ok(html.includes("summonDenyRecoil(trap.name);return {prevented:true};"), '컴퓨터 소환 무효 함정');
+});
