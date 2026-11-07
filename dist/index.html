@@ -2793,10 +2793,9 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
          사망유발 피해는 damageUnit에서 바로 impact로 들어와 그 좌표가 없고, 예전에는 (1) 값이 없으면
          CSS 폴백으로 '항상 위'로 솟고 (2) 전에 맞았던 카드는 그때 값이 남아 엉뚱한 방향으로 튀었다.
          마법·함정은 애초에 밀어낼 방향이 없으니 방향을 만들지 않고 밀림을 0으로 지운다 (2026-11-07) */
-      {const melee=target.style.getPropertyValue('--knock-src')==='field';
-       /* 마법·함정은 때린 몸이 없으니 밀어낼 방향 자체가 없다. 억지로 방향을 만들면 보는 사람은
-          '어디서 밀렸지?'가 되므로, 밀림은 0으로 두고 번쩍임·흔들림만으로 피격을 알린다.
-          평타·반격(fieldAttack)만 --knock-src=field를 남기므로 그것이 근접 타격의 유일한 표식이다. */
+      {/* 평타·반격(fieldAttack)만 --knock-src=field를 남기므로 그것이 근접 타격의 유일한 표식이다.
+          밀림이 없어도 번쩍임·흔들림·파편으로 피격은 충분히 읽힌다. */
+       const melee=target.style.getPropertyValue('--knock-src')==='field';
        if(!melee){target.style.setProperty('--knock-x','0px');target.style.setProperty('--knock-y','0px');}
        target.style.removeProperty('--knock-src');}
       /* 평타 돌진·반동은 element.animate()(WAAPI)로 transform을 돌린다. WAAPI는 CSS 애니메이션보다
