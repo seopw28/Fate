@@ -107,7 +107,7 @@ test('물의 오라: 27% 확률로 마나 1~2를 회복한다', () => {
 });
 
 test('오라 각성: 체력 80 이하에서 양자택일하고 배틀 종료까지 유지한다', () => {
-  assert.ok(html.includes('const GUARDIAN_AWAKEN_HP=80'), 'Awakening must unlock at 80 hero HP');
+  assert.ok(html.includes('ULTIMATE_UNLOCK_HP=80') && html.includes('const GUARDIAN_AWAKEN_HP=ULTIMATE_UNLOCK_HP;'), 'Awakening must unlock at 80 hero HP');
   assert.ok(html.includes('playerHp<=GUARDIAN_AWAKEN_HP'), 'Runtime must detect the awakening health threshold');
   assert.ok(html.includes("guardianAwakenChoice=choice"), 'The selected awakening branch must be stored');
   assert.ok(html.includes('const guardianAwakenActive=side=>Boolean(guardianAwakenChoiceOf(side))'), 'Awakening must remain active for either side after selection');
@@ -261,43 +261,41 @@ test('궁극기: 피해·버프 이펙트는 컷씬·오버레이가 끝난 뒤�
   assert.ok(html.includes('},ULTIMATE_EFFECT_DELAY);setTimeout(()=>overlay.remove(),ULTIMATE_OVERLAY_MS);'), 'Effects must be scheduled with the named delay, not a fixed 900ms');
 });
 
-test('궁극기: 사용한 턴으로부터 재사용 대기 턴이 지나야 다시 쓸 수 있다', () => {
-  assert.ok(html.includes('ULTIMATE_BASE_MIN_TURN=4,ULTIMATE_STRONG_TURN_DELAY=2'), 'First ultimate timing must be turn 4 normally and turn 6 for strong cards');
-  assert.ok(html.includes('minTurn=ULTIMATE_BASE_MIN_TURN+(strong?ULTIMATE_STRONG_TURN_DELAY:0)'), 'Ultimate specs must use the balanced named turn thresholds');
-  assert.ok(html.includes('const ULTIMATE_COOLDOWN_TURNS=3;'), 'Cooldown must be a single named constant');
-  assert.ok(html.includes('const cooldown=ULTIMATE_COOLDOWN_TURNS-(auraUltimateMatch(ultimateState)?AURA_ULTIMATE_COOLDOWN_REDUCTION:0);'), 'Cooldown must come from the named constant, shortened only by aura resonance');
-  assert.ok(html.includes('turnNumber<lastUltimateTurn+cooldown'), 'Lock reason must enforce the cooldown');
-  assert.ok(html.includes("const resonance=auraUltimateBoost(ultimateState),cost=ultimateManaCost(ultimateState),minTurn=ultimateMinTurn(ultimateState),firstTurnUnlocked=guardianAwakenActive('player')&&firstUltimateTurn===null"), 'Aura awakening must unlock only the first ultimate minimum turn');
-  assert.ok(html.includes("!firstTurnUnlocked&&turnNumber<minTurn"), 'Later ultimates must still enforce their minimum turn');
-  /* 혈마나 궁극기는 2026-11-07 제거했고, 게임 규칙으로 금지다 — 체력으로 궁극기의 마나·턴·대기를
-     대신하거나 앞당길 수 없다. 이름을 바꿔 되살아나도 잡히도록 식별자가 아니라 불변식을 본다. */
+test('궁극기: 사용 가능 턴·재사용 대기·강한 카드 분류가 없고, 비용은 발동 시점의 최대 마나다', () => {
+  for (const gone of ['ULTIMATE_BASE_MIN_TURN', 'ULTIMATE_STRONG_TURN_DELAY', 'ULTIMATE_COOLDOWN_TURNS', 'AURA_ULTIMATE_COOLDOWN_REDUCTION', 'AURA_ULTIMATE_TURN_REDUCTION', 'ULTIMATE_RESET_TURNS', 'strong=baseCost>=5']) {
+    assert.ok(!html.includes(gone), `${gone}: 폐지된 규칙이 남아 있다`);
+  }
+  assert.ok(html.includes('function ultimateManaCost(spec){return spec?Math.max(1,maxMana-(auraUltimateMatch(spec)?ULTIMATE_RESONANCE_COST:0)):0;}'), '비용 = 최대 마나, 오라 공명이면 −2');
+  assert.ok(html.includes('ULTIMATE_RESONANCE_COST=2') && html.includes('ULTIMATE_RESONANCE_STAT=2'), '오라 공명: 비용 −2, 소진자 공격 +2 · 체력 +2');
+  /* 혈마나 궁극기는 2026-11-07 제거했고, 게임 규칙으로 금지다 — 체력으로 궁극기의 마나를 대신할 수 없다.
+     이름을 바꿔 되살아나도 잡히도록 식별자가 아니라 불변식을 본다. */
   assert.ok(!html.includes('ultimateBloodOverride') && !html.includes('fireBloodUltimate'), '혈마나 궁극기 우회 경로를 되살리지 말 것');
   assert.ok(html.includes("if(mana<cost)return '마나 '+cost+' 필요'"), '궁극기는 마나가 모자라면 그대로 막혀야 한다 (혈마나 대납 금지)');
   {
     /* activateUltimate 은 일반 마나만 차감한다. 체력을 깎는 코드가 섞이면 혈마나 대납이다. */
     const fn = html.slice(html.indexOf('function activateUltimate()'));
     const body = fn.slice(0, fn.indexOf('sendUltimateToGraveyard'));
-    assert.ok(body.includes('mana-=spec.cost'), '궁극기 비용은 일반 마나에서만 나간다');
+    assert.ok(body.includes('mana-=cost'), '궁극기 비용은 일반 마나에서만 나간다');
     assert.ok(!/playerHp\s*-=/.test(body), '궁극기 발동이 영웅 체력을 지불하면 안 된다');
     assert.ok(!/bloodMana/i.test(body), '궁극기 발동 경로에 혈마나가 끼어들면 안 된다');
   }
   {
     /* 잠금 사유 판정에도 체력으로 푸는 예외가 없어야 한다. */
     const fn = html.slice(html.indexOf('function ultimateLockReason()'));
-    const body = fn.slice(0, 1400);
+    const body = fn.slice(0, fn.indexOf('function armUltimateSetting'));
     assert.ok(!/playerHp/.test(body), '궁극기 잠금 판정이 영웅 체력을 조건으로 쓰면 안 된다');
   }
-  assert.ok(html.includes('const AURA_ULTIMATE_COOLDOWN_REDUCTION=1;'), 'Aura resonance shortens the cooldown by one turn');
-  assert.ok(html.includes('function ultimateManaCost(spec){return spec?Math.max(1,spec.cost-(auraUltimateMatch(spec)'), 'Aura resonance always reduces ultimate mana, not only while awakened');
-  assert.ok(html.includes('lastUltimateTurn=turnNumber;'), 'Activation must record the turn it was used');
 });
 
-test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 1/1 사용자를 배치한다', () => {
+test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 소진자(기본 공격력 +15 / 체력 1)를 즉시 공격 가능하게 배치한다', () => {
   assert.ok(!html.includes("if(fieldCount>=FIELD_CARD_LIMIT)return '내 전장 6장 · 궁극기 사용 불가'"));
   assert.ok(html.includes("if(fieldCount<1)return '제물로 삼을 아군 챔프 필요'"));
-  assert.ok(html.includes(".at(-1),firstUse=!firstUltimateSpec"));
-  assert.ok(html.includes("summonBattleToken(spec.name,1,1,spec.element,'ultimate-spent')"));
-  assert.ok(html.includes("unit.dataset.ultimateSpent=firstUse?'first':'later'"));
+  assert.ok(html.includes("ULTIMATE_SPENT_ATTACK_BONUS=15,ULTIMATE_SPENT_HP=1"));
+  assert.ok(html.includes("attack:(Number(spec.baseAttack)||0)+ULTIMATE_SPENT_ATTACK_BONUS+bonus,hp:ULTIMATE_SPENT_HP+bonus"), '소진자 = 카드 기본 공격력 +15 / 체력 1 (공명 +2/+2)');
+  assert.ok(html.includes("summonBattleToken(spec.name,stats.attack,stats.hp,spec.element,'ultimate-spent')"));
+  assert.ok(html.includes("unit.dataset.ultimateSpent='true'"));
+  assert.ok(html.includes("unit.dataset.rush='true';unit.classList.remove('exhausted');unit.querySelector('.emoji').innerHTML"), '내려놓은 즉시 공격할 수 있다');
+  assert.ok(html.includes('.unit[data-effect="ultimate-spent"]{scale:1.1'), '소진자는 110% 크기');
   assert.ok(html.includes("unit.dataset.ultimateAggro='true'"));
   assert.ok(html.includes("unit.dataset.orderLocked='true'"));
   assert.ok(html.includes("unit.draggable=battlePhase==='setup'&&!locked"));
@@ -306,37 +304,36 @@ test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 
   assert.ok(html.includes("if(locked&&summonDropZone.lastElementChild!==locked)summonDropZone.append(locked)"));
   assert.ok(html.includes("const ultimateAggro=targets.find(u=>u.dataset.ultimateAggro==='true');if(ultimateAggro){showUltimateAggroIntercept(ultimateAggro);return ultimateAggro;}"));
   assert.ok(html.includes('.unit[data-ultimate-aggro="true"]::after{content:none!important;display:none!important}'), '전역 도발 텍스트 배지는 카드 경계 밖으로 노출되면 안 된다');
+  assert.ok(!html.includes('1/1 · 전역 도발') && !html.includes('공격력 1 · 체력 1의'), '소진자가 1/1이라는 옛 문구가 남아 있다');
 });
 
-test('첫 궁극기 소진 1/1 카드만 죽을 때 복수의 중앙 확대·분할 소멸 연출을 한 번 재생한다', () => {
+test('궁극기 소진 카드가 죽을 때마다 복수의 중앙 확대·분할 소멸 연출을 재생한다', () => {
   assert.ok(html.includes('function showUltimateSpentDeath(unit)'));
-  assert.ok(html.includes("target.dataset.ultimateSpent==='first')showUltimateSpentDeath(target)"));
-  assert.ok(html.includes("unit.dataset.ultimateSpent!=='first'"));
+  assert.ok(html.includes("target.dataset.ultimateSpent==='true')showUltimateSpentDeath(target)"));
+  assert.ok(html.includes("unit.dataset.ultimateSpent!=='true'"));
   assert.ok(html.includes("unit.dataset.ultimateDeathFx==='true'"));
   assert.ok(html.includes('spent-death-half left'));
   assert.ok(html.includes('spent-death-half right'));
   assert.ok(html.includes('<strong>복수의 시작</strong><b></b>'), '연출 제목과 소진자 이름은 별도 행이어야 한다');
   assert.ok(html.includes("fx.querySelector('.spent-death-copy b').textContent=name"), '소진자 이름은 독립된 이름 행에 표시해야 한다');
-  assert.ok(html.includes('최초 소진자의 죽음이 단 한 번의 복수를 부릅니다'));
+  assert.ok(html.includes('소진자의 죽음이 복수를 부릅니다'));
+  assert.ok(!html.includes('단 한 번의 복수'), '복수는 궁극기마다 생기므로 최초 한정 문구는 지운다');
   assert.ok(html.includes('performance.now()+4050'));
   assert.ok(html.includes('@keyframes spent-half-left'));
   assert.ok(html.includes('@keyframes spent-half-right'));
 });
 
-test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복수자로 한 번 등장한다', () => {
-  assert.ok(html.includes('function matchFirstUltimateCompanion(spec)'));
-  assert.ok(html.includes("!card.spell&&card.el===spec.element&&card.name!==spec.name"));
-  assert.ok(html.includes('function seedAvengerFromLatestFallenUltimate()'));
-  assert.ok(html.includes('[...allyGraveyard].reverse().find(card=>card.art&&cardDefByArt.has(card.art))'));
-  assert.ok(html.includes('if(!firstUltimateSpec)seedAvengerFromLatestFallenUltimate()'));
-  assert.ok(html.includes('if(!firstUltimateSpec||!firstUltimateCompanion)return null'));
-  assert.ok(html.includes("attack=firstUltimateSpec.attack+3,hp=firstUltimateSpec.hp+10"));
+test('복수자: 궁극기마다 소진자 기본 능력치 +7/+15 로 강림하고 외형은 대전 덱 구성에서 무작위로 빌린다', () => {
+  assert.ok(html.includes('AVENGER_ATTACK_BONUS=7,AVENGER_HP_BONUS=15'));
+  assert.ok(html.includes('function pickAvengerAppearance(side,rec)'));
+  assert.ok(html.includes("collectionState.deck.map(deckEntry):enemyOriginalDeck"), '내 덱 구성 / 컴퓨터 원래 덱 리스트에서 고른다');
+  assert.ok(html.includes('pool=source.filter(card=>!card.spell&&card.art)'), '오라 구분 없이 챔프 카드 한 장');
+  assert.ok(html.includes("attack=rec.baseAttack+AVENGER_ATTACK_BONUS,hp=rec.baseHp+AVENGER_HP_BONUS"), '능력치는 소진자 원래(강화 전) 능력치 기준');
   assert.ok(html.includes("summonBattleToken(partner.name,attack,hp,partner.el,'ultimate-avenger')"));
+  assert.ok(html.includes("if(units.length>=FIELD_CARD_LIMIT){const replace=units.at(-1);"), '전장이 가득 차면 기존 챔프 1장을 교체해 강림한다');
   assert.ok(html.includes('function showAvengerArrival(partner,source,unit)'));
   assert.ok(html.includes("source.name+'의 복수를 하고 말겠어!'"));
   assert.ok(html.includes('AVENGER DESCENT'));
-  assert.ok(html.includes('showAvengerArrival(partner,firstUltimateSpec,unit)'));
-  assert.ok(html.includes('function resolveAvengerArrivalDamage(partner)'));
   assert.ok(html.includes('function showAvengerLandingImpact(unit,color)'));
   assert.ok(html.includes('showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral)'));
   assert.ok(html.includes('.unit[data-effect="ultimate-avenger"]'), '복수자 카드만 전용 테두리와 오라를 사용해야 한다');
@@ -347,17 +344,10 @@ test('최후의 저항: 최초 궁극기의 같은 속성 동료가 +3/+10 복�
   assert.equal(html.includes('crown-body'), false, 'CSS 도형 왕관을 다시 사용하면 안 된다');
   assert.ok(html.includes("wave.className='avenger-landing-impact'"));
   assert.ok(html.includes("arena?.animate([{transform:'none'},{transform:'translateY(13px) scale(.985)'"));
-  assert.ok(html.includes("damageUnit(target,5,partner.el)"));
-  assert.ok(/afterAvengerArrival\(showAvengerArrival\(partner,firstUltimateSpec,unit\)[\s\S]{0,120}resolveAvengerArrivalDamage\(partner\)/.test(html), '강림이 충격파 피해로 이어져야 한다');
-  assert.ok(html.includes("if(side==='player')queueFirstUltimateAvenger(0);else{ensureEnemyAvengerSource();queueEnemyUltimateAvenger(0);}"));
-});
-
-test('궁극기: 땅 궁극기는 회복이 아니라 절대방어(+강한 카드는 부활)다', () => {
-  assert.ok(html.includes("earth:'절대성역'"), 'Earth ultimate must be renamed to the absolute sanctuary');
-  assert.ok(html.includes("else if(spec.element==='earth'){absoluteDefense=true;"), 'Earth ultimate must enable absolute defense');
-  assert.ok(!html.includes("showSkillEffect('shield',unit,'성역 +'+heal)"), 'Earth ultimate must no longer heal allies');
-  assert.ok(html.includes('if(absoluteDefense&&target.closest&&sideOfUnit(target)===\'player\')'), 'Allied champions must take no damage during absolute defense');
-  assert.ok(html.includes("absoluteDefense=false;turnNumber++;"), 'Absolute defense must expire when the next player turn starts');
+  assert.ok(!html.includes('damageUnit(target,5,partner.el)'), '강림 시 상대 전장 5 피해는 폐지됐다');
+  for (const gone of ['firstUltimateSpec', 'firstUltimateCompanion', 'avengerSummoned', 'matchEnemyUltimateCompanion', 'seedAvengerFromLatestFallenUltimate']) {
+    assert.ok(!html.includes(gone), `${gone}: 최초 궁극기·같은 오라 동료·배틀당 1회 규칙은 폐지됐다`);
+  }
 });
 
 test('궁극기: 속성별 전장·체력·성격 조합 조건 없이 역전 수단으로 사용할 수 있다', () => {
@@ -372,21 +362,22 @@ test('손패: 사용 가능 여부 우선, 같은 등급 안에서는 가치(비
   assert.ok(html.includes('function handCardValue(card)'), 'Card value must be a named helper');
 });
 
-test('최후의 저항: 내 턴 시작에 덱에서 카드를 1장 더 받는다', () => {
-  assert.ok(html.includes("drawCard();/* 최후의 저항: 내 턴 시작에 덱에서 1장 더 받는다"), 'Turn start must draw an extra card while desperate');
-  assert.ok(html.includes("if(desperateActive('player')&&deck.length&&document.querySelectorAll('.hand .card').length<8){drawCard();"), 'Extra draw must respect deck and hand limits');
+test('복수자가 두 번째로 등장한 뒤부터 내 턴 시작에 덱에서 카드를 1장 더 받는다 (최후의 저항 추가 드로우는 폐지)', () => {
+  assert.ok(!html.includes('최후의 저항: 내 턴 시작에 덱에서 1장 더 받는다'), '체력 40 이하 추가 드로우는 폐지됐다');
+  assert.ok(html.includes('AVENGER_EXTRA_DRAW_AT=2'));
+  assert.ok(html.includes("if(avengerExtraDrawActive('player')&&deck.length&&document.querySelectorAll('.hand .card').length<8){drawCard();"), 'Extra draw must respect deck and hand limits');
+  assert.ok(html.includes('function avengerExtraDrawActive(side){return ultimateLedger[side].arrived>=AVENGER_EXTRA_DRAW_AT;}'));
+  assert.ok(html.includes("advanceUltimateLedger('player');"), '내 턴 시작에 복수자 시계가 흐른다');
 });
 
-test('최후의 저항: 한 번 진입하면 영웅 본체 회복은 배틀 종료까지 잠긴다', () => {
-  assert.ok(html.includes('function playerHeroHealingLocked()'));
-  assert.ok(html.includes("desperateState?.player===true||desperateNoticeShown?.player===true||desperateActive('player')"));
-  assert.ok(html.includes('function healPlayerHero(amount)'));
+test('영웅 본체 회복은 체력 수준과 무관하게 항상 가능하다 (회복 잠금 폐지)', () => {
+  assert.ok(html.includes('function healPlayerHero(amount){const requested=Math.max(0,Number(amount)||0);if(!requested)return 0;const healed=Math.min(requested,HERO_MAX_HP-playerHp);'));
   assert.ok(html.includes('heroHealed=healPlayerHero(amount)'));
   assert.ok(html.includes('healed=healPlayerHero(8)'));
   assert.ok(html.includes('heroHealed=healPlayerHero(6)'));
   assert.ok(html.includes('healed=healPlayerHero(heal)'));
-  assert.ok(html.includes('if(refund.hp&&!playerHeroHealingLocked())'));
-  assert.ok(html.includes('if(healingLocked&&playerHp>hpBefore){playerHp=hpBefore;updateHeroHealth()'));
+  assert.ok(html.includes('if(refund.hp){ playerHp = Math.min(HERO_MAX_HP'));
+  assert.ok(!html.includes('HealingLocked') && !html.includes('healingLocked'));
 });
 
 test('최후의 저항: 마법카드 즉시 발동 보상은 제거하고 기존 세팅 규칙을 유지한다', () => {

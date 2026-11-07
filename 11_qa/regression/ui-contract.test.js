@@ -235,13 +235,10 @@ test('space switches hand tabs and Enter ends the turn', () => {
   }
 });
 
-test('최후의 저항: 체력 40 이하에서 발동하지만 최대 마나는 10을 유지한다', () => {
-  assert.ok(html.includes('const DESPERATE_HP_RATIO=.4'), 'Desperation must start at forty percent');
-  assert.ok(html.includes('hp>0&&hp<=DESPERATE_HP'), 'Exactly forty percent health must activate desperation');
-  assert.ok(html.includes('function playerManaCap(){return MANA_CAP;}'), 'Desperation must keep the normal mana cap');
+test('최대 마나는 항상 10 상한이다', () => {
+  assert.ok(html.includes('function playerManaCap(){return MANA_CAP;}'), 'Max mana stays capped at ten');
   assert.ok(html.includes('maxMana=Math.min(MANA_CAP,maxMana+1)'), 'Turn start must never grow beyond ten mana');
   assert.ok(!html.includes('const DESPERATE_MANA_CAP = 11;'), 'The removed eleven-mana cap must not remain');
-  assert.ok(!html.includes('function applyDesperateMana'), 'Desperation must not mutate maximum mana');
 });
 
 test('상대는 카드를 한 장씩 간격을 두고 내려놓는다 (같은 프레임 동시 등장 금지)', () => {
@@ -365,46 +362,29 @@ test('상대 턴의 행동들은 한 프레임에 몰리지 않고 한 박자씩
   assert.ok(html.includes('setTimeout(resolve,combatMs(ENEMY_ACTION_BEAT_MS))'), '간격에 전투 속도 배율을 적용해야 한다');
 });
 
-test('최초를 제외한 모든 궁극기는 직전 사용 후 6턴이 지나야 세팅할 수 있다', () => {
-  // 궁극기가 자주 나오면 주인공이 여럿인 느낌이 되어 무게가 사라진다.
-  assert.ok(html.includes('const ULTIMATE_RESET_TURNS=6'), '재세팅 대기 턴 상수가 있어야 한다');
-  assert.ok(html.includes('function ultimateSettingLockReason()'), '세팅 잠금 판정이 분리돼 있어야 한다');
-  /* 기준은 '최초 사용 턴'이 아니라 '직전 사용 턴'이어야 한다. firstUltimateTurn 에 고정하면
-     2궁 이후로는 firstUltimateTurn+6 이 이미 지나 있어 3·4궁이 제한 없이 풀린다
-     (2026-11-07 실측: 2궁 직후 turn 11 에서 바로 '세팅 가능'). */
-  const at = html.indexOf('function ultimateSettingLockReason()');
-  assert.ok(at > 0, '세팅 잠금 판정이 있어야 한다');
-  const fn = html.slice(at, at + 420);
-  assert.ok(/const ready=lastUltimateTurn\+ULTIMATE_RESET_TURNS/.test(fn),
-    '직전 궁극기 사용 턴을 기준으로 삼아야 3·4궁도 막힌다');
-  assert.ok(!/const ready=firstUltimateTurn\+ULTIMATE_RESET_TURNS/.test(fn),
-    '최초 사용 턴 기준으로 돌아가면 2궁 이후가 전부 풀린다');
-  assert.ok(/if\(lastUltimateTurn===null\)return ''/.test(fn),
-    '궁극기를 쓴 적이 없으면(=최초 궁극기) 잠그지 않는다');
+test('궁극기 세팅은 오라 각성 버튼이 열린 뒤에만, 두 번째부터는 직전 소진자의 복수자가 강림한 뒤에만 가능하다', () => {
+  assert.ok(html.includes('ULTIMATE_UNLOCK_HP=80') && html.includes('const GUARDIAN_AWAKEN_HP=ULTIMATE_UNLOCK_HP;'), '각성 버튼과 같은 체력 80 기준을 쓴다');
+  assert.ok(html.includes("function ultimateAwakenGateOpen(side='player'){if(heroHpOf(side)<=ULTIMATE_UNLOCK_HP)awakenGateOpened[side]=true;return awakenGateOpened[side];}"), '한 번 열리면(회복해도) 계속 열려 있다');
+  assert.ok(html.includes("function ultimateSettingLock(side='player'){if(!ultimateAwakenGateOpen(side))return {reason:'오라 각성 후 세팅 가능'"), '각성 전에는 세팅 불가');
+  assert.ok(html.includes("if(ledger.spent)return {reason:'소진자 생존 중'"), '소진자가 살아 있으면 다음 세팅 불가');
+  assert.ok(html.includes("'복수자 강림까지 '+left+'턴'"), '잠금 해제 조건(강림까지 N턴)을 표시한다');
   // 버튼 경로와 실제 세팅 경로(클릭·드래그) 양쪽을 다 막아야 한다.
   assert.ok(html.includes("function armUltimateSetting(){if(battlePhase!=='setup'||ultimateState||ultimateUsed)return;const settingLock=ultimateSettingLockReason();"), '세팅 버튼을 막아야 한다');
   assert.ok(html.includes('function setUltimate(card){const settingLock=ultimateSettingLockReason();'), '카드 세팅 자체를 막아야 한다');
-  // 발동 쿨다운과는 별개 규칙이다.
-  assert.ok(html.includes('const ULTIMATE_COOLDOWN_TURNS=3'), '발동 재사용 대기는 그대로 유지한다');
   // 패널이 잠긴 동안 세팅을 권하면 안 된다.
   assert.ok(html.includes("(setup&&!ultimateUsed&&!settingLock?'':'disabled')"), '잠긴 동안 버튼이 비활성이어야 한다');
-  assert.ok(html.includes("settingLock?'직전 궁극기 이후 '+ULTIMATE_RESET_TURNS+'턴이 지나야 다시 세팅할 수 있습니다'"), '남은 대기를 안내해야 한다');
+  assert.ok(html.includes("settingLock?ultimateSettingLockDetail():"), '잠금 해제 조건을 안내해야 한다');
+  // 폐지된 규칙이 돌아오면 안 된다.
+  for (const gone of ['ULTIMATE_RESET_TURNS', 'ULTIMATE_COOLDOWN_TURNS', 'ULTIMATE_BASE_MIN_TURN', 'ULTIMATE_STRONG_TURN_DELAY', 'ultimateMinTurn', 'firstUltimateTurn', 'lastUltimateTurn']) {
+    assert.ok(!html.includes(gone), `${gone}: 사용 가능 턴·재사용 대기·재세팅 대기는 폐지됐다`);
+  }
 });
 
-test('궁극기 최소 사용 턴은 상시로 노출하지 않는다', () => {
-  /* '4턴부터' 같은 안내가 세팅 패널·손패 배지·장착 로그에 늘 붙어 있었다. 대부분의 시간에는
-     이미 충족된 조건이라 읽을 이유가 없는 정보였다 (2026-11-07 PM 요청). */
-  assert.ok(!/ultimateState\.minTurn\+'턴부터/.test(html),
-    '세팅 패널·장착 로그에 최소 턴을 상시 표기하지 않는다');
-  assert.ok(!/spec\.minTurn\+'턴부터/.test(html),
-    '손패 미리보기 배지에 최소 턴을 상시 표기하지 않는다');
-  /* 다만 실제로 턴이 모자라 잠겼을 때는 왜 못 쓰는지 알려야 한다 — 이것까지 지우면
-     버튼이 이유 없이 비활성인 것으로 보인다. */
-  assert.ok(html.includes("return minTurn+'턴부터 가능 (현재 '+turnNumber+'턴)'"),
-    '턴이 모자랄 때는 잠금 사유로 알려야 한다');
-  /* 배지가 하나로 줄었으니 마크업도 같이 줄어야 한다. 빈 span 이 남으면 테두리만 뜬다. */
-  assert.ok(html.includes('<div class="ult-meta"><span></span></div>'),
-    '미리보기 배지는 마나 하나만 남긴다');
+test('궁극기 비용은 발동 시점의 내 최대 마나이고 혈마나는 쓰지 못한다 (오라 공명이면 −2)', () => {
+  assert.ok(html.includes('function ultimateManaCost(spec){return spec?Math.max(1,maxMana-(auraUltimateMatch(spec)?ULTIMATE_RESONANCE_COST:0)):0;}'));
+  assert.ok(html.includes("if(mana<cost)return '마나 '+cost+' 필요';"), '마나가 모자라면 혈마나 없이 잠긴다');
+  assert.ok(!html.includes('minTurn'), '최소 사용 턴 표기는 어디에도 없다');
+  assert.ok(html.includes('<div class="ult-meta"><span></span></div>'), '미리보기 배지는 마나 하나만 남긴다');
 });
 
 test('죽는 카드는 짧은 소멸 연출을 거친 뒤 사라진다', () => {

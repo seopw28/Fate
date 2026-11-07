@@ -46,8 +46,8 @@ test('상대도 챔프 능력·마법·함정·궁극기를 같은 자원 규칙
   assert.ok(html.includes('function triggerEnemyTrap(event,context={})'));
   assert.ok(html.includes('function castEnemyUltimate()'));
   assert.ok(html.includes("enemyMana-=card.cost;enemySetMagic.push"));
-  assert.ok(html.includes('turnNumber<spec.minTurn||enemyMana<spec.cost'));
-  assert.ok(html.includes('turnNumber<enemyLastUltimateTurn+cooldown'));
+  assert.ok(html.includes('const cost=enemyUltimateManaCost(spec);if(enemyMana<cost)return false;enemyMana-=cost;'), '상대도 발동 시점의 최대 마나만큼 마나를 쓴다');
+  assert.ok(!html.includes('spec.minTurn') && !html.includes('enemyLastUltimateTurn'), '사용 가능 턴·재사용 대기는 폐지됐다');
   assert.ok(html.includes("triggerEnemyTrap('player_summon',{unit})"));
   assert.ok(html.includes("triggerEnemyTrap('enemy_hero_attacked',{attacker:selected,damage})"));
 });

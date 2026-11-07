@@ -67,7 +67,7 @@
     const impactBeforeCombatTiming=impact;
     impact=function(...args){if(combatQueueHasNext){const target=args[0],tail=target?.classList?.contains('avatar')?COMBAT_TIMING.heroImpactTail:COMBAT_TIMING.cardImpactTail;markCombatBusy(combatMs(tail));}return impactBeforeCombatTiming(...args);};
     function resolveCombat(done){const attackers=[...document.querySelectorAll('.summon-zone .unit:not(.exhausted)')],enemyLane=document.querySelector('.arena .lane:first-child'),enemyHud=document.querySelector('.duel-hud .enemy');if(!attackers.length){writeLog('이번 턴에 공격 가능한 챔프가 없습니다.');done?.();return;}writeLog('<strong>턴 종료 공격:</strong> 공격 가능한 챔프 '+attackers.length+'명이 자동으로 진격합니다.');runCombatQueue(attackers,unit=>{if(document.querySelector('.result').classList.contains('show'))return;const target=enemyLane.querySelector(':scope > .unit:not([data-destroyed="true"])');if(consumeSnare(unit))return;unit.classList.remove('exhausted');selectUnit(unit,true);if(target)attack(target,true);else attackFace(enemyHud,true);},done);}
-    function startPlayerTurn(button){ if(resultPending||document.querySelector('.result').classList.contains('show'))return;setBattlePhase('setup');sfx('turn-start');absoluteDefense=false;turnNumber++;maxMana=Math.min(MANA_CAP,maxMana+1);mana=maxMana;bloodManaUses=0;drawActionsUsed=0;combo=0;lastAttackElement=null;drawCard();/* 최후의 저항: 내 턴 시작에 덱에서 1장 더 받는다(손패 8장 제한, 덱이 비면 생략) */if(desperateActive('player')&&deck.length&&document.querySelectorAll('.hand .card').length<8){drawCard();writeLog('<strong>최후의 저항:</strong> 덱에서 카드를 1장 더 받았습니다. (내 체력 '+playerHp+' / '+HERO_MAX_HP+')');}document.querySelectorAll('.summon-zone .unit').forEach(u=>{u.classList.remove('exhausted');u.dataset.attacked='0';});updateMana();updateSynergyHud();triggerTrap('field_state');resolveNextFieldMagic();button.textContent='턴 종료 · 마나 '+mana+' 보유';button.disabled=false;button.style.opacity='1';writeLog('<strong>새 필드</strong>가 시작되었습니다. 최대 마나가 '+maxMana+'로 증가했습니다.'); }
+    function startPlayerTurn(button){ if(resultPending||document.querySelector('.result').classList.contains('show'))return;setBattlePhase('setup');sfx('turn-start');absoluteDefense=false;turnNumber++;maxMana=Math.min(MANA_CAP,maxMana+1);mana=maxMana;bloodManaUses=0;drawActionsUsed=0;combo=0;lastAttackElement=null;drawCard();/* 복수자가 두 번째로 등장한 뒤부터 내 턴 시작에 기본 드로우 외 1장 더 받는다(손패 8장이거나 덱이 비면 생략) */if(avengerExtraDrawActive('player')&&deck.length&&document.querySelectorAll('.hand .card').length<8){drawCard();writeLog('<strong>복수자의 가호:</strong> 복수자가 두 번째로 등장한 뒤라 덱에서 카드를 1장 더 받았습니다.');}document.querySelectorAll('.summon-zone .unit').forEach(u=>{u.classList.remove('exhausted');u.dataset.attacked='0';});advanceUltimateLedger('player');updateMana();updateSynergyHud();triggerTrap('field_state');resolveNextFieldMagic();button.textContent='턴 종료 · 마나 '+mana+' 보유';button.disabled=false;button.style.opacity='1';writeLog('<strong>새 필드</strong>가 시작되었습니다. 최대 마나가 '+maxMana+'로 증가했습니다.'); }
     /* 선공권: 체력 열세 → 필드 챔피언 수 열세 → 티어 열세 → 무작위 순으로 결정한다.
        라운드 순서는 [선공 → 후공]이며 endTurn()은 내 행동이 끝났을 때 내가 선공이었던 경우에만 상대 행동을 실행한다. */
     let roundFirst='player';
@@ -207,43 +207,11 @@
     damageUnit=function(target,damage,element){if(target?.dataset?.invulnerable==='1'){const hp=Number(target.querySelector('.stats span:last-child').textContent.replace(/[^0-9]/g,''))||0;showSkillEffect('shield',target,'무적 · 피해 무효');/* 소리는 showSkillEffect 가 낸다 */writeLog('<strong>'+target.querySelector('h4').textContent+'</strong>은(는) 불가침 상태라 피해를 받지 않았습니다.');return {blocked:true,hp};}return damageUnitBeforeInvulnerable(target,damage,element);};
     const startPlayerTurnBeforeInvulnerable=startPlayerTurn;
     startPlayerTurn=function(button){startPlayerTurnBeforeInvulnerable(button);document.querySelectorAll('.unit[data-invulnerable]').forEach(unit=>{delete unit.dataset.invulnerable;unit.classList.remove('invulnerable');unit.removeAttribute('title');});};
-    /* 최후의 저항 · 역전 돌진: 내 영웅 체력이 최대치의 40% 이하가 되면 켜진다. 상대 체력에 따라 오르락내리락하지 않도록 절대 기준을 쓴다 */
-    const DESPERATE_HP_RATIO=.4,DESPERATE_HP=Math.floor(HERO_MAX_HP*DESPERATE_HP_RATIO);
     function heroHpOf(side){return side==='player'?playerHp:enemyHp;}
-    function desperateActive(side){const hp=heroHpOf(side);return hp>0&&hp<=DESPERATE_HP;}
-    function playerHeroHealingLocked(){return desperateState?.player===true||desperateNoticeShown?.player===true||desperateActive('player');}
-    function healPlayerHero(amount){const requested=Math.max(0,Number(amount)||0);if(!requested||playerHeroHealingLocked())return 0;const healed=Math.min(requested,HERO_MAX_HP-playerHp);playerHp+=healed;if(healed)updateHeroHealth();return healed;}
+    function healPlayerHero(amount){const requested=Math.max(0,Number(amount)||0);if(!requested)return 0;const healed=Math.min(requested,HERO_MAX_HP-playerHp);playerHp+=healed;if(healed)updateHeroHealth();return healed;}
     function totalHealth(side,except=null){const lane=side==='player'?'.summon-zone':'.arena .lane:first-child',base=side==='player'?playerHp:enemyHp;return Math.max(0,base)+[...document.querySelectorAll(lane+' > .unit')].filter(unit=>unit!==except&&unit.dataset.destroyed!=='true').reduce((sum,unit)=>sum+(Number(unit.querySelector('.stats span:last-child')?.textContent.replace(/[^0-9]/g,''))||0),0);}
-    function comebackRushActive(){return desperateActive('player');}
-    const triggerBattlecryBeforeComebackRush=triggerBattlecry;
-    triggerBattlecry=function(unit){const active=unit.closest('.summon-zone')&&unit.dataset.rush!=='true'&&comebackRushActive(),hpBefore=playerHp,healingLocked=playerHeroHealingLocked();triggerBattlecryBeforeComebackRush(unit);if(healingLocked&&playerHp>hpBefore){playerHp=hpBefore;updateHeroHealth();writeLog('<strong>긴급 상태:</strong> 영웅 체력 회복이 차단되었습니다.');}if(active){unit.dataset.rush='true';unit.classList.remove('exhausted');setTimeout(()=>showSkillEffect('rush',unit,'역전 돌진 · 즉시 공격'),420);writeLog('<strong>역전 돌진:</strong> 체력이 '+Math.round(DESPERATE_HP_RATIO*100)+'% 이하가 되어 <strong>'+unit.querySelector('h4').textContent+'</strong>이(가) 소환 즉시 공격할 수 있습니다. (내 체력 '+playerHp+' / '+HERO_MAX_HP+')');}};
-    /* 최후의 저항 게이지: 영웅 체력이 최대치의 DESPERATE_HP_RATIO 밑으로 떨어진 쪽의 체력 게이지를 격렬하게 표시한다 (역전 돌진 조건과 동일) */
-    /* 토스트가 떠 있는 동안만 복수자를 미룬다. 예전 중앙 컷인(6초) 기준으로 3600ms 를 쓰고 있어서,
-       토스트로 줄인 뒤에도 그대로 두면 안내가 끝나고 1.6초를 빈 화면으로 기다린다 (2026-11-07) */
-    const DESPERATE_TOAST_MS=2000;
-    /* 최후의 저항 안내는 작은 토스트 한 줄로 줄인다. 예전에는 화면 중앙을 6초간 덮는 컷인이었는데,
-       지금은 '복수자가 최초 궁극기 시전자의 복수를 하러 온다'는 쪽이 임팩트가 훨씬 크고 전용 등장
-       컷신까지 있어서, 중앙 연출이 둘로 갈려 복수자 쪽 인상이 깎였다. 버프 내용(역전 돌진·추가
-       드로우)은 유저가 알아야 하므로 문장으로만 남기고, 연출은 복수자에 양보한다 (2026-11-07) */
-    function showDesperateNotice(side,{instant=false}={}){document.querySelectorAll('.desperate-toast').forEach(node=>node.remove());
-      const mine=side==='player',toast=document.createElement('div');
-      toast.className='desperate-toast'+(mine?'':' enemy');
-      toast.setAttribute('role','status');
-      toast.innerHTML='<small>LAST STAND</small><b>'+(mine?'':'상대 ')+'최후의 저항</b><span>'
-        +(mine?'새 챔프가 소환한 턴에 바로 공격하고, 턴마다 카드를 1장 더 받습니다.'
-              :'상대도 턴마다 카드를 1장 더 받습니다.')+'</span>';
-      return fxPresent('desperate:'+side,()=>{
-        document.body.appendChild(toast);syncFieldFrame();
-        tone(58,.42,'sine',.09,36);tone(196,.3,'sawtooth',.025,104,.05);
-        return ()=>toast.remove();
-      },{priority:FX_PRIORITY.desperate,hold:instant?900:DESPERATE_TOAST_MS});}
-    const desperateState={player:false,enemy:false},desperateNoticeShown={player:false,enemy:false};/* 중앙 안내는 한 배틀에 각 편 최초 1번만 */
-    function updateDesperation(){['player','enemy'].forEach(side=>{const gauge=document.querySelector('#'+side+'-health')?.parentElement;if(!gauge)return;const hp=heroHpOf(side),active=battlePhase!=='ended'&&desperateActive(side);if(active===desperateState[side])return;desperateState[side]=active;gauge.classList.toggle('desperate',active);gauge.title=active?'최후의 저항 · 체력이 '+Math.round(DESPERATE_HP_RATIO*100)+'% 이하':'';if(active){switchToAwakeningBgm();if(!desperateNoticeShown[side]){desperateNoticeShown[side]=true;desperateNoticeUntil=performance.now()+DESPERATE_TOAST_MS;combatPresentationUntil=Math.max(combatPresentationUntil,desperateNoticeUntil);showDesperateNotice(side);}if(side==='player')queueFirstUltimateAvenger(0);else{ensureEnemyAvengerSource();queueEnemyUltimateAvenger(0);}writeLog('<strong>'+(side==='player'?'내':'상대')+' 체력 게이지가 최후의 저항 상태입니다.</strong> (체력 '+hp+' / '+HERO_MAX_HP+')');}});}
-    setInterval(updateDesperation,300);
     const fieldAttackBeforePresentationGate=fieldAttack;
     /* 연출이 점유 중이면 교전을 미루되, (1) 미루는 동안에도 전투 큐에 '아직 바쁘다'고 알려 다음 챔프가 끼어들지 못하게 하고 (2) 재시도는 래퍼가 아니라 원본을 호출해 게이트가 중첩 재진입하지 않게 한다. 예전에는 래퍼가 자기 자신을 다시 불러 combatPresentationSlot이 매번 밀리고 호출 수가 불어나, 교전 간 0.3초 간격이 160ms 이하로 무너졌다 (2026-11-07) */fieldAttack=function(...args){const now=performance.now();if(fxBusy()||now<combatPresentationUntil){const runAt=Math.max(combatPresentationUntil,combatPresentationSlot||0)+240;combatPresentationSlot=runAt+900;const wait=Math.max(fxBusy()?160:0,runAt-now);markCombatBusy(wait);setTimeout(()=>{if(resultPending)return;if(fxBusy()){fieldAttack(...args);return;}combatPresentationSlot=0;fieldAttackBeforePresentationGate(...args);},wait);return;}combatPresentationSlot=0;return fieldAttackBeforePresentationGate(...args);};
-    const selectCardBeforeComebackRush=selectCard;
-    selectCard=function(card){selectCardBeforeComebackRush(card);const title=document.querySelector('#hand-guide');if(title&&cardCategory(card)==='champion'&&comebackRushActive()&&title.textContent.endsWith('다시 눌러 사용'))title.textContent+=' · 역전 돌진';};
     const castSpellWithoutMediumFx=castSpell;
     castSpell=function(card){if(['champion-control','frost-nova'].includes(card?.dataset?.effect))muteSfx(['spell','magic','hit:water'],1800);/* 빙결 소리(frostFx)만 남긴다 */const effect=card?.dataset?.effect,enemies=[...document.querySelectorAll('.arena .lane:first-child > .unit')],selfTargeted=['mana-ramp','cleanse'].includes(effect),target=selfTargeted?document.querySelector('.duel-hud .player .avatar'):(enemies[0]||document.querySelector('.duel-hud .enemy .avatar')),mapping={'mana-ramp':'arcane-circle',cleanse:'arcane-circle',bounce:'dark-orb','arcane-arrow':'dark-orb','champion-control':'light-blades','armor-pierce':'light-blades','hero-bolt':'flame-pillar'},spellName=card.querySelector('h3')?.textContent||'스킬',spellElement=getElement(card),semanticElement=spellEffectElement(effect,spellElement);if(effect==='black-flame')showCinematicSkillEffect('eclipse',spellName,1);else if(effect==='frost-nova'||effect==='champion-control'||(effect==='freeze-strongest'&&semanticElement==='ice'))showCinematicSkillEffect('frost',spellName,1);else if(effect==='freeze-strongest')showCinematicSkillEffect('eclipse',spellName,1);else if(effect==='board-damage')showCinematicSkillEffect(({fire:'fire',earth:'earth',ice:'frost',neutral:'eclipse',wind:'gust',water:'lightning',thunder:'lightning'})[spellElement]||'eclipse',spellName,cinematicVariantFor(card.dataset.cardId||spellName));else if(effect==='hero-bolt')showCinematicSkillEffect('fire',spellName,1);else if(effect==='lightning-strike'||effect==='chain-lightning')showCinematicSkillEffect(({thunder:'lightning',fire:'fire',water:'lightning',wind:'gust',earth:'earth',ice:'frost'})[semanticElement]||'eclipse',spellName,cinematicVariantFor(card.dataset.cardId||spellName));if(mapping[effect])showMediumSkillEffect(mapping[effect],target,spellName);if(effect==='black-flame'){castSpellWithoutMediumFx(card);return castBlackFlame(card);}if(effect==='frost-nova'){castSpellWithoutMediumFx(card);return castFrostNova(card);}if(effect==='champion-control'){const strongest=[...enemies].sort((a,b)=>Number(b.querySelector('.stats span').textContent.replace(/[^0-9]/g,''))-Number(a.querySelector('.stats span').textContent.replace(/[^0-9]/g,'')))[0];if(strongest)frostFx([strongest]);}return castSpellWithoutMediumFx(card);};
     const castSpellWithElementalCinematic=castSpell;
@@ -287,7 +255,7 @@
     const PVC_CLEAR_CRACKER_REWARD=200,VICTORY_COOKIE_REWARD=10;
     const guardianProcs={player:0,enemy:0};/* 저장 호환 변수명. guardianProcs는 대지 오라 치명타 생존 발동 횟수 */
     const guardianOfSide=side=>side==='player'?playerGuardian:enemyGuardian,sideOfUnit=unit=>unit.closest('.summon-zone')?'player':'enemy';
-    const GUARDIAN_AWAKEN_HP=80;
+    const GUARDIAN_AWAKEN_HP=ULTIMATE_UNLOCK_HP;
     const GUARDIAN_AWAKEN_OPTIONS={
       jujak:{A:{name:'불길 확산',chance:.40,burnDamage:1,burnTurns:5,desc:'기본 공격·반격으로 생존한 적 챔프에게 40% 확률로 5턴간 화상 · 대상 턴 시작마다 피해 1',ui:['기본 공격·반격 적중 시 40% 확률로 화상','5턴간 대상 턴 시작마다 피해 1']},B:{name:'업화',chance:.20,burnDamage:3,burnTurns:2,desc:'기본 공격·반격으로 생존한 적 챔프에게 20% 확률로 2턴간 업화 · 대상 턴 시작마다 피해 3',ui:['기본 공격·반격 적중 시 20% 확률로 업화','2턴간 대상 턴 시작마다 피해 3']}},
       cheongryong:{A:{name:'범람',chance:.045,manaMin:7,manaMax:7,desc:'비용 2 이상 카드 사용 시 4.5% 확률로 마나 7 회복',ui:['비용 2 이상 카드 사용 시','4.5% 확률로 마나 7 회복']},B:{name:'순환',chance:.27,manaMin:2,manaMax:2,desc:'비용 2 이상 카드 사용 시 27% 확률로 마나 2 회복',ui:['비용 2 이상 카드 사용 시','27% 확률로 마나 2 회복']}},
@@ -427,7 +395,7 @@
        예전에는 여기서 바로 패널을 띄웠다. 각성은 배틀당 한 번뿐인 선택인데 자동으로 열리면
        '내가 쓴 것'이 아니라 '갑자기 일어난 일'로 읽혀, 중앙의 사용 버튼도 의미를 잃었다.
        상대(AI)는 누를 주체가 없으므로 종전대로 자동 발동한다 (2026-11-07 PM 요청) */
-    function checkGuardianAwakeningThreshold(){if(!guardianChosen||resultPending)return;if(playerGuardian&&!guardianAwakenChoice&&playerHp<=GUARDIAN_AWAKEN_HP)announceGuardianAwakenReady();if(enemyGuardian&&!enemyGuardianAwakenChoice&&enemyHp<=GUARDIAN_AWAKEN_HP)chooseEnemyGuardianAwakening();}
+    function checkGuardianAwakeningThreshold(){ultimateAwakenGateOpen('player');ultimateAwakenGateOpen('enemy');if(!guardianChosen||resultPending)return;if(playerGuardian&&!guardianAwakenChoice&&playerHp<=GUARDIAN_AWAKEN_HP)announceGuardianAwakenReady();if(enemyGuardian&&!enemyGuardianAwakenChoice&&enemyHp<=GUARDIAN_AWAKEN_HP)chooseEnemyGuardianAwakening();}
     /* 각성 준비는 한 번만 알린다 — 턴마다 다시 울리면 사이렌이 배경음이 된다. */
     let guardianAwakenReadyAnnounced=false;
     function announceGuardianAwakenReady(){if(guardianAwakenReadyAnnounced)return;guardianAwakenReadyAnnounced=true;renderUltimate();const button=document.querySelector('#field-guardian-ultimate');if(button){button.classList.remove('just-ready');void button.offsetWidth;button.classList.add('just-ready');}tone(760,.26,'triangle',.05,640,0);writeLog('<strong>'+GUARDIANS[playerGuardian].name+' 각성 준비:</strong> 체력이 '+GUARDIAN_AWAKEN_HP+' 이하가 되어 각성을 쓸 수 있습니다. 가운데 버튼을 눌러 발동하세요.');}
@@ -435,8 +403,6 @@
     /* 오라 각성 연출: 궁극기급 무게감. 필드 위에 성격 색의 빛기둥과 문양이 내려앉고 충격파가 퍼지며 아군 전체가 같은 색으로 빛난다. */
     const GUARDIAN_DESCENT_COLOR={jujak:'#ff6a4a',cheongryong:'#4fb8ff',namu:'#5fd38a',hyeonmu:'#d9a35b',baekho:'#cfd8e6'};
     function playGuardianDescent(id,summary){const g=GUARDIANS[id];if(!g)return;const color=GUARDIAN_DESCENT_COLOR[id]||'#ffd46b',reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;document.querySelectorAll('.global-spell.guardian-awakening').forEach(node=>node.remove());const fx=document.createElement('div');fx.className='guardian-descent';fx.style.setProperty('--gd-color',color);fx.innerHTML='<i class="gdx-veil"></i><i class="gdx-pillar"></i><i class="gdx-ring"></i><i class="gdx-ring r2"></i><i class="gdx-wave"></i>'+Array.from({length:18},(_,i)=>'<i class="gdx-spark" style="--a:'+(i*20)+'deg;--d:'+(i%5)*.06+'s"></i>').join('')+'<div class="gdx-core"><span class="gdx-sigil">'+auraMark(id)+'</span><small>AURA AWAKENING</small><h2 class="gdx-title"></h2><p>'+summary+'</p></div>';return fxPresent('guardian-descent:'+id,()=>{document.body.appendChild(fx);if(typeof syncFieldFrame==='function')syncFieldFrame();typeSkillTitle(fx.querySelector('.gdx-title'),g.name+' · 각성');const arena=document.querySelector('.arena');if(arena&&!reduced)arena.animate([{transform:'none'},{transform:'translateY(5px)'},{transform:'translate(-4px,-2px)'},{transform:'translate(3px,1px)'},{transform:'none'}],{duration:420,delay:620,easing:'ease-out'});const beatTimer=setTimeout(()=>{tone(70,1.1,'sine',.12,40);noise(.5,.06,320);tone(220,.9,'triangle',.05,330,.05);[392,523,659,784].forEach((f,i)=>tone(f,.9,'triangle',.035,f*1.01,.12+i*.07));document.querySelectorAll('.summon-zone .unit').forEach((unit,i)=>setTimeout(()=>{unit.style.setProperty('--gd-color',color);unit.classList.remove('guardian-blessed');void unit.offsetWidth;unit.classList.add('guardian-blessed');setTimeout(()=>unit.classList.remove('guardian-blessed'),1300);},i*70));const avatar=document.querySelector('.duel-hud .player .avatar');if(avatar){avatar.style.setProperty('--gd-color',color);avatar.classList.remove('guardian-blessed');void avatar.offsetWidth;avatar.classList.add('guardian-blessed');setTimeout(()=>avatar.classList.remove('guardian-blessed'),1300);}},640);const leaveTimer=setTimeout(()=>fx.classList.add('leaving'),2600);return ()=>{clearTimeout(leaveTimer);clearTimeout(beatTimer);fx.remove();};},{priority:FX_PRIORITY.guardian,hold:3100});}
-    const activateUltimateBeforeAuraResonance=activateUltimate;
-    activateUltimate=function(){const spec=ultimateState,resonance=auraUltimateMatch(spec);if(!resonance)return activateUltimateBeforeAuraResonance();const originalCost=spec.cost;spec.cost=ultimateManaCost(spec);spec.auraCostAdjusted=true;try{writeLog('<strong>오라 공명:</strong> 같은 성격 계열 궁극기라 마나가 '+AURA_ULTIMATE_COST_REDUCTION+' 감소하고 재사용 대기가 '+AURA_ULTIMATE_COOLDOWN_REDUCTION+'턴 줄어듭니다.'+(auraUltimateBoost(spec)?' (각성 중: 재사용 대기 해제)':''));return activateUltimateBeforeAuraResonance();}finally{spec.cost=originalCost;delete spec.auraCostAdjusted;}};
     /* 성격 오라 문양은 글자를 쓰지 않는 독립 SVG 자산이다. 카드 뒷면을 포함한 다른 화면에서도 같은 경로를 재사용한다. */
     function auraMark(id){const aura=PERSONALITY_AURAS[id];if(!aura)return '';return '<span class="aura-mark aura-'+id+'" style="--ac:'+aura.color+'"><img src="'+aura.sigil+'" alt="'+aura.name+' 문양"></span>';}
     function growUnitHp(unit,amount,label){const hp=unit.querySelector('.stats span:last-child'),h=(Number(hp.textContent.replace(/[^0-9]/g,''))||0)+amount;hp.textContent='♥ '+h;unit.dataset.maxHp=String((Number(unit.dataset.maxHp)||h-amount)+amount);if(unit.dataset.hp)unit.dataset.hp=String(h);showSkillEffect('heal',unit,label);}
@@ -517,7 +483,7 @@
       setMagicCards.splice(setMagicCards.indexOf(magic), 1);
       const refund = magic.refund || {mana:0, hp:0, blood:0};
       mana = Math.min(maxMana, mana + refund.mana);
-      if(refund.hp&&!playerHeroHealingLocked()){ playerHp = Math.min(HERO_MAX_HP, playerHp + refund.hp); bloodManaUses = Math.max(0, bloodManaUses - refund.blood); document.querySelector('#player-health').style.width = (playerHp/HERO_MAX_HP*100)+'%'; }
+      if(refund.hp){ playerHp = Math.min(HERO_MAX_HP, playerHp + refund.hp); bloodManaUses = Math.max(0, bloodManaUses - refund.blood); document.querySelector('#player-health').style.width = (playerHp/HERO_MAX_HP*100)+'%'; }
       renderMagicSlots(); updateMana();
       writeLog('<strong>'+magic.name+'</strong> 세팅을 취소하고 손패로 되돌렸습니다.'+(refund.mana?' 마나 '+refund.mana+' 환급.':'')+(refund.hp?' 체력 '+refund.hp+' 복구.':''));
     }
@@ -626,7 +592,7 @@
     })();
 
     /* 필드(.arena) 기준 연출 프레임: 스킬/마법/궁극기 오버레이가 생길 때마다 필드 위치로 맞춘다 */
-    const FIELD_OVERLAYS='.guardian-descent,.guardian-select,.awaken-flight,.awaken-flare,.cinematic-skill-fx,.ultimate-cutscene,.global-spell,.global-summon,.effect-narration,.awakening-proc-banner,.shatter-resonance-fx,.spell-target-ring,.card-depart,.card-depart-dest,.avenger-arrival,.desperate-toast,.initiative-banner';
+    const FIELD_OVERLAYS='.guardian-descent,.guardian-select,.awaken-flight,.awaken-flare,.cinematic-skill-fx,.ultimate-cutscene,.global-spell,.global-summon,.effect-narration,.awakening-proc-banner,.shatter-resonance-fx,.spell-target-ring,.card-depart,.card-depart-dest,.avenger-arrival,.initiative-banner';
     function syncFieldFrame(){const arena=document.querySelector('.arena');if(!arena)return;const r=arena.getBoundingClientRect(),st=document.documentElement.style;st.setProperty('--field-left',r.left+'px');st.setProperty('--field-top',r.top+'px');st.setProperty('--field-width',r.width+'px');st.setProperty('--field-height',r.height+'px');st.setProperty('--field-cx',(r.left+r.width/2)+'px');st.setProperty('--field-bottom',r.bottom+'px');}
     new MutationObserver(list=>{if(list.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&n.matches(FIELD_OVERLAYS))))syncFieldFrame();}).observe(document.body,{childList:true});
     addEventListener('resize',syncFieldFrame);syncFieldFrame();
@@ -660,7 +626,7 @@
 
     /* 배경음악: Vex - 최후 결전 (BPM 125). 볼륨은 사운드 패널의 슬라이더로 조절하고 localStorage에 저장한다.
        브라우저 자동재생 정책 때문에 첫 클릭/키 입력 때 시작한다.
-       최후의 저항이 처음 시작되면(어느 편이든) Vex - 각성 (BPM 145)으로 크로스페이드하고, 그 배틀이 끝날 때까지 유지한다(새로고침 = 새 배틀). */
+       복수자가 대전에서 처음 등장하면(어느 편이든) Vex - 각성 (BPM 145)으로 크로스페이드하고, 그 배틀이 끝날 때까지 유지한다(새로고침 = 새 배틀). */
     const bgmTracks={main:new Audio('assets/audio/bgm-final-battle.mp3'),awakening:new Audio('assets/audio/bgm-awakening.mp3')};
     Object.values(bgmTracks).forEach(track=>{track.loop=true;track.volume=audioPrefs.bgm;track.preload='auto';});
     let bgm=bgmTracks.main,bgmFadeTimer=null;

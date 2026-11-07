@@ -15,7 +15,8 @@
     "test": "npm run build && npm run check:source && npm run validate:cards && npm run validate:effects && npm run test:engine && npm run test:platform && npm run test:ui-contract",
     "qa:overflow": "python3 -I 12_tools/qa/check-text-overflow.py",
     "qa:economy": "python3 -I 12_tools/qa/check-economy-flow.py",
-    "qa:battle": "python3 -I 12_tools/qa/check-battle-regressions.py"
+    "qa:battle": "python3 -I 12_tools/qa/check-battle-regressions.py",
+    "qa:ultimate": "python3 -I 12_tools/qa/check-ultimate-rework.py"
   },
   "devDependencies": {
     "@ngrok/ngrok": "^1.7.0"
