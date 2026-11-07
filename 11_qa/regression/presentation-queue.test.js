@@ -236,3 +236,14 @@ test('연출이 아직 끝나지 않았으면 미뤄둔 교전이 그대로 재�
     '재시도 시점에 연출 점유를 다시 확인해야 한다 (고정 대기 후 무조건 공격 금지)'
   );
 });
+
+/* 2026-11-08 PM 피드백: 공격받은 소진자는 '공격 적중 → 소진자 반격 → 죽음 컷씬 → 제거' 순서로 보여야 한다.
+   판정(복수자 등록·전역 도발 해제)은 적중 시점 그대로이고 컷씬 연출만 반격 뒤로 미룬다. */
+test('소진자 죽음 컷씬은 반격 연출 뒤에 재생된다 (판정은 적중 시점 그대로)', () => {
+  const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes("if(target.dataset.deferDeathCut==='true')registerUltimateSpentDeath("), '미룬 컷도 복수자 등록은 즉시');
+  assert.ok(html.includes("else showUltimateSpentDeath(target);}else"), '반격이 없는 피해(마법·광역)는 바로 컷씬');
+  assert.ok(html.includes("const deferCut=defender.dataset.ultimateSpent==='true'&&!options.noCounter&&returnDamage>0;"), '반격이 있는 공격만 컷을 미룬다');
+  assert.ok(html.includes('playPendingCut(combatMs(300));}});},COMBAT_TIMING.counterDelay);'), '반격 적중 뒤에 컷씬을 띄운다');
+  assert.ok(html.includes("if(defender.dataset.deferDeathCut==='true')playPendingCut();},combatMs(COMBAT_TIMING.counterDelay)+4000)"), '반격이 끊겨도 컷씬은 반드시 재생된다');
+});

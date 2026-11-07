@@ -169,6 +169,19 @@ CHECKS = [
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<150&&!finished;i++)await __q.wait(100);await __q.wait(200);"
   "const r={noTaunt,taunted,normalTarget,heroDmg:p0-playerHp,minesUntouched:mine.every((u,i)=>__q.hp(u)===hp0[i])};"
   "return {ok:noTaunt&&taunted&&normalTarget&&r.heroDmg===6&&r.minesUntouched,...r};})()"),
+ ("소진자가 공격으로 쓰러지면 '공격 적중 → 소진자 반격 → 죽음 컷씬' 순서이고(양쪽 소진자), 복수자 등록은 적중 즉시, 피해만 받는 경우(마법·광역)는 바로 컷씬",
+  "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');const proto=enemyDeck.find(d=>!d.spell);window.__ev=[];const t0=()=>performance.now();"
+  "const logObs=new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{const s=n.textContent||'';if(/맞받아쳐/.test(s))__ev.push(['counter',t0()]);else if(/을\\(를\\) 공격해/.test(s))__ev.push(['hit',t0()]);})));logObs.observe(log,{childList:true,subtree:true});"
+  "const cutObs=new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.classList?.contains('ultimate-spent-death'))__ev.push(['cut',t0()]);})));cutObs.observe(document.body,{childList:true});"
+  "const settle=async()=>{for(let i=0;i<120&&!__ev.some(e=>e[0]==='cut');i++)await __q.wait(100);await __q.wait(200);};const seq=()=>__ev.map(e=>e[0]).join('>');"
+  "const run=async(side)=>{el.innerHTML='';zo.innerHTML='';fxClear();combatPresentationUntil=0;combatPresentationSlot=0;document.querySelectorAll('.ultimate-spent-death').forEach(n=>n.remove());await __q.wait(400);__ev.length=0;ultimateLedger.player.spent=null;ultimateLedger.enemy.spent=null;ultimateLedger.player.pending=[];ultimateLedger.enemy.pending=[];"
+  "let spent,hitter;if(side==='player'){spent=summonBattleToken('내 소진자',6,1,'fire','ultimate-spent');spent.dataset.ultimateSpent='true';spent.dataset.ultimateAggro='true';registerUltimateSpent('player',spent,{name:'내 소진자',art:proto.art,element:'fire',baseAttack:3,baseHp:3});hitter=enemySummonUnit(el,{name:'적',art:proto.art,el:'water',atk:5,hp:9,cost:1});}"
+  "else{spent=enemySummonUnit(el,{name:'적 소진자',art:proto.art,el:'fire',atk:6,hp:1,cost:0,effect:'ultimate-spent'});spent.dataset.ultimateSpent='true';spent.dataset.ultimateAggro='true';registerUltimateSpent('enemy',spent,{name:'적 소진자',art:proto.art,element:'fire',baseAttack:3,baseHp:3});hitter=summonBattleToken('나',5,9,'water');}"
+  "hitter.classList.remove('exhausted');const reg=()=>ultimateLedger[side].pending.length;resolveDuel(hitter,spent,{playerAttack:side==='enemy'});await __q.wait(2300);"
+  "const early={pendingAfterHit:reg()};await settle();return {seq:seq(),...early,pendingEnd:reg()};};"
+  "const mineR=await run('player');const theirR=await run('enemy');"
+  "el.innerHTML='';zo.innerHTML='';__ev.length=0;fxClear();ultimateLedger.player.spent=null;ultimateLedger.player.pending=[];const sp=summonBattleToken('마법맞는소진자',6,1,'fire','ultimate-spent');sp.dataset.ultimateSpent='true';registerUltimateSpent('player',sp,{name:'x',art:proto.art,element:'fire',baseAttack:3,baseHp:3});damageUnit(sp,9,'fire');await __q.wait(300);const aoe=seq();"
+  "return {ok:mineR.seq==='hit>counter>cut'&&theirR.seq==='hit>counter>cut'&&mineR.pendingAfterHit===1&&theirR.pendingAfterHit===1&&aoe==='cut',mineR,theirR,aoe};})()"),
  ("컴퓨터 턴 흐름: 강림 시점의 enemyTurn 이 오류 없이 복수자를 내려놓고 공격 목록에 포함한다",
   "(async()=>{const proto=enemyDeck.find(d=>!d.spell);ultimateLedger.enemy.pending.push({rec:{name:proto.name,art:proto.art,element:proto.el,baseAttack:3,baseHp:4},due:ultimateLedger.enemy.turns+1});"
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<120&&!finished;i++)await __q.wait(100);" + (WAIT % 100) + "const a=document.querySelector('.arena .lane:first-child .unit[data-effect=\"ultimate-avenger\"]');"

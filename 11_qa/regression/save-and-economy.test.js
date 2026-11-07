@@ -311,7 +311,7 @@ test('궁극기: 전장이 가득 찼을 때만 맨 오른쪽 아군을 제물�
 
 test('궁극기 소진 카드가 죽을 때마다 복수의 중앙 확대·분할 소멸 연출을 재생한다', () => {
   assert.ok(html.includes('function showUltimateSpentDeath(unit)'));
-  assert.ok(html.includes("target.dataset.ultimateSpent==='true')showUltimateSpentDeath(target)"));
+  assert.ok(html.includes("else showUltimateSpentDeath(target);}else"), '반격이 없는 피해는 바로 컷씬(공격받는 경우는 반격 뒤로 미룸)');
   assert.ok(html.includes("unit.dataset.ultimateSpent!=='true'"));
   assert.ok(html.includes("unit.dataset.ultimateDeathFx==='true'"));
   assert.ok(html.includes('spent-death-half left'));
