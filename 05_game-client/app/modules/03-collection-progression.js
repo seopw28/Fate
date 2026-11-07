@@ -216,7 +216,7 @@
     function deckIndexesOf(ids){const at=new Map(COLLECTION_CARD_IDS.map((id,i)=>[id,i]));return (ids||[]).map(id=>at.get(id)).filter(i=>i!==undefined);}
     function draftOfDeck(i){return deckIndexesOf(collectionState.decks?.[i]?.ids);}
     function withSavedDecks(saved,state){
-      const decks=(collectionDeckReset?[]:(saved?.decks||[])).filter(d=>d&&Array.isArray(d.ids))/* v9 이전 저장은 덱 목록을 버리고 새 기본 덱 하나로 시작한다 */.slice(0,MAX_DECKS||6).map((d,i)=>({name:String(d.name||('덱 '+(i+1))).trim().slice(0,16)||('덱 '+(i+1)),ids:d.ids.filter(id=>typeof id==='string')}));
+      const decks=(collectionDeckReset?[]:(saved?.decks||[])).filter(d=>d&&Array.isArray(d.ids))/* v10 이전 저장은 덱 목록을 버리고 새 기본 덱 하나로 시작한다 */.slice(0,MAX_DECKS||6).map((d,i)=>({name:String(d.name||('덱 '+(i+1))).trim().slice(0,16)||('덱 '+(i+1)),ids:d.ids.filter(id=>typeof id==='string')}));
       if(!decks.length)decks.push({name:'덱 1',ids:deckIdsOf(state.deck)});/* 기존 사용자: 지금 쓰던 덱을 '덱 1'로 옮긴다 */
       const active=Number.isInteger(saved?.activeDeck)&&saved.activeDeck>=0&&saved.activeDeck<decks.length?saved.activeDeck:0;
       state.decks=decks;state.activeDeck=active;editingDeck=active;

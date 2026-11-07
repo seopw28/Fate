@@ -28,6 +28,15 @@ CHECKS = [
     ("소환 효과(마나 화살)로 상대 영웅 체력이 0이 되면 승리한다",
      "(async()=>{enemyHp=2;updateHeroHealth();const u=summonBattleToken('t',1,3,'wind','arcane-arrow');triggerBattlecry(u);" + WAIT % 3500 +
      "const win=document.querySelector('#result').classList.contains('show');return {ok:enemyHp===0&&win,enemyHp,win};})()"),
+    ("영웅 압박: 등장 피해 챔프를 내려놓으면 상대 영웅 체력이 즉시 깎이고 0이면 승리한다",
+     "(async()=>{enemyHp=3;updateHeroHealth();const u=summonBattleToken('t',1,3,'fire','entry-hero-3');triggerBattlecry(u);" + WAIT % 3500 +
+     "const win=document.querySelector('#result').classList.contains('show');return {ok:enemyHp===0&&win,enemyHp,win};})()"),
+    ("영웅 압박: 스플래시 챔프는 영웅을 공격하면 추가 1 피해를 준다(반격은 제외)",
+     "(async()=>{enemyHp=100;updateHeroHealth();document.querySelectorAll('.arena .lane:first-child > .unit').forEach(u=>u.remove());const u=summonBattleToken('t',2,3,'fire','hero-splash-1');u.classList.remove('exhausted');"
+     "selectUnit(u,true);attackFace(document.querySelector('.duel-hud .enemy'),true);" + WAIT % 3000 + "return {ok:enemyHp<=97&&enemyHp>=95,enemyHp};})()"),
+    ("영웅 압박: 자폭 챔프는 내 턴이 2번 시작될 때 상대 영웅에게 5 피해를 주고 묘지로 간다",
+     "(async()=>{enemyHp=100;updateHeroHealth();const u=summonBattleToken('t',1,2,'fire','bomb-hero-5-2');triggerBattlecry(u);const armed=u.dataset.bombTurns;heroPressure.tickBombs('player');const mid=u.dataset.bombTurns;const grave=allyGraveyard.length;"
+     "heroPressure.tickBombs('player');" + WAIT % 3500 + "return {ok:armed==='2'&&mid==='1'&&enemyHp===95&&!u.isConnected&&allyGraveyard.length===grave+1,armed,mid,enemyHp,gone:!u.isConnected,grave:allyGraveyard.length-grave};})()"),
     ("합성에 쓴 시작 카드가 새로고침해도 되살아나지 않는다 (1단계: 합성)",
      "(async()=>{const i=collectionState.owned.findIndex((n,k)=>n>=8&&!collectionIsSpell[k]);window.__i=i;window.__before=collectionState.owned[i];"
      "synthSlots=[i,i,i];runSynthesis();" + WAIT % 500 + "const saved=JSON.parse(localStorage.getItem('primal-collection-v1')).owned[i];"

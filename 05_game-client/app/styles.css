@@ -1822,6 +1822,12 @@
     /* 두 번째 줄: 생존 배지가 있으면 그 아래로 내려간다 (--badge-row-2 를 JS가 아니라 CSS 형제 규칙으로 계산) */
     .aura-burn-badge>span{border:1px solid #ffd3a0;background:#3e100dea;color:#fff3c4;font-weight:1000;box-shadow:0 0 12px #ff542f}
     .metal-experience-badge~.aura-burn-badge{top:calc(var(--badge-stack-top) + 21px)}
+    /* 영웅 압박 챔프 자폭 카운트다운 배지 (2026-11-08): 상태 배지 중 맨 위에 쌓고 나머지는 한 줄씩 내린다 */
+    .bomb-badge{position:absolute;left:0;right:0;top:var(--badge-stack-top);z-index:11;display:flex;flex-direction:column;align-items:center;pointer-events:none}
+    .bomb-badge>span{max-width:calc(100% - 10px);padding:3px 7px;border:1px solid #ffb089;border-radius:999px;background:#4a1608ec;color:#ffe9b8;font-size:9px;font-weight:1000;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px #000;box-shadow:0 0 12px #ff6a2b}
+    .unit[data-bomb-turns="1"] .bomb-badge>span{border-color:#fff0b8;background:#7a1c0aee;box-shadow:0 0 16px #ff3d1f}
+    .bomb-badge~.metal-experience-badge,.bomb-badge~.aura-burn-badge{top:calc(var(--badge-stack-top) + 21px)}
+    .bomb-badge~.metal-experience-badge~.aura-burn-badge{top:calc(var(--badge-stack-top) + 42px)}
     .unit[data-aura-burn="2"]>.aura-burn-badge>span{border-color:#fff28a;background:#64130eef;color:#fff7b0;box-shadow:0 0 16px #ff3b1f}
     .unit.aura-burn-tick{animation:aura-burn-tick .55s ease-out}
     @keyframes aura-burn-card{50%{filter:brightness(1.13);box-shadow:0 0 0 2px var(--burn-color),0 0 30px #ff3d24bb,inset 0 0 24px #a51f1f88}}

@@ -77,7 +77,7 @@ test('initial battle hand is generated from validated card data', () => {
 test('basic deck and opening hand follow the PRD composition', () => {
   assert.ok(html.includes('SPELL_DECK_LIMIT=30,'), 'Decks may hold up to 30 spells and traps combined');
   assert.ok(html.includes('BASIC_CHAMPION_COUNT=30,BASIC_SPELL_COUNT=20,BASIC_TRAP_COUNT=10,OPENING_HAND_SIZE=5'), 'Basic deck must be 30 champions, 20 spells, 10 traps with a five-card opening hand');
-  assert.ok(html.includes("fill('spell',BASIC_SPELL_COUNT,FEATURED_REVERSAL_IDS)||!fill('trap',BASIC_TRAP_COUNT)||!fill('champion',BASIC_CHAMPION_COUNT)"), 'Basic deck builder must enforce all three card counts');
+  assert.ok(html.includes("fill('spell',BASIC_SPELL_COUNT,FEATURED_REVERSAL_IDS)||!fill('trap',BASIC_TRAP_COUNT)||!fill('champion',BASIC_CHAMPION_COUNT,HERO_PRESSURE_DECK_IDS,true)"), 'Basic deck builder must enforce all three card counts');
   assert.ok(html.includes("const FEATURED_REVERSAL_IDS=['reversal.judgment','reversal.bulwark','reversal.giant-hunt','reversal.weight-toll','reversal.life-siphon','reversal.insight']"), 'Basic and demo decks must feature all six reversal spells');
   assert.ok(html.includes('역전 체험덱 자동편성'), 'Deck editor must expose the featured reversal deck preset');
   assert.ok(html.includes('guaranteed.length<2') && html.includes('!deck[i].spell&&deck[i].cost<=STARTING_MANA'), 'Opening hand must guarantee two low-cost champions');

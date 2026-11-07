@@ -5259,6 +5259,296 @@
         "characterId": null
       },
       "aura": "metal"
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "pressure.baek-haryeon",
+      "nameKey": "card.pressure_baek_haryeon",
+      "displayName": "백하련 척후",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "fire",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "hero_splash",
+          "trigger": "on_attack",
+          "target": "enemy_hero",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gaecheon/baek-haryeon.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": "gaecheon-baek-haryeon"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "pressure.han-sobing",
+      "nameKey": "card.pressure_han_sobing",
+      "displayName": "한소빙 척후",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "water",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "hero_splash",
+          "trigger": "on_attack",
+          "target": "enemy_hero",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gaecheon/han-sobing.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": "gaecheon-han-sobing"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "pressure.im-cheonga",
+      "nameKey": "card.pressure_im_cheonga",
+      "displayName": "임천아 척후",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "hero_splash",
+          "trigger": "on_attack",
+          "target": "enemy_hero",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gaecheon/im-cheonga.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": "gaecheon-im-cheonga"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "pressure.baekri-on",
+      "nameKey": "card.pressure_baekri_on",
+      "displayName": "백리온 척후",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "metal",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "hero_splash",
+          "trigger": "on_attack",
+          "target": "enemy_hero",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gaecheon/baekri-on.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": "gaecheon-baekri-on"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "pressure.yang-sogae",
+      "nameKey": "card.pressure_yang_sogae",
+      "displayName": "양소개 선봉",
+      "cardType": "champion",
+      "cost": 1,
+      "aura": "earth",
+      "rarity": "common",
+      "stats": {
+        "attack": 1,
+        "health": 2
+      },
+      "effects": [
+        {
+          "effectId": "entry_hero_damage",
+          "trigger": "on_summon",
+          "target": "enemy_hero",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gaecheon/yang-sogae.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": "gaecheon-yang-sogae"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "pressure.namgung-ahyeon",
+      "nameKey": "card.pressure_namgung_ahyeon",
+      "displayName": "남궁아현 선봉",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "water",
+      "rarity": "common",
+      "stats": {
+        "attack": 2,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "entry_hero_damage",
+          "trigger": "on_summon",
+          "target": "enemy_hero",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gaecheon/namgung-ahyeon.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": "gaecheon-namgung-ahyeon"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "pressure.seol-choyeong",
+      "nameKey": "card.pressure_seol_choyeong",
+      "displayName": "설초영 선봉",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "fire",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "entry_hero_damage",
+          "trigger": "on_summon",
+          "target": "enemy_hero",
+          "amount": 3,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gaecheon/seol-choyeong.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": "gaecheon-seol-choyeong"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "pressure.cheon-mua",
+      "nameKey": "card.pressure_cheon_mua",
+      "displayName": "천무아 결사대",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 2,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "time_bomb",
+          "trigger": "turn_start",
+          "target": "enemy_hero",
+          "amount": 5,
+          "delay": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gaecheon/cheon-mua.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": "gaecheon-cheon-mua"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "pressure.yu-soha",
+      "nameKey": "card.pressure_yu_soha",
+      "displayName": "유소하 결사대",
+      "cardType": "champion",
+      "cost": 1,
+      "aura": "metal",
+      "rarity": "common",
+      "stats": {
+        "attack": 1,
+        "health": 2
+      },
+      "effects": [
+        {
+          "effectId": "time_bomb",
+          "trigger": "turn_start",
+          "target": "enemy_hero",
+          "amount": 5,
+          "delay": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gaecheon/yu-soha.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon"
+        ],
+        "characterId": "gaecheon-yu-soha"
+      }
     }
   ]
 }
