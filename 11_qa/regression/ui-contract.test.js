@@ -304,3 +304,18 @@ test('피격 카드는 때린 방향 그대로 밀려나고, 밀린 구간이 �
   assert.ok(html.includes("setTimeout(()=>target.classList.remove('hit-react'),combatMs(700))"), '복귀 구간이 잘리면 안 된다');
   assert.ok(html.includes('38%{transform:translate(var(--knock-x,6px),var(--knock-y,-10px))'), '최대 밀림 지점이 있어야 한다');
 });
+
+test('상대 턴의 행동들은 한 프레임에 몰리지 않고 한 박자씩 띄운다', () => {
+  // 함정·전개 우선 소환·궁극기 장착·궁극기 발동·마법 세트가 같은 프레임에 연달아 일어나면
+  // 무슨 일이 벌어졌는지 읽을 틈이 없다.
+  assert.ok(html.includes('const ENEMY_ACTION_BEAT_MS=200'), '행동 사이 최소 간격 상수가 있어야 한다');
+  // 실제로 쓰이는 경로는 async enemyTurn 재정의본이다. 거기서 한 줄 몰아 호출이 되살아나면 안 된다.
+  const turn = html.slice(html.indexOf('await resolveEnemySetMagic()'));
+  assert.ok(!turn.slice(0, turn.indexOf('runCombatQueue')).includes("summonEnemyPriorityChampion(lane);equipEnemyUltimate()"), '다섯 행동을 한 줄에 몰아 호출하지 말 것');
+  for (const fn of ['triggerEnemyTrap', 'summonEnemyPriorityChampion', 'equipEnemyUltimate', 'castEnemyUltimate', 'setEnemyMagic']) {
+    assert.ok(html.includes(`await beat(()=>${fn}(`), `${fn}은 한 박자를 두고 실행해야 한다`);
+  }
+  // 아무 일도 없었으면 기다리지 않는다 — 빈 턴이 느려지면 안 된다.
+  assert.ok(html.includes("if(boardSignature()!==before)"), '실제로 바뀐 행동 뒤에만 기다려야 한다');
+  assert.ok(html.includes('setTimeout(resolve,combatMs(ENEMY_ACTION_BEAT_MS))'), '간격에 전투 속도 배율을 적용해야 한다');
+});
