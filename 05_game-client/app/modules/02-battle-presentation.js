@@ -8,6 +8,8 @@
       Element.prototype.remove=function(){
         const isFieldUnit=this instanceof Element&&this.classList?.contains('unit')
           &&this.isConnected&&(this.closest('.summon-zone')||this.closest('.arena .lane'));
+        /* 소진자 죽음 컷이 재생 중이면 카드는 컷이 끝난 뒤에 제거한다 */
+        if(isFieldUnit&&this.__cutPromise&&!this.__cutWaited){this.__cutWaited=true;this.__cutPromise.then(()=>this.remove());return;}
         if(!isFieldUnit||this.dataset.dyingFx==='true')return nativeRemove.call(this);
         this.dataset.dyingFx='true';
         this.classList.add('unit-dying');
