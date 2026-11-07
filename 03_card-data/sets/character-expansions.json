@@ -4406,22 +4406,21 @@
     {
       "schemaVersion": 1,
       "cardId": "arcana.rune-crystal",
-      "nameKey": "card.arcana_rune_crystal",
-      "displayName": "룬석 결정",
+      "nameKey": "card.arcana_earth_bulwark",
+      "displayName": "대지의 장벽",
       "cardType": "spell",
       "cost": 2,
       "rarity": "rare",
       "stats": null,
       "effects": [
         {
-          "effectId": "mana_ramp",
-          "trigger": "next_round_start",
-          "target": "self",
-          "amount": 2,
+          "effectId": "team_shield",
+          "trigger": "on_cast",
+          "target": "all_allies",
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/rune-crystal.webp",
+      "assetId": "spells/generated/earth-bulwark-v1.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
