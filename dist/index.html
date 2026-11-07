@@ -458,12 +458,14 @@
     .global-summon-card .attack-effect { padding:10px; }
     .global-summon-card .attack-effect strong { font-size:25px; }
     @media(max-width:600px){.command-rail .card{height:auto;min-height:0;aspect-ratio:5/7}.command-rail .card .art,.command-rail .card.summon-card .art,.command-rail .card.spell-card .art,.command-rail .card.trap-card .art{height:auto;min-height:0;aspect-ratio:4/3}.unit{width:138px}}
-    /* Magic cards keep one stable composition at every desktop rail width. */
+    /* 마법·함정도 챔프와 같은 실루엣(5:7)을 쓴다. 예전에는 높이를 276px 로 못박고
+       aspect-ratio 를 풀어, 레일 폭이 좁아져도 높이가 그대로라 유독 길쭉해 보였다
+       (실측 1440px 기준: 챔프 137x191(1.4) vs 마법 137x276(2.0)) (2026-11-07) */
     .command-rail .card.spell-card,
     .command-rail .card.trap-card {
-      height:276px;
-      min-height:276px;
-      aspect-ratio:auto;
+      height:auto;
+      min-height:0;
+      aspect-ratio:5/7;
       padding:10px;
     }
     .command-rail .card.spell-card > h3,
@@ -480,13 +482,12 @@
       text-overflow:ellipsis;
       white-space:nowrap;
     }
+    /* 그림 크기는 위 공통 규칙(.command-rail .card .art)이 챔프와 똑같이 정한다.
+       여기서 높이를 따로 잡으면 카드가 그림에 밀려 길어지므로 모양만 남긴다. */
     .command-rail .card.spell-card .art,
     .command-rail .card.trap-card .art {
-      flex:0 0 122px;
-      width:100%;
-      height:122px;
-      min-height:122px;
-      aspect-ratio:auto;
+      flex:1 1 auto;
+      min-height:0;
       margin:7px 0 9px;
       border-radius:10px;
       font-size:50px;
@@ -529,8 +530,9 @@
       white-space:nowrap;
     }
     @media(max-width:600px){
-      .command-rail .card.spell-card,.command-rail .card.trap-card{height:248px;min-height:248px;aspect-ratio:auto}
-      .command-rail .card.spell-card .art,.command-rail .card.trap-card .art{flex-basis:108px;height:108px;min-height:108px;aspect-ratio:auto}
+      /* 좁은 화면에서도 챔프와 같은 비율을 쓴다 (위 데스크톱 규칙과 같은 이유) */
+      .command-rail .card.spell-card,.command-rail .card.trap-card{height:auto;min-height:0;aspect-ratio:5/7}
+      .command-rail .card.spell-card .art,.command-rail .card.trap-card .art{flex-basis:auto;height:auto;min-height:0;aspect-ratio:4/3}
     }
     /* Deck editor readability overrides. */
     .collection-shell{width:min(1320px,97vw)}.deck-content{grid-template-columns:minmax(0,1fr) 340px;gap:20px}.owned-grid{grid-template-columns:repeat(3,minmax(170px,1fr));gap:14px}.owned-card{padding:12px;border-radius:14px;transition:transform .18s,border-color .18s,box-shadow .18s}.owned-card img{aspect-ratio:3/4}.owned-card h4{margin:10px 0 5px;font-size:13px;white-space:normal;line-height:1.3}.owned-card small{font-size:10px;line-height:1.45}.owned-card.in-deck{box-shadow:inset 0 0 0 2px #f3bd6855,0 8px 22px #0006}.owned-count{z-index:2}.deck-card-controls{display:grid;grid-template-columns:32px 1fr 32px;gap:6px;margin-top:9px}.deck-card-controls button{height:30px;border:1px solid #465365;border-radius:7px;background:#111720;color:#d8dee8}.deck-card-controls b{display:grid;place-items:center;border-radius:7px;background:#10151c;color:#ffd477;font-size:11px}.deck-summary{display:flex;justify-content:space-between;gap:8px;margin-bottom:10px;padding:9px 10px;border:1px solid #303847;border-radius:8px;background:#151b24;color:#929eaf;font-size:10px}.deck-tools{display:flex;gap:6px;margin-left:auto}.deck-tools button{padding:6px 9px;border:1px solid #465365;border-radius:7px;background:#171e28;color:#b8c2d0;font-size:10px}.deck-row{grid-template-columns:38px minmax(0,1fr) auto;align-items:center;padding:6px}.deck-row img{width:38px;height:48px;object-fit:cover;object-position:center 18%;border-radius:5px}.deck-row span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.deck-row small{display:block;margin-top:2px;color:#748195;font-size:8px}.deck-list h3{display:flex;justify-content:space-between;align-items:center}.deck-save:disabled{opacity:.45;cursor:not-allowed}.deck-save.is-main:disabled{opacity:1;cursor:default;border-color:#5e8f5a;background:#1f2a1c;color:#bfe3a8}@media(max-width:900px){.deck-content{grid-template-columns:1fr}.owned-grid{grid-template-columns:repeat(2,minmax(140px,1fr))}.deck-list{max-height:280px}}@media(max-width:540px){.owned-grid{grid-template-columns:1fr}.collection-modal{padding:8px}.deck-tools{width:100%;margin-left:0}.deck-toolbar{align-items:flex-start;flex-direction:column}}
