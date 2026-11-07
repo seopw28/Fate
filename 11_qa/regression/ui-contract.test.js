@@ -232,7 +232,7 @@ test('군세 대응 카드와 저위력 광역 공격 기회가 충분히 분포
 });
 
 test('set magic and equipped ultimate can be cancelled back to hand before ending the turn', () => {
-  for (const token of ['function cancelSetMagic', 'function cancelUltimate', "addEventListener('dblclick'", 'draggedCancel', 'magic.refund', "turnNumber >= magic.readyTurn"]) {
+  for (const token of ['function cancelSetMagic', 'function cancelUltimate', "addEventListener('dblclick'", 'draggedCancel', 'magic.refund', "turnNumber > (magic.setTurn ?? magic.readyTurn-1)"]) {
     assert.ok(html.includes(token), `Missing setting-cancel token: ${token}`);
   }
 });

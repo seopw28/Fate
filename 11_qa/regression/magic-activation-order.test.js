@@ -66,15 +66,15 @@ test('상대 함정은 세트 시 정체를 숨기고 발동 시에만 공개한
   assert.ok(!html.includes("(card.trap?'함정':'마법')+' <strong>'+card.name+'</strong>을(를) 세트했습니다."));
 });
 
-test('마법 2칸과 함정 1칸을 종류별로 고정하고, 찬 종류의 손패 카드만 비활성 시각화한다', () => {
-  assert.ok(html.includes("const MAGIC_SLOT_KINDS=['active','active','reaction'];"), '마법 전용 2칸 + 함정 전용 1칸');
-  assert.ok(html.includes('id="magic-slot-2"'), '세 번째 칸(함정)이 화면에 있어야 한다');
+test('세팅 슬롯은 함정 1칸뿐이고, 칸이 차면 손패의 함정 카드만 비활성 시각화한다 (2026-11-07)', () => {
+  assert.ok(html.includes("const MAGIC_SLOT_KINDS=['reaction'];"), '함정 전용 1칸');
+  assert.ok(html.includes('id="magic-slot-0"') && !html.includes('id="magic-slot-1"'), '함정 칸 하나만 화면에 있어야 한다');
   assert.ok(html.includes('slotIndex=freeMagicSlot(kind)'), '세트는 카드 종류에 맞는 빈 칸에만 들어가야 한다');
   assert.ok(html.includes('.command-rail .card.magic-slot-blocked'), '비활성 카드 스타일이 있어야 한다');
   assert.ok(html.includes('function syncMagicHandSlotAvailability()'), '손패 비활성 동기화 함수가 있어야 한다');
   const sync = html.slice(html.indexOf('function syncMagicHandSlotAvailability()'), html.indexOf('const renderMagicSlotsBeforeHandBlock'));
   assert.ok(sync.includes("const fullByKind = {active: freeMagicSlot('active') < 0, reaction: freeMagicSlot('reaction') < 0}"), '카드 종류별로 칸이 모두 찼을 때만 막아야 한다');
-  assert.ok(sync.includes("cardCategory(card)!=='spell'"), '캐릭터 카드는 비활성 대상이 아니어야 한다');
+  assert.ok(sync.includes("cardCategory(card)!=='spell'||magicKindOfCard(card)!=='reaction'"), '캐릭터와 마법 카드는 칸 비활성 대상이 아니어야 한다');
   assert.ok(sync.includes("card.classList.toggle('magic-slot-blocked', full)"), '슬롯이 비면 비활성 표시를 해제해야 한다');
   assert.ok(sync.includes("card.setAttribute('aria-disabled','true')"), '보조 기술에도 비활성을 알려야 한다');
   assert.ok(!sync.includes("card.title=''"), '해제 시 빈 title 대신 속성을 제거해야 한다');
@@ -83,13 +83,15 @@ test('마법 2칸과 함정 1칸을 종류별로 고정하고, 찬 종류의 손
   assert.ok(!html.includes("content:'슬롯 2/2 · 세팅 불가'"), '공격력·체력을 가리는 글자 띠는 쓰지 않는다');
 });
 
-test('세팅한 마법은 턴 종료 즉시 발동하고, 궁극기는 세팅 다음 턴부터 발동한다 (2026-11-07)', () => {
-  assert.ok(html.includes('async function resolveEndTurnMagic(button)'), '턴 종료 시 내 마법을 정산하는 함수가 있어야 한다');
-  assert.ok(html.includes('resolveEndTurnMagic(button).then(proceed)'), '마법 정산이 끝난 뒤 내 챔프가 공격해야 한다');
-  assert.ok(!html.includes("triggerTrap('field_state');resolveNextFieldMagic();"), '내 턴 시작에 마법을 발동하면 안 된다');
+test('마법은 손패에서 더블클릭하면 마나로만 즉시 발동하고, 궁극기는 세팅 다음 턴부터 발동한다 (2026-11-07)', () => {
+  assert.ok(html.includes('function castHandSpell(card)'), '손패 마법 즉시 발동 함수가 있어야 한다');
+  assert.ok(html.includes("document.addEventListener('dblclick'"), '더블클릭으로 발동해야 한다');
+  assert.ok(html.includes("if(isSpell&&!isTrap){if(!card.classList.contains('selected'))selectCard(card);"), '한 번 클릭은 선택과 안내만 해야 한다');
+  assert.ok(html.includes('blocked=spellOnly?mana<cost:!quote.affordable'), '마법은 혈마나 없이 마나로만 쓸 수 있어야 한다');
   const turn = html.slice(html.indexOf('enemyTurnMaxMana=enemyMana;'));
-  assert.ok(turn.indexOf('await resolveEnemySetMagic()') > turn.indexOf('const laneSettle=arrangeEnemyLane(lane)'), '상대 마법은 상대 턴 끝(교전 직전)에 발동해야 한다');
-  assert.ok(turn.indexOf('await resolveEnemySetMagic()') < turn.indexOf('runCombatQueue('), '상대 마법은 상대 교전보다 먼저 발동해야 한다');
+  const setAt = turn.indexOf('await beat(()=>setEnemyMagic())'), resolveAt = turn.indexOf('await resolveEnemySetMagic()');
+  assert.ok(resolveAt > setAt && resolveAt < turn.indexOf('const openSlots=FIELD_CARD_LIMIT'), '상대 마법은 쓰는 즉시 발동해야 한다');
+  assert.ok(html.includes("(event==='field_state'&&magic.effect==='global-destroy')"), '대재앙은 대기 턴이 찬 내 턴 시작에 발동하는 함정이다');
   assert.ok(html.includes("if(ultimateJustEquipped('player',ultimateState))return '다음 턴부터 발동';"), '세팅한 턴에는 궁극기를 발동할 수 없어야 한다');
   assert.ok(html.includes("ultimateJustEquipped('enemy',spec))return false;"), '컴퓨터도 세팅한 턴에는 궁극기를 발동하지 않는다');
 });

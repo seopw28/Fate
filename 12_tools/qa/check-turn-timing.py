@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """턴 타이밍 규칙 브라우저 검사 (2026-11-07 PM 결정).
 
-1. 세팅한 마법은 그 턴에 턴 종료를 누르는 즉시 발동하고, 정산이 끝난 뒤 내 챔프가 공격한다.
+1. 마법은 손패에서 더블클릭하면 마나로만 즉시 발동한다. 세팅 슬롯은 함정 1칸이고 대재앙은 대기 턴 함정이다.
 2. 궁극기는 세팅한 턴에는 '다음 턴부터 발동'으로 잠기고, 내 다음 턴에 열린다. 컴퓨터도 같다.
 3. 오라 각성은 체력 85 이하에서 열린다.
 자기 트리의 dist 를 serve_own_tree 로 띄운다(남의 번들을 재지 않는다).
@@ -21,19 +21,23 @@ window.__logs=[];const __wl=writeLog;writeLog=function(m){__logs.push(String(m))
 """
 
 CHECKS = [
- ("마법: 세팅한 턴에 턴 종료를 누르면 내 챔프 공격보다 먼저 발동하고 슬롯이 비워진다",
-  """(async()=>{battlePhase='setup';maxMana=mana=10;updateMana();const c=__card('core.spring-of-restoration');setHandFilter('spell');playCard(c);if(!setMagicCards.length)playCard(c);
-  const setOk=setMagicCards.length===1&&setMagicCards[0].kind==='active';const slotText=document.querySelector('#magic-slot-0')?.textContent||'';
-  __phases.length=0;endTurn(document.querySelector('.turn-actions .end'));
-  for(let i=0;i<100&&!__phases.includes('player-combat');i++)await __wait(100);
-  const firedAt=__phases.indexOf('magic-resolving'),combatAt=__phases.indexOf('player-combat');
-  const log=__logs.join(' ');
-  return {ok:setOk&&/턴 종료 시 자동 발동/.test(slotText)&&setMagicCards.length===0&&firedAt>=0&&combatAt>firedAt&&log.includes('턴 종료와 함께 자동 발동'),setOk,slotText,phases:__phases.slice(0,4),left:setMagicCards.length};})()"""),
- ("마법: 대기 턴이 지정된 카드(대재앙 5턴)는 세팅한 턴 종료에는 발동하지 않고 남은 턴을 표시한다",
-  """(async()=>{battlePhase='setup';maxMana=mana=10;updateMana();const c=__card('storm.great-ruin');setHandFilter('spell');playCard(c);if(!setMagicCards.length)playCard(c);
-  const m=setMagicCards[0];const slotText=document.querySelector('#magic-slot-0')?.textContent||'';
-  const due=setMagicCards.filter(x=>x.kind==='active'&&(x.fireTurn??turnNumber)<=turnNumber).length;
-  return {ok:!!m&&m.fireTurn===turnNumber+4&&due===0&&/발동까지 4턴/.test(slotText),fireTurn:m?.fireTurn,turnNumber,slotText,due};})()"""),
+ ("마법: 한 번 클릭은 선택만, 더블클릭하면 마나만 써서 즉시 발동한다(슬롯을 거치지 않음)",
+  """(async()=>{battlePhase='setup';maxMana=mana=10;updateMana();setHandFilter('spell');const c=__card('core.spring-of-restoration');const cost=Number(c.querySelector('.cost').textContent);
+  playCard(c);const selectedOnly=c.isConnected&&c.classList.contains('selected')&&setMagicCards.length===0&&mana===10;
+  c.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}));const gone=!c.isConnected,paid=mana===10-cost;
+  for(let i=0;i<60&&battlePhase!=='setup';i++)await __wait(100);const log=__logs.join(' ');
+  return {ok:selectedOnly&&gone&&paid&&battlePhase==='setup'&&setMagicCards.length===0&&log.includes('발동했습니다'),selectedOnly,gone,paid,phase:battlePhase};})()"""),
+ ("마법: 마나가 모자라면 혈마나로 대신 내지 못하고 발동하지 않는다",
+  """(async()=>{battlePhase='setup';turnNumber=9;maxMana=10;mana=1;playerHp=100;updateMana();setHandFilter('spell');const c=__card('core.crimson-bolt');updateCardAffordability();
+  const dim=c.classList.contains('unaffordable')&&!c.classList.contains('blood-option');c.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}));await __wait(300);
+  return {ok:dim&&c.isConnected&&mana===1&&playerHp===100,dim,still:c.isConnected,mana,hp:playerHp};})()"""),
+ ("세팅 슬롯은 함정 1칸뿐이다",
+  """(()=>{const slots=[...document.querySelectorAll('.set-slot')].map(s=>s.id);return {ok:slots.length===1&&slots[0]==='magic-slot-0'&&MAGIC_SLOT_KINDS.join()==='reaction',slots};})()"""),
+ ("대재앙: 함정 칸에 세팅하면 5턴을 세고, 대기 턴이 찬 내 턴 시작에 양쪽 챔프를 모두 파괴한다",
+  """(async()=>{battlePhase='setup';maxMana=mana=10;updateMana();summonBattleToken('아군',2,5,'earth');const c=__card('storm.great-ruin');const isTrap=c.classList.contains('trap-card');setHandFilter('spell');playCard(c);if(!setMagicCards.length)playCard(c);await __wait(900);
+  const m=setMagicCards[0],slotText=document.querySelector('#magic-slot-0')?.textContent||'';const early=triggerTrap('field_state');const stillSet=setMagicCards.length===1;
+  turnNumber=m.readyTurn;triggerTrap('field_state');await __wait(2500);const left=document.querySelectorAll('.summon-zone .unit:not([data-destroyed="true"])').length;
+  return {ok:isTrap&&!!m&&m.kind==='reaction'&&/발동까지 5턴/.test(slotText)&&stillSet&&setMagicCards.length===0&&left===0,isTrap,slotText,stillSet,left};})()"""),
  ("궁극기: 세팅한 턴에는 '다음 턴부터 발동'으로 잠기고 발동 버튼도 막힌다. 내 다음 턴에는 열린다",
   """(async()=>{battlePhase='setup';playerHp=70;awakenGateOpened.player=true;maxMana=mana=10;updateMana();
   const id=collectionCardDefs.find(d=>d.cardType==='champion'&&d.aura!=='fire').cardId;const c=__card(id);setUltimate(c);renderUltimate();
@@ -46,10 +50,12 @@ CHECKS = [
   enemyHp=70;awakenGateOpened.enemy=true;enemyUltimate=null;equipEnemyUltimate();const equipped=!!enemyUltimate;
   enemyTurnMaxMana=maxMana=7;enemyMana=7;const first=castEnemyUltimate();advanceUltimateLedger('enemy');enemyMana=7;const second=castEnemyUltimate();
   return {ok:equipped&&first===false&&second===true,equipped,first,second};})()"""),
- ("컴퓨터 마법: 세팅한 상대 턴이 끝날 때(교전 직전) 발동한다",
+ ("컴퓨터 마법: 칸 제한 없이 마나 안에서 쓰고 그 자리에서 바로 발동한다",
   """(async()=>{const spell=enemyDeck.find(d=>d.spell&&!d.trap&&(d.delay||1)===1)||enemyOriginalDeck.find(d=>d.spell&&!d.trap&&(d.delay||1)===1);
   if(!spell)return {ok:false,error:'no enemy spell'};enemySetMagic.length=0;enemySetMagic.push({...spell,readyTurn:turnNumber+1,fireAt:ultimateLedger.enemy.turns});
-  const n=await resolveEnemySetMagic();return {ok:n===1&&enemySetMagic.length===0,n,left:enemySetMagic.length};})()"""),
+  const n=await resolveEnemySetMagic();
+  const s2=enemyOriginalDeck.filter(d=>d.spell&&!d.trap).slice(0,3);enemyHand.length=0;s2.forEach(d=>enemyHand.push({...d,cost:1}));enemyMana=10;setEnemyMagic();const queued=enemySetMagic.filter(x=>!x.trap).length;const n2=await resolveEnemySetMagic();
+  return {ok:n===1&&queued===s2.length&&n2===s2.length&&enemySetMagic.length===0,n,queued,n2,left:enemySetMagic.length};})()"""),
  ("오라 각성: 체력 86에서는 잠기고 85에서 열린다",
   """(()=>{playerHp=86;const r86=guardianAwakenLockReason();playerHp=85;const r85=guardianAwakenLockReason();
   return {ok:GUARDIAN_AWAKEN_HP===85&&r86==='체력 85 이하에서 각성'&&r85==='',r86,r85};})()"""),

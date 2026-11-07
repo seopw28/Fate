@@ -2320,14 +2320,14 @@
       "cardId": "storm.great-ruin",
       "nameKey": "card.storm_great_ruin",
       "displayName": "대재앙",
-      "cardType": "spell",
+      "cardType": "trap",
       "cost": 3,
       "rarity": "legendary",
       "stats": null,
       "effects": [
         {
           "effectId": "global_destroy",
-          "trigger": "next_round_start",
+          "trigger": "after_turns",
           "target": "all_champions",
           "excludeSource": false,
           "duration": "instant",
