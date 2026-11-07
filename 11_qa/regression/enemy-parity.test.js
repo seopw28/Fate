@@ -30,7 +30,7 @@ test('컴퓨터 혈마나: 유저와 같은 공식(배틀 첫 1번 마나 1당 �
   assert.ok(html.includes("showBloodManaSpend(healthCost,'enemy')"), '상대 영웅 쪽에 혈마나 연출');
   /* 마법(비함정)은 유저처럼 마나로만 쓴다 */
   assert.ok(html.includes('x.card.spell&&x.card.cost<=enemyMana')||html.includes('x.card.cost<=enemyMana'));
-  assert.ok(!between('function setEnemyMagic()', 'function resolveEnemySpell').includes('enemyPayCost'), '마법에는 혈마나를 쓰지 않는다');
+  assert.ok(!between('function setEnemyMagic()', 'function resolveEnemySpell').includes('else enemyPayCost(card.cost,\'마법'), '마법에는 혈마나를 쓰지 않는다 (함정만 혈마나 허용)');
 });
 
 test('컴퓨터 소환·교체·뽑기는 한 박자씩 보여 주고 손패·덱 라벨을 갱신한다', () => {
@@ -90,4 +90,10 @@ test('브라우저 검사: 컴퓨터 시작 손패·자동 드로우·카드 뽑
   const run = spawnSync('python3', ['-I', path.join(root, '12_tools/qa/check-enemy-parity.py')], { encoding: 'utf8', timeout: 240000 });
   assert.equal(run.status, 0, run.stdout + run.stderr);
   assert.match(run.stdout, /OK: 컴퓨터 규칙 동일화 확인/);
+});
+
+test('컴퓨터도 함정은 혈마나로 세팅할 수 있고 마법은 혈마나를 쓰지 않는다', () => {
+  assert.ok(html.includes('function enemyTrapBloodOk(cost)'));
+  assert.ok(html.includes("x.card.spell&&(x.card.cost<=enemyMana||(x.card.trap&&enemyTrapBloodOk(x.card.cost)))"));
+  assert.ok(html.includes("else enemyPayCost(card.cost,'함정 세팅')"));
 });
