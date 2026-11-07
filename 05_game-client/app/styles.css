@@ -1814,15 +1814,25 @@
     @media(min-width:1101px) and (max-height:760px){ .stage-column,.command-rail{ height:calc(100vh / var(--ui-scale) - 138px); } }
     .collection-shell { width:calc(100vw / var(--ui-scale) - 32px); height:calc(100vh / var(--ui-scale) - 32px); }
     /* 복수자는 카드 구조를 유지하고 크기와 오라색 테두리만 강화한다. */
-    .metal-experience-badge{position:absolute;z-index:10;left:50%;top:54px;max-width:calc(100% - 12px);padding:3px 7px;border:1px solid #eef5ff;border-radius:999px;background:#111925e8;color:#f4f8ff;font-size:9px;font-weight:950;line-height:1.2;white-space:nowrap;transform:translateX(-50%);box-shadow:0 0 12px #cfd8e688;text-shadow:0 1px 2px #000;pointer-events:none}
-    .unit[data-metal-experienced="true"]>.metal-experience-badge{border-color:#ffe29a;background:#30250ee8;color:#fff0b8;box-shadow:0 0 14px #e8bd63aa}
+    /* 상태 배지는 1열로 쌓는다. 각 배지가 top 고정값을 따로 가지면 두 개 이상 붙었을 때
+       같은 높이에 겹쳐 글자를 못 읽는다. 초상화 얼굴을 피해 아랫쪽(.emoji 하단)부터
+       아래로 쌓이게 flex column + align-items:center 로 묶는다 (2026-11-07) */
+    .unit{--badge-stack-top:112px}
+    .metal-experience-badge,.aura-burn-badge{position:absolute;left:0;right:0;top:var(--badge-stack-top);display:flex;flex-direction:column;align-items:center;pointer-events:none}
+    .metal-experience-badge{z-index:10}
+    .aura-burn-badge{z-index:12}
+    .metal-experience-badge>span,.aura-burn-badge>span{max-width:calc(100% - 10px);padding:3px 7px;border-radius:999px;font-size:9px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px #000}
+    .metal-experience-badge>span{border:1px solid #eef5ff;background:#111925e8;color:#f4f8ff;font-weight:950;box-shadow:0 0 12px #cfd8e688}
+    .unit[data-metal-experienced="true"]>.metal-experience-badge>span{border-color:#ffe29a;background:#30250ee8;color:#fff0b8;box-shadow:0 0 14px #e8bd63aa}
     .unit[data-aura-burn],.unit[data-burn]{--burn-color:#ff714b;box-shadow:0 0 0 2px #ff714baa,0 0 22px #ff3d2488,inset 0 0 18px #8f1d1d66;animation:aura-burn-card 1.35s ease-in-out infinite}
     .unit[data-aura-burn="2"]{--burn-color:#fff078;box-shadow:0 0 0 2px #ffd84dcc,0 0 30px #ff3a20bb,inset 0 0 24px #be271f88}
     .aura-burn-vfx{position:absolute;z-index:11;inset:-7px;overflow:hidden;border-radius:12px;pointer-events:none}
     .aura-burn-vfx::before,.aura-burn-vfx::after{content:'';position:absolute;left:8%;right:8%;bottom:-15px;height:42px;background:radial-gradient(ellipse at 50% 100%,#fff7a8 0 13%,var(--burn-color) 34%,#e02b2b99 56%,transparent 72%);filter:drop-shadow(0 0 7px #ff3d22);transform-origin:50% 100%;animation:aura-burn-flame .82s ease-in-out infinite alternate}
     .aura-burn-vfx::after{left:30%;right:0;bottom:-10px;height:34px;opacity:.78;animation-delay:-.43s}
-    .aura-burn-badge{position:absolute;z-index:12;right:5px;top:53px;padding:3px 6px;border:1px solid #ffd3a0;border-radius:999px;background:#3e100dea;color:#fff3c4;font-size:9px;font-weight:1000;line-height:1.1;box-shadow:0 0 12px #ff542f;text-shadow:0 1px 2px #000;pointer-events:none}
-    .unit[data-aura-burn="2"]>.aura-burn-badge{border-color:#fff28a;background:#64130eef;color:#fff7b0;box-shadow:0 0 16px #ff3b1f}
+    /* 두 번째 줄: 생존 배지가 있으면 그 아래로 내려간다 (--badge-row-2 를 JS가 아니라 CSS 형제 규칙으로 계산) */
+    .aura-burn-badge>span{border:1px solid #ffd3a0;background:#3e100dea;color:#fff3c4;font-weight:1000;box-shadow:0 0 12px #ff542f}
+    .metal-experience-badge~.aura-burn-badge{top:calc(var(--badge-stack-top) + 21px)}
+    .unit[data-aura-burn="2"]>.aura-burn-badge>span{border-color:#fff28a;background:#64130eef;color:#fff7b0;box-shadow:0 0 16px #ff3b1f}
     .unit.aura-burn-tick{animation:aura-burn-tick .55s ease-out}
     @keyframes aura-burn-card{50%{filter:brightness(1.13);box-shadow:0 0 0 2px var(--burn-color),0 0 30px #ff3d24bb,inset 0 0 24px #a51f1f88}}
     @keyframes aura-burn-flame{0%{transform:translateY(8px) scale(.86,.72);opacity:.62}100%{transform:translateY(-4px) scale(1.08,1.18);opacity:1}}

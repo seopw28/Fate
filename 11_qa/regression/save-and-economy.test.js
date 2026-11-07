@@ -85,7 +85,9 @@ test('금속의 오라: 맨 왼쪽 챔프가 생존 경험으로 공격력을 �
   assert.ok(html.includes("survivalStep:.26,maxChance:.90,attackGain:4,short:'생존 경험'"));
   assert.ok(html.includes("unit.dataset.metalSurvivalTurns=String((Number(unit.dataset.metalSurvivalTurns)||0)+1)"));
   assert.ok(html.includes("front.dataset.metalExperienced='true'"), 'Metal attack growth must be limited to once per champion');
-  assert.ok(html.includes("badge.textContent=front.dataset.metalExperienced==='true'?'단련 완료':'생존 '+turns+'턴 · '+Math.round(chance*100)+'%'"), 'The current survival chance must be visible');
+  /* 배지 글자를 어느 노드에 넣는지(badge 직접 / 안쪽 span)는 레이아웃 사정으로 바뀐다.
+     불변식만 본다 — 현재 생존 턴수와 확률이 글자로 나오고, 단련이 끝나면 완료로 바뀐다. */
+  assert.ok(/\.textContent=front\.dataset\.metalExperienced==='true'\?'단련 완료':'생존 '\+turns\+'턴 · '\+Math\.round\(chance\*100\)\+'%'/.test(html), 'The current survival chance must be visible');
 });
 
 test('오라 밸런스: 불 공격·반격 화상 30%, 대지 치명타 생존 1.5%, 나무 체력 성장 78%', () => {
