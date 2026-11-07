@@ -1881,7 +1881,9 @@
     /* 오라 각성 진입 (2026-11-07) — 체력바 옆 프로필이 빛나며 필드 중앙으로 날아가고,
        도착한 자리에서 선택 패널이 피어난다. 각성 모달이 맥락 없이 튀어나오던 것을 없앤다.
        좌표는 아바타의 실제 위치에서 JS가 넣어주므로 여기서는 이동량(--aw-dx/dy)만 쓴다. */
-    .awaken-flight{position:fixed;z-index:521;display:grid;place-items:center;
+    /* 구체는 선택 패널(520) '아래'로 간다 — 위에 있으면 각성 선택지를 가린다.
+       비행·대기 구간에는 패널이 아직 투명해서 구체가 그대로 보인다 (2026-11-07). */
+    .awaken-flight{position:fixed;z-index:518;display:grid;place-items:center;
       font-size:26px;line-height:1;pointer-events:none;
       /* 아바타 크기 그대로면 작은 점이 날아가는 것으로 보인다. 크게 키워 '덩어리'로 읽히게 한다.
          빛이 퍼지는 .62s 동안 제자리에서 부풀고, 그 뒤 1.18s 에 걸쳐 천천히 이동한다. */
