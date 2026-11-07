@@ -29,6 +29,21 @@ test('방어함 표시는 전용 방패 연출과 동시에 방어 사운드를 
   assert.ok(!html.includes("if(defense.defended){sfx('shield');showSkillEffect('shield',defender,'방어함 "));
 });
 
+test('정지된 오디오에서는 소리를 예약하지 않고 재개된 뒤에 낸다', () => {
+  /* AudioContext 가 suspended 면 currentTime 이 0 에 멈춘다. 그 시각으로 예약하면
+     resume 뒤에는 이미 과거라 소리가 통째로 버려진다 — 노드는 생기는데 안 들린다.
+     방어음이 '간간히' 안 들리던 원인. 여유 시간을 더하는 식으로는 못 막는다
+     (resume 지연이 정해져 있지 않다 — 실측 0.08s 예약 vs 재개 시계 0.443s). */
+  assert.ok(html.includes("if(ctx.state==='suspended'){whenAudioReady(ctx,()=>tone("), 'tone 은 정지 중 예약하면 안 된다');
+  assert.ok(html.includes("if(ctx.state==='suspended'){whenAudioReady(ctx,()=>noise("), 'noise 는 정지 중 예약하면 안 된다');
+  assert.ok(html.includes('function whenAudioReady(ctx,play)'), '재개 뒤 재생 헬퍼');
+  assert.ok(html.includes("ctx.addEventListener('statechange',onReady)"), 'resume 완료를 statechange 로 기다려야 한다');
+  assert.ok(html.includes('function flushPendingAudio()'), '밀린 소리 처리');
+  assert.ok(html.includes('queued[queued.length-1]()'), '밀린 소리는 마지막 하나만 — 전부 쏟으면 굉음이 된다');
+  /* 되돌아가기 쉬운 형태를 막는다: currentTime 에 상수를 더해 미래로 미루는 방식 */
+  assert.ok(!html.includes('AUDIO_RESUME_LEAD'), '여유 시간을 더하는 방식은 resume 지연이 가변이라 통하지 않는다');
+});
+
 test('피해를 막은 연출은 방어함이 아니어도 방어 사운드가 난다', () => {
   /* 확률 방어가 폐지돼 '방어함' 라벨이 사라지자 방어 효과음이 전혀 울리지 않았다.
      소리 조건이 라벨 접두사에 묶여 있던 탓이라, 다시 좁아지지 않도록 고정한다. */

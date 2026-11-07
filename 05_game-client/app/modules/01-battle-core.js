@@ -482,8 +482,28 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     const AUDIO_PREF_KEY='fate.audio.v2',audioPrefs=(()=>{const base={bgm:.45,sfx:.35,muted:false};try{return Object.assign(base,JSON.parse(localStorage.getItem('fate.audio.v2')||'{}'));}catch(e){return base;}})();
     let soundOn=!audioPrefs.muted; let audioCtx; const audioFiles={slash:new Audio('assets/audio/sword-slash.mp3'), explosion:new Audio('assets/audio/explosion-impact.mp3'), metal:new Audio('assets/audio/metal-impact.mp3')}; Object.values(audioFiles).forEach(a=>a.preload='auto');
     function audioEngine(){if(!soundOn)return null;audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});return audioCtx;}
-    function tone(freq,duration,type='sine',volume=.08,endFreq=freq,delay=0){const ctx=audioEngine();if(!ctx)return;const start=ctx.currentTime+delay,o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,start);o.frequency.exponentialRampToValueAtTime(Math.max(20,endFreq),start+duration);g.gain.setValueAtTime(.001,start);g.gain.exponentialRampToValueAtTime(volume,start+.012);g.gain.exponentialRampToValueAtTime(.001,start+duration);o.connect(g);g.connect(sfxBus(ctx));o.start(start);o.stop(start+duration+.02);}
-    function noise(duration=.12,volume=.04,filterFreq=1200,delay=0){const ctx=audioEngine();if(!ctx)return;const start=ctx.currentTime+delay,length=Math.ceil(ctx.sampleRate*duration),buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);const source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();source.buffer=buffer;filter.type='bandpass';filter.frequency.value=filterFreq;filter.Q.value=.8;gain.gain.setValueAtTime(volume,start);gain.gain.exponentialRampToValueAtTime(.001,start+duration);source.connect(filter);filter.connect(gain);gain.connect(sfxBus(ctx));source.start(start);}
+    /* 정지된 AudioContext 에서는 currentTime 이 0 에 멈춰 있다. 그 상태로 소리를 예약하면
+       resume() 이 끝난 시점에는 예약 시각이 이미 과거라 그 소리는 통째로 버려진다 — 노드는
+       만들어지는데 아무것도 안 들린다. 방어음이 '간간히' 안 들리던 원인이 이것이다.
+       브라우저는 첫 클릭 전과 탭 전환·절전 복귀 때 컨텍스트를 정지시키므로 전투 중에도 생긴다.
+
+       '여유 시간을 더해 미래에 예약한다'로는 못 고친다 — resume() 이 걸리는 시간은 정해져
+       있지 않다 (실측: 0.08초 뒤로 예약했는데 재개 시점 시계가 0.443초였다. 여전히 과거다).
+       그래서 정지 중에는 예약하지 않고, 재개된 뒤에 소리를 만든다. 재개될 때까지 쌓인 소리는
+       한 번만 몰아서 낸다 — 밀린 소리를 전부 쏟으면 재개 순간에 굉음이 된다 (2026-11-07) */
+    let audioPending=[],audioResumeHooked=false;
+    function flushPendingAudio(){const queued=audioPending;audioPending=[];if(!queued.length)return;
+      /* 밀려 있던 건 이미 지나간 상황의 소리다. 가장 마지막 것 하나만 들려준다. */
+      try{queued[queued.length-1]();}catch(e){}}
+    function whenAudioReady(ctx,play){
+      if(ctx.state!=='suspended'){play();return;}
+      audioPending.push(play);
+      if(!audioResumeHooked){audioResumeHooked=true;
+        const onReady=()=>{if(ctx.state==='running'){ctx.removeEventListener('statechange',onReady);audioResumeHooked=false;flushPendingAudio();}};
+        ctx.addEventListener('statechange',onReady);}
+      ctx.resume().catch(()=>{});}
+    function tone(freq,duration,type='sine',volume=.08,endFreq=freq,delay=0){const ctx=audioEngine();if(!ctx)return;if(ctx.state==='suspended'){whenAudioReady(ctx,()=>tone(freq,duration,type,volume,endFreq,delay));return;}const start=ctx.currentTime+delay,o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,start);o.frequency.exponentialRampToValueAtTime(Math.max(20,endFreq),start+duration);g.gain.setValueAtTime(.001,start);g.gain.exponentialRampToValueAtTime(volume,start+.012);g.gain.exponentialRampToValueAtTime(.001,start+duration);o.connect(g);g.connect(sfxBus(ctx));o.start(start);o.stop(start+duration+.02);}
+    function noise(duration=.12,volume=.04,filterFreq=1200,delay=0){const ctx=audioEngine();if(!ctx)return;if(ctx.state==='suspended'){whenAudioReady(ctx,()=>noise(duration,volume,filterFreq,delay));return;}const start=ctx.currentTime+delay,length=Math.ceil(ctx.sampleRate*duration),buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);const source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();source.buffer=buffer;filter.type='bandpass';filter.frequency.value=filterFreq;filter.Q.value=.8;gain.gain.setValueAtTime(volume,start);gain.gain.exponentialRampToValueAtTime(.001,start+duration);source.connect(filter);filter.connect(gain);gain.connect(sfxBus(ctx));source.start(start);}
     const AUDIO_GAIN={explosion:.9};/* 효과음별 볼륨 보정: 폭발음은 다른 효과음보다 커서 기존 대비 90% */
     function playAudio(name,volume=.65,rate=1){if(!soundOn)return;const audio=audioFiles[name].cloneNode();audio.volume=Math.min(1,volume*(AUDIO_GAIN[name]??1)*audioPrefs.sfx);audio.playbackRate=rate;audio.play().catch(()=>{});}
     let sfxStep=0;
