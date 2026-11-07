@@ -66,6 +66,13 @@ test('복수자는 착지 연출 뒤 상대 영웅에게 7 피해를 주고(양�
   assert.ok(html.includes("else if(!player&&playerHp<=0)finish(false,"), '내 영웅 0 → 패배');
 });
 
+test('소진자는 상대 소진자(전역 도발)가 없으면 챔프가 있어도 영웅을 우선 공격한다 (양쪽 공통)', () => {
+  assert.ok(html.includes("if(!priority||(selected.dataset.ultimateSpent==='true'&&priority.dataset.ultimateAggro!=='true')){attackFace(document.querySelector('.duel-hud .enemy'),automatic);return;}"), '자동·클릭 대상이 영웅으로 잡힌다');
+  assert.ok(html.includes("if(defenders.length&&!(selected.dataset.ultimateSpent==='true'&&!defenders.some(u=>u.dataset.ultimateAggro==='true')))"), '영웅 직접 공격이 챔프 방어에 막히지 않는다');
+  assert.ok(html.includes("if(unit.dataset.ultimateSpent==='true')return null;"), '컴퓨터 소진자는 내 영웅을 노린다');
+  assert.ok(html.indexOf("if(ultimateAggro){showUltimateAggroIntercept(ultimateAggro);return ultimateAggro;}if(unit.dataset.ultimateSpent==='true')return null;") > 0, '상대 소진자 도발이 먼저다');
+});
+
 test('브라우저 검사: 세팅 잠금 · 소진자 +15/1 · 복수자 T+2 +7/+15 · 추가 드로우 · 묘지 재사용(체력 10) · 컴퓨터 대칭', (t) => {
   const probe = spawnSync('python3', ['-I', '-c', 'import playwright'], { encoding: 'utf8' });
   if (probe.status !== 0) { t.skip('python playwright 가 없어 건너뜀 (npm run qa:ultimate 로 따로 실행)'); return; }

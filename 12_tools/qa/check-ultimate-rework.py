@@ -149,6 +149,26 @@ CHECKS = [
   "const dockO=U.filter(u=>ov(R(u),dock)>0).length,manaO=U.filter(u=>ov(R(u),mana)>0).length,out=U.filter(u=>R(u).left<arena.left||R(u).right>arena.right||R(u).top<arena.top||R(u).bottom>arena.bottom).length;"
   "const gaps=[];[el,zo].forEach(l=>{const us=[...l.querySelectorAll(':scope > .unit')].map(R).sort((a,b)=>a.left-b.left);for(let i=1;i<us.length;i++)gaps.push(us[i].left-us[i-1].right);});"
   "return {ok:U.length===10&&pairs===0&&dockO===0&&manaO===0&&out===0&&Math.min(...gaps)>=40,pairs,dockO,manaO,out,minGap:Math.min(...gaps)};})()"),
+ ("소진자는 상대 챔프가 3장 있어도 상대 영웅을 우선 공격한다(반격 없음). 상대 소진자가 있으면 그 소진자를 공격한다",
+  "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');el.innerHTML='';zo.innerHTML='';const proto=enemyDeck.find(d=>!d.spell);"
+  "const hpOf=u=>__q.hp(u);const en=(n,e)=>enemySummonUnit(el,{name:n,art:proto.art,el:'water',atk:2,hp:9,cost:1,effect:e});const foes=[en('적1'),en('적2'),en('적3')];"
+  "const mine=summonBattleToken('소진자',4,3,'fire','ultimate-spent');mine.dataset.ultimateSpent='true';mine.dataset.ultimateAggro='true';mine.classList.remove('exhausted');"
+  "const e0=enemyHp,foeHp=foes.map(hpOf);selectUnit(mine);attack(foes[0]);for(let i=0;i<80&&enemyHp===e0;i++)await __q.wait(100);await __q.wait(300);"
+  "const hero={dmg:e0-enemyHp,foesUntouched:foes.every((u,i)=>hpOf(u)===foeHp[i]),playerHp:playerHp};"
+  "const es=en('적소진자','ultimate-spent');es.dataset.ultimateSpent='true';es.dataset.ultimateAggro='true';const m2=summonBattleToken('소진자2',4,3,'fire','ultimate-spent');m2.dataset.ultimateSpent='true';m2.classList.remove('exhausted');"
+  "const e1=enemyHp,sHp=hpOf(es);selectUnit(m2);attackFace(document.querySelector('.duel-hud .enemy'));for(let i=0;i<80&&hpOf(es)===sHp;i++)await __q.wait(100);await __q.wait(300);"
+  "const taunt={spentDmg:sHp-hpOf(es),heroUntouched:enemyHp===e1};"
+  "return {ok:hero.dmg===4&&hero.foesUntouched&&taunt.spentDmg>0&&taunt.heroUntouched,hero,taunt};})()"),
+ ("컴퓨터 소진자도 내 챔프가 있어도 내 영웅을 우선 공격한다(내 소진자가 있으면 그 소진자)",
+  "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');el.innerHTML='';zo.innerHTML='';const proto=enemyDeck.find(d=>!d.spell);"
+  "const sp=enemySummonUnit(el,{name:'적소진자',art:proto.art,el:'water',atk:6,hp:3,cost:0,effect:'ultimate-spent'});sp.dataset.ultimateSpent='true';sp.dataset.ultimateAggro='true';"
+  "const mk=n=>summonBattleToken(n,2,9,'earth');const mine=[mk('아군1'),mk('아군2'),mk('아군3')];"
+  "const noTaunt=chooseEnemyAttackTarget(sp,mine)===null;const my=mine[0];my.dataset.ultimateAggro='true';const taunted=chooseEnemyAttackTarget(sp,mine)===my;delete my.dataset.ultimateAggro;"
+  "const normal=enemySummonUnit(el,{name:'적일반',art:proto.art,el:'water',atk:2,hp:3,cost:0});const normalTarget=chooseEnemyAttackTarget(normal,mine)!==null;"
+  "const p0=playerHp,hp0=mine.map(u=>__q.hp(u));enemyHand.length=0;enemyMana=0;[...el.querySelectorAll(':scope > .unit')].forEach(u=>{if(u!==sp)u.remove();});"
+  "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<150&&!finished;i++)await __q.wait(100);await __q.wait(200);"
+  "const r={noTaunt,taunted,normalTarget,heroDmg:p0-playerHp,minesUntouched:mine.every((u,i)=>__q.hp(u)===hp0[i])};"
+  "return {ok:noTaunt&&taunted&&normalTarget&&r.heroDmg===6&&r.minesUntouched,...r};})()"),
  ("컴퓨터 턴 흐름: 강림 시점의 enemyTurn 이 오류 없이 복수자를 내려놓고 공격 목록에 포함한다",
   "(async()=>{const proto=enemyDeck.find(d=>!d.spell);ultimateLedger.enemy.pending.push({rec:{name:proto.name,art:proto.art,element:proto.el,baseAttack:3,baseHp:4},due:ultimateLedger.enemy.turns+1});"
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<120&&!finished;i++)await __q.wait(100);" + (WAIT % 100) + "const a=document.querySelector('.arena .lane:first-child .unit[data-effect=\"ultimate-avenger\"]');"

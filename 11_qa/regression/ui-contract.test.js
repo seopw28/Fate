@@ -105,7 +105,7 @@ test('deck exhaustion and result actions follow the PRD', () => {
 
 test('enemy champions must be cleared before a direct hero attack', () => {
   assert.ok(html.includes("const defenders=[...document.querySelectorAll('.lane:nth-child(1) .unit:not([data-destroyed=\"true\"])')]") , 'Direct attacks must inspect surviving enemy champions');
-  assert.ok(html.includes("const front=defenders.find(u=>u.dataset.taunt==='true')||defenders[0]"), 'Taunt or the leftmost champion must intercept a hero attack');
+  assert.ok(html.includes("const front=defenders.find(u=>u.dataset.ultimateAggro==='true')||defenders.find(u=>u.dataset.taunt==='true')||defenders[0]"), 'Taunt or the leftmost champion must intercept a hero attack');
   assert.ok(html.includes('attack(front,automatic);return;'), 'A blocked hero click must resolve against the defending champion');
 });
 
