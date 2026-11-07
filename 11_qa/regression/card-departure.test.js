@@ -38,15 +38,16 @@ test('묘지는 아래, 덱은 위로 가서 목적지가 구분된다', () => {
 test('소환 무효화는 양쪽 모두 카드를 묘지로 보낸다', () => {
   /* 내 함정과 상대 함정 두 경로가 따로 있고, 상대 쪽은 즉시 사라지고 있었다. */
   const mine = html.slice(html.indexOf("negate-summon'){const name=context.unit"));
-  assert.ok(mine.slice(0, 500).includes("sendCardTo(context.unit,'graveyard',name)"), '내 소환 무효화');
+  /* 발동 리드(TRAP_EFFECT_LEAD_MS) 때문에 setTimeout 안에서 쓰므로 context.unit 을 doomed 로 잡아둔다. */
+  assert.ok(/sendCardTo\((?:context\.unit|doomed),'graveyard',name\)/.test(mine.slice(0, 600)), '내 소환 무효화');
   const theirsAt = html.indexOf("'<strong>상대 함정 발동:</strong> '+trap.name");
   assert.ok(theirsAt > 0, '상대 함정 경로를 찾아야 한다');
   const theirs = html.slice(theirsAt);
-  assert.ok(theirs.slice(0, 400).includes("sendCardTo(context.unit,'graveyard'"), '상대 소환 무효화도 이동 연출을 쓴다');
+  assert.ok(/sendCardTo\((?:context\.unit|doomed),'graveyard'/.test(theirs.slice(0, 500)), '상대 소환 무효화도 이동 연출을 쓴다');
   assert.ok(!html.includes("negate-summon'){context.unit?.remove();"), '즉시 제거로 되돌리지 말 것');
   /* 이동 연출 '전에' 원본을 지우면 날아갈 카드가 없어진다 — 두 경로 모두 제거가 이동 뒤에 와야 한다. */
   for (const branch of [mine, theirs]) {
-    const head = branch.slice(0, 420);
+    const head = branch.slice(0, 560);/* 발동 리드 래퍼가 끼어 구간이 길어졌다 */
     const removeAt = head.indexOf('.remove()');
     const sendAt = head.indexOf('sendCardTo(');
     assert.ok(sendAt >= 0, '이동 연출이 있어야 한다');
@@ -70,7 +71,10 @@ test('이동이 끝나기 전에 원본이 사라지지 않는다', () => {
   for (const guard of ["Math.max(520,gone)", "Math.max(620,bounceMs)", "Math.max(650,goneMs)"]) {
     assert.ok(html.includes(guard), guard + ' — 이동 시간을 기다려야 한다');
   }
-  assert.ok(html.includes("context.unit.style.visibility='hidden'"), '원본은 감추고 나중에 제거');
+  assert.ok(/(?:context\.unit|doomed)\.style\.visibility='hidden'/.test(html), '원본은 감추고 나중에 제거');
+  /* 세팅과 소멸이 같은 프레임에 겹쳐 보이지 않도록 효과를 리드만큼 늦춘다 (2026-11-07) */
+  assert.ok(html.includes('TRAP_EFFECT_LEAD_MS=200'), '함정 발동 리드 0.2초가 있어야 한다');
+  assert.ok(/setTimeout\(\(\)=>\{if\(!doomed\.isConnected\)return;/.test(html), '리드 후 원본이 살아있을 때만 효과를 적용한다');
 });
 
 test('이동 연출도 필드 오버레이로 등록된다', () => {
