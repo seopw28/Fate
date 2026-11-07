@@ -353,11 +353,22 @@ test('상대 턴의 행동들은 한 프레임에 몰리지 않고 한 박자씩
   assert.ok(html.includes('setTimeout(resolve,combatMs(ENEMY_ACTION_BEAT_MS))'), '간격에 전투 속도 배율을 적용해야 한다');
 });
 
-test('두 번째 궁극기는 최초 사용 후 6턴이 지나야 세팅할 수 있다', () => {
+test('최초를 제외한 모든 궁극기는 직전 사용 후 6턴이 지나야 세팅할 수 있다', () => {
   // 궁극기가 자주 나오면 주인공이 여럿인 느낌이 되어 무게가 사라진다.
   assert.ok(html.includes('const ULTIMATE_RESET_TURNS=6'), '재세팅 대기 턴 상수가 있어야 한다');
   assert.ok(html.includes('function ultimateSettingLockReason()'), '세팅 잠금 판정이 분리돼 있어야 한다');
-  assert.ok(html.includes('const ready=firstUltimateTurn+ULTIMATE_RESET_TURNS'), '최초 궁극기 사용 턴을 기준으로 삼아야 한다');
+  /* 기준은 '최초 사용 턴'이 아니라 '직전 사용 턴'이어야 한다. firstUltimateTurn 에 고정하면
+     2궁 이후로는 firstUltimateTurn+6 이 이미 지나 있어 3·4궁이 제한 없이 풀린다
+     (2026-11-07 실측: 2궁 직후 turn 11 에서 바로 '세팅 가능'). */
+  const at = html.indexOf('function ultimateSettingLockReason()');
+  assert.ok(at > 0, '세팅 잠금 판정이 있어야 한다');
+  const fn = html.slice(at, at + 420);
+  assert.ok(/const ready=lastUltimateTurn\+ULTIMATE_RESET_TURNS/.test(fn),
+    '직전 궁극기 사용 턴을 기준으로 삼아야 3·4궁도 막힌다');
+  assert.ok(!/const ready=firstUltimateTurn\+ULTIMATE_RESET_TURNS/.test(fn),
+    '최초 사용 턴 기준으로 돌아가면 2궁 이후가 전부 풀린다');
+  assert.ok(/if\(lastUltimateTurn===null\)return ''/.test(fn),
+    '궁극기를 쓴 적이 없으면(=최초 궁극기) 잠그지 않는다');
   // 버튼 경로와 실제 세팅 경로(클릭·드래그) 양쪽을 다 막아야 한다.
   assert.ok(html.includes("function armUltimateSetting(){if(battlePhase!=='setup'||ultimateState||ultimateUsed)return;const settingLock=ultimateSettingLockReason();"), '세팅 버튼을 막아야 한다');
   assert.ok(html.includes('function setUltimate(card){const settingLock=ultimateSettingLockReason();'), '카드 세팅 자체를 막아야 한다');
@@ -365,7 +376,7 @@ test('두 번째 궁극기는 최초 사용 후 6턴이 지나야 세팅할 수 
   assert.ok(html.includes('const ULTIMATE_COOLDOWN_TURNS=3'), '발동 재사용 대기는 그대로 유지한다');
   // 패널이 잠긴 동안 세팅을 권하면 안 된다.
   assert.ok(html.includes("(setup&&!ultimateUsed&&!settingLock?'':'disabled')"), '잠긴 동안 버튼이 비활성이어야 한다');
-  assert.ok(html.includes("settingLock?'최초 궁극기 이후 '+ULTIMATE_RESET_TURNS+'턴이 지나야 다시 세팅할 수 있습니다'"), '남은 대기를 안내해야 한다');
+  assert.ok(html.includes("settingLock?'직전 궁극기 이후 '+ULTIMATE_RESET_TURNS+'턴이 지나야 다시 세팅할 수 있습니다'"), '남은 대기를 안내해야 한다');
 });
 
 test('죽는 카드는 짧은 소멸 연출을 거친 뒤 사라진다', () => {
