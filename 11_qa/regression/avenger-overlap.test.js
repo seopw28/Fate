@@ -211,3 +211,15 @@ test('복수자 대기는 안내가 떠 있는 동안으로 맞춘다', () => {
   assert.ok(html.includes('desperateNoticeUntil=performance.now()+DESPERATE_TOAST_MS'), '복수자 대기는 안내 길이를 따라야 한다');
   assert.ok(!/desperateNoticeUntil=performance\.now\(\)\+3600/.test(html), '옛 고정 3600ms 로 되돌리지 말 것');
 });
+
+/* 사용자 보고: "최후의 저항인데 복수자가 강림하지 않는다".
+   소진자 사망 통지가 damageUnit 의 defeated 분기에만 있어서, 피해 없이 전장에서
+   치워지는 경로(전체 파괴·소환 무효화·다음 궁극기 제물)에서는 방아쇠가 당겨지지 않았다. */
+test('소진자가 피해 없이 치워져도 쓰러진 것으로 본다', () => {
+  const fn = html.slice(html.indexOf('function retireFieldUnit(unit)'));
+  assert.ok(fn.slice(0, 220).includes("unit.dataset.ultimateSpent==='first'"), '전장에서 치울 때도 소진자인지 봐야 한다');
+  assert.ok(fn.slice(0, 220).includes('showUltimateSpentDeath(unit)'), '소진자 사망을 알려야 복수자가 온다');
+  /* 중복 호출은 ultimateDeathFx 플래그가 막는다 — 그 가드가 사라지면 복수자 교체 때 재진입한다. */
+  const death = html.slice(html.indexOf('function showUltimateSpentDeath'));
+  assert.ok(death.slice(0, 200).includes("unit.dataset.ultimateDeathFx==='true')return"), '중복 호출 가드가 있어야 한다');
+});
