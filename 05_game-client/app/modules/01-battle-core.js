@@ -4,7 +4,7 @@
     const DEV_MODE = ['localhost','127.0.0.1','[::1]',''].includes(location.hostname);
     const MANA_CAP = 10;
     function playerManaCap(){return MANA_CAP;}/* 최대 마나는 항상 10 상한이다 */
-    const BLOOD_MANA_UNLOCK_TURN = 3;
+    const BLOOD_MANA_UNLOCK_TURN = 1;/* 2026-11-08: 초반 턴 제한을 풀어 배틀 첫 턴부터 혈마나를 쓸 수 있다 */
     /* 혈마나 비용(2026-11-08): 배틀 첫 혈마나 1번은 모자란 마나 1당 체력 1(마나와 같은 양).
        그 뒤로는 마나 1당 체력 BLOOD_MANA_BASE_RATE + (이번 턴 혈마나 사용 횟수 × BLOOD_MANA_RATE_STEP).
        배틀 첫 사용은 턴 사용 횟수에 넣지 않아, 두 번째 사용은 같은 턴이어도 마나 1당 2부터 시작한다. */

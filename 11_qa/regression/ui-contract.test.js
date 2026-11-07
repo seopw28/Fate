@@ -181,7 +181,7 @@ test('mana curve starts low and grows into the mid game', () => {
   assert.ok(html.includes('const MANA_CAP = 10'), 'Mana cap must remain ten');
   assert.ok(html.includes('let turnNumber = 1'), 'Battle must start on turn one');
   assert.ok(html.includes('Math.min(MANA_CAP,maxMana+1)'), 'Maximum mana must grow by one each turn');
-  assert.ok(html.includes('const BLOOD_MANA_UNLOCK_TURN = 3'), 'Blood mana must not bypass the opening curve');
+  assert.ok(html.includes('const BLOOD_MANA_UNLOCK_TURN = 1;'), '혈마나는 배틀 첫 턴부터 쓸 수 있다 (2026-11-08 초반 제한 해제)');
   assert.ok(html.includes('＋ 카드 뽑기 <small>· 비용 2마나</small>'), 'Initial draw UI must show the actual two-mana base cost');
   assert.ok(html.includes("'비용 '+cost+' · 마나 '+paidMana+' + 혈마나 '+quote.shortage"), 'Blood-mana UI must distinguish total cost, paid mana, and converted mana');
   assert.ok(html.includes("' 다음 비용은 마나 '+(cost*2)+'입니다.'"), 'Draw log must follow the exponential 2, 4, 8 cost curve');
