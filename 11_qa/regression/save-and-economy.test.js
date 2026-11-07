@@ -310,11 +310,8 @@ test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 
 
 test('첫 궁극기 소진 1/1 카드만 죽을 때 복수의 중앙 확대·분할 소멸 연출을 한 번 재생한다', () => {
   assert.ok(html.includes('function showUltimateSpentDeath(unit)'));
-  /* 2026-11-07: 방아쇠를 'first' 소진자에만 걸어두면 2궁 이후의 소진자가 죽을 때
-     복수자가 오지 않는다. 소진자이기만 하면 연출·방아쇠가 걸린다. 중복은 아래
-     ultimateDeathFx 플래그와 배틀당 1회 제한이 막는다. */
-  assert.ok(html.includes("target.dataset.ultimateSpent)showUltimateSpentDeath(target)"));
-  assert.ok(html.includes("!unit.dataset.ultimateSpent"));
+  assert.ok(html.includes("target.dataset.ultimateSpent==='first')showUltimateSpentDeath(target)"));
+  assert.ok(html.includes("unit.dataset.ultimateSpent!=='first'"));
   assert.ok(html.includes("unit.dataset.ultimateDeathFx==='true'"));
   assert.ok(html.includes('spent-death-half left'));
   assert.ok(html.includes('spent-death-half right'));
