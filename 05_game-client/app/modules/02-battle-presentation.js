@@ -202,9 +202,9 @@
     }
     /* 불가침: 소환된 턴(상대 턴 포함)에는 모든 피해를 무효화하고, 다음 내 턴이 시작되면 풀린다 */
     const triggerBattlecryBeforeInvulnerable=triggerBattlecry;
-    triggerBattlecry=function(unit){triggerBattlecryBeforeInvulnerable(unit);if(unit.dataset.effect==='turn-invulnerable'){unit.dataset.invulnerable='1';unit.classList.add('invulnerable');unit.title='이번 턴 무적';showSkillEffect('shield',unit,'불가침 · 이번 턴 무적');sfx('shield');}};
+    triggerBattlecry=function(unit){triggerBattlecryBeforeInvulnerable(unit);if(unit.dataset.effect==='turn-invulnerable'){unit.dataset.invulnerable='1';unit.classList.add('invulnerable');unit.title='이번 턴 무적';showSkillEffect('shield',unit,'불가침 · 이번 턴 무적');/* 소리는 showSkillEffect 가 낸다 — 여기서 또 부르면 같은 소리가 겹쳐 울린다 */}};
     const damageUnitBeforeInvulnerable=damageUnit;
-    damageUnit=function(target,damage,element){if(target?.dataset?.invulnerable==='1'){const hp=Number(target.querySelector('.stats span:last-child').textContent.replace(/[^0-9]/g,''))||0;sfx('shield');showSkillEffect('shield',target,'무적 · 피해 무효');writeLog('<strong>'+target.querySelector('h4').textContent+'</strong>은(는) 불가침 상태라 피해를 받지 않았습니다.');return {blocked:true,hp};}return damageUnitBeforeInvulnerable(target,damage,element);};
+    damageUnit=function(target,damage,element){if(target?.dataset?.invulnerable==='1'){const hp=Number(target.querySelector('.stats span:last-child').textContent.replace(/[^0-9]/g,''))||0;showSkillEffect('shield',target,'무적 · 피해 무효');/* 소리는 showSkillEffect 가 낸다 */writeLog('<strong>'+target.querySelector('h4').textContent+'</strong>은(는) 불가침 상태라 피해를 받지 않았습니다.');return {blocked:true,hp};}return damageUnitBeforeInvulnerable(target,damage,element);};
     const startPlayerTurnBeforeInvulnerable=startPlayerTurn;
     startPlayerTurn=function(button){startPlayerTurnBeforeInvulnerable(button);document.querySelectorAll('.unit[data-invulnerable]').forEach(unit=>{delete unit.dataset.invulnerable;unit.classList.remove('invulnerable');unit.removeAttribute('title');});};
     /* 최후의 저항 · 역전 돌진: 내 영웅 체력이 최대치의 40% 이하가 되면 켜진다. 상대 체력에 따라 오르락내리락하지 않도록 절대 기준을 쓴다 */

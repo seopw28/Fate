@@ -22,11 +22,37 @@ test('교환 피해는 방어 카드의 반격 이동·타격 이펙트 후 적�
 });
 
 test('방어함 표시는 전용 방패 연출과 동시에 방어 사운드를 반드시 재생한다', () => {
-  assert.ok(html.includes("function showDefenseShield(target,label){if(!target)return;sfx('shield');"));
+  assert.ok(html.includes("function showDefenseShield(target,label){if(!target)return;playShieldSfx();"), '전용 방패 연출도 소리를 낸다');
   /* 전용 방패 연출은 평타 방어(방어함) 전용으로 남겨 둔다. 접두사 검사를 들고 있되,
      소리 재생 조건은 그보다 넓다 — 아래 '피해를 막은 연출' 테스트가 그쪽을 지킨다. */
   assert.ok(html.includes("if(String(label).startsWith('방어함')){showDefenseShield(target,label);return;}"));
   assert.ok(!html.includes("if(defense.defended){sfx('shield');showSkillEffect('shield',defender,'방어함 "));
+});
+
+test('같은 찰나에 겹치는 방어음은 한 번만 난다', () => {
+  /* 절대방어 궁극기는 아군 수만큼 showSkillEffect 를 돈다. 카드마다 소리를 내면
+     6장일 때 '퍽'이 6번 겹쳐 뭉개진 굉음이 된다. 연출은 카드마다, 소리는 한 번. */
+  assert.ok(html.includes('function playShieldSfx()'), '방어음은 한 군데로 모아 낸다');
+  assert.ok(html.includes('const SHIELD_SFX_MIN_GAP='), '겹침 판정 간격');
+  assert.ok(html.includes('if(now-lastShieldSfxAt<SHIELD_SFX_MIN_GAP)return'), '간격 안이면 건너뛴다');
+  /* 중복 호출이 되살아나지 않게 못박는다 — showSkillEffect 가 이미 소리를 낸다 */
+  assert.ok(!html.includes("showSkillEffect('shield',unit,'불가침 · 이번 턴 무적');sfx('shield')"), '불가침 중복');
+  assert.ok(!html.includes("sfx('shield');showSkillEffect('shield',target,'무적 · 피해 무효')"), '무적 중복');
+  assert.ok(!html.includes("function shieldBreakFx(target){if(!target?.isConnected)return;sfx('shield')"), '보호막 파괴 중복');
+  assert.ok(!html.includes("absoluteDefense=true;sfx('shield')"), '절대방어 궁극기 중복');
+});
+
+test('폐지된 확률 방어의 죽은 코드를 남기지 않는다', () => {
+  /* PRD: 기본 공격에 '일반 확률 방어를 적용하지 않는다'. 그런데 늘 defended:false 를
+     돌려주는 껍데기가 남아, 그 값을 보는 '방어함 N%' 연출과 전투 기록이 영영 실행되지
+     않는 죽은 코드로 있었다. 되살아나면 PRD 와 어긋난다. */
+  assert.ok(!html.includes('function rollCardDefense('), '폐지된 확률 방어 함수가 남으면 안 된다');
+  assert.ok(!html.includes('defense.defended'), '항상 false 인 값을 보는 분기가 남으면 안 된다');
+  assert.ok(!html.includes('defense.chance'), '항상 0 인 확률 표시가 남으면 안 된다');
+  /* 관통(armor-pierce)은 확률 방어와 별개 규칙이라 살아 있어야 한다 */
+  assert.ok(html.includes('function consumeArmorPierce(defender)'), '관통 소비는 유지된다');
+  assert.ok(html.includes("if(defender.dataset.shield!=='true')consumeArmorPierce(defender)"), '관통은 평타 교환에서 소비된다');
+  assert.ok(html.includes("defender.dataset.survivePierced='true'"), '관통 표시는 불굴 판정이 읽는다');
 });
 
 test('정지된 오디오에서는 소리를 예약하지 않고 재개된 뒤에 낸다', () => {
