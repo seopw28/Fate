@@ -33,7 +33,6 @@
     .arena .lane { position:relative; z-index:1; }
     .lane { display:flex; justify-content:center; gap:14px; min-height:225px; }
     .spell-zone { width:145px; min-height:92px; padding:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; border:1px dashed #a46bc4; border-radius:14px; background:radial-gradient(circle,#713f8944,transparent 70%),#211b2c; color:#d8aaff; } .spell-zone small { color:#9f83b3; font-size:9px; letter-spacing:.13em; text-transform:uppercase; } .spell-zone b { font-size:12px; text-align:center; } .spell-zone .sigil { font-size:25px; animation:spell-orbit 3s linear infinite; text-shadow:0 0 15px #d16bff; }
-    .lane-label { position:absolute; margin-top:-22px; color:#667285; font-size:10px; letter-spacing:.15em; text-transform:uppercase; }
     .unit { position:relative; width:188px; height:225px; padding:10px; display:flex; flex-direction:column; justify-content:space-between; border:1px solid #56606d; border-radius:15px; background:linear-gradient(145deg,#344050,#18212c); box-shadow:0 14px 28px #06090dc2; overflow:hidden; transition:transform .18s,border-color .18s,box-shadow .18s; }
     .unit.fire { border-color:#a9674b; background:linear-gradient(145deg,#653c3c,#261e27); } .unit.water { border-color:#5b8dac; background:linear-gradient(145deg,#254c67,#172633); } .unit.wind { border-color:#7e9e91; background:linear-gradient(145deg,#34554e,#1d2930); } .unit.earth { border-color:#a3885d; background:linear-gradient(145deg,#5a4933,#27231f); }
     .unit .emoji { font-size:48px; text-align:center; overflow:hidden; height:154px; display:grid; place-items:center; border-radius:10px; background:#090d13; } .unit h4 { margin:0; padding-top:5px; text-align:center; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .stats { display:flex; justify-content:space-between; color:#d8dee6; font-size:14px; font-weight:750; } .stats span:first-child { color:#f28676; } .stats span:last-child { color:#8dc7ee; }
@@ -261,7 +260,7 @@
     .duel-hud .enemy { cursor:crosshair; border-radius:12px; transition:background .18s,box-shadow .18s; }
     .duel-hud .enemy:hover { background:#5b26301a; box-shadow:0 0 0 1px #d45e6f33; }
     .arena .lane:first-child:empty,.arena .lane:first-child.field-empty { cursor:crosshair; }
-    .arena .lane:first-child.field-empty::after { content:'상대 전장 비어 있음 · 클릭하여 영웅 직접 공격'; position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%); color:#7d8796; font-size:11px; letter-spacing:.04em; pointer-events:none; }
+    .arena .lane:first-child.field-empty::after { content:'비어 있음 · 클릭하여 영웅 직접 공격'; position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%); color:#7d8796; font-size:11px; letter-spacing:.04em; pointer-events:none; }
     .duel-hud .player { flex-direction:row-reverse; text-align:right; }
     .duel-hud > .enemy,.duel-hud > .player { width:100%; min-width:0; }
     /* 체력바 위 설명줄: 내 쪽은 손패 수·덱 칩을 실시간 표시. 양쪽 체력바 높이가 어긋나지 않게 줄 높이를 맞춘다 */
