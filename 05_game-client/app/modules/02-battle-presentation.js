@@ -104,12 +104,14 @@
         if(!node.isConnected)return;
         const r=node.getBoundingClientRect(),ring=document.createElement('div');
         ring.className='spell-target-ring ult';
+        /* 링이 사라지기 전에 대상 카드도 함께 번쩍여, 어느 카드가 영향을 받는지 링 밖에서도 읽히게 한다. */
+        node.classList.add('ult-affected');setTimeout(()=>node.classList.remove('ult-affected'),combatMs(1800));
         ring.style.left=(r.left-7)+'px';ring.style.top=(r.top-7)+'px';
         ring.style.width=(r.width+14)+'px';ring.style.height=(r.height+14)+'px';
         if(color)ring.style.setProperty('--st-color',color);
         if(label)ring.setAttribute('data-label',label);
         document.body.appendChild(ring);
-        setTimeout(()=>ring.remove(),combatMs(900));
+        setTimeout(()=>ring.remove(),combatMs(1800));
       },i*combatMs(110)));
     }
     function markSpellTargets(units,label,color){

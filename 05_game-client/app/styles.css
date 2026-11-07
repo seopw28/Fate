@@ -1854,8 +1854,12 @@
     .effect-narration.ultimate { border-color:#d9b25f; border-left-color:#ffd874; background:linear-gradient(100deg,#241a0bf7,#141020f4); box-shadow:0 18px 55px #000d,0 0 38px #ffc65055; }
     .effect-narration.ultimate small { color:#ffd874; }
     .effect-narration.ultimate strong { word-break:keep-all; }
-    .spell-target-ring.ult { border-width:4px; animation-duration:.9s; }
-    .spell-target-ring.ult::after { font-size:12px; max-width:190px; }
+    .spell-target-ring.ult { border-width:4px; animation-duration:1.8s; }
+    /* 궁극기 설명을 글로 반복하는 대신, 영향을 받는 카드를 직접 밝혀 동작 원리를 눈으로 보여준다. */
+    .unit.ult-affected, .avatar.ult-affected { animation:ult-affected-pulse .6s ease-in-out 3; }
+    @keyframes ult-affected-pulse { 0%,100%{ filter:brightness(1); } 45%{ filter:brightness(1.45) saturate(1.2); box-shadow:0 0 0 2px #ffd46baa,0 0 26px #ffd46b77; } }
+    @media(prefers-reduced-motion:reduce){ .unit.ult-affected,.avatar.ult-affected{ animation:none; filter:brightness(1.25); } }
+    .spell-target-ring.ult::after { font-size:12px; max-width:none; width:max-content; max-width:min(300px,42vw); word-break:keep-all; line-height:1.35; }
 
     /* 카드 이동 연출 (2026-11-07)
        효과로 치워지는 카드가 그냥 사라지면 "마법 때문에 움직였다"는 인지가 안 된다.

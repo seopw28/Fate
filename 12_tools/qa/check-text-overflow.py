@@ -120,9 +120,16 @@ def main():
                 try:
                     pg.evaluate(setup)
                 except Exception as e:
-                    prep_fails += 1
-                    print(f"[{w}x{h}] 상태 '{name}' 준비 실패 (검사 못 함): {str(e)[:120]}")
-                    continue
+                    # 한 상태에서 컨텍스트가 파괴되면(해시 변경 등) 이후 상태가 연쇄로 무너진다.
+                    # 페이지를 다시 띄우고 한 번만 재시도해 연쇄 실패를 끊는다.
+                    try:
+                        pg.goto(URL); pg.wait_for_timeout(1200)
+                        pg.evaluate("document.fonts.ready")
+                        pg.evaluate(setup)
+                    except Exception as e2:
+                        prep_fails += 1
+                        print(f"[{w}x{h}] 상태 '{name}' 준비 실패 (검사 못 함): {str(e2)[:120]}")
+                        continue
                 pg.wait_for_timeout(150)
                 res = pg.evaluate(JS)
                 for r in res:
