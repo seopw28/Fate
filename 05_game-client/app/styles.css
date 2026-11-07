@@ -162,7 +162,9 @@
     .impact-ray { position:fixed; z-index:4; width:var(--ray-length); height:3px; border-radius:99px; transform-origin:left center; transform:rotate(var(--ray-angle)) scaleX(.05); pointer-events:none; background:linear-gradient(90deg,#fff,var(--fx-color) 28%,transparent); box-shadow:0 0 8px var(--fx-color); animation:ray-out .58s cubic-bezier(.1,.7,.2,1) forwards; }
     .particle.shard { position:fixed; z-index:5; width:var(--size); height:3px; border-radius:99px; pointer-events:none; transform-origin:left center; background:linear-gradient(90deg,#fff,var(--fx-color)); box-shadow:0 0 8px var(--fx-color); animation:shard-out var(--duration) cubic-bezier(.12,.6,.25,1) forwards; }
     .element-wisp { position:fixed; z-index:4; width:var(--size); height:var(--size); margin:calc(var(--size) / -2); border:2px solid var(--fx-color); border-radius:50%; pointer-events:none; filter:blur(.3px) drop-shadow(0 0 5px var(--fx-color)); animation:wisp-rise var(--duration) ease-out forwards; }
-    .unit.hit-react,.avatar.hit-react { animation:target-hit .68s cubic-bezier(.16,.84,.28,1) both; transform-origin:center; }
+    /* 0.68초는 밀림이 화면에 오래 남아 렉처럼 느껴졌다. 절반(0.34초)으로 줄이고
+       튀어나가는 구간을 앞쪽에 몰아 '탁 밀리고 곧 복귀'로 읽히게 한다 (2026-11-07) */
+    .unit.hit-react,.avatar.hit-react { animation:target-hit .34s cubic-bezier(.2,.9,.25,1) both; transform-origin:center; }
     .unit.field-attacker{z-index:7;filter:brightness(1.16) saturate(1.18);will-change:transform}.unit.field-target,.avatar.field-target{z-index:6;box-shadow:0 0 0 3px var(--target-color,#efca78),0 0 30px color-mix(in srgb,var(--target-color,#efca78) 58%,transparent);will-change:transform}/* 평타 궤적: 전면 컷인을 걷어낸 자리를 메우는 주연출. --hit(0~1, 피해 비중)에 따라
    두께·발광·잔상이 함께 커져 '주고받는 수치'가 화면에서 읽히게 한다 (2026-11-07) */
     .field-attack-line{position:fixed;z-index:5;height:calc(3px + 5px*var(--hit,.3));pointer-events:none;transform-origin:0 50%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--attack-color),#fff,var(--attack-color),transparent);filter:drop-shadow(0 0 calc(7px + 14px*var(--hit,.3)) var(--attack-color)) saturate(calc(1 + .6*var(--hit,.3)));animation:field-line calc(.48s - .12s*var(--hit,.3)) cubic-bezier(.12,.85,.25,1) both}
@@ -224,13 +226,14 @@
        --knock-x/y는 impact()가 피격 시점마다 대상 기준으로 확정해 넣는다(세로 부호 포함).
        평타·반격은 fieldAttack이 공격자→대상 벡터로 먼저 넣은 값을 쓴다.
        아래 fallback은 두 경로가 모두 건너뛰어진 경우에만 쓰이므로 세로 성분을 0으로 두어
-       '항상 위로 솟는' 잘못된 방향을 만들지 않는다. 밀려나는 구간을 길게 잡고 되돌아오는 길을 더 느리게 해 무게를 남긴다 (2026-11-07) */
+       '항상 위로 솟는' 잘못된 방향을 만들지 않는다.
+       튀어나가는 구간(26%)을 앞쪽에 몰아 타격을 또렷하게 하고, 복귀는 그 뒤 짧게 끝낸다 (2026-11-07) */
     @keyframes target-hit {
       0%{transform:translate(0) scale(1);filter:brightness(1)}
-      16%{transform:translate(calc(var(--knock-x,6px)*.55),calc(var(--knock-y,0px)*.55)) scale(.955);filter:brightness(2.15) saturate(1.4)}
-      38%{transform:translate(var(--knock-x,6px),var(--knock-y,0px)) scale(.975);filter:brightness(1.5) saturate(1.2)}
-      62%{transform:translate(calc(var(--knock-x,6px)*.46),calc(var(--knock-y,0px)*.46)) scale(1.02);filter:brightness(1.22)}
-      82%{transform:translate(calc(var(--knock-x,6px)*.14),calc(var(--knock-y,0px)*.14)) scale(1.005)}
+      12%{transform:translate(calc(var(--knock-x,6px)*.62),calc(var(--knock-y,0px)*.62)) scale(.95);filter:brightness(2.15) saturate(1.4)}
+      26%{transform:translate(var(--knock-x,6px),var(--knock-y,0px)) scale(.975);filter:brightness(1.5) saturate(1.2)}
+      58%{transform:translate(calc(var(--knock-x,6px)*.34),calc(var(--knock-y,0px)*.34)) scale(1.02);filter:brightness(1.2)}
+      80%{transform:translate(calc(var(--knock-x,6px)*.08),calc(var(--knock-y,0px)*.08)) scale(1.004)}
       100%{transform:translate(0) scale(1);filter:brightness(1)}
     }
     @media(prefers-reduced-motion:reduce){ .impact-ray,.particle.shard,.element-wisp,.asset-fx,.attack-trail{display:none}.arena.impact,.unit.hit-react,.avatar.hit-react{animation:none}.shockwave{animation-duration:.18s}.screen-flash{animation-duration:.18s} }

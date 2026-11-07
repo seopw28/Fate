@@ -12,20 +12,15 @@
     sfx=function(kind,variant='neutral',strength=3){if(soundOn&&sfxIsMuted(kind,variant))return;if(kind==='hit'&&soundOn){fateSfx.playHit(variant,strength,hitPan);return;}if(soundOn&&(kind==='frost-cast'||kind==='frost-shatter')&&fateSfx.playFrost(kind==='frost-cast'?'cast':'shatter'))return;return sfxBeforeVariety(kind,variant,strength);};
     function impact(target,damage,element='fire'){
       hitPan=panFor(target);sfx('hit',element,damage); const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches; const color=impactPalette[element]||impactPalette.fire;const hero=target.classList.contains('avatar');if(hero)heroHealthImpact(target,damage);/* 영웅 직접 피해: 체력바·화면 테두리에 더해, 아바타 자리에 오라 타격 이펙트를 작게 낸다(화면 전체 번쩍임·어둡힘·필드 흔들림은 생략) */ if(!hero){const arena=document.querySelector('.arena'); arena.classList.remove('impact'); void arena.offsetWidth; arena.classList.add('impact');slowCombatAnimations(arena);}const r=target.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
-      /* 밀려나는 방향은 '맞은 쪽이 누구인지'가 정한다 — 내 카드는 아래로, 적 카드는 위로.
-         fieldAttack(평타·반격)은 공격자→대상 벡터로 --knock-x/y를 미리 넣지만, 마법·화상·광역·사망유발
-         피해는 damageUnit에서 바로 impact로 들어와 그 좌표가 없었다. 그래서 (1) 한 번도 평타를 안 맞은
-         카드는 CSS 폴백 -10px으로 '항상 위'로 솟고 (2) 전에 맞았던 카드는 그때의 값이 그대로 남아
-         엉뚱한 방향으로 튀었다. 여기서 피격 시점마다 대상 기준으로 다시 확정해 두 경우를 모두 없앤다.
-         아레나는 적 레인이 위 / 내 소환존이 아래이므로 내 카드(+)·적 카드(−)로 부호가 갈린다.
-         영웅 아바타도 같은 규칙을 따른다 (2026-11-07) */
-      {const mine=!!target.closest('.summon-zone')||!!target.closest('.player'),
-             dir=mine?1:-1,
-             weight=Math.max(0,Math.min(1,(Number(damage)||0)/12)),
-             reach=16+38*weight;
-       if(!target.style.getPropertyValue('--knock-src')||target.style.getPropertyValue('--knock-src')!=='field'){
-         target.style.setProperty('--knock-x','0px');
-         target.style.setProperty('--knock-y',(dir*reach*1.5).toFixed(1)+'px');}
+      /* 밀림은 '때린 몸이 있는 피해'에만 준다.
+         fieldAttack(평타·반격)은 공격자→대상 벡터로 --knock-x/y를 미리 넣는다. 반면 마법·화상·광역·
+         사망유발 피해는 damageUnit에서 바로 impact로 들어와 그 좌표가 없고, 예전에는 (1) 값이 없으면
+         CSS 폴백으로 '항상 위'로 솟고 (2) 전에 맞았던 카드는 그때 값이 남아 엉뚱한 방향으로 튀었다.
+         마법·함정은 애초에 밀어낼 방향이 없으니 방향을 만들지 않고 밀림을 0으로 지운다 (2026-11-07) */
+      {/* 평타·반격(fieldAttack)만 --knock-src=field를 남기므로 그것이 근접 타격의 유일한 표식이다.
+          밀림이 없어도 번쩍임·흔들림·파편으로 피격은 충분히 읽힌다. */
+       const melee=target.style.getPropertyValue('--knock-src')==='field';
+       if(!melee){target.style.setProperty('--knock-x','0px');target.style.setProperty('--knock-y','0px');}
        target.style.removeProperty('--knock-src');}
       /* 평타 돌진·반동은 element.animate()(WAAPI)로 transform을 돌린다. WAAPI는 CSS 애니메이션보다
          우선순위가 높아, 그게 아직 돌고 있으면 hit-react(CSS target-hit)가 transform을 전혀 못 잡는다.
@@ -37,7 +32,7 @@
         let touchesTransform=false;
         try{touchesTransform=(anim.effect?.getKeyframes()||[]).some(frame=>'transform' in frame);}catch(e){}
         if(touchesTransform)try{anim.cancel();}catch(e){}});
-      target.classList.remove('hit-react'); void target.offsetWidth; target.classList.add('hit-react');slowCombatAnimations(target);setTimeout(()=>target.classList.remove('hit-react'),combatMs(700));/* 밀려났다 돌아오는 길(0.68초)을 끝까지 보여준 뒤 해제한다 */
+      target.classList.remove('hit-react'); void target.offsetWidth; target.classList.add('hit-react');slowCombatAnimations(target);setTimeout(()=>target.classList.remove('hit-react'),combatMs(360));/* 밀려났다 돌아오는 길(0.34초)을 끝까지 보여준 뒤 해제한다. 애니메이션보다 길게 잡으면 다 끝난 카드가 계속 점유돼 렉처럼 보인다 */
       if(!hero){const vignette=document.createElement('div'); vignette.className='impact-vignette'; vignette.style.setProperty('--x',x+'px'); vignette.style.setProperty('--y',y+'px'); document.body.appendChild(vignette);slowCombatAnimations(vignette);setTimeout(()=>vignette.remove(),combatMs(700));
       const flash=document.createElement('div'); flash.className='fx screen-flash'; flash.style.background='radial-gradient(circle at '+x+'px '+y+'px,#fff9 0, '+color+'44 13%,transparent 44%)'; document.body.appendChild(flash);slowCombatAnimations(flash);setTimeout(()=>flash.remove(),combatMs(500));}
       const core=addCombatLayer('impact-core',x,y,color,520); addCombatLayer('shockwave',x,y,color,800); addCombatLayer('shockwave secondary',x,y,color,900);

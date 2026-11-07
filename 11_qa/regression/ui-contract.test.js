@@ -299,25 +299,32 @@ test('피격 카드는 때린 방향 그대로 밀려나고, 밀린 구간이 �
   assert.ok(html.includes("vy=Math.sign(uy||-1)*Math.max(Math.abs(uy),.62)"), '세로 밀림 크기에 하한이 있어야 한다(대각 교전에서 무게 유지)');
   assert.ok(html.includes("target.style.setProperty('--knock-x',(ux*reach*.55).toFixed(1)+'px')"), '가로 밀림은 실제 공격 각도를 따라야 한다');
   assert.ok(html.includes('reach=16+38*hitWeight'), '밀리는 거리가 피해량에 비례해야 한다');
-  // 밀려난 구간을 길게 잡고 되돌아오는 길을 느리게 둔다.
-  assert.ok(html.includes('animation:target-hit .68s'), '피격 반응이 충분히 길어야 한다');
-  assert.ok(html.includes("setTimeout(()=>target.classList.remove('hit-react'),combatMs(700))"), '복귀 구간이 잘리면 안 된다');
+  // 0.68초는 밀림이 화면에 오래 남아 렉처럼 느껴졌다. 빠르게 밀리고 곧 복귀해야 한다.
+  const hitDur = html.match(/animation:target-hit ([\d.]+)s/);
+  assert.ok(hitDur, '피격 반응 길이가 지정되어야 한다');
+  assert.ok(Number(hitDur[1]) <= .4, `피격 반응이 길면 렉처럼 느껴진다 (현재 ${hitDur[1]}s)`);
+  // 클래스 해제는 애니메이션보다 길어야 복귀가 안 잘리지만, 지나치게 길면 끝난 카드가 계속 점유된다.
+  const releaseMs = Number(html.match(/classList\.remove\('hit-react'\),combatMs\((\d+)\)/)[1]);
+  assert.ok(releaseMs >= Number(hitDur[1]) * 1000, '복귀 구간이 잘리면 안 된다');
+  assert.ok(releaseMs <= Number(hitDur[1]) * 1000 + 120, '애니메이션이 끝난 뒤 오래 붙잡고 있으면 안 된다');
   // 최대 밀림 지점은 --knock-y를 그대로 써야 한다. fallback 값을 리터럴로 박으면 폴백을 손볼 때마다 깨지므로
   // 세로 성분이 변수에서 온다는 것과, 폴백이 '항상 위로 솟는' 음수가 아니라는 것만 본다.
-  const knockPeak = html.match(/38%\{transform:translate\(var\(--knock-x[^)]*\),var\(--knock-y,([^)]*)\)\)/);
+  // 최대 밀림 지점은 배수 없이 --knock-x/y를 그대로 쓰는 키프레임이다. 퍼센트 위치는 완급 조절로 바뀔 수 있으니 고정하지 않는다.
+  const knockPeak = html.match(/\d+%\{transform:translate\(var\(--knock-x,[^)]*\),var\(--knock-y,([^)]*)\)\)/);
   assert.ok(knockPeak, '최대 밀림 지점이 있어야 한다');
   assert.ok(!knockPeak[1].trim().startsWith('-'), '세로 폴백이 음수면 공격자와 무관하게 항상 위로 솟는다 (방향은 impact()가 대상 기준으로 정한다)');
 });
 
-test('밀림 방향은 평타가 아닌 피해(마법·화상·광역)에서도 맞은 쪽 기준으로 정해진다', () => {
+test('마법·함정 피해는 밀어낼 방향이 없으므로 밀리지 않는다', () => {
   // 마법·화상·광역은 fieldAttack을 거치지 않고 damageUnit에서 바로 impact로 들어온다.
-  // 그래서 예전에는 --knock-y가 아예 없어 폴백으로 '항상 위'로 솟거나, 직전 평타의 값이 남아 엉뚱하게 튀었다.
-  assert.ok(html.includes("const mine=!!target.closest('.summon-zone')||!!target.closest('.player')"), '맞은 쪽 소속으로 부호를 정해야 한다');
-  assert.ok(html.includes('dir=mine?1:-1'), '내 카드는 아래(+), 적 카드는 위(-)');
-  // 평타·반격은 실제 공격자 좌표가 있으니 그 값을 우선한다.
-  assert.ok(html.includes("target.style.setProperty('--knock-src','field')"), 'fieldAttack은 자기 값이 더 정확하다고 표시한다');
-  assert.ok(html.includes("target.style.getPropertyValue('--knock-src')!=='field'"), '표시가 있으면 측면 기준으로 덮어쓰지 않는다');
-  assert.ok(html.includes("target.style.removeProperty('--knock-src')"), '표시는 1회용이라 읽고 지워야 한다');
+  // 예전에는 --knock-y가 없어 폴백으로 '항상 위'로 솟거나 직전 평타 값이 남아 엉뚱하게 튀었다.
+  // 때린 몸이 없는 피해에 방향을 억지로 만들면 '어디서 밀렸지?'가 되므로 아예 밀지 않는다.
+  // 마법·함정은 때린 몸이 없어 밀어낼 방향 자체가 없다 → 밀림 없이 번쩍임·흔들림만으로 알린다.
+  assert.ok(html.includes("const melee=target.style.getPropertyValue('--knock-src')==='field'"), '근접 타격인지 구분해야 한다');
+  assert.ok(html.includes("if(!melee){target.style.setProperty('--knock-x','0px');target.style.setProperty('--knock-y','0px');}"), '마법·함정은 밀림을 0으로 둬야 한다');
+  // 평타·반격만 실제 공격자 좌표를 남긴다. 그 표식이 근접 타격의 유일한 근거다.
+  assert.ok(html.includes("target.style.setProperty('--knock-src','field')"), 'fieldAttack만 근접 표식을 남긴다');
+  assert.ok(html.includes("target.style.removeProperty('--knock-src')"), '표식은 1회용이라 읽고 지워야 한다');
 });
 
 test('피격 모션은 돌진·반동 WAAPI에 먹히지 않는다', () => {
