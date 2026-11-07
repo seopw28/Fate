@@ -163,6 +163,17 @@
     .element-wisp { position:fixed; z-index:4; width:var(--size); height:var(--size); margin:calc(var(--size) / -2); border:2px solid var(--fx-color); border-radius:50%; pointer-events:none; filter:blur(.3px) drop-shadow(0 0 5px var(--fx-color)); animation:wisp-rise var(--duration) ease-out forwards; }
     /* 0.68초는 밀림이 화면에 오래 남아 렉처럼 느껴졌다. 절반(0.34초)으로 줄이고
        튀어나가는 구간을 앞쪽에 몰아 '탁 밀리고 곧 복귀'로 읽히게 한다 (2026-11-07) */
+/* 카드 사망: 밑도끝도 없이 사라지지 않도록 짧은 소멸 연출을 준다. 회색으로 식으면서
+       살짝 주저앉고 흐려진다. 전투 템포를 해치지 않게 0.42초로 짧게 끝낸다 (2026-11-07) */
+    .unit.unit-dying{pointer-events:none;z-index:4;animation:unit-death .42s cubic-bezier(.3,.1,.5,1) both}
+    .unit.unit-dying .stats,.unit.unit-dying .cost{opacity:.3}
+    @keyframes unit-death{
+      0%{opacity:1;transform:scale(1) translateY(0);filter:none}
+      22%{opacity:1;transform:scale(1.04) translateY(-3px);filter:brightness(1.9) saturate(.5)}
+      55%{opacity:.62;transform:scale(.95) translateY(4px);filter:brightness(.7) grayscale(.75)}
+      100%{opacity:0;transform:scale(.86) translateY(11px);filter:brightness(.4) grayscale(1)}
+    }
+    @media(prefers-reduced-motion:reduce){ .unit.unit-dying{animation-duration:.2s} }
     .unit.hit-react,.avatar.hit-react { animation:target-hit .34s cubic-bezier(.2,.9,.25,1) both; transform-origin:center; }
     .unit.field-attacker{z-index:7;filter:brightness(1.16) saturate(1.18);will-change:transform}.unit.field-target,.avatar.field-target{z-index:6;box-shadow:0 0 0 3px var(--target-color,#efca78),0 0 30px color-mix(in srgb,var(--target-color,#efca78) 58%,transparent);will-change:transform}/* 평타 궤적: 전면 컷인을 걷어낸 자리를 메우는 주연출. --hit(0~1, 피해 비중)에 따라
    두께·발광·잔상이 함께 커져 '주고받는 수치'가 화면에서 읽히게 한다 (2026-11-07) */

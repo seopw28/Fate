@@ -1,3 +1,20 @@
+    /* 카드 사망 연출: 전장 카드가 사라지는 경로가 코드 곳곳에 흩어져 있어(직접 remove 37곳)
+       호출부마다 연출을 붙이면 반드시 빠지는 곳이 생긴다. 제거 자체를 한 번 가로채서
+       짧은 소멸 애니메이션을 재생한 뒤 실제로 지운다. 전장 밖 요소나 이미 연출 중인
+       카드는 그대로 통과시킨다 (2026-11-07) */
+    const UNIT_DEATH_MS=420;
+    (()=>{
+      const nativeRemove=Element.prototype.remove;
+      Element.prototype.remove=function(){
+        const isFieldUnit=this instanceof Element&&this.classList?.contains('unit')
+          &&this.isConnected&&(this.closest('.summon-zone')||this.closest('.arena .lane'));
+        if(!isFieldUnit||this.dataset.dyingFx==='true')return nativeRemove.call(this);
+        this.dataset.dyingFx='true';
+        this.classList.add('unit-dying');
+        setTimeout(()=>nativeRemove.call(this),UNIT_DEATH_MS);
+      };
+    })();
+
     /* 피격·평타 효과음 변주: 오라 × 피해 강도 × 무작위 변주 (Kenney CC0 샘플 + 합성음, 05_game-client/battle/sfx-variety.js) */
     let hitPan=0;
     /* 스킬 고유 소리만 나게: 번개 계열(아주르 썬더폴)에는 번개만, 빙결 계열(프로스트 노바·빙결 사슬)에는 빙결만.

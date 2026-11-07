@@ -367,3 +367,16 @@ test('두 번째 궁극기는 최초 사용 후 6턴이 지나야 세팅할 수 
   assert.ok(html.includes("(setup&&!ultimateUsed&&!settingLock?'':'disabled')"), '잠긴 동안 버튼이 비활성이어야 한다');
   assert.ok(html.includes("settingLock?'최초 궁극기 이후 '+ULTIMATE_RESET_TURNS+'턴이 지나야 다시 세팅할 수 있습니다'"), '남은 대기를 안내해야 한다');
 });
+
+test('죽는 카드는 짧은 소멸 연출을 거친 뒤 사라진다', () => {
+  // 전장 카드가 사라지는 경로가 코드 곳곳에 흩어져 있어, 호출부마다 붙이면 반드시 빠지는 곳이 생긴다.
+  assert.ok(html.includes('const UNIT_DEATH_MS=420'), '소멸 연출 길이 상수가 있어야 한다');
+  assert.ok(html.includes('Element.prototype.remove=function()'), '제거 경로를 한 곳에서 가로채야 한다');
+  assert.ok(html.includes("this.classList.add('unit-dying')"), '소멸 연출 클래스를 붙여야 한다');
+  assert.ok(html.includes('setTimeout(()=>nativeRemove.call(this),UNIT_DEATH_MS)'), '연출이 끝난 뒤 실제로 지워야 한다');
+  // 전장 밖 요소와 이미 연출 중인 카드는 그대로 통과시켜야 무한 루프·지연이 없다.
+  assert.ok(html.includes("if(!isFieldUnit||this.dataset.dyingFx==='true')return nativeRemove.call(this)"), '전장 밖·중복 호출은 즉시 제거해야 한다');
+  assert.ok(html.includes("this.closest('.summon-zone')||this.closest('.arena .lane')"), '전장 카드만 대상으로 삼아야 한다');
+  assert.ok(html.includes('@keyframes unit-death'), '소멸 애니메이션이 있어야 한다');
+  assert.ok(html.includes('.unit.unit-dying{'), '소멸 중 카드 스타일이 있어야 한다');
+});
