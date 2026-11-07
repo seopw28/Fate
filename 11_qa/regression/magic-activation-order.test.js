@@ -66,11 +66,14 @@ test('상대 함정은 세트 시 정체를 숨기고 발동 시에만 공개한
   assert.ok(!html.includes("(card.trap?'함정':'마법')+' <strong>'+card.name+'</strong>을(를) 세트했습니다."));
 });
 
-test('마법 슬롯 2칸이 차면 손패 마법과 함정을 즉시 비활성 시각화한다', () => {
+test('마법 2칸과 함정 1칸을 종류별로 고정하고, 찬 종류의 손패 카드만 비활성 시각화한다', () => {
+  assert.ok(html.includes("const MAGIC_SLOT_KINDS=['active','active','reaction'];"), '마법 전용 2칸 + 함정 전용 1칸');
+  assert.ok(html.includes('id="magic-slot-2"'), '세 번째 칸(함정)이 화면에 있어야 한다');
+  assert.ok(html.includes('slotIndex=freeMagicSlot(kind)'), '세트는 카드 종류에 맞는 빈 칸에만 들어가야 한다');
   assert.ok(html.includes('.command-rail .card.magic-slot-blocked'), '비활성 카드 스타일이 있어야 한다');
   assert.ok(html.includes('function syncMagicHandSlotAvailability()'), '손패 비활성 동기화 함수가 있어야 한다');
   const sync = html.slice(html.indexOf('function syncMagicHandSlotAvailability()'), html.indexOf('const renderMagicSlotsBeforeHandBlock'));
-  assert.ok(sync.includes('const full = setMagicCards.length >= 2'), '슬롯 2칸이 모두 찼을 때만 막아야 한다');
+  assert.ok(sync.includes("const fullByKind = {active: freeMagicSlot('active') < 0, reaction: freeMagicSlot('reaction') < 0}"), '카드 종류별로 칸이 모두 찼을 때만 막아야 한다');
   assert.ok(sync.includes("cardCategory(card)!=='spell'"), '캐릭터 카드는 비활성 대상이 아니어야 한다');
   assert.ok(sync.includes("card.classList.toggle('magic-slot-blocked', full)"), '슬롯이 비면 비활성 표시를 해제해야 한다');
   assert.ok(sync.includes("card.setAttribute('aria-disabled','true')"), '보조 기술에도 비활성을 알려야 한다');

@@ -442,6 +442,129 @@
     },
     {
       "schemaVersion": 1,
+      "cardId": "core.ember-snare",
+      "nameKey": "card.ember_snare",
+      "displayName": "불씨 덫",
+      "cardType": "trap",
+      "cost": 1,
+      "rarity": "common",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "ember_snare",
+          "trigger": "on_enemy_summon",
+          "target": "enemy",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "traps/generated/ambush-mine.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon",
+          "craft"
+        ],
+        "characterId": null
+      },
+      "aura": "fire"
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.steel-guard",
+      "nameKey": "card.steel_guard",
+      "displayName": "강철 방패",
+      "cardType": "trap",
+      "cost": 2,
+      "rarity": "common",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "steel_guard",
+          "trigger": "on_hero_attacked",
+          "target": "none",
+          "duration": "instant"
+        }
+      ],
+      "assetId": "traps/generated/counter-current.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon",
+          "craft"
+        ],
+        "characterId": null
+      },
+      "aura": "metal"
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.swamp-bind",
+      "nameKey": "card.swamp_bind",
+      "displayName": "늪의 속박",
+      "cardType": "trap",
+      "cost": 2,
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "swamp_bind",
+          "trigger": "on_enemy_summon",
+          "target": "enemy",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "traps/generated/summon-nullifier.png",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon",
+          "craft"
+        ],
+        "characterId": null
+      },
+      "aura": "earth"
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "core.rally-cry",
+      "nameKey": "card.rally_cry",
+      "displayName": "결속의 함성",
+      "cardType": "trap",
+      "cost": 3,
+      "rarity": "rare",
+      "stats": null,
+      "effects": [
+        {
+          "effectId": "rally_cry",
+          "trigger": "on_field_disadvantage",
+          "target": "all_allies",
+          "amount": 2,
+          "condition": {
+            "kind": "field_count",
+            "enemyLeadAtLeast": 3
+          },
+          "duration": "match"
+        }
+      ],
+      "assetId": "traps/generated/last-stand.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "starter",
+          "summon",
+          "craft"
+        ],
+        "characterId": null
+      },
+      "aura": "fire"
+    },
+    {
+      "schemaVersion": 1,
       "cardId": "tower.meteor-fall",
       "displayName": "메테오 폴",
       "nameKey": "card.tower_meteor_fall",

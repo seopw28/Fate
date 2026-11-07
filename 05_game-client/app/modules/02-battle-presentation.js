@@ -66,7 +66,7 @@
     }
     const impactBeforeCombatTiming=impact;
     impact=function(...args){if(combatQueueHasNext){const target=args[0],tail=target?.classList?.contains('avatar')?COMBAT_TIMING.heroImpactTail:COMBAT_TIMING.cardImpactTail;markCombatBusy(combatMs(tail));}return impactBeforeCombatTiming(...args);};
-    function resolveCombat(done){const attackers=[...document.querySelectorAll('.summon-zone .unit:not(.exhausted)')],enemyLane=document.querySelector('.arena .lane:first-child'),enemyHud=document.querySelector('.duel-hud .enemy');if(!attackers.length){writeLog('이번 턴에 공격 가능한 챔프가 없습니다.');done?.();return;}writeLog('<strong>턴 종료 공격:</strong> 공격 가능한 챔프 '+attackers.length+'명이 자동으로 진격합니다.');runCombatQueue(attackers,unit=>{if(document.querySelector('.result').classList.contains('show'))return;const target=enemyLane.querySelector(':scope > .unit:not([data-destroyed="true"])');unit.classList.remove('exhausted');selectUnit(unit,true);if(target)attack(target,true);else attackFace(enemyHud,true);},done);}
+    function resolveCombat(done){const attackers=[...document.querySelectorAll('.summon-zone .unit:not(.exhausted)')],enemyLane=document.querySelector('.arena .lane:first-child'),enemyHud=document.querySelector('.duel-hud .enemy');if(!attackers.length){writeLog('이번 턴에 공격 가능한 챔프가 없습니다.');done?.();return;}writeLog('<strong>턴 종료 공격:</strong> 공격 가능한 챔프 '+attackers.length+'명이 자동으로 진격합니다.');runCombatQueue(attackers,unit=>{if(document.querySelector('.result').classList.contains('show'))return;const target=enemyLane.querySelector(':scope > .unit:not([data-destroyed="true"])');if(consumeSnare(unit))return;unit.classList.remove('exhausted');selectUnit(unit,true);if(target)attack(target,true);else attackFace(enemyHud,true);},done);}
     function startPlayerTurn(button){ if(resultPending||document.querySelector('.result').classList.contains('show'))return;setBattlePhase('setup');sfx('turn-start');absoluteDefense=false;turnNumber++;maxMana=Math.min(MANA_CAP,maxMana+1);mana=maxMana;bloodManaUses=0;drawActionsUsed=0;combo=0;lastAttackElement=null;drawCard();/* 최후의 저항: 내 턴 시작에 덱에서 1장 더 받는다(손패 8장 제한, 덱이 비면 생략) */if(desperateActive('player')&&deck.length&&document.querySelectorAll('.hand .card').length<8){drawCard();writeLog('<strong>최후의 저항:</strong> 덱에서 카드를 1장 더 받았습니다. (내 체력 '+playerHp+' / '+HERO_MAX_HP+')');}document.querySelectorAll('.summon-zone .unit').forEach(u=>{u.classList.remove('exhausted');u.dataset.attacked='0';});updateMana();updateSynergyHud();triggerTrap('field_state');resolveNextFieldMagic();button.textContent='턴 종료 · 마나 '+mana+' 보유';button.disabled=false;button.style.opacity='1';writeLog('<strong>새 필드</strong>가 시작되었습니다. 최대 마나가 '+maxMana+'로 증가했습니다.'); }
     /* 선공권: 체력 열세 → 필드 챔피언 수 열세 → 티어 열세 → 무작위 순으로 결정한다.
        라운드 순서는 [선공 → 후공]이며 endTurn()은 내 행동이 끝났을 때 내가 선공이었던 경우에만 상대 행동을 실행한다. */
@@ -263,7 +263,7 @@
     summonDropZone.addEventListener('dragstart',event=>{const unit=event.target.closest('.unit');if(!unit||battlePhase!=='setup'||unit.dataset.orderLocked==='true'){if(unit)event.preventDefault();return;}draggedFieldUnit=unit;fieldOrderDirty=false;unit.classList.add('field-dragging');summonDropZone.classList.add('reordering');event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',unit.querySelector('h4')?.textContent||'unit');});summonDropZone.addEventListener('dragover',event=>{if(!draggedFieldUnit)return;event.preventDefault();event.stopPropagation();const target=event.target.closest('.unit');if(target?.dataset.orderLocked==='true')return;if(!target||target===draggedFieldUnit){if(event.target===summonDropZone&&draggedFieldUnit!==summonDropZone.lastElementChild){summonDropZone.appendChild(draggedFieldUnit);fieldOrderDirty=true;}const locked=summonDropZone.querySelector(':scope > .unit[data-order-locked="true"]');if(locked&&summonDropZone.lastElementChild!==locked)summonDropZone.append(locked);return;}const rect=target.getBoundingClientRect(),after=event.clientX>rect.left+rect.width/2,next=after?target.nextSibling:target;if(next!==draggedFieldUnit){summonDropZone.insertBefore(draggedFieldUnit,next);fieldOrderDirty=true;}const locked=summonDropZone.querySelector(':scope > .unit[data-order-locked="true"]');if(locked&&summonDropZone.lastElementChild!==locked)summonDropZone.append(locked);});summonDropZone.addEventListener('drop',event=>{if(!draggedFieldUnit)return;event.preventDefault();event.stopPropagation();finishFieldReorder();});summonDropZone.addEventListener('dragend',finishFieldReorder);
     const enemyHudTarget=document.querySelector('.duel-hud .enemy'),enemyLaneTarget=document.querySelector('.arena .lane:first-child');enemyHudTarget.querySelector('.avatar').removeAttribute('onclick');enemyHudTarget.addEventListener('click',()=>attackFace(enemyHudTarget));function updateEnemyFieldTarget(){enemyLaneTarget.classList.toggle('field-empty',enemyLaneTarget.querySelectorAll('.unit').length===0);}enemyLaneTarget.addEventListener('click',event=>{if(enemyLaneTarget.querySelectorAll('.unit').length===0&&(event.target===enemyLaneTarget||event.target.classList.contains('lane-label')))attackFace(enemyHudTarget);});
     enemyHudTarget.addEventListener('click',event=>{const leftmost=enemyLaneTarget.querySelector(':scope > .unit:not([data-destroyed="true"])');if(leftmost){event.stopImmediatePropagation();attack(leftmost);}},true);
-    const magicSetup=document.createElement('div');magicSetup.className='magic-setting-panel';magicSetup.hidden=true;magicSetup.setAttribute('aria-label','마법카드 세팅');magicSetup.innerHTML='<div class="setting-title"><strong>마법카드 세팅</strong><span>다음 필드 발동</span></div><div class="set-zones"><button class="set-slot spell-slot" id="magic-slot-0" onclick="activateSetMagic(0)"><strong>세팅 1 · 비어 있음</strong><span class="slot-empty">마법카드 대기</span></button><button class="set-slot spell-slot" id="magic-slot-1" onclick="activateSetMagic(1)"><strong>세팅 2 · 비어 있음</strong><span class="slot-empty">마법카드 대기</span></button></div>';ultimatePanel.after(magicSetup);document.querySelector('.arena').appendChild(fieldActionDock);magicSetup.addEventListener('dragover',event=>{if(draggedUltimateCard&&cardCategory(draggedUltimateCard)==='spell'&&setMagicCards.length<2){event.preventDefault();event.dataTransfer.dropEffect='move';magicSetup.classList.add('drop-ready');}});magicSetup.addEventListener('dragleave',event=>{if(!magicSetup.contains(event.relatedTarget))magicSetup.classList.remove('drop-ready');});magicSetup.addEventListener('drop',event=>{event.preventDefault();const card=draggedUltimateCard;clearCardDropState();if(card&&cardCategory(card)==='spell')playCardByDrop(card);});syncSettingPanelVisibility();
+    const magicSetup=document.createElement('div');magicSetup.className='magic-setting-panel';magicSetup.hidden=true;magicSetup.setAttribute('aria-label','마법카드 세팅');magicSetup.innerHTML='<div class="setting-title"><strong>마법카드 세팅</strong><span>다음 필드 발동</span></div><div class="set-zones"><button class="set-slot spell-slot" id="magic-slot-0" onclick="activateSetMagic(0)"><strong>마법 1 · 비어 있음</strong><span class="slot-empty">마법카드 대기</span></button><button class="set-slot spell-slot" id="magic-slot-1" onclick="activateSetMagic(1)"><strong>마법 2 · 비어 있음</strong><span class="slot-empty">마법카드 대기</span></button><button class="set-slot trap-slot" id="magic-slot-2" onclick="activateSetMagic(2)"><strong>함정 · 비어 있음</strong><span class="slot-empty">함정카드 대기</span></button></div>';ultimatePanel.after(magicSetup);document.querySelector('.arena').appendChild(fieldActionDock);magicSetup.addEventListener('dragover',event=>{if(draggedUltimateCard&&cardCategory(draggedUltimateCard)==='spell'&&freeMagicSlot(magicKindOfCard(draggedUltimateCard))>=0){event.preventDefault();event.dataTransfer.dropEffect='move';magicSetup.classList.add('drop-ready');}});magicSetup.addEventListener('dragleave',event=>{if(!magicSetup.contains(event.relatedTarget))magicSetup.classList.remove('drop-ready');});magicSetup.addEventListener('drop',event=>{event.preventDefault();const card=draggedUltimateCard;clearCardDropState();if(card&&cardCategory(card)==='spell')playCardByDrop(card);});syncSettingPanelVisibility();
     const initialManaHud=document.createElement('div');initialManaHud.id='mana-hud';initialManaHud.className='mana-hud';document.querySelector('.stage-column').appendChild(initialManaHud);const surrenderAction=document.createElement('button');surrenderAction.id='surrender-action';surrenderAction.className='surrender-action';surrenderAction.textContent='기권';surrenderAction.title='전투 기권';surrenderAction.setAttribute('aria-label','전투 기권');surrenderAction.onclick=()=>surrenderBattle(surrenderAction);document.querySelector('.stage-column').appendChild(surrenderAction);renderMana();updateDrawAction();updateHandTabs();
     function stampNewUnits(){document.querySelectorAll('.arena .unit:not([data-deployed-turn])').forEach(unit=>{unit.dataset.deployedTurn=String(turnNumber);});}
     /* 수적 열세 컨셉: swarm-fury는 적 3/4/5/6장에서 공격 +1/+3/+7/+12로 가속, swarm-bulwark는 적 2장당 받는 피해 −1(최대 −3). */
@@ -511,10 +511,10 @@
     }
     function cancelSetMagic(index){
       if(battlePhase !== 'setup') return;
-      const magic = setMagicCards[index]; if(!magic) return;
+      const magic = magicInSlot(index); if(!magic) return;
       if(turnNumber >= magic.readyTurn){ writeLog('<strong>'+magic.name+'</strong>은(는) 이전 필드에 세트한 카드라 취소할 수 없습니다.'); return; }
       if(!returnCardToHand(magic.card)) return;
-      setMagicCards.splice(index, 1);
+      setMagicCards.splice(setMagicCards.indexOf(magic), 1);
       const refund = magic.refund || {mana:0, hp:0, blood:0};
       mana = Math.min(maxMana, mana + refund.mana);
       if(refund.hp&&!playerHeroHealingLocked()){ playerHp = Math.min(HERO_MAX_HP, playerHp + refund.hp); bloodManaUses = Math.max(0, bloodManaUses - refund.blood); document.querySelector('#player-health').style.width = (playerHp/HERO_MAX_HP*100)+'%'; }
@@ -531,8 +531,8 @@
     }
     function decorateCancelables(){
       const open = battlePhase === 'setup';
-      for(let i=0;i<2;i++){
-        const rack = document.querySelector('#magic-slot-'+i), magic = setMagicCards[i], ok = Boolean(open && magic && turnNumber < magic.readyTurn);
+      for(let i=0;i<MAGIC_SLOT_KINDS.length;i++){
+        const rack = document.querySelector('#magic-slot-'+i), magic = magicInSlot(i), ok = Boolean(open && magic && turnNumber < magic.readyTurn);
         if(!rack) continue;
         rack.draggable = ok; rack.title = ok ? CANCEL_HINT : '';
         if(ok && !rack.querySelector('.cancel-hint')) rack.insertAdjacentHTML('beforeend','<small class="cancel-hint">더블클릭 · 드래그로 취소</small>');
@@ -559,20 +559,23 @@
     stampNewUnits();renderMagicSlots();updateMana();updateSynergyHud();updateEnemyFieldTarget();updateFieldReorderState();updateCrackerHud();updateHeroHealth();setInterval(updateHeroHealth,100);
   
     /* ── 마법 세팅 UX: 세팅란을 누르면 '카드 고르기 모드'가 켜지고, 손패의 마법/함정 카드를 한 번 클릭하면 바로 세트된다 (궁극기 세팅과 동일한 방식) ── */
-    let magicArmed = false;
+    let magicArmed = false, magicArmedSlot = -1;
     const MAGIC_PICK_HINT = '세팅할 마법카드를 클릭하세요';
     function refreshMagicArming(){ renderMagicSlots(); document.querySelector('.hand')?.classList.toggle('magic-arming', magicArmed); if(magicArmed) document.querySelector('#hand-guide').textContent = MAGIC_PICK_HINT; }
     function disarmMagicSetting(){ if(!magicArmed) return; magicArmed = false; refreshMagicArming(); }
-    function armMagicSetting(){
+    function armMagicSetting(slot){
       if(battlePhase!=='setup') return;
       if(magicArmed){ disarmMagicSetting(); document.querySelector('#hand-guide').textContent='마법카드를 선택하세요'; return; }
-      if(setMagicCards.length>=2){ writeLog('마법 슬롯 2개가 모두 찼습니다. 세트된 마법을 발동하거나 취소한 뒤 다시 세트하세요.'); return; }
+      /* 누른 칸의 종류(마법/함정)로 고른다. 칸 지정 없이 부르면 빈 마법 칸, 없으면 빈 함정 칸을 쓴다. */
+      const kind = MAGIC_SLOT_KINDS[slot] || (freeMagicSlot('active')>=0 ? 'active' : 'reaction');
+      if(freeMagicSlot(kind)<0){ writeLog(magicSlotFullMessage(kind)+' 세트된 카드를 발동하거나 취소한 뒤 다시 세트하세요.'); return; }
       if(handFilter!=='spell') setHandFilter('spell');
-      if(!document.querySelector('.hand .card.spell-card, .hand .card.trap-card')){ writeLog('손패에 세팅할 마법카드가 없습니다.'); return; }
+      if(!document.querySelector(kind==='reaction' ? '.hand .card.trap-card' : '.hand .card.spell-card')){ writeLog(kind==='reaction' ? '손패에 세팅할 함정카드가 없습니다.' : '손패에 세팅할 마법카드가 없습니다.'); return; }
+      magicArmedSlot = freeMagicSlot(kind);
       magicArmed = true; sfx('ui-select'); refreshMagicArming();
     }
     const activateSetMagicBase = activateSetMagic;
-    activateSetMagic = function(index, automatic=false){ if(!automatic && !setMagicCards[index]){ armMagicSetting(); return; } return activateSetMagicBase(index, automatic); };
+    activateSetMagic = function(index, automatic=false){ if(!automatic && !magicInSlot(index)){ armMagicSetting(index); return; } return activateSetMagicBase(index, automatic); };
     const playCardBeforeMagicArm = playCard;
     playCard = function(card){
       const picking = magicArmed && battlePhase==='setup' && cardCategory(card)==='spell' && !card.classList.contains('selected');
@@ -588,16 +591,17 @@
     const renderMagicSlotsBase = renderMagicSlots;
     renderMagicSlots = function(){
       renderMagicSlotsBase();
-      for(let i=0;i<2;i++){ const rack=document.querySelector('#magic-slot-'+i); if(!rack||setMagicCards[i]) continue; const armed = magicArmed && i===setMagicCards.length; rack.classList.toggle('armed', armed);
-        rack.innerHTML = armed ? '<strong>세팅 '+(i+1)+' · 선택 중</strong><span>손패 카드를 클릭하세요</span>' : '<strong>세팅 '+(i+1)+' · 비어 있음</strong><span class="slot-empty">눌러서 카드 고르기</span>'; }
+      for(let i=0;i<MAGIC_SLOT_KINDS.length;i++){ const rack=document.querySelector('#magic-slot-'+i); if(!rack) continue; if(magicInSlot(i)){ rack.classList.remove('armed'); continue; } const armed = magicArmed && i===magicArmedSlot; rack.classList.toggle('armed', armed);
+        rack.innerHTML = armed ? '<strong>'+magicSlotLabel(i)+' · 선택 중</strong><span>손패 카드를 클릭하세요</span>' : '<strong>'+magicSlotLabel(i)+' · 비어 있음</strong><span class="slot-empty">눌러서 카드 고르기</span>'; }
     };
-    /* 마법 슬롯이 2칸 모두 차면 손패의 마법·함정 카드를 비활성 시각화한다. 슬롯이 비거나 손패가 다시 그려질 때 해제된다. */
+    /* 마법 칸 2개가 차면 손패의 마법 카드를, 함정 칸 1개가 차면 손패의 함정 카드를 비활성 시각화한다. 칸이 비거나 손패가 다시 그려질 때 해제된다. */
     function syncMagicHandSlotAvailability(){
-      const full = setMagicCards.length >= 2;
+      const fullByKind = {active: freeMagicSlot('active') < 0, reaction: freeMagicSlot('reaction') < 0};
       document.querySelectorAll('.hand .card').forEach(card=>{
         if(cardCategory(card)!=='spell'){ card.classList.remove('magic-slot-blocked'); return; }
+        const kind = magicKindOfCard(card), full = fullByKind[kind];
         card.classList.toggle('magic-slot-blocked', full);
-        if(full){ card.classList.remove('selected'); card.setAttribute('aria-disabled','true'); card.title='마법 슬롯 2/2 · 세트된 마법을 발동하거나 취소한 뒤 세팅할 수 있습니다'; }
+        if(full){ card.classList.remove('selected'); card.setAttribute('aria-disabled','true'); card.title=magicSlotFullMessage(kind)+' 세트된 카드를 발동하거나 취소한 뒤 세팅할 수 있습니다'; }
         else { card.removeAttribute('title'); if(!card.classList.contains('unaffordable')) card.setAttribute('aria-disabled','false'); }
       });
     }

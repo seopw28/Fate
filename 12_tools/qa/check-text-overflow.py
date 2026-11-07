@@ -82,6 +82,8 @@ STATES = [
     ("복수자 강림", "const u=document.querySelector('.summon-zone .unit'),p={name:'복수자 세리나',art:u?.dataset.art||u?.querySelector('img')?.src||'',el:'fire'};if(u){showAvengerArrival(p,{name:'최초 궁극기 사용자'},u);resolveAvengerArrivalDamage(p)}"),
     ("궁극기 세팅 모드", "ultimateState=null; ultimateUsed=false; battlePhase='setup'; setHandFilter('champion'); armUltimateSetting()"),
     ("마법 세팅 모드", "battlePhase='setup'; setHandFilter('spell'); armMagicSetting()"),
+    ("세팅 3칸 가득(마법 2 + 함정 1)", "const mk=(slot,kind,name)=>({slot,kind,name,effect:'',card:document.createElement('div'),readyTurn:turnNumber+3});setMagicCards.splice(0,setMagicCards.length,mk(0,'active','되돌리는 심판'),mk(1,'active','반격의 방벽'),mk(2,'reaction','결속의 함성'));renderMagicSlots()"),
+    ("세팅 칸 비우기", "setMagicCards.splice(0,setMagicCards.length);renderMagicSlots()"),
     ("선공권 배너", "showInitiativeBanner('enemy','체력 동일 · 필드 카드 3 < 6','체력이 같고 상대 전장 카드가 더 적으니','전장 카드 · 나 6 · 상대 3')"),
     ("대재앙 카드", "document.querySelector('.hand').appendChild(createRuntimeBattleCard('storm.great-ruin')); setHandFilter('spell')"),
     ("번개·빙결 궁극기 세팅", "const h=document.querySelector('.hand');['core.seraphina','core.estelle-frostblade'].forEach(id=>h.appendChild(createRuntimeBattleCard(id)));ultimateState=null;ultimateUsed=false;battlePhase='setup';setHandFilter('champion');armUltimateSetting()"),

@@ -5,6 +5,21 @@
 > 마지막 확인: 2026-11-06 (보호막 이펙트, 역전 마법 6장, 그림 없는 마법·함정 모두 완료 상태 확인).
 > 이 큐는 `CLAUDE.md`, `06_assets/README.md`, `02_game-design/game-rules/09-decisions-and-open-issues.md`, `npm run validate:cards`의 경고에서 가리킨다.
 
+## 미완료 P0 — 신규 함정 4장 (2026-11-07 요청)
+
+**왜**: 기본 덱이 캐릭터 30 / 마법 20 / 함정 10으로 바뀌었는데 기존 함정 4종의 기본 지급량(7장)으로는 함정 10장을 채울 수 없어 함정 4종을 새로 만들었다. 이미지는 사용자가 밖에서 생성해 전달한다.
+
+| 카드 | cardId | 지금 쓰는 임시 그림 | 만들 파일 |
+|---|---|---|---|
+| 불씨 덫 | `core.ember-snare` | 매복 지뢰 `traps/generated/ambush-mine.webp` | `dist/assets/traps/generated/ember-snare-v1.webp` |
+| 강철 방패 | `core.steel-guard` | 역류 장벽 `traps/generated/counter-current.webp` | `dist/assets/traps/generated/steel-guard-v1.webp` |
+| 늪의 속박 | `core.swamp-bind` | 서먼 널리파이어 `traps/generated/summon-nullifier.png` | `dist/assets/traps/generated/swamp-bind-v1.webp` |
+| 결속의 함성 | `core.rally-cry` | 배수의 진 `traps/generated/last-stand.webp` | `dist/assets/traps/generated/rally-cry-v1.webp` |
+
+프롬프트: [`06_assets/source-art/traps/new-traps-2026-11-07-prompts.md`](source-art/traps/new-traps-2026-11-07-prompts.md)
+
+반영 절차: 원본 PNG를 `06_assets/source-art/traps/`에 두고 WebP로 변환해 위 경로에 넣는다 → `03_card-data/sets/core-set.json`의 `assetId`를 새 파일로 바꾼다 → `npm run build` → `npm test` → 도감과 손패에서 눈으로 확인한다. 반영되면 이 절을 `(완료)`로 바꾼다.
+
 ## (완료) P0 — 보호막 이펙트 (2026-11-03 요청 · 2026-11-03 Codex 반영)
 
 **왜**: 챔프끼리 공격이 보호막에 막히면 화면에 아무 일도 없어 보여 "이펙트도 데미지도 안 들어간다"는 버그로 인식됐다(자동 전투 158회 중 15회). 2026-11-03에 코드로 임시 연출(카드 번쩍임·흔들림 + `보호막이 막음 · 피해 0` 글자)을 넣었지만, **보호막이 있다 / 깨졌다**가 한눈에 보이는 전용 이미지가 필요하다.
