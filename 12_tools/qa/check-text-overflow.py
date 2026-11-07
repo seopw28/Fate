@@ -2,12 +2,21 @@
 """UI 텍스트 넘침 검사: 글자가 자기 상자(버튼/패널/카드) 밖으로 나가면 실패(exit 1).
 
 사용: python3 12_tools/qa/check-text-overflow.py [url] [--shots]
-기본 url: http://localhost:8765/index.html (dist를 http.server로 띄운 상태)
+url 을 주지 않으면 이 저장소의 dist/ 를 빈 포트에 직접 띄워 검사한다.
+
+예전에는 기본값이 http://localhost:8765 고정이었다. 여러 세션이 같은 저장소의
+다른 워크트리에서 작업하는 환경에서는 그 포트를 '남의 트리'가 점유하고 있을 수
+있고, 그러면 내 변경과 무관한 번들을 검사하고 통과시킨다 (2026-11-07 실제 사고).
+이제 기본 경로에서는 내 dist 를 내가 띄우고, 응답하는 트리가 내 것인지 확인한다.
 """
-import sys
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from serve_own_tree import serve_own_tree
 from playwright.sync_api import sync_playwright
 
-URL = next((a for a in sys.argv[1:] if a.startswith("http")), "http://localhost:8765/index.html?skipIntro&guardian=baekho")
+ARG_URL = next((a for a in sys.argv[1:] if a.startswith("http")), None)
+QUERY = "?skipIntro&guardian=baekho"
+URL = ARG_URL or None
 VIEWPORTS = [(1568, 900), (1366, 768), (1100, 800), (1000, 900)]
 if "--mobile" in sys.argv:
     VIEWPORTS += [(640, 900), (390, 844)]  # 현재 데스크톱 전용 레이아웃이라 기본에서는 제외
@@ -107,14 +116,14 @@ STATES = [
     ("성격 오라 선택", "playerGuardian=null; guardianChosen=false; openGuardianSelect()"),
 ]
 
-def main():
+def run(url):
     fails = 0
     prep_fails = 0  # 상태 준비 실패도 실패로 센다 — 조용히 건너뛰면 그 상태는 검사되지 않은 채 'OK'가 나온다
     with sync_playwright() as p:
         br = p.chromium.launch()
         for w, h in VIEWPORTS:
             pg = br.new_page(viewport={"width": w, "height": h})
-            pg.goto(URL); pg.wait_for_timeout(1200)
+            pg.goto(url); pg.wait_for_timeout(1200)
             pg.evaluate("document.fonts.ready")
             for name, setup in STATES:
                 try:
@@ -123,7 +132,7 @@ def main():
                     # 한 상태에서 컨텍스트가 파괴되면(해시 변경 등) 이후 상태가 연쇄로 무너진다.
                     # 페이지를 다시 띄우고 한 번만 재시도해 연쇄 실패를 끊는다.
                     try:
-                        pg.goto(URL); pg.wait_for_timeout(1200)
+                        pg.goto(url); pg.wait_for_timeout(1200)
                         pg.evaluate("document.fonts.ready")
                         pg.evaluate(setup)
                     except Exception as e2:
@@ -144,5 +153,18 @@ def main():
     else:
         print("OK: 넘침 없음")
     sys.exit(1 if fails or prep_fails else 0)
+
+
+def main():
+    # url 을 명시하면 그대로 쓴다(이미 띄운 서버를 재사용하려는 의도적 선택).
+    if URL:
+        print(f"[overflow] 지정한 url 을 검사합니다: {URL}")
+        run(URL)
+        return
+    # 기본 경로: 내 dist 를 내가 띄우고, 응답하는 트리가 내 것인지 확인한 뒤 검사한다.
+    with serve_own_tree() as base:
+        print(f"[overflow] 내 dist 를 {base} 에 띄워 검사합니다.")
+        run(base + "/index.html" + QUERY)
+
 
 main()

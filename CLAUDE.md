@@ -2,13 +2,27 @@
 
 ## UI 텍스트 넘침 금지 (필수)
 - 글자가 버튼/패널/카드 상자 밖으로 나가거나 잘리면 안 된다. 폰트는 지마켓산스(Inter 대비 폭이 넓음)라 특히 주의.
-- UI 문구·폰트·레이아웃을 건드렸으면 **완료 보고 전에 반드시** 실행:
-  1. `python3 12_tools/dev-server.py` (서버 기동, 브라우저 캐시 꺼짐. `cd dist && python3 -m http.server 8765`도 동작하지만 화면이 캐시될 수 있다)
-  2. `npm run qa:overflow` → `OK: 넘침 없음`이어야 통과. FAIL이면 수정 후 재실행.
+- UI 문구·폰트·레이아웃을 건드렸으면 **완료 보고 전에 반드시** `npm run qa:overflow` 를 실행하고 `OK: 넘침 없음`을 확인한다. FAIL이면 수정 후 재실행.
+  - 검사기가 자기 `dist/` 를 빈 포트에 직접 띄우므로 서버를 미리 기동할 필요가 없다. 화면을 눈으로 보려면 `python3 12_tools/dev-server.py` (포트가 이미 쓰이면 누가 점유 중인지 밝히고 종료한다).
 - 버튼에 `white-space:nowrap` 금지(줄바꿈 허용), 고정 폭/높이 상자에는 가장 긴 문구 상태(마나 10 필요, 긴 캐릭터명 등)로 확인.
 - 동적으로 바뀌는 문구는 `12_tools/qa/check-text-overflow.py`의 `STATES`에 해당 상태를 추가한다.
 - `05_game-client/app/styles.css`의 "지마켓산스 넘침 방지" CSS 블록은 삭제 금지. `dist/index.html`은 `npm run build`로 생성한다.
 - 검사기는 pseudo-element(::before 아이콘) 겹침은 못 잡으므로 스크린샷으로 눈으로도 확인.
+
+## 브라우저로 측정할 때 (필수)
+
+- **내 번들을 보고 있는지 먼저 확인한다.** 여러 세션이 같은 저장소의 다른 워크트리에서 동시에 작업하므로, 고정 포트(8765)는 '남의 트리'가 점유하고 있을 수 있다. 그 상태로 재면 내 변경이 반영 안 된 옛 화면을 재고도 통과한다.
+- 측정 스크립트는 `12_tools/qa/serve_own_tree.py` 의 `serve_own_tree()` 를 쓴다. 빈 포트를 받아 내 dist 를 띄우고, `/__whoami` 로 응답한 트리가 내 것인지 확인한 뒤에만 측정을 진행한다. 어긋나면 측정을 멈춘다.
+
+```python
+import sys; sys.path.insert(0, '12_tools/qa')
+from serve_own_tree import serve_own_tree
+with serve_own_tree() as base:          # base = http://127.0.0.1:<빈 포트>
+    page.goto(base + '/index.html?seed=777')
+```
+
+- 이미 떠 있는 서버를 재사용해야 한다면 `curl -s http://localhost:8765/__whoami` 로 서빙 중인 경로를 먼저 확인한다.
+- **수치만 보고 '고쳤다'고 하지 않는다.** 2026-11-07 에 코드·테스트·grep 이 전부 맞는데도 화면에는 옛 문구가 그대로 남아 있었다 (8765 가 다른 세션 트리를 서빙 중이었다). 사람이 보는 것을 바꿨다면 **스크린샷을 눈으로 확인**하고 보고한다.
 
 ## 스킬/마법/궁극기 연출은 필드 기준 (필수)
 - 연출 오버레이(`.cinematic-skill-fx`, `.ultimate-cutscene`, `.global-spell`, `.global-summon`, `.effect-narration`)는 화면 전체가 아니라 `.arena`(필드) 영역의 중앙에 표시한다. `syncFieldFrame()`이 `--field-left/top/width/height/cx/bottom`을 갱신한다.
