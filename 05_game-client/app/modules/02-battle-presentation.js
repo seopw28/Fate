@@ -301,7 +301,7 @@
     enemyTurn=function(done){const realMax=maxMana;if(maxMana<MANA_CAP&&guardianProc('enemy','cheongryong')){const gain=rollPoseidonMana('enemy');maxMana=Math.min(MANA_CAP,realMax+gain);writeLog('<strong>상대 '+GUARDIANS.cheongryong.name+'</strong>가 상대 마나 '+gain+'을 회복시켰습니다.');}const result=enemyTurnBeforeGuardian(done);maxMana=realMax;return result;};
     function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필요';if(guardianAwakenChoice)return '각성 지속 중';if(playerHp>GUARDIAN_AWAKEN_HP)return '체력 80 이하에서 각성';return '';}
     function guardianAwakenSummary(){if(!playerGuardian)return '각성 능력';if(!guardianAwakenChoice)return '체력 80 이하에서 강화 선택';const option=GUARDIAN_AWAKEN_OPTIONS[playerGuardian][guardianAwakenChoice];return option.name+' · '+option.desc;}
-    function chooseGuardianAwakening(choice){const options=GUARDIAN_AWAKEN_OPTIONS[playerGuardian];if(guardianAwakenChoice||!options?.[choice])return;guardianAwakenChoice=choice;guardianAwakenUsed=true;fxRelease();const summary=guardianAwakenSummary();playGuardianDescent(playerGuardian,summary);showSkillEffect('rush',document.querySelector('.duel-hud .player .avatar'),options[choice].name+' · 지속 각성');sfx('ultimate','neutral',7);writeLog('<strong>'+GUARDIANS[playerGuardian].name+' 각성:</strong> '+summary+' 효과가 배틀 종료까지 유지됩니다.');renderUltimate();}
+    function chooseGuardianAwakening(choice){const options=GUARDIAN_AWAKEN_OPTIONS[playerGuardian];if(guardianAwakenChoice||!options?.[choice])return;guardianAwakenChoice=choice;guardianAwakenUsed=true;returnAwakenAvatar();fxRelease();const summary=guardianAwakenSummary();playGuardianDescent(playerGuardian,summary);showSkillEffect('rush',document.querySelector('.duel-hud .player .avatar'),options[choice].name+' · 지속 각성');sfx('ultimate','neutral',7);writeLog('<strong>'+GUARDIANS[playerGuardian].name+' 각성:</strong> '+summary+' 효과가 배틀 종료까지 유지됩니다.');renderUltimate();}
     function chooseEnemyGuardianAwakening(){if(enemyGuardianAwakenChoice||!enemyGuardian||enemyHp>GUARDIAN_AWAKEN_HP)return;const ownCount=document.querySelectorAll('.arena .lane:first-child > .unit:not([data-destroyed="true"])').length,foeCount=document.querySelectorAll('.summon-zone > .unit:not([data-destroyed="true"])').length,tactical={jujak:foeCount>=3?'A':'B',cheongryong:enemyMana<=3?'A':'B',namu:ownCount>=3?'A':'B',baekho:foeCount>=3?'B':'A',hyeonmu:ownCount>=3?'A':'B'},choice=enemyDifficulty==='normal'?(engineAdapter.random()<.5?'A':'B'):tactical[enemyGuardian],option=GUARDIAN_AWAKEN_OPTIONS[enemyGuardian][choice];enemyGuardianAwakenChoice=choice;showSkillEffect('rush',document.querySelector('.duel-hud .enemy .avatar'),option.name+' · 상대 지속 각성');writeLog('<strong>상대 '+GUARDIANS[enemyGuardian].name+' 각성:</strong> '+option.name+' · '+option.desc+(enemyDifficulty!=='normal'?' · 현재 전장에 맞춰 선택했습니다.':'')+' 효과가 배틀 종료까지 유지됩니다.');renderUltimate();}
     /* 각성 진입: 체력바 옆 프로필이 빛나며 필드 중앙으로 날아간다.
        각성 모달이 아무 맥락 없이 화면에 튀어나와 '어디서 온 건지' 읽히지 않던 문제를 없앤다.
@@ -310,7 +310,9 @@
        빛이 퍼지는 뜸(flare) → 천천히 비행 순서로 나눠 무게를 준다 (2026-11-07). */
     /* 빛이 일순간에 끝나면 '어? 저게 뭐지?' 하고 볼 틈이 없다. 퍼진 상태를 충분히 유지한 뒤
        출발하고, 빛은 고스트에 붙어 함께 날아온다 (PM 피드백 2026-11-07). */
-    const AWAKEN_FLARE_MS=1500,AWAKEN_TRAVEL_MS=1180,AWAKEN_FLIGHT_MS=AWAKEN_FLARE_MS+AWAKEN_TRAVEL_MS;
+    /* 착지(2200ms) 직후 바로 패널이 열리면 도착을 볼 틈이 없다. 여운을 두고 2500ms 에 연다. */
+    const AWAKEN_FLARE_MS=1800,AWAKEN_TRAVEL_MS=400,AWAKEN_SETTLE_MS=380,
+          AWAKEN_FLIGHT_MS=AWAKEN_FLARE_MS+AWAKEN_TRAVEL_MS+AWAKEN_SETTLE_MS;
     function flyAwakenAvatar(color){const avatar=document.querySelector('.duel-hud .player .avatar');
       if(!avatar||matchMedia('(prefers-reduced-motion: reduce)').matches)return 0;
       if(typeof syncFieldFrame==='function')syncFieldFrame();
@@ -324,7 +326,7 @@
       flare.style.setProperty('--aw-color',color);
       flare.style.left=(r.left+r.width/2)+'px';flare.style.top=(r.top+r.height/2)+'px';
       document.body.appendChild(flare);
-      setTimeout(()=>flare.remove(),AWAKEN_FLARE_MS+260);
+      setTimeout(()=>flare.remove(),AWAKEN_FLARE_MS);
       ghost.className='awaken-flight';ghost.setAttribute('aria-hidden','true');
       ghost.style.setProperty('--aw-color',color);
       ghost.style.left=r.left+'px';ghost.style.top=r.top+'px';
@@ -338,8 +340,20 @@
       /* 원본은 날아가는 동안 자리를 비운다 — 둘이 동시에 보이면 분신처럼 읽힌다. */
       avatar.classList.add('awaken-departing');
       tone(300,.5,'sine',.045,760,0);
-      setTimeout(()=>{ghost.remove();flare.remove();avatar.classList.remove('awaken-departing');},AWAKEN_FLIGHT_MS);
+      setTimeout(()=>flare.remove(),AWAKEN_FLARE_MS);
+      /* 고스트는 중앙에 남아 선택을 기다린다 — 선택 후 프로필로 되돌아가야 하기 때문이다.
+         선택 없이 연출이 끊기면 fxPresent 정리 콜백이 치운다. */
       return AWAKEN_FLIGHT_MS;}
+    /* 선택 후 구체가 중앙에서 체력 프로필로 돌아간다 — 각성이 내 것이 됐음을 눈으로 잇는다. */
+    const AWAKEN_RETURN_MS=720;
+    function returnAwakenAvatar(){const ghost=document.querySelector('.awaken-flight'),
+        avatar=document.querySelector('.duel-hud .player .avatar');
+      if(!ghost){avatar?.classList.remove('awaken-departing');return 0;}
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches){ghost.remove();avatar?.classList.remove('awaken-departing');return 0;}
+      ghost.classList.add('returning');
+      tone(520,.5,'sine',.05,300,0);
+      setTimeout(()=>{ghost.remove();avatar?.classList.remove('awaken-departing');},AWAKEN_RETURN_MS);
+      return AWAKEN_RETURN_MS;}
     function activateGuardianAwakening(){if(guardianAwakenChoice||playerHp>GUARDIAN_AWAKEN_HP||!playerGuardian||document.querySelector('.aura-awaken-choice'))return;guardianAwakenPrompted=true;const g=GUARDIANS[playerGuardian],options=GUARDIAN_AWAKEN_OPTIONS[playerGuardian],overlay=document.createElement('div');overlay.className='aura-awaken-choice';overlay.style.setProperty('--awaken-color',g.color);overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label',g.name+' 각성 선택');overlay.innerHTML='<div class="aura-awaken-choice-panel">'+auraMark(playerGuardian)+'<small>HP 80 · AURA AWAKENING</small><h2>'+g.name+' 각성</h2><p>하나를 선택하면 이번 배틀이 끝날 때까지 유지됩니다.</p><div class="aura-awaken-options">'+['A','B'].map(key=>'<button class="aura-awaken-option" data-awaken="'+key+'"><b>'+options[key].name+'</b><span class="aura-awaken-desc">'+(options[key].ui||[options[key].desc]).map(line=>'<span>'+line+'</span>').join('')+'</span><em>'+key+' 선택</em></button>').join('')+'</div></div>';overlay.addEventListener('click',event=>{const button=event.target.closest('[data-awaken]');if(button)chooseGuardianAwakening(button.dataset.awaken);});fxPresent('aura-awaken-choice',()=>{
       /* 프로필이 먼저 날아가고, 그것이 도착한 자리에서 선택 패널이 피어난다.
          비행 중에는 버튼을 누를 수 없게 둔다 — 연출을 끝까지 보여주고 받는다 (A안). */
@@ -352,7 +366,9 @@
       return ()=>{clearTimeout(landTimer);overlay.remove();
         /* 중간에 끊겨도 HUD 프로필이 사라진 채로 남지 않게 한다. */
         document.querySelector('.duel-hud .player .avatar')?.classList.remove('awaken-departing');
-        document.querySelectorAll('.awaken-flight,.awaken-flare').forEach(node=>node.remove());};
+        /* 선택으로 돌아가는 중인 고스트는 남긴다 — 여기서 지우면 복귀 연출이 시작도 못 한다.
+           그 고스트는 returnAwakenAvatar() 가 자기 타이머로 치운다 (2026-11-07). */
+        document.querySelectorAll('.awaken-flight:not(.returning),.awaken-flare').forEach(node=>node.remove());};
     },{priority:FX_PRIORITY.choice,hold:0});}
     function checkGuardianAwakeningThreshold(){if(!guardianChosen||resultPending)return;if(playerGuardian&&!guardianAwakenChoice&&playerHp<=GUARDIAN_AWAKEN_HP)activateGuardianAwakening();if(enemyGuardian&&!enemyGuardianAwakenChoice&&enemyHp<=GUARDIAN_AWAKEN_HP)chooseEnemyGuardianAwakening();}
     setInterval(checkGuardianAwakeningThreshold,120);

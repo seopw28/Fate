@@ -33,7 +33,7 @@ test('고스트는 도착할 때까지 보인다 (날아가는 내내 투명하�
   const late = kf.match(/(\d+)%\{[^}]*opacity:1\}/g) || [];
   const lastOpaque = Math.max(...late.map(m => parseInt(m, 10)));
   assert.ok(lastOpaque >= 80, '도착 직전(80% 이후)까지 불투명해야 보인다 — 실제: ' + lastOpaque + '%');
-  assert.ok(/92%\{transform:translate\(var\(--aw-dx\),var\(--aw-dy\)\)[^}]*opacity:1\}/.test(kf),
+  assert.ok(/100%\{transform:translate\(var\(--aw-dx\),var\(--aw-dy\)\)[^}]*opacity:1\}/.test(kf),
     '불투명 상태로 도착 지점까지 이동해야 한다');
 });
 
@@ -44,10 +44,18 @@ test('프로필에서 빛이 전역으로 번진 뒤에 날아간다', () => {
   const flareKf = html.slice(html.indexOf('@keyframes awaken-flare{'), html.indexOf('@keyframes awaken-flare-ring'));
   assert.ok(/scale\(165\)/.test(flareKf), '화면 전체로 번져야 인지된다');
   const kf = html.slice(html.indexOf('@keyframes awaken-fly'));
-  assert.ok(/9%\{transform:translate\(0,0\) scale\(2\.6\)/.test(kf.slice(0, 400)), '제자리에서 먼저 부푼다');
+
   /* 빛이 일순간에 끝나면 볼 틈이 없다 — 퍼진 상태를 한참 유지한 뒤 출발해야 한다. */
-  assert.ok(/56%\{transform:translate\(0,0\)/.test(kf.slice(0, 400)), '퍼진 상태를 절반 넘게 유지한다');
-  assert.ok(/animation:awaken-fly 2\.68s/.test(html), '천천히 날아야 한다');
+  assert.ok(/79\.1%\{transform:translate\(0,0\)/.test(kf.slice(0, 500)), '퍼진 상태를 한참 유지한다');
+  assert.ok(/animation:awaken-fly 2\.26s/.test(html), '천천히 날아야 한다');
+  /* 구체가 날아오며 커지면 문양이 뭉개져 무엇이 오는지 안 읽힌다. 리터럴 쌍을 박으면
+     한쪽만 바뀌어도 통과하므로, 출발 직전과 도착의 scale 을 뽑아 직접 비교한다. */
+  const flyKf = kf.slice(0, kf.indexOf('}}') + 2);
+  const hold = /79\.1%\{transform:translate\(0,0\) scale\(([\d.]+)\)/.exec(flyKf);
+  const land = /100%\{transform:translate\(var\(--aw-dx\),var\(--aw-dy\)\) scale\(([\d.]+)\)/.exec(flyKf);
+  assert.ok(hold && land, '출발 직전과 도착 키프레임이 있어야 한다');
+  assert.equal(land[1], hold[1],
+    '이동 중 구체 크기가 변하면 문양이 뭉개진다 — 출발 ' + hold[1] + ' / 도착 ' + land[1]);
   assert.ok(/\.awaken-flare,?[^{]*\{display:none\}|\.awaken-flight,\.awaken-flare\{display:none\}/.test(html),
     '모션 최소화에서는 빛도 끈다');
 });
@@ -76,8 +84,9 @@ test('패널은 비행이 끝난 뒤에 열리고 그 전에는 누를 수 없�
   /* 도착 시점은 비행 시간에서 와야 한다 — 숫자를 따로 박으면 둘이 어긋난다. */
   assert.ok(html.includes("setTimeout(()=>{overlay.classList.remove('arriving')"), '도착하면 풀린다');
   assert.ok(html.includes('},flight)'), '대기 시간은 비행 시간이어야 한다');
-  assert.ok(html.includes('AWAKEN_FLARE_MS=1500,AWAKEN_TRAVEL_MS=1180'), '빛 번짐과 비행을 나눈 상수');
-  assert.ok(html.includes('AWAKEN_FLIGHT_MS=AWAKEN_FLARE_MS+AWAKEN_TRAVEL_MS'), '전체 시간은 두 구간의 합이어야 어긋나지 않는다');
+  assert.ok(html.includes('AWAKEN_FLARE_MS=1800,AWAKEN_TRAVEL_MS=400'), '빛 번짐과 비행을 나눈 상수');
+  assert.ok(html.includes('AWAKEN_SETTLE_MS=380'), '착지 뒤 여운');
+  assert.ok(html.includes('AWAKEN_FLIGHT_MS=AWAKEN_FLARE_MS+AWAKEN_TRAVEL_MS+AWAKEN_SETTLE_MS'), '전체 시간은 구간의 합이어야 어긋나지 않는다');
   /* 패널 자체의 bloom 애니메이션이 opacity 를 잡아 arriving 의 정적 값을 덮어쓴 적이 있다.
      도착 전에는 애니메이션을 꺼야 실제로 숨겨진다 (브라우저 실측으로 잡힌 버그). */
   assert.ok(/\.aura-awaken-choice\.arriving \.aura-awaken-choice-panel\{animation:none/.test(html),
@@ -90,7 +99,7 @@ test('연출이 중간에 끊겨도 프로필이 사라진 채 남지 않는다'
   const fn = html.slice(at, at + 1200);
   assert.ok(fn.includes('clearTimeout(landTimer)'), '타이머를 정리해야 한다');
   assert.ok(fn.includes("remove('awaken-departing')"), '원본 프로필을 되돌려야 한다');
-  assert.ok(fn.includes("querySelectorAll('.awaken-flight,.awaken-flare')"), '남은 고스트와 빛을 치워야 한다');
+  assert.ok(fn.includes("querySelectorAll('.awaken-flight:not(.returning),.awaken-flare')"), '남은 고스트와 빛을 치워야 한다');
 });
 
 test('비행 중 영웅 피격이 들어와도 떠난 프로필이 꿈틀대지 않는다', () => {
@@ -98,6 +107,16 @@ test('비행 중 영웅 피격이 들어와도 떠난 프로필이 꿈틀대지 
      비행 중에 hit-react 가 같은 transform 을 잡을 수 있다. 실측으로 확인한 경합이다. */
   assert.ok(/\.duel-hud \.avatar\.awaken-departing\.hit-react\{animation:none/.test(html),
     '비행 중에는 피격 연출이 양보해야 한다');
+});
+
+test('선택하면 구체가 중앙에서 체력 프로필로 돌아간다', () => {
+  /* 각성이 '내 것이 됐다'를 눈으로 잇는다. 선택 후 그냥 사라지면 연결이 끊긴다
+     (PM 피드백 2026-11-07). 실측: 675 → 1205(아바타 자리) 후 소멸. */
+  assert.ok(html.includes('function returnAwakenAvatar()'), '복귀 연출 함수가 있어야 한다');
+  assert.ok(html.includes('returnAwakenAvatar();fxRelease();'), '선택 시점에 돌아가야 한다');
+  assert.ok(/@keyframes awaken-return\{[^@]*100%\{transform:translate\(0,0\)/.test(html), '출발점(프로필)으로 돌아간다');
+  /* 정리 콜백이 복귀 중인 고스트까지 지우면 연출이 시작도 못 한다 — 실측으로 잡힌 버그. */
+  assert.ok(html.includes(".awaken-flight:not(.returning)"), '돌아가는 중인 고스트는 남겨야 한다');
 });
 
 test('비행 오버레이도 필드 오버레이로 등록된다', () => {

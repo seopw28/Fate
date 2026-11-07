@@ -1885,7 +1885,7 @@
       font-size:26px;line-height:1;pointer-events:none;
       /* 아바타 크기 그대로면 작은 점이 날아가는 것으로 보인다. 크게 키워 '덩어리'로 읽히게 한다.
          빛이 퍼지는 .62s 동안 제자리에서 부풀고, 그 뒤 1.18s 에 걸쳐 천천히 이동한다. */
-      animation:awaken-fly 2.68s cubic-bezier(.34,.02,.24,1) forwards}
+      animation:awaken-fly 2.26s cubic-bezier(.45,0,.62,1) forwards}
     /* 문양을 품은 작은 프로필 — 크기를 키우지 않아 '무엇이 오는지' 계속 읽힌다. */
     .awaken-flight .awaken-face{position:relative;z-index:2;display:grid;place-items:center;
       width:100%;height:100%;border-radius:50%;
@@ -1901,20 +1901,25 @@
        (실측 2026-11-07: 이동 절반에서 이미 .25, 도착 시점 0). 도착까지 불투명하게 둔다. */
     @keyframes awaken-fly{
       0%{transform:translate(0,0) scale(1);opacity:1}
-      9%{transform:translate(0,0) scale(2.6);opacity:1}
-      20%{transform:translate(0,0) scale(2.2);opacity:1}
-      56%{transform:translate(0,0) scale(2.2);opacity:1}
-      92%{transform:translate(var(--aw-dx),var(--aw-dy)) scale(2.9);opacity:1}
-      100%{transform:translate(var(--aw-dx),var(--aw-dy)) scale(4.4);opacity:0}}
+      8%{transform:translate(0,0) scale(1.35);opacity:1}
+      18%{transform:translate(0,0) scale(1.2);opacity:1}
+      79.1%{transform:translate(0,0) scale(1.2);opacity:1}
+      100%{transform:translate(var(--aw-dx),var(--aw-dy)) scale(1.2);opacity:1}}
+    /* 선택 후 되돌아간다 — 각성이 '내 것이 됐다'를 보여준다. 역방향이라 부호가 반대다. */
+    @keyframes awaken-return{
+      0%{transform:translate(var(--aw-dx),var(--aw-dy)) scale(1.2);opacity:1}
+      72%{transform:translate(0,0) scale(1.1);opacity:1}
+      100%{transform:translate(0,0) scale(.72);opacity:0}}
+    .awaken-flight.returning{animation:awaken-return .72s cubic-bezier(.4,0,.3,1) forwards}
     /* 프로필에서 빛이 전역으로 번진다 — 각성이 '시작됐다'를 먼저 알린다. */
     .awaken-flare{position:fixed;z-index:519;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;
       border-radius:50%;pointer-events:none;
       background:radial-gradient(circle,color-mix(in srgb,var(--aw-color) 85%,#fff) 0%,color-mix(in srgb,var(--aw-color) 55%,transparent) 32%,transparent 68%);
-      animation:awaken-flare 1.5s cubic-bezier(.16,.62,.24,1) forwards}
+      animation:awaken-flare 1.85s cubic-bezier(.16,.62,.24,1) forwards}
     .awaken-flare::after{content:'';position:absolute;left:50%;top:50%;width:40px;height:40px;
       margin:-20px 0 0 -20px;border:3px solid var(--aw-color);border-radius:50%;
-      filter:drop-shadow(0 0 10px var(--aw-color));animation:awaken-flare-ring 1.5s cubic-bezier(.16,.7,.2,1) forwards}
-    @keyframes awaken-flare{0%{transform:scale(1);opacity:0}12%{opacity:1}46%{transform:scale(165);opacity:.5}100%{transform:scale(175);opacity:0}}
+      filter:drop-shadow(0 0 10px var(--aw-color));animation:awaken-flare-ring 1.85s cubic-bezier(.16,.7,.2,1) forwards}
+    @keyframes awaken-flare{0%{transform:scale(1);opacity:0}10%{opacity:1}38%{transform:scale(165);opacity:.62}100%{transform:scale(178);opacity:0}}
     @keyframes awaken-flare-ring{0%{transform:scale(.3);opacity:1}100%{transform:scale(26);opacity:0}}
     /* 날아가는 동안 원본은 자리를 비운다 — 분신처럼 보이지 않게. */
     .duel-hud .avatar.awaken-departing{opacity:.18;transform:scale(.9);transition:opacity .18s ease,transform .18s ease}
