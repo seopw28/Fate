@@ -414,20 +414,20 @@
       if (!ctx || deps.spellPack === false) return false;
       const level = 0.34 + STRONG.power * 0.36;
       // 번개는 천둥처럼 길게 울리되(원본 약 3초 중 2.7초), 공간감을 만드는 처리(잔향 전송·좌우 확장)는 넣지 않고 실제 번개 소리만 낸다 (wet 0, wide 0).
-      return sample('spellLightningCast', { gain: level * 3.6, rate: rand(0.99, 1.01), pan, hp: 120, wet: 0, wide: 0, cap: opts.cap || 2.7, fade: opts.fade || 0.45 });
+      return sample('spellLightningCast', { gain: level * 3.6 * (opts.gain ?? 1), rate: rand(0.99, 1.01), pan, hp: 120, wet: 0, wide: 0, cap: opts.cap || 2.7, fade: opts.fade || 0.45 });
     }
 
     // 바람 공격의 연출("실피드 템페스트") 소리: 칼바람이 "슈류륙" 하고 세 번 연달아 스쳐 지나간다.
     // 한 번의 스침 = 높은 쉭 소리가 올라갔다 내려오는 대역 잡음 + 가는 휘파람 층. 세 번은 약 0.15초 간격으로 좌 → 우 → 중앙으로 움직이며 점점 높아진다.
     // 합성음이라 샘플 팩과 무관하게 항상 난다.
-    function playGust(pan = 0) {
+    function playGust(pan = 0, { passes = 3, gain = 1 } = {}) {
       const ctx = ctxOrNull();
       if (!ctx) return false;
-      const level = 0.34 + STRONG.power * 0.36;
+      const level = (0.34 + STRONG.power * 0.36) * gain;
       // 세 번이 하나로 뭉쳐 들리지 않게: 한 번의 스침을 짧게(약 0.2초) 끊고 세 번의 세기를 똑같이 하며, 마지막만 조금 길게 끈다
-      [[0, -0.55, 1], [0.15, 0.55, 1.1], [0.3, 0, 1.2]].forEach(([delay, side, lift], i) => {
+      [[0, -0.55, 1], [0.15, 0.55, 1.1], [0.3, 0, 1.2]].slice(0, passes).forEach(([delay, side, lift], i) => {
         const p = { pan: clamp(pan + side, -1, 1), delay, wet: 0, space: 'short' };
-        const last = i === 2, d = last ? 0.34 : 0.2, g = [2.4, 4.2, 1.2][i]; // 짧은 스침일수록 에너지가 작아 세기를 더 줘서 세 번이 비슷하게 들리게
+        const last = i === Math.min(2, passes - 1), d = last ? 0.34 : 0.2, g = [2.4, 4.2, 1.2][i]; // 짧은 스침일수록 에너지가 작아 세기를 더 줘서 세 번이 비슷하게 들리게
         noise({ ...p, dur: d, vol: level * 0.8 * g, type: 'bandpass', freq: 1300 * lift, endFreq: 5000 * lift, q: 1.0, attack: 0.035 });
         noise({ ...p, dur: d * 0.9, vol: level * 0.45 * g, type: 'highpass', freq: 4800 * lift, endFreq: 7200 * lift, q: 0.7, attack: 0.03 });
         // 거친 질감: 낮은 대역의 두꺼운 잡음을 깔아 칼바람이 긁고 지나가는 느낌을 준다
@@ -453,7 +453,12 @@
       return true;
     }
 
-    return { load, playHit, playFrost, playLightning, playGust, playSwing, _buffers: buffers };
+    /* 평타용 약화 변주: 컷인이 빠진 평타에서는 3연타 칼바람이 과하게 들린다.
+       한 번만, 더 작게 스치고 지나가도록 세기를 낮춘다 (2026-11-07) */
+    function playGustLight(pan = 0) {
+      return playGust(pan, { passes: 1, gain: 0.45 });
+    }
+    return { load, playHit, playFrost, playLightning, playGust, playGustLight, playSwing, _buffers: buffers };
   }
 
   const api = { BANK, LEGACY, HIT_SETS, STRONG, ELEMENT, FADE_DECIBELS_E, IR_SECONDS, CROWD_WINDOW, CROWD_STEP, CROWD_MIN, TRIM, SYNTH_NAMES, pickIndex, makeImpulse, init };
