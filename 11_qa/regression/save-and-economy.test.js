@@ -287,15 +287,17 @@ test('궁극기: 사용 가능 턴·재사용 대기·강한 카드 분류가 �
   }
 });
 
-test('궁극기: 맨 오른쪽 아군을 제물로 순서 고정·전역 도발 소진자(기본 공격력 +15 / 체력 1)를 즉시 공격 가능하게 배치한다', () => {
+test('궁극기: 전장이 가득 찼을 때만 맨 오른쪽 아군을 제물로 삼고, 순서 고정·전역 도발 소진자(기본 공격력 +15 / 체력 1)를 즉시 공격 가능하게 배치한다', () => {
   assert.ok(!html.includes("if(fieldCount>=FIELD_CARD_LIMIT)return '내 전장 6장 · 궁극기 사용 불가'"));
-  assert.ok(html.includes("if(fieldCount<1)return '제물로 삼을 아군 챔프 필요'"));
+  assert.ok(!html.includes('제물로 삼을 아군 챔프 필요'), '제물 필요 잠금 문구는 폐지됐다');
+  assert.ok(html.includes('full=lane.querySelectorAll(\':scope > .unit:not(.unit-dying)\').length>=FIELD_CARD_LIMIT,victim=full?'), '전장이 가득 찼을 때만 제물을 정한다 (양쪽 공통)');
+  assert.ok(html.includes('const spec=enemyUltimate;if(!spec||!enemyUltimateCondition(spec))return false;'), '컴퓨터 발동 조건에 제물 필요가 없다');
   assert.ok(html.includes("ULTIMATE_SPENT_ATTACK_BONUS=15,ULTIMATE_SPENT_HP=1"));
   assert.ok(html.includes("attack:(Number(spec.baseAttack)||0)+ULTIMATE_SPENT_ATTACK_BONUS+bonus,hp:ULTIMATE_SPENT_HP+bonus"), '소진자 = 카드 기본 공격력 +15 / 체력 1 (공명 +2/+2)');
   assert.ok(html.includes("summonBattleToken(spec.name,stats.attack,stats.hp,spec.element,'ultimate-spent')"));
   assert.ok(html.includes("unit.dataset.ultimateSpent='true'"));
   assert.ok(html.includes("unit.dataset.rush='true';unit.classList.remove('exhausted');unit.querySelector('.emoji').innerHTML"), '내려놓은 즉시 공격할 수 있다');
-  assert.ok(html.includes('.unit[data-effect="ultimate-spent"]{scale:1.1'), '소진자는 110% 크기');
+  assert.ok(html.includes('.unit[data-effect="ultimate-spent"]{scale:1.3'), '소진자는 130% 크기');
   assert.ok(html.includes("unit.dataset.ultimateAggro='true'"));
   assert.ok(html.includes("unit.dataset.orderLocked='true'"));
   assert.ok(html.includes("unit.draggable=battlePhase==='setup'&&!locked"));
@@ -338,7 +340,7 @@ test('복수자: 궁극기마다 소진자 기본 능력치 +7/+15 로 강림하
   assert.ok(html.includes('showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral)'));
   assert.ok(html.includes('.unit[data-effect="ultimate-avenger"]'), '복수자 카드만 전용 테두리와 오라를 사용해야 한다');
   assert.ok(html.includes('.arena .unit[data-effect="ultimate-avenger"]>h4'), '복수자도 기존 카드 이름 영역을 유지해야 한다');
-  assert.ok(html.includes('z-index:6;scale:1.1;border:3px solid var(--avenger-accent)'), '복수자는 전장에서 10% 확대하고 오라색 굵은 테두리를 사용해야 한다');
+  assert.ok(html.includes('z-index:6;scale:1.3;border:3px solid var(--avenger-accent)'), '복수자는 전장에서 30% 확대하고 오라색 굵은 테두리를 사용해야 한다');
   assert.equal(html.includes('avenger-crown-vfx'), false, '복수자 카드에 왕관 장식을 다시 붙이면 안 된다');
   assert.equal(html.includes('decorateAvengerUnit'), false, '왕관 장식용 DOM 로직을 다시 사용하면 안 된다');
   assert.equal(html.includes('crown-body'), false, 'CSS 도형 왕관을 다시 사용하면 안 된다');

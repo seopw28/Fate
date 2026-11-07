@@ -40,11 +40,19 @@ test('magic cards keep a stable rail composition', () => {
   assert.ok(!html.includes('flex:0 0 122px'), '그림 높이를 고정하면 카드가 그림에 밀려 길어진다');
 });
 
-test('champion fields are capped and fit six cards without rail overflow', () => {
-  assert.ok(html.includes('const FIELD_CARD_LIMIT = 6'), 'Both champion fields must share a six-card limit');
+test('champion fields are capped and fit five cards without rail overflow', () => {
+  assert.ok(html.includes('const FIELD_CARD_LIMIT = 5'), 'Both champion fields must share a five-card limit');
   assert.ok(html.includes("length>=FIELD_CARD_LIMIT"), 'Player summons must stop before spending resources on a full field');
-  assert.ok(html.includes('grid-template-columns:repeat(6,minmax(0,182px))'), 'Desktop fields must use six fluid tracks');
-  assert.ok(html.includes('grid-template-columns:repeat(6,minmax(0,1fr))'), 'Narrow fields must shrink all six tracks inside the stage');
+  assert.ok(html.includes('grid-template-columns:repeat(5,minmax(0,182px))'), 'Desktop fields must use five fluid tracks');
+  assert.ok(html.includes('grid-template-columns:repeat(5,minmax(0,1fr))'), 'Narrow fields must shrink all five tracks inside the stage');
+});
+
+test('5칸 전장은 카드 크기를 행 높이·칸 폭에서 계산해 간격을 넓게 쓰고 130% 카드가 독·마나 바를 덮지 않는다', () => {
+  assert.ok(html.includes('container-type:size;--field-gap:54px'), '독(50px)이 들어갈 행 사이 간격을 확보한다');
+  assert.ok(html.includes('calc((100cqw - 36px) / 5 - 72px)'), '카드 폭은 칸 폭 − 72px 이하라 간격이 72px 아래로 줄지 않는다(모든 뷰포트)');
+  assert.ok(html.includes('height:var(--row-h);align-self:start'), '반응형 구간에서도 행 높이를 고정해 전장이 마나 바로 넘치지 않는다');
+  assert.ok(html.includes('--card-h:calc((var(--row-h) - 4px) / 1.3)'), '130% 로 커져도 행 안에 들어가는 카드 높이');
+  assert.ok(html.includes('.stage-column .arena .summon-zone > .unit{width:var(--card-w);max-width:none;height:auto;aspect-ratio:5/7;justify-self:center}'), '카드는 균등 5칸 트랙 가운데에 놓인다');
 });
 
 test('field setup stays locked until combat fully resolves', () => {
@@ -362,9 +370,12 @@ test('상대 턴의 행동들은 한 프레임에 몰리지 않고 한 박자씩
   assert.ok(html.includes('setTimeout(resolve,combatMs(ENEMY_ACTION_BEAT_MS))'), '간격에 전투 속도 배율을 적용해야 한다');
 });
 
-test('궁극기 세팅은 오라 각성 버튼이 열린 뒤에만, 두 번째부터는 직전 소진자의 복수자가 강림한 뒤에만 가능하다', () => {
+test('궁극기 세팅은 오라 각성 선택을 마친 뒤에만, 두 번째부터는 직전 복수자가 쓰러지고 주인의 턴이 두 번 시작된 뒤에만 가능하다', () => {
   assert.ok(html.includes('ULTIMATE_UNLOCK_HP=80') && html.includes('const GUARDIAN_AWAKEN_HP=ULTIMATE_UNLOCK_HP;'), '각성 버튼과 같은 체력 80 기준을 쓴다');
-  assert.ok(html.includes("function ultimateAwakenGateOpen(side='player'){if(heroHpOf(side)<=ULTIMATE_UNLOCK_HP)awakenGateOpened[side]=true;return awakenGateOpened[side];}"), '한 번 열리면(회복해도) 계속 열려 있다');
+  assert.ok(html.includes("function ultimateAwakenGateOpen(side='player'){return awakenGateOpened[side];}"), '체력이 아니라 각성 선택 완료로 열린다');
+  assert.ok(html.includes('guardianAwakenChoice=choice;awakenGateOpened.player=true;') && html.includes('enemyGuardianAwakenChoice=choice;awakenGateOpened.enemy=true;'), '유저·컴퓨터 모두 각성 선택 시점에 열린다');
+  assert.ok(html.includes("{reason:'복수자 생존 중'") && html.includes("'다음 세팅까지 '+(ledger.cooldownUntil-ledger.turns)+'턴'"), '복수자 생존 중 / 다음 세팅까지 N턴 잠금');
+  assert.ok(html.includes('ledger.cooldownUntil=ledger.turns+AVENGER_RESET_TURNS'), '복수자가 쓰러진 뒤 두 번째 턴 시작부터(강림 +3 과 별개로 +2)');
   assert.ok(html.includes("function ultimateSettingLock(side='player'){if(!ultimateAwakenGateOpen(side))return {reason:'오라 각성 후 세팅 가능'"), '각성 전에는 세팅 불가');
   assert.ok(html.includes("if(ledger.spent)return {reason:'소진자 생존 중'"), '소진자가 살아 있으면 다음 세팅 불가');
   assert.ok(html.includes("'복수자 강림까지 '+left+'턴'"), '잠금 해제 조건(강림까지 N턴)을 표시한다');

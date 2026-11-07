@@ -11,12 +11,12 @@ const html = fs.readFileSync(path.join(root, 'dist/index.html'), 'utf8');
    번들 문자열로 구조를 고정하고, 동작은 아래 마지막 테스트가 브라우저 검사(check-ultimate-rework.py)로 확인한다. */
 
 test('궁극기 수치 상수가 PM 확정값이다 (소진자 +15/1, 복수자 +7/+15, T+2, 공명 −2/+2/+2, 재사용 체력 10)', () => {
-  const m = html.match(/const ULTIMATE_SPENT_ATTACK_BONUS=(\d+),ULTIMATE_SPENT_HP=(\d+),ULTIMATE_RESONANCE_STAT=(\d+),ULTIMATE_RESONANCE_COST=(\d+),AVENGER_ATTACK_BONUS=(\d+),AVENGER_HP_BONUS=(\d+),AVENGER_HERO_DAMAGE=(\d+),AVENGER_ARRIVAL_TURNS=(\d+),AVENGER_EXTRA_DRAW_AT=(\d+),GRAVEYARD_RECYCLE_HP_COST=(\d+),ULTIMATE_UNLOCK_HP=(\d+);/);
+  const m = html.match(/const ULTIMATE_SPENT_ATTACK_BONUS=(\d+),ULTIMATE_SPENT_HP=(\d+),ULTIMATE_RESONANCE_STAT=(\d+),ULTIMATE_RESONANCE_COST=(\d+),AVENGER_ATTACK_BONUS=(\d+),AVENGER_HP_BONUS=(\d+),AVENGER_HERO_DAMAGE=(\d+),AVENGER_ARRIVAL_TURNS=(\d+),AVENGER_RESET_TURNS=(\d+),AVENGER_EXTRA_DRAW_AT=(\d+),GRAVEYARD_RECYCLE_HP_COST=(\d+),ULTIMATE_UNLOCK_HP=(\d+);/);
   assert.ok(m, '상수 선언을 찾을 수 없다');
-  assert.deepEqual(m.slice(1).map(Number), [15, 1, 2, 2, 7, 15, 7, 2, 2, 10, 80]);
+  assert.deepEqual(m.slice(1).map(Number), [15, 1, 2, 2, 7, 15, 7, 3, 2, 2, 10, 80]);
 });
 
-test('각성 전 세팅 불가 · 소진자 생존 중 세팅 불가는 버튼 경로와 카드 경로 모두 같은 판정을 쓴다', () => {
+test('각성 선택 전 세팅 불가 · 소진자 생존 중 세팅 불가는 버튼 경로와 카드 경로 모두 같은 판정을 쓴다', () => {
   assert.ok(html.includes("if(!ultimateAwakenGateOpen(side))return {reason:'오라 각성 후 세팅 가능'"));
   assert.ok(html.includes("if(ledger.spent)return {reason:'소진자 생존 중'"));
   assert.ok(html.includes("'복수자 강림까지 '+left+'턴'"));
@@ -34,7 +34,7 @@ test('세팅하면 같은 카드의 덱 사본을 묘지로 보낸다(손패 취
 
 test('복수자는 소진자 사망 시점의 턴 수 +2 에 강림하고, 강림하면 각성곡으로 바뀐다', () => {
   assert.ok(html.includes('ledger.pending.push({rec:spent,due:ledger.turns+AVENGER_ARRIVAL_TURNS})'));
-  assert.ok(html.includes('function advanceUltimateLedger(side){const ledger=ultimateLedger[side];ledger.turns++;'));
+  assert.ok(html.includes('function advanceUltimateLedger(side){const ledger=ultimateLedger[side];syncUltimateLedger(side);ledger.turns++;'));
   assert.ok(html.includes("advanceUltimateLedger('player');"));
   assert.ok(html.includes("advanceUltimateLedger('enemy');"));
   assert.ok(html.includes('switchToAwakeningBgm();const presented=showAvengerArrival(partner,rec,unit);'));

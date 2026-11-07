@@ -25,20 +25,20 @@ window.__q={
   avenger:()=>document.querySelector('.summon-zone .unit[data-effect="ultimate-avenger"]'),
   wait:ms=>new Promise(r=>setTimeout(r,ms)),
   // 각성 버튼이 열린 상태 + 제물 챔프 + 마나 가득
-  ready:()=>{playerHp=70;ultimateAwakenGateOpen('player');summonBattleToken('제물',2,5,'earth');mana=maxMana;updateMana();},
+  ready:()=>{playerHp=70;awakenGateOpened.player=true;summonBattleToken('제물',2,5,'earth');mana=maxMana;updateMana();},
 };
 """
 
 CHECKS = [
- ("각성 전(체력 80 초과)에는 궁극기를 세팅할 수 없고, 사유가 패널에 표시된다",
+ ("오라 각성 선택 전에는 궁극기를 세팅할 수 없고, 사유가 패널에 표시된다",
   "(()=>{const c=__q.card(__q.notFireId);playerHp=100;setUltimate(c);const blocked=!ultimateState&&c.isConnected;const reason=ultimateSettingLockReason();"
   "renderUltimate();const btn=document.querySelector('#ultimate-panel .ultimate-slot-empty');"
   "return {ok:blocked&&reason==='오라 각성 후 세팅 가능'&&btn.disabled&&btn.textContent.includes(reason),blocked,reason,btn:btn.textContent};})()"),
- ("체력 81은 닫혀 있고 80에서 열린다. 한 번 열리면 체력을 회복해도 계속 열려 있다",
-  "(()=>{playerHp=81;const at81=ultimateAwakenGateOpen('player');playerHp=80;const at80=ultimateAwakenGateOpen('player');playerHp=100;const healed=ultimateAwakenGateOpen('player');"
-  "const c=__q.card(__q.notFireId);setUltimate(c);return {ok:!at81&&at80&&healed&&!!ultimateState,at81,at80,healed};})()"),
+ ("체력이 80 이하여도 각성 선택 전에는 닫혀 있고, 오라 각성 선택을 마치면 열린다(체력을 회복해도 유지)",
+  "(()=>{playerHp=70;const before=ultimateSettingLockReason();const c=__q.card(__q.notFireId);setUltimate(c);const blocked=!ultimateState;chooseGuardianAwakening('A');playerHp=100;const after=ultimateSettingLockReason();setUltimate(c);"
+  "return {ok:before==='오라 각성 후 세팅 가능'&&blocked&&after===''&&!!ultimateState,before,blocked,after};})()"),
  ("세팅하면 대전 덱의 같은 카드를 모두 묘지로 보낸다. 취소해도 손패로 돌아올 뿐 덱 사본은 돌아오지 않는다",
-  "(()=>{playerHp=70;const c=__q.card(__q.notFireId),art=cardArtwork(c),proto=deck.find(d=>!d.spell);deck.push({...proto,art},{...proto,art});const before=deck.filter(d=>d.art===art).length,gy0=allyGraveyard.length;"
+  "(()=>{playerHp=70;awakenGateOpened.player=true;const c=__q.card(__q.notFireId),art=cardArtwork(c),proto=deck.find(d=>!d.spell);deck.push({...proto,art},{...proto,art});const before=deck.filter(d=>d.art===art).length,gy0=allyGraveyard.length;"
   "setUltimate(c);const after=deck.filter(d=>d.art===art).length,gy=allyGraveyard.filter(d=>d.art===art).length;const handBefore=document.querySelectorAll('.hand .card').length;cancelUltimate();"
   "const back=document.querySelectorAll('.hand .card').length===handBefore+1&&!ultimateState;return {ok:before===2&&after===0&&gy===2&&allyGraveyard.length===gy0+2&&back&&deck.filter(d=>d.art===art).length===0,before,after,gy,back};})()"),
  ("사용 가능 턴·강한 카드 분류가 없다: 1턴에도 마나만 맞으면 발동되고, 비용은 내 최대 마나다",
@@ -46,11 +46,19 @@ CHECKS = [
   "return {ok:cost===max&&lock===''&&short==='마나 '+max+' 필요'&&!('minTurn' in ultimateState)&&!('strong' in ultimateState),cost,max,lock,short};})()"),
  ("혈마나는 궁극기에 쓸 수 없다(마나가 모자라면 체력을 내도 발동 불가)",
   "(()=>{__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);turnNumber=20;mana=maxMana-1;const hp=playerHp;fireUltimateAction();return {ok:!!ultimateState&&playerHp===hp&&!__q.spent(),hp:playerHp};})()"),
- ("소진자: 카드 기본 공격력 +15 / 체력 1 / 110% / 즉시 공격 가능 / 맨 오른쪽 고정 / 전역 도발",
+ ("제물 조건: 전장 0장·3장이면 제물 없이 맨 오른쪽 빈 자리에 배치, 5장(가득 참)일 때만 맨 오른쪽 챔프가 제물로 묘지행",
+  "(async()=>{playerHp=70;awakenGateOpened.player=true;const lane=document.querySelector('.summon-zone');const run=async(n)=>{lane.innerHTML='';allyGraveyard.length=0;ultimateLedger.player.spent=null;ultimateState=null;const names=[];for(let i=0;i<n;i++){summonBattleToken('아군'+i,2,5,'earth');names.push('아군'+i);}mana=maxMana;const c=__q.card(__q.notFireId);setUltimate(c);const reasonBefore=ultimateLockReason();fireUltimateAction();setBattlePhase('setup');const units=[...lane.querySelectorAll(':scope > .unit:not(.unit-dying)')];return {n,reasonBefore,count:units.length,lastSpent:units.at(-1)?.dataset.effect==='ultimate-spent',names:units.map(u=>u.querySelector('h4').textContent),grave:allyGraveyard.map(g=>g.name)};};"
+  "const r0=await run(0),r3=await run(3),r6=await run(5);"
+  "return {ok:r0.reasonBefore===''&&r0.count===1&&r0.lastSpent&&r3.reasonBefore===''&&r3.count===4&&r3.lastSpent&&r3.names.slice(0,3).join()==='아군0,아군1,아군2'&&!r3.grave.includes('아군2')&&r6.count===5&&r6.lastSpent&&!r6.names.includes('아군4')&&r6.grave.includes('아군4'),r0,r3,r6};})()"),
+ ("컴퓨터도 같은 제물 조건: 전장 0장이어도 발동, 3장이면 제물 없이 4번째, 5장(가득 참)이면 맨 오른쪽 제물",
+  "(async()=>{const proto=enemyDeck.find(d=>!d.spell);const lane=document.querySelector('.arena .lane:first-child');awakenGateOpened.enemy=true;enemyHp=70;enemyTurnMaxMana=maxMana=5;const run=async(n)=>{lane.innerHTML='';enemyGraveyard.length=0;ultimateLedger.enemy.spent=null;for(let i=0;i<n;i++)enemySummonUnit(lane,{name:'적'+i,art:proto.art,el:'earth',atk:2,hp:5,cost:1});enemyMana=5;enemyUltimate=enemyUltimateSpec({...proto,atkFinal:proto.atk});const ok=castEnemyUltimate();const units=[...lane.querySelectorAll(':scope > .unit:not(.unit-dying)')];return {n,ok,count:units.length,lastSpent:units.at(-1)?.dataset.effect==='ultimate-spent',grave:enemyGraveyard.length};};"
+  "const r0=await run(0),r3=await run(3),r6=await run(5);"
+  "return {ok:r0.ok&&r0.count===1&&r0.lastSpent&&r0.grave===0&&r3.ok&&r3.count===4&&r3.lastSpent&&r3.grave===0&&r6.ok&&r6.count===5&&r6.lastSpent&&r6.grave===1,r0,r3,r6};})()"),
+ ("소진자: 카드 기본 공격력 +15 / 체력 1 / 130% / 즉시 공격 가능 / 맨 오른쪽 고정 / 전역 도발",
   "(async()=>{__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);const base=ultimateState.baseAttack;fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
   "const u=__q.spent();const lane=document.querySelector('.summon-zone');"
   "const r={atk:u&&__q.atk(u),hp:u&&__q.hp(u),exhausted:u?.classList.contains('exhausted'),last:u===lane.lastElementChild,scale:u&&getComputedStyle(u).scale,locked:u?.dataset.orderLocked,aggro:u?.dataset.ultimateAggro,base};"
-  "return {ok:!!u&&r.atk===base+15&&r.hp===1&&r.exhausted===false&&r.last&&r.scale==='1.1'&&r.locked==='true'&&r.aggro==='true'&&battlePhase==='setup',...r};})()"),
+  "return {ok:!!u&&r.atk===base+15&&r.hp===1&&r.exhausted===false&&r.last&&r.scale==='1.3'&&r.locked==='true'&&r.aggro==='true'&&battlePhase==='setup',...r};})()"),
  ("오라 공명(카드 성격 = 내 오라 불): 비용 −2, 소진자 공격 +2 · 체력 +2",
   "(async()=>{__q.ready();maxMana=6;mana=6;const c=__q.card(__q.fireId);setUltimate(c);const base=ultimateState.baseAttack,cost=ultimateState.cost,res=auraUltimateMatch(ultimateState);fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
   "const u=__q.spent();return {ok:res&&cost===4&&mana===2&&__q.atk(u)===base+15+2&&__q.hp(u)===3,res,cost,mana,atk:__q.atk(u),hp:__q.hp(u),base};})()"),
@@ -58,18 +66,19 @@ CHECKS = [
   "(async()=>{__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
   "const c2=__q.card(__q.notFireId);turnNumber+=10;setUltimate(c2);const reason=ultimateSettingLockReason();renderUltimate();const btn=document.querySelector('#ultimate-panel .ultimate-slot-empty');"
   "return {ok:!ultimateState&&reason==='소진자 생존 중'&&btn.disabled&&btn.textContent.includes('소진자 생존 중'),reason,btn:btn.textContent};})()"),
- ("복수자: 소진자가 쓰러진 뒤 내 턴 시작 2번째에 강림한다(+7 공격 / +15 체력, 110%), 그 전에는 세팅 잠금 · 강림 후 해제",
+ ("복수자: 소진자가 쓰러진 뒤 내 턴 시작 3번째에 강림한다(+7 공격 / +15 체력, 130%), 그 전에는 세팅 잠금 · 강림 후 해제",
   "(async()=>{__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);const base=ultimateState.baseAttack,baseHp=ultimateState.baseHp;fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
   "const u=__q.spent();damageUnit(u,99,'fire');u.dataset.destroyed='true';" + (WAIT % 60) + "setTimeout(()=>u.remove(),0);const turns0=ultimateLedger.player.turns,due=ultimateLedger.player.pending[0]?.due;"
   "const lock0=ultimateSettingLockReason();fxClear?.();const btn=__q.endBtn();"
   "startPlayerTurn(btn);const afterOne={avenger:!!__q.avenger(),lock:ultimateSettingLockReason()};fxClear?.();"
-  "startPlayerTurn(btn);" + (WAIT % 400) + "const a=__q.avenger();"
-  "const r={due,turns0,lock0,afterOne,atk:a&&__q.atk(a),hp:a&&__q.hp(a),scale:a&&getComputedStyle(a).scale,lockAfter:ultimateSettingLockReason(),arrived:ultimateLedger.player.arrived,base,baseHp};"
-  "return {ok:due===turns0+2&&lock0==='복수자 강림까지 2턴'&&afterOne.avenger===false&&afterOne.lock==='복수자 강림까지 1턴'&&!!a&&r.atk===base+7&&r.hp===baseHp+15&&r.scale==='1.1'&&r.lockAfter===''&&r.arrived===1,...r};})()"),
+  "startPlayerTurn(btn);const afterTwo={avenger:!!__q.avenger(),lock:ultimateSettingLockReason()};fxClear?.();startPlayerTurn(btn);" + (WAIT % 400) + "const a=__q.avenger();"
+  "const sc=getComputedStyle(a).scale,aa=__q.atk(a),ah=__q.hp(a);const lockAlive=ultimateSettingLockReason();damageUnit(a,99,'fire');a.dataset.destroyed='true';" + (WAIT % 60) + "a.remove();const c0=ultimateLedger.player.cooldownUntil-ultimateLedger.player.turns,lockDead=ultimateSettingLockReason();startPlayerTurn(btn);fxClear?.();const lockDead1=ultimateSettingLockReason();startPlayerTurn(btn);const lockOpen=ultimateSettingLockReason();"
+  "const r={afterTwo,lockAlive,lockDead,lockDead1,lockOpen,due,turns0,lock0,afterOne,atk:aa,hp:ah,scale:sc,lockAfter:lockAlive,arrived:ultimateLedger.player.arrived,base,baseHp};"
+  "return {ok:due===turns0+3&&lock0==='복수자 강림까지 3턴'&&afterOne.avenger===false&&afterOne.lock==='복수자 강림까지 2턴'&&afterTwo.avenger===false&&afterTwo.lock==='복수자 강림까지 1턴'&&!!a&&r.atk===base+7&&r.hp===baseHp+15&&r.scale==='1.3'&&r.lockAfter==='복수자 생존 중'&&lockAlive==='복수자 생존 중'&&lockDead==='다음 세팅까지 2턴'&&lockDead1==='다음 세팅까지 1턴'&&lockOpen===''&&r.arrived===1,...r};})()"),
  ("복수자의 외형은 덱 구성에서 빌려 오며 덱에서 카드를 빼지 않는다(턴 시작 기본 드로우 1장만 줄어든다)",
   "(async()=>{__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
   "const u=__q.spent();damageUnit(u,99,'fire');u.dataset.destroyed='true';" + (WAIT % 60) + "u.remove();const btn=__q.endBtn();"
-  "__q.trim();startPlayerTurn(btn);fxClear?.();const d1=deck.length;__q.trim();startPlayerTurn(btn);const d2=deck.length;" + (WAIT % 60) +
+  "__q.trim();startPlayerTurn(btn);fxClear?.();startPlayerTurn(btn);fxClear?.();const d1=deck.length;__q.trim();startPlayerTurn(btn);const d2=deck.length;" + (WAIT % 60) +
   "const a=__q.avenger(),names=new Set(collectionState.deck.map(i=>collectionCards[i][2]));return {ok:!!a&&d1-d2===1&&names.has(a.querySelector('h4').textContent),d1,d2,name:a?.querySelector('h4').textContent};})()"),
  ("복수자가 두 번째로 등장한 뒤부터 내 턴 시작에 1장 추가 드로우(손패 8장·덱 비면 생략)",
   "(()=>{const btn=__q.endBtn();const draw=(arrived,handTrim)=>{ultimateLedger.player.arrived=arrived;__q.trim();if(handTrim)while(document.querySelectorAll('.hand .card').length<7)__q.card(__q.notFireId);const d=deck.length;startPlayerTurn(btn);return d-deck.length;};"
@@ -88,7 +97,7 @@ CHECKS = [
   "return {ok:a.hp===40&&a.deck===1&&a.hand===1&&enemyHp===10&&enemyDeck.length===0&&enemyHand.length===1,a,hp:enemyHp};})()"),
  ("BGM: 체력 40 이하만으로는 바뀌지 않고, 어느 쪽이든 복수자가 처음 등장하면 각성곡으로 바뀌어 유지된다",
   "(async()=>{playerHp=30;enemyHp=30;" + (WAIT % 700) + "const before=bgm===bgmTracks.main;__q.ready();const c=__q.card(__q.notFireId);setUltimate(c);fireUltimateAction();setBattlePhase('setup');" + (WAIT % 50) +
-  "const u=__q.spent();damageUnit(u,99,'fire');u.dataset.destroyed='true';" + (WAIT % 60) + "u.remove();const btn=__q.endBtn();startPlayerTurn(btn);fxClear?.();const mid=bgm===bgmTracks.main;startPlayerTurn(btn);" + (WAIT % 60) +
+  "const u=__q.spent();damageUnit(u,99,'fire');u.dataset.destroyed='true';" + (WAIT % 60) + "u.remove();const btn=__q.endBtn();startPlayerTurn(btn);fxClear?.();startPlayerTurn(btn);fxClear?.();const mid=bgm===bgmTracks.main;startPlayerTurn(btn);" + (WAIT % 60) +
   "const after=bgm===bgmTracks.awakening;startPlayerTurn(btn);return {ok:before&&mid&&after&&bgm===bgmTracks.awakening,before,mid,after};})()"),
 ("체력 40% 기준 장치 삭제: 40 이하에도 게이지·안내·추가 드로우·역전 돌진·회복 잠금이 없고, 카드의 돌진 효과는 남는다",
   "(async()=>{playerHp=35;updateHeroHealth();" + (WAIT % 800) + "const gauge=document.querySelector('#player-health').parentElement,toast=document.querySelector('.desperate-toast');"
@@ -112,15 +121,24 @@ CHECKS = [
   "for(let i=0;i<100&&!shown();i++)await __q.wait(100);const lose=shown()&&playerHp===0&&document.querySelector('#result').classList.contains('lose');return {ok:lose,lose,playerHp};})()"),
  ("컴퓨터 대칭: 각성 전 세팅 불가 → 열리면 장착(덱 사본 처리) → 비용 = 최대 마나 → 소진자 +15/1 → 쓰러지면 2번째 턴에 +7/+15 복수자",
   "(async()=>{const proto=enemyDeck.find(d=>!d.spell);const base=baseCardStatsByArt(proto.art);enemyHand.length=0;enemyHand.push({...proto,atkFinal:proto.atk});enemyDeck.push({...proto},{...proto});"
-  "enemyHp=100;enemyUltimate=null;equipEnemyUltimate();const closed=!enemyUltimate;enemyHp=70;ultimateAwakenGateOpen('enemy');equipEnemyUltimate();const equipped=!!enemyUltimate,left=enemyDeck.filter(d=>d.art===proto.art).length;"
+  "enemyHp=100;enemyUltimate=null;equipEnemyUltimate();const closed=!enemyUltimate;enemyHp=70;awakenGateOpened.enemy=true;equipEnemyUltimate();const equipped=!!enemyUltimate,left=enemyDeck.filter(d=>d.art===proto.art).length;"
   "enemyTurnMaxMana=maxMana=7;enemyMana=7;summonBattleToken;const lane=document.querySelector('.arena .lane:first-child');enemySummonUnit(lane,{name:'제물',art:proto.art,el:'earth',atk:2,hp:5,cost:1});"
   "const cost=enemyUltimateManaCost(enemyUltimate),res=enemyAuraUltimateMatch(enemyUltimate);castEnemyUltimate();" + (WAIT % 200) +
   "const s=lane.querySelector('.unit[data-effect=\"ultimate-spent\"]');const sAtk=__q.atk(s),sHp=__q.hp(s),ex=s.classList.contains('exhausted');"
   "const mana=enemyMana;damageUnit(s,99,'fire');s.dataset.destroyed='true';" + (WAIT % 60) + "s.remove();const pend=ultimateLedger.enemy.pending[0]?.due-ultimateLedger.enemy.turns;const lock=ultimateSettingLockReason('enemy');"
-  "advanceUltimateLedger('enemy');const noneYet=!lane.querySelector('.unit[data-effect=\"ultimate-avenger\"]');advanceUltimateLedger('enemy');" + (WAIT % 60) +
+  "advanceUltimateLedger('enemy');advanceUltimateLedger('enemy');const noneYet=!lane.querySelector('.unit[data-effect=\"ultimate-avenger\"]');advanceUltimateLedger('enemy');" + (WAIT % 60) +
   "const a=lane.querySelector('.unit[data-effect=\"ultimate-avenger\"]');"
   "const ex2={closed,equipped,left,cost,res,mana,sAtk,sHp,ex,pend,lock,noneYet,aAtk:a&&__q.atk(a),aHp:a&&__q.hp(a),base};"
-  "return {ok:closed&&equipped&&left===0&&cost===(res?5:7)&&mana===7-cost&&sAtk===base.atk+15+(res?2:0)&&sHp===(res?3:1)&&ex===false&&pend===2&&lock==='복수자 강림까지 2턴'&&noneYet&&!!a&&ex2.aAtk===base.atk+7&&ex2.aHp===base.hp+15,...ex2};})()"),
+  "return {ok:closed&&equipped&&left===0&&cost===(res?5:7)&&mana===7-cost&&sAtk===base.atk+15+(res?2:0)&&sHp===(res?3:1)&&ex===false&&pend===3&&lock==='복수자 강림까지 3턴'&&noneYet&&!!a&&ex2.aAtk===base.atk+7&&ex2.aHp===base.hp+15,...ex2};})()"),
+ ("5칸 가득 찬 전장(양쪽 130% 소진자·복수자 포함): 카드끼리·독(각성/궁극기 표시)·마나 바와 겹침 0, 전장 밖으로 안 나가고 카드 사이 간격이 있다",
+  "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');el.innerHTML='';zo.innerHTML='';const proto=enemyDeck.find(d=>!d.spell);"
+  "const en=(name,effect)=>enemySummonUnit(el,{name,art:proto.art,el:'water',atk:20,hp:3,cost:1,effect});en('적1');en('적2');en('적3','ultimate-avenger');en('적4','ultimate-spent');en('적5');"
+  "summonBattleToken('아군1',3,5,'fire');summonBattleToken('아군2',4,5,'water');summonBattleToken('복수자',13,20,'earth','ultimate-avenger');summonBattleToken('소진자',20,3,'fire','ultimate-spent');summonBattleToken('아군5',5,6,'wind');"
+  "await __q.wait(2200);const R=e=>e.getBoundingClientRect(),U=[...document.querySelectorAll('.arena .unit:not(.unit-dying)')],ov=(a,b)=>Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left))*Math.max(0,Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top));"
+  "let pairs=0;for(let i=0;i<U.length;i++)for(let j=i+1;j<U.length;j++)if(ov(R(U[i]),R(U[j]))>0)pairs++;const dock=R(document.querySelector('.arena>.field-action-dock')),mana=R(document.querySelector('#mana-hud')),arena=R(document.querySelector('.stage-column .arena'));"
+  "const dockO=U.filter(u=>ov(R(u),dock)>0).length,manaO=U.filter(u=>ov(R(u),mana)>0).length,out=U.filter(u=>R(u).left<arena.left||R(u).right>arena.right||R(u).top<arena.top||R(u).bottom>arena.bottom).length;"
+  "const gaps=[];[el,zo].forEach(l=>{const us=[...l.querySelectorAll(':scope > .unit')].map(R).sort((a,b)=>a.left-b.left);for(let i=1;i<us.length;i++)gaps.push(us[i].left-us[i-1].right);});"
+  "return {ok:U.length===10&&pairs===0&&dockO===0&&manaO===0&&out===0&&Math.min(...gaps)>=40,pairs,dockO,manaO,out,minGap:Math.min(...gaps)};})()"),
  ("컴퓨터 턴 흐름: 강림 시점의 enemyTurn 이 오류 없이 복수자를 내려놓고 공격 목록에 포함한다",
   "(async()=>{const proto=enemyDeck.find(d=>!d.spell);ultimateLedger.enemy.pending.push({rec:{name:proto.name,art:proto.art,element:proto.el,baseAttack:3,baseHp:4},due:ultimateLedger.enemy.turns+1});"
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<120&&!finished;i++)await __q.wait(100);" + (WAIT % 100) + "const a=document.querySelector('.arena .lane:first-child .unit[data-effect=\"ultimate-avenger\"]');"

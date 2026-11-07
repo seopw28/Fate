@@ -34,9 +34,9 @@ test('컴퓨터도 복수자를 얻고, 두 번째 복수자부터 턴 시작에
   assert.ok(!html.includes('queueEnemyUltimateAvenger') && !html.includes('summonEnemyUltimateAvenger'), '체력 40 방아쇠 기반 상대 강림 함수는 없다');
 });
 
-test('복수자는 소진자가 쓰러진 뒤 그 편의 턴 시작 2번째에 강림한다 (양쪽 공통 장부)', () => {
-  assert.ok(html.includes('AVENGER_ARRIVAL_TURNS=2'));
-  assert.ok(html.includes('ledger.pending.push({rec:spent,due:ledger.turns+AVENGER_ARRIVAL_TURNS})'), '사망 시점의 턴 수 +2 가 강림 시점이다');
+test('복수자는 소진자가 쓰러진 뒤 그 편의 턴 시작 3번째에 강림한다 (양쪽 공통 장부)', () => {
+  assert.ok(html.includes('AVENGER_ARRIVAL_TURNS=3,AVENGER_RESET_TURNS=2'));
+  assert.ok(html.includes('ledger.pending.push({rec:spent,due:ledger.turns+AVENGER_ARRIVAL_TURNS})'), '사망 시점의 턴 수 +3 이 강림 시점이다');
   assert.ok(html.includes('const due=ledger.pending.filter(item=>item.due<=ledger.turns)'), '턴 시작마다 강림 시점이 된 복수자만 내려놓는다');
   assert.ok(html.includes('registerUltimateSpentDeath(unit.closest(\'.summon-zone\')?\'player\':\'enemy\',unit)'), '소진자 사망 컷에서 양쪽 모두 등록한다');
   // 사망 컷은 연출 큐에 올라가 필드를 멈추고, 강림은 같은 우선순위로 그 뒤에 이어진다(FIFO).
