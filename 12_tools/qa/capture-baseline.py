@@ -16,6 +16,8 @@ STATES = overflow.STATES
 VIEWPORTS = [(1568, 900), (1366, 768), (1100, 800), (1000, 900)]
 OUT = next((a for a in sys.argv[1:] if not a.startswith('-')), '/tmp/fate-baseline')
 QUERY = '?skipIntro&guardian=baekho&difficulty=normal&seed=ui-scale-baseline'
+# 반복 애니메이션(체력바 반짝임 등)이 찍는 순간마다 달라 같은 화면도 최대 1% 달라졌다. 찍기 전에 모두 끈다.
+STILL = "(()=>{if(!document.getElementById('qa-still')){const s=document.createElement('style');s.id='qa-still';s.textContent='*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}';document.head.appendChild(s)}})()"
 FREEZE = "document.querySelectorAll('*').forEach(e=>e.getAnimations&&e.getAnimations().forEach(a=>{try{a.finish()}catch(_){a.cancel()}}))"
 
 def main():
@@ -32,7 +34,7 @@ def main():
                     pg.evaluate(setup)
                 except Exception as e:
                     fails.append(f'{w}x{h} {name}: {str(e)[:80]}'); continue
-                pg.wait_for_timeout(250); pg.evaluate(FREEZE)
+                pg.wait_for_timeout(250); pg.evaluate(FREEZE); pg.evaluate(STILL); pg.wait_for_timeout(30)
                 safe = ''.join(c if c.isalnum() else '_' for c in name)[:40]
                 pg.screenshot(path=os.path.join(d, f'{i:02d}-{safe}.png')); shots += 1
             ctx.close()
