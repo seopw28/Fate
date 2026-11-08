@@ -581,11 +581,14 @@ test('마법 시네마틱: 회복·아케인·보이드 계열은 전용 자산�
   assert.ok(html.includes("['bounce','resurrect','global-destroy'].includes(effect))showSpellCinematicEffect('void'"), 'Recall, resurrection, and destruction spells must use the void gate');
 });
 
-test('배경음악: 최후의 저항이 시작되면 각성 BGM으로 크로스페이드한다', () => {
+test('배경음악: 어느 쪽이든 복수자가 처음 등장하면 각성 BGM으로 크로스페이드한다', () => {
   const html = require('node:fs').readFileSync(require('node:path').join(__dirname, '../../dist/index.html'), 'utf8');
   assert.ok(html.includes("awakening:new Audio('assets/audio/bgm-awakening.mp3')"), 'Awakening track must be loaded');
   assert.ok(require('node:fs').existsSync(require('node:path').join(__dirname, '../../dist/assets/audio/bgm-awakening.mp3')), 'Awakening mp3 must be shipped');
-  assert.ok(html.includes('if(active){switchToAwakeningBgm();'), 'Desperation start must switch the BGM');
+  assert.ok(!html.includes('if(active){switchToAwakeningBgm();'), '체력 40 이하는 더 이상 BGM을 바꾸지 않는다');
+  assert.ok(html.includes("unit.classList.remove('exhausted');if(player)unit.querySelector('.emoji').innerHTML") && html.includes("switchToAwakeningBgm();const presented=showAvengerArrival(partner,rec,unit);"), '복수자 강림(양쪽 공통)이 BGM을 바꾼다');
+  assert.ok(html.includes('function switchToAwakeningBgm(){const from=bgm,to=bgmTracks.awakening;if(from===to)return;'), '이미 각성곡이면 다시 바꾸지 않고, 일반곡으로 되돌리는 경로도 없다');
+  assert.equal(html.split('bgm=bgmTracks.main').length - 1, 1, '초기값 외에 일반곡으로 되돌리는 대입이 없어야 한다');
 });
 
 test('드로우: 뒷면으로 날아와 손패 자리에서 뒤집히고, 확대 배율로 일러스트를 키우지 않는다', () => {

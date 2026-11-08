@@ -40,11 +40,19 @@ test('magic cards keep a stable rail composition', () => {
   assert.ok(!html.includes('flex:0 0 122px'), '그림 높이를 고정하면 카드가 그림에 밀려 길어진다');
 });
 
-test('champion fields are capped and fit six cards without rail overflow', () => {
-  assert.ok(html.includes('const FIELD_CARD_LIMIT = 6'), 'Both champion fields must share a six-card limit');
+test('champion fields are capped and fit five cards without rail overflow', () => {
+  assert.ok(html.includes('const FIELD_CARD_LIMIT = 5'), 'Both champion fields must share a five-card limit');
   assert.ok(html.includes("length>=FIELD_CARD_LIMIT"), 'Player summons must stop before spending resources on a full field');
-  assert.ok(html.includes('grid-template-columns:repeat(6,minmax(0,182px))'), 'Desktop fields must use six fluid tracks');
-  assert.ok(html.includes('grid-template-columns:repeat(6,minmax(0,1fr))'), 'Narrow fields must shrink all six tracks inside the stage');
+  assert.ok(html.includes('grid-template-columns:repeat(5,minmax(0,182px))'), 'Desktop fields must use five fluid tracks');
+  assert.ok(html.includes('grid-template-columns:repeat(5,minmax(0,1fr))'), 'Narrow fields must shrink all five tracks inside the stage');
+});
+
+test('5칸 전장은 카드 크기를 행 높이·칸 폭에서 계산해 간격을 넓게 쓰고 130% 카드가 독·마나 바를 덮지 않는다', () => {
+  assert.ok(html.includes('container-type:size;--field-gap:54px'), '독(50px)이 들어갈 행 사이 간격을 확보한다');
+  assert.ok(html.includes('calc((100cqw - 36px) / 5 - 72px)'), '카드 폭은 칸 폭 − 72px 이하라 간격이 72px 아래로 줄지 않는다(모든 뷰포트)');
+  assert.ok(html.includes('height:var(--row-h);align-self:start'), '반응형 구간에서도 행 높이를 고정해 전장이 마나 바로 넘치지 않는다');
+  assert.ok(html.includes('--card-h:calc((var(--row-h) - 4px) / 1.3)'), '130% 로 커져도 행 안에 들어가는 카드 높이');
+  assert.ok(html.includes('.stage-column .arena .summon-zone > .unit{width:var(--card-w);max-width:none;height:auto;aspect-ratio:5/7;justify-self:center}'), '카드는 균등 5칸 트랙 가운데에 놓인다');
 });
 
 test('field setup stays locked until combat fully resolves', () => {
@@ -69,11 +77,12 @@ test('initial battle hand is generated from validated card data', () => {
 test('basic deck and opening hand follow the PRD composition', () => {
   assert.ok(html.includes('SPELL_DECK_LIMIT=30,'), 'Decks may hold up to 30 spells and traps combined');
   assert.ok(html.includes('BASIC_CHAMPION_COUNT=30,BASIC_SPELL_COUNT=20,BASIC_TRAP_COUNT=10,OPENING_HAND_SIZE=5'), 'Basic deck must be 30 champions, 20 spells, 10 traps with a five-card opening hand');
-  assert.ok(html.includes("fill('spell',BASIC_SPELL_COUNT,FEATURED_REVERSAL_IDS)||!fill('trap',BASIC_TRAP_COUNT)||!fill('champion',BASIC_CHAMPION_COUNT)"), 'Basic deck builder must enforce all three card counts');
+  assert.ok(html.includes("fill('spell',BASIC_SPELL_COUNT,FEATURED_REVERSAL_IDS)||!fill('trap',BASIC_TRAP_COUNT)||!fill('champion',BASIC_CHAMPION_COUNT,HERO_PRESSURE_DECK_IDS,true)"), 'Basic deck builder must enforce all three card counts');
   assert.ok(html.includes("const FEATURED_REVERSAL_IDS=['reversal.judgment','reversal.bulwark','reversal.giant-hunt','reversal.weight-toll','reversal.life-siphon','reversal.insight']"), 'Basic and demo decks must feature all six reversal spells');
   assert.ok(html.includes('역전 체험덱 자동편성'), 'Deck editor must expose the featured reversal deck preset');
-  assert.ok(html.includes('guaranteed.length<2') && html.includes('!deck[i].spell&&deck[i].cost<=STARTING_MANA'), 'Opening hand must guarantee two low-cost champions');
+  assert.ok(html.includes('guaranteed.length<2') && html.includes('!pile[i].spell&&pile[i].cost<=STARTING_MANA'), 'Opening hand must guarantee two low-cost champions');
   assert.ok(html.includes('card.spell&&!card.trap&&card.cost<=STARTING_MANA') && html.includes('if(cheapMagic>=0)guaranteed.push(cheapMagic)'), 'Opening hand must guarantee one low-cost non-trap magic card when available');
+  assert.ok(html.includes('takeCards(deck,openingHandIndexes(deck))') && html.includes('takeCards(enemyDeck,openingHandIndexes(enemyDeck))'), 'Player and computer opening hands use the same guarantee (2026-11-08)');
   assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(buildBasicDeck(starterOwnedCards())).map(deckEntry)'), 'Computer opponent must use the basic deck');
 });
 
@@ -97,7 +106,7 @@ test('deck exhaustion and result actions follow the PRD', () => {
 
 test('enemy champions must be cleared before a direct hero attack', () => {
   assert.ok(html.includes("const defenders=[...document.querySelectorAll('.lane:nth-child(1) .unit:not([data-destroyed=\"true\"])')]") , 'Direct attacks must inspect surviving enemy champions');
-  assert.ok(html.includes("const front=defenders.find(u=>u.dataset.taunt==='true')||defenders[0]"), 'Taunt or the leftmost champion must intercept a hero attack');
+  assert.ok(html.includes("const front=defenders.find(u=>u.dataset.ultimateAggro==='true')||defenders.find(u=>u.dataset.taunt==='true')||defenders[0]"), 'Taunt or the leftmost champion must intercept a hero attack');
   assert.ok(html.includes('attack(front,automatic);return;'), 'A blocked hero click must resolve against the defending champion');
 });
 
@@ -173,7 +182,7 @@ test('mana curve starts low and grows into the mid game', () => {
   assert.ok(html.includes('const MANA_CAP = 10'), 'Mana cap must remain ten');
   assert.ok(html.includes('let turnNumber = 1'), 'Battle must start on turn one');
   assert.ok(html.includes('Math.min(MANA_CAP,maxMana+1)'), 'Maximum mana must grow by one each turn');
-  assert.ok(html.includes('const BLOOD_MANA_UNLOCK_TURN = 3'), 'Blood mana must not bypass the opening curve');
+  assert.ok(html.includes('const BLOOD_MANA_UNLOCK_TURN = 1;'), '혈마나는 배틀 첫 턴부터 쓸 수 있다 (2026-11-08 초반 제한 해제)');
   assert.ok(html.includes('＋ 카드 뽑기 <small>· 비용 2마나</small>'), 'Initial draw UI must show the actual two-mana base cost');
   assert.ok(html.includes("'비용 '+cost+' · 마나 '+paidMana+' + 혈마나 '+quote.shortage"), 'Blood-mana UI must distinguish total cost, paid mana, and converted mana');
   assert.ok(html.includes("' 다음 비용은 마나 '+(cost*2)+'입니다.'"), 'Draw log must follow the exponential 2, 4, 8 cost curve');
@@ -224,7 +233,7 @@ test('군세 대응 카드와 저위력 광역 공격 기회가 충분히 분포
 });
 
 test('set magic and equipped ultimate can be cancelled back to hand before ending the turn', () => {
-  for (const token of ['function cancelSetMagic', 'function cancelUltimate', "addEventListener('dblclick'", 'draggedCancel', 'magic.refund', "turnNumber >= magic.readyTurn"]) {
+  for (const token of ['function cancelSetMagic', 'function cancelUltimate', "addEventListener('dblclick'", 'draggedCancel', 'magic.refund', "turnNumber > (magic.setTurn ?? magic.readyTurn-1)"]) {
     assert.ok(html.includes(token), `Missing setting-cancel token: ${token}`);
   }
 });
@@ -235,18 +244,15 @@ test('space switches hand tabs and Enter ends the turn', () => {
   }
 });
 
-test('최후의 저항: 체력 40 이하에서 발동하지만 최대 마나는 10을 유지한다', () => {
-  assert.ok(html.includes('const DESPERATE_HP_RATIO=.4'), 'Desperation must start at forty percent');
-  assert.ok(html.includes('hp>0&&hp<=DESPERATE_HP'), 'Exactly forty percent health must activate desperation');
-  assert.ok(html.includes('function playerManaCap(){return MANA_CAP;}'), 'Desperation must keep the normal mana cap');
+test('최대 마나는 항상 10 상한이다', () => {
+  assert.ok(html.includes('function playerManaCap(){return MANA_CAP;}'), 'Max mana stays capped at ten');
   assert.ok(html.includes('maxMana=Math.min(MANA_CAP,maxMana+1)'), 'Turn start must never grow beyond ten mana');
   assert.ok(!html.includes('const DESPERATE_MANA_CAP = 11;'), 'The removed eleven-mana cap must not remain');
-  assert.ok(!html.includes('function applyDesperateMana'), 'Desperation must not mutate maximum mana');
 });
 
 test('상대는 카드를 한 장씩 간격을 두고 내려놓는다 (같은 프레임 동시 등장 금지)', () => {
   assert.ok(html.includes('const ENEMY_PLAY_GAP_MS=340'), '카드 간 간격 상수가 있어야 한다');
-  const turn = html.slice(html.indexOf('const openSlots=FIELD_CARD_LIMIT', html.indexOf('await resolveEnemySetMagic()')));
+  const turn = html.slice(html.indexOf('let placedBefore=lane.querySelectorAll', html.indexOf('enemyTurnMaxMana=enemyMana;')));
   assert.ok(turn.includes('await new Promise(resolve=>setTimeout(resolve,combatMs(ENEMY_PLAY_GAP_MS)))'), '카드 사이에 실제 대기가 있어야 한다');
   assert.ok(!turn.slice(0, turn.indexOf('arrangeEnemyLane')).includes('.forEach(data=>{enemyMana-=data.cost;enemySummonUnit(lane,data);})'), '동기 forEach로 한꺼번에 깔면 안 된다');
   assert.ok(turn.includes('let placedBefore=lane.querySelectorAll'), '전개 우선 소환 직후에도 같은 간격을 둬야 한다');
@@ -355,7 +361,7 @@ test('상대 턴의 행동들은 한 프레임에 몰리지 않고 한 박자씩
   // 무슨 일이 벌어졌는지 읽을 틈이 없다.
   assert.ok(html.includes('const ENEMY_ACTION_BEAT_MS=200'), '행동 사이 최소 간격 상수가 있어야 한다');
   // 실제로 쓰이는 경로는 async enemyTurn 재정의본이다. 거기서 한 줄 몰아 호출이 되살아나면 안 된다.
-  const turn = html.slice(html.indexOf('await resolveEnemySetMagic()'));
+  const turn = html.slice(html.indexOf('enemyTurnMaxMana=enemyMana;'));
   assert.ok(!turn.slice(0, turn.indexOf('runCombatQueue')).includes("summonEnemyPriorityChampion(lane);equipEnemyUltimate()"), '다섯 행동을 한 줄에 몰아 호출하지 말 것');
   for (const fn of ['triggerEnemyTrap', 'summonEnemyPriorityChampion', 'equipEnemyUltimate', 'castEnemyUltimate', 'setEnemyMagic']) {
     assert.ok(html.includes(`await beat(()=>${fn}(`), `${fn}은 한 박자를 두고 실행해야 한다`);
@@ -365,46 +371,32 @@ test('상대 턴의 행동들은 한 프레임에 몰리지 않고 한 박자씩
   assert.ok(html.includes('setTimeout(resolve,combatMs(ENEMY_ACTION_BEAT_MS))'), '간격에 전투 속도 배율을 적용해야 한다');
 });
 
-test('최초를 제외한 모든 궁극기는 직전 사용 후 6턴이 지나야 세팅할 수 있다', () => {
-  // 궁극기가 자주 나오면 주인공이 여럿인 느낌이 되어 무게가 사라진다.
-  assert.ok(html.includes('const ULTIMATE_RESET_TURNS=6'), '재세팅 대기 턴 상수가 있어야 한다');
-  assert.ok(html.includes('function ultimateSettingLockReason()'), '세팅 잠금 판정이 분리돼 있어야 한다');
-  /* 기준은 '최초 사용 턴'이 아니라 '직전 사용 턴'이어야 한다. firstUltimateTurn 에 고정하면
-     2궁 이후로는 firstUltimateTurn+6 이 이미 지나 있어 3·4궁이 제한 없이 풀린다
-     (2026-11-07 실측: 2궁 직후 turn 11 에서 바로 '세팅 가능'). */
-  const at = html.indexOf('function ultimateSettingLockReason()');
-  assert.ok(at > 0, '세팅 잠금 판정이 있어야 한다');
-  const fn = html.slice(at, at + 420);
-  assert.ok(/const ready=lastUltimateTurn\+ULTIMATE_RESET_TURNS/.test(fn),
-    '직전 궁극기 사용 턴을 기준으로 삼아야 3·4궁도 막힌다');
-  assert.ok(!/const ready=firstUltimateTurn\+ULTIMATE_RESET_TURNS/.test(fn),
-    '최초 사용 턴 기준으로 돌아가면 2궁 이후가 전부 풀린다');
-  assert.ok(/if\(lastUltimateTurn===null\)return ''/.test(fn),
-    '궁극기를 쓴 적이 없으면(=최초 궁극기) 잠그지 않는다');
+test('궁극기 세팅은 오라 각성 선택을 마친 뒤에만, 두 번째부터는 직전 복수자가 쓰러지고 주인의 턴이 두 번 시작된 뒤에만 가능하다', () => {
+  assert.ok(html.includes('ULTIMATE_UNLOCK_HP=85') && html.includes('const GUARDIAN_AWAKEN_HP=ULTIMATE_UNLOCK_HP;'), '각성 버튼과 같은 체력 85 기준을 쓴다');
+  assert.ok(html.includes("function ultimateAwakenGateOpen(side='player'){return awakenGateOpened[side];}"), '체력이 아니라 각성 선택 완료로 열린다');
+  assert.ok(html.includes('guardianAwakenChoice=choice;awakenGateOpened.player=true;') && html.includes('enemyGuardianAwakenChoice=choice;awakenGateOpened.enemy=true;'), '유저·컴퓨터 모두 각성 선택 시점에 열린다');
+  assert.ok(html.includes("{reason:'복수자 생존 중'") && html.includes("'다음 세팅까지 '+(ledger.cooldownUntil-ledger.turns)+'턴'"), '복수자 생존 중 / 다음 세팅까지 N턴 잠금');
+  assert.ok(html.includes('ledger.cooldownUntil=ledger.turns+AVENGER_RESET_TURNS'), '복수자가 쓰러진 뒤 두 번째 턴 시작부터(강림 +3 과 별개로 +2)');
+  assert.ok(html.includes("function ultimateSettingLock(side='player'){if(!ultimateAwakenGateOpen(side))return {reason:'오라 각성 후 세팅 가능'"), '각성 전에는 세팅 불가');
+  assert.ok(html.includes("if(ledger.spent)return {reason:'소진자 생존 중'"), '소진자가 살아 있으면 다음 세팅 불가');
+  assert.ok(html.includes("'복수자 강림까지 '+left+'턴'"), '잠금 해제 조건(강림까지 N턴)을 표시한다');
   // 버튼 경로와 실제 세팅 경로(클릭·드래그) 양쪽을 다 막아야 한다.
   assert.ok(html.includes("function armUltimateSetting(){if(battlePhase!=='setup'||ultimateState||ultimateUsed)return;const settingLock=ultimateSettingLockReason();"), '세팅 버튼을 막아야 한다');
   assert.ok(html.includes('function setUltimate(card){const settingLock=ultimateSettingLockReason();'), '카드 세팅 자체를 막아야 한다');
-  // 발동 쿨다운과는 별개 규칙이다.
-  assert.ok(html.includes('const ULTIMATE_COOLDOWN_TURNS=3'), '발동 재사용 대기는 그대로 유지한다');
   // 패널이 잠긴 동안 세팅을 권하면 안 된다.
   assert.ok(html.includes("(setup&&!ultimateUsed&&!settingLock?'':'disabled')"), '잠긴 동안 버튼이 비활성이어야 한다');
-  assert.ok(html.includes("settingLock?'직전 궁극기 이후 '+ULTIMATE_RESET_TURNS+'턴이 지나야 다시 세팅할 수 있습니다'"), '남은 대기를 안내해야 한다');
+  assert.ok(html.includes("settingLock?ultimateSettingLockDetail():"), '잠금 해제 조건을 안내해야 한다');
+  // 폐지된 규칙이 돌아오면 안 된다.
+  for (const gone of ['ULTIMATE_RESET_TURNS', 'ULTIMATE_COOLDOWN_TURNS', 'ULTIMATE_BASE_MIN_TURN', 'ULTIMATE_STRONG_TURN_DELAY', 'ultimateMinTurn', 'firstUltimateTurn', 'lastUltimateTurn']) {
+    assert.ok(!html.includes(gone), `${gone}: 사용 가능 턴·재사용 대기·재세팅 대기는 폐지됐다`);
+  }
 });
 
-test('궁극기 최소 사용 턴은 상시로 노출하지 않는다', () => {
-  /* '4턴부터' 같은 안내가 세팅 패널·손패 배지·장착 로그에 늘 붙어 있었다. 대부분의 시간에는
-     이미 충족된 조건이라 읽을 이유가 없는 정보였다 (2026-11-07 PM 요청). */
-  assert.ok(!/ultimateState\.minTurn\+'턴부터/.test(html),
-    '세팅 패널·장착 로그에 최소 턴을 상시 표기하지 않는다');
-  assert.ok(!/spec\.minTurn\+'턴부터/.test(html),
-    '손패 미리보기 배지에 최소 턴을 상시 표기하지 않는다');
-  /* 다만 실제로 턴이 모자라 잠겼을 때는 왜 못 쓰는지 알려야 한다 — 이것까지 지우면
-     버튼이 이유 없이 비활성인 것으로 보인다. */
-  assert.ok(html.includes("return minTurn+'턴부터 가능 (현재 '+turnNumber+'턴)'"),
-    '턴이 모자랄 때는 잠금 사유로 알려야 한다');
-  /* 배지가 하나로 줄었으니 마크업도 같이 줄어야 한다. 빈 span 이 남으면 테두리만 뜬다. */
-  assert.ok(html.includes('<div class="ult-meta"><span></span></div>'),
-    '미리보기 배지는 마나 하나만 남긴다');
+test('궁극기 비용은 발동 시점의 내 최대 마나이고 혈마나는 쓰지 못한다 (오라 공명이면 −2)', () => {
+  assert.ok(html.includes('function ultimateManaCost(spec){return spec?Math.max(1,maxMana-(auraUltimateMatch(spec)?ULTIMATE_RESONANCE_COST:0)):0;}'));
+  assert.ok(html.includes("if(mana<cost)return '마나 '+cost+' 필요';"), '마나가 모자라면 혈마나 없이 잠긴다');
+  assert.ok(!html.includes('minTurn'), '최소 사용 턴 표기는 어디에도 없다');
+  assert.ok(html.includes('<div class="ult-meta"><span></span></div>'), '미리보기 배지는 마나 하나만 남긴다');
 });
 
 test('죽는 카드는 짧은 소멸 연출을 거친 뒤 사라진다', () => {

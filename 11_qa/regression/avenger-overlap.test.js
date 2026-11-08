@@ -119,14 +119,13 @@ test('각성 모달이 이미 떠 있으면 강림은 모달 뒤에 깔리지 �
 
 /* 사용자 보고: "등장 컷씬 때문에 광역공격 이펙트를 시각적으로 놓친다".
    고정 3050ms 로 띄우면 컷신이 큐에서 밀렸을 때 피해가 컷신 뒤에 가려진다. */
-test('복수 충격파는 등장 컷신이 끝난 뒤에 터진다', () => {
-  assert.ok(!html.includes('resolveAvengerArrivalDamage(partner),3050'), '고정 지연으로 되돌리지 말 것');
-  assert.ok(!html.includes('resolveEnemyAvengerArrivalDamage(partner),3050'), '상대 쪽도 고정 지연 금지');
-  assert.ok(html.includes('afterAvengerArrival(showAvengerArrival(partner,firstUltimateSpec,unit)'), '내 강림은 컷신 종료에 이어 붙인다');
-  assert.ok(html.includes('afterAvengerArrival(showAvengerArrival(partner,enemyFirstUltimateSpec,unit)'), '상대 강림도 마찬가지');
-  const fn = html.slice(html.indexOf('function afterAvengerArrival'));
-  assert.ok(/presented\.then\(fire\)/.test(fn.slice(0, 700)), 'fxPresent 가 끝날 때를 기다려야 한다');
-  assert.ok(/reason==='cleared'\)return/.test(fn.slice(0, 700)), '전투가 치워졌으면 피해를 넣지 않는다');
+test('복수자 강림에는 광역 충격 피해가 없다 (2026-11-07 폐지)', () => {
+  /* 예전에는 강림 컷신이 끝난 뒤 상대 전장 전체에 5 피해를 줬다. 새 규칙에서 복수자는 능력치(+7/+15)만 받는다. */
+  assert.ok(!html.includes('resolveAvengerArrivalDamage'), '내 복수 충격파 함수가 남아 있다');
+  assert.ok(!html.includes('resolveEnemyAvengerArrivalDamage'), '상대 복수 충격파 함수가 남아 있다');
+  assert.ok(!html.includes('afterAvengerArrival'), '충격파를 컷신 뒤로 미루던 헬퍼가 남아 있다');
+  assert.ok(!html.includes('복수 충격파'), '충격파 문구가 남아 있다');
+  assert.ok(html.includes('showAvengerArrival(partner,rec,unit)'), '강림은 컷신 연출을 거친다');
 });
 
 test('컷신이 큐에서 밀려도 충격파는 컷신 뒤에 온다', async () => {
@@ -171,10 +170,10 @@ test('복수자는 컷신이 끝난 뒤에 등장한다', () => {
   assert.ok(cleanup.includes('showAvengerLandingImpact'), '착지 연출은 컷신이 끝난 뒤(cleanup)에 와야 한다');
 });
 
-test('충격파는 착지 연출이 읽힌 뒤에 터진다', () => {
-  assert.ok(html.includes('const AVENGER_LANDING_MS=720'), '착지 길이를 상수로 둬야 한다');
-  const fn = html.slice(html.indexOf('function afterAvengerArrival'));
-  assert.ok(/AVENGER_LANDING_MS\s*\+\s*\d+\)/.test(fn.slice(0, 700)), '충격파는 착지 길이만큼 기다려야 한다');
+test('강림 컷신 문구는 새 수치(+7/+15)만 알린다', () => {
+  assert.ok(html.includes("<span>공격력 +'+AVENGER_ATTACK_BONUS+' · 체력 +'+AVENGER_HP_BONUS+'</span>"), '컷신 부제가 상수 +7/+15 를 따라야 한다');
+  assert.ok(html.includes('AVENGER_ATTACK_BONUS=7') && html.includes('AVENGER_HP_BONUS=15'), '복수자 능력치 보너스는 +7/+15');
+  assert.ok(!html.includes('적 전장 전체 5 피해'), '광역 피해 문구는 지운다');
 });
 
 test('컷신이 큐에 밀려도 카드가 먼저 보이지 않는다', async () => {
@@ -194,30 +193,23 @@ test('컷신이 큐에 밀려도 카드가 먼저 보이지 않는다', async ()
   assert.ok(order.indexOf('카드 등장') > order.indexOf('컷신:끝'), '등장은 컷신이 끝난 뒤여야 한다');
 });
 
-/* 사용자 요청: 최후의 저항 중앙 컷인을 걷고 복수자 등장에 초점을 맞춘다.
-   버프 설명은 작은 토스트로만 남긴다. */
-test('최후의 저항은 중앙 컷인 대신 작은 토스트로 알린다', () => {
-  assert.ok(!html.includes("class=\"desperate-notice\"") && !html.includes("'desperate-notice'"), '중앙 컷인을 되살리지 말 것');
-  assert.ok(!html.includes('dn-explain') && !html.includes('dn-slash'), '컷인 설명 블록도 남기지 말 것');
-  assert.ok(html.includes("toast.className='desperate-toast'"), '토스트로 알려야 한다');
-  /* 버프가 작동하는데 알 길이 없으면 안 된다 — 문장은 남긴다. */
-  assert.ok(html.includes('소환한 턴에 바로 공격하고') && html.includes('카드를 1장 더'), '역전 돌진·추가 드로우를 문장으로 알려야 한다');
-  assert.ok(html.includes('.desperate-toast'), 'FIELD_OVERLAYS 에 등록돼야 한다 (CLAUDE.md 필드 기준 규칙)');
+/* 2026-11-07 PM 확정: 체력 40% 기준 장치(최후의 저항·역전 돌진·영웅 회복 잠금)는 모두 폐지. */
+test('체력 40% 기준 장치(최후의 저항·역전 돌진·영웅 회복 잠금)는 하나도 남지 않는다', () => {
+  assert.ok(!html.includes('showDesperateNotice') && !html.includes('desperate-toast'), '토스트가 남아 있다');
+  assert.ok(!html.includes('DESPERATE_TOAST_MS') && !html.includes('desperateNoticeUntil'), '안내 길이/대기 상수가 남아 있다');
+  assert.ok(!html.includes('.health.desperate'), '게이지 CSS가 남아 있다');
+  assert.ok(!html.includes('최후의 저항') && !html.includes('LAST STAND'), '최후의 저항 문구가 남아 있다');
+  for (const gone of ['comebackRush', 'comebackLockEntered', 'playerHeroHealingLocked', 'desperateActive', 'DESPERATE_HP', 'desperateState', '역전 돌진', '긴급 상태']) {
+    assert.ok(!html.includes(gone), gone + ' 가 남아 있다');
+  }
 });
 
-test('복수자 대기는 안내가 떠 있는 동안으로 맞춘다', () => {
-  /* 중앙 컷인(6초) 기준 3600ms 를 그대로 두면 토스트가 끝나고 빈 화면을 기다린다. */
-  assert.ok(html.includes('const DESPERATE_TOAST_MS=2000'), '안내 길이를 상수로 둬야 한다');
-  assert.ok(html.includes('desperateNoticeUntil=performance.now()+DESPERATE_TOAST_MS'), '복수자 대기는 안내 길이를 따라야 한다');
-  assert.ok(!/desperateNoticeUntil=performance\.now\(\)\+3600/.test(html), '옛 고정 3600ms 로 되돌리지 말 것');
-});
-
-/* 사용자 보고: "최후의 저항인데 복수자가 강림하지 않는다".
+/* 사용자 보고: "복수자가 강림하지 않는다".
    소진자 사망 통지가 damageUnit 의 defeated 분기에만 있어서, 피해 없이 전장에서
    치워지는 경로(전체 파괴·소환 무효화·다음 궁극기 제물)에서는 방아쇠가 당겨지지 않았다. */
 test('소진자가 피해 없이 치워져도 쓰러진 것으로 본다', () => {
   const fn = html.slice(html.indexOf('function retireFieldUnit(unit)'));
-  assert.ok(fn.slice(0, 220).includes("unit.dataset.ultimateSpent==='first'"), '전장에서 치울 때도 소진자인지 봐야 한다');
+  assert.ok(fn.slice(0, 220).includes("unit.dataset.ultimateSpent==='true'"), '전장에서 치울 때도 소진자인지 봐야 한다');
   assert.ok(fn.slice(0, 220).includes('showUltimateSpentDeath(unit)'), '소진자 사망을 알려야 복수자가 온다');
   /* 중복 호출은 ultimateDeathFx 플래그가 막는다 — 그 가드가 사라지면 복수자 교체 때 재진입한다. */
   const death = html.slice(html.indexOf('function showUltimateSpentDeath'));

@@ -16,7 +16,7 @@ const allowedAuras = new Set(['fire', 'water', 'wood', 'metal', 'earth']);
 const allowedRarities = new Set(['common', 'rare', 'legendary']);
 const allowedSources = new Set(['starter', 'character_chat', 'summon', 'event', 'craft']);
 const allowedReleaseStates = new Set(['live', 'prototype', 'retired']);
-const allowedEffects = new Set(['burn', 'heal', 'damage', 'attack_down', 'buff', 'prevent_damage', 'lone_wolf', 'comeback', 'add_counter', 'transform', 'global_destroy', 'freeze_strongest', 'weaken_all', 'shock_storage', 'explosive_mark', 'blink_shield', 'armor_pierce', 'arcane_arrow', 'mass_heal', 'heal_bless', 'piercing_shot', 'battle_enhance', 'summon_wolf', 'sword_aura', 'necromancy', 'board_damage', 'draw', 'cleanse', 'bounce', 'mana_ramp', 'resurrect', 'negate_summon', 'self_replicate', 'black_flame', 'turn_invulnerable', 'frost_nova', 'swarm_fury', 'swarm_bulwark', 'lightning_strike', 'chain_lightning', 'summon_barrage', 'sweep_attack', 'reversal_judgment', 'reversal_bulwark', 'reversal_giant_hunt', 'reversal_weight_toll', 'reversal_life_siphon', 'reversal_insight', 'ember_snare', 'steel_guard', 'swamp_bind', 'rally_cry']);
+const allowedEffects = new Set(['burn', 'heal', 'damage', 'attack_down', 'buff', 'prevent_damage', 'lone_wolf', 'comeback', 'add_counter', 'transform', 'global_destroy', 'freeze_strongest', 'weaken_all', 'shock_storage', 'explosive_mark', 'blink_shield', 'armor_pierce', 'arcane_arrow', 'mass_heal', 'heal_bless', 'piercing_shot', 'battle_enhance', 'summon_wolf', 'sword_aura', 'necromancy', 'board_damage', 'draw', 'cleanse', 'bounce', 'mana_ramp', 'team_shield', 'drain_attack', 'arcane_missiles', 'resurrect', 'negate_summon', 'self_replicate', 'black_flame', 'turn_invulnerable', 'frost_nova', 'swarm_fury', 'swarm_bulwark', 'lightning_strike', 'chain_lightning', 'summon_barrage', 'sweep_attack', 'reversal_judgment', 'reversal_bulwark', 'reversal_giant_hunt', 'reversal_weight_toll', 'reversal_life_siphon', 'reversal_insight', 'ember_snare', 'steel_guard', 'swamp_bind', 'rally_cry', 'hero_splash', 'entry_hero_damage', 'time_bomb']);
 
 for (const [index, card] of cards.entries()) {
   const at = `${setId}.cards[${index}]`;
@@ -37,6 +37,12 @@ for (const [index, card] of cards.entries()) {
     if (!allowedEffects.has(effect.effectId)) errors.push(`${at}: unknown effectId ${effect.effectId}`);
     if (effect.effectId === 'add_counter' && !effect.counterId) errors.push(`${at}: add_counter requires counterId`);
     if (effect.effectId === 'transform' && (!effect.cardRef || !effect.condition)) errors.push(`${at}: transform requires cardRef and condition`);
+    if (['hero_splash', 'entry_hero_damage', 'time_bomb'].includes(effect.effectId)) {
+      if (card.cardType !== 'champion') errors.push(`${at}: ${effect.effectId} is champion-only`);
+      if (effect.target !== 'enemy_hero') errors.push(`${at}: ${effect.effectId} must target enemy_hero`);
+      if (!Number.isInteger(effect.amount) || effect.amount < 1) errors.push(`${at}: ${effect.effectId} requires integer amount >= 1`);
+      if (effect.effectId === 'time_bomb' && (!Number.isInteger(effect.delay) || effect.delay < 1)) errors.push(`${at}: time_bomb requires integer delay >= 1`);
+    }
     if (effect.effectId === 'global_destroy' && effect.target !== 'all_champions') errors.push(`${at}: global_destroy must target all_champions`);
   }
   if (!card.assetId) errors.push(`${at}: assetId required`);

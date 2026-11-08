@@ -236,3 +236,18 @@ test('연출이 아직 끝나지 않았으면 미뤄둔 교전이 그대로 재�
     '재시도 시점에 연출 점유를 다시 확인해야 한다 (고정 대기 후 무조건 공격 금지)'
   );
 });
+
+/* 2026-11-08 PM 피드백(+ 실플레이 재현): 공격받은 소진자는 '공격 적중 → 소진자 반격 → 죽음 컷씬 → 컷 종료 → 제거' 순서여야 한다.
+   원인: 반격이 '적중 순간'이 아니라 타이머로 예약돼, 다른 연출이 적중을 미루면 순서가 뒤집혔고 제거 타이머가 컷·반격보다 먼저 돌았다.
+   판정(복수자 등록·전역 도발 해제)은 적중 시점 그대로다. 실제 enemyTurn/endTurn 경로의 순서는 qa:ultimate 가 브라우저로 검사한다. */
+test('소진자 죽음 컷은 반격 적중 뒤, 제거는 컷 종료 뒤에 일어난다 (반격은 적중에 이어 붙는다)', () => {
+  const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes("if(typeof options.afterImpact==='function')options.afterImpact();"), '적중 순간 훅');
+  assert.ok(html.includes('const upstreamAfter=options.afterImpact;options={...options,afterImpact:()=>{upstreamAfter?.();startCounter();}}'), '반격은 적중 훅에서 시작한다(타이머 예약 아님)');
+  assert.ok(html.includes("if(defender.dataset.deferDeathCut!=='true')setTimeout(()=>{if(!defender.isConnected)return;triggerDeathrattle(defender);removeFieldUnit(defender);}"), '미룬 소진자는 제거 타이머를 돌리지 않는다');
+  assert.ok(html.includes("if(cut&&typeof cut.then==='function')cut.then(remove);else remove();"), '컷이 끝난 뒤 제거');
+  assert.ok(html.includes("if(unit.dataset.deferDeathCut==='true')return;"), '반격 전에는 다른 경로(retire)가 컷을 먼저 띄우지 못한다');
+  assert.ok(html.includes("if(isFieldUnit&&this.__cutPromise&&!this.__cutWaited){this.__cutWaited=true;this.__cutPromise.then(()=>this.remove());return;}"), '컷이 재생 중이면 어떤 경로의 제거든 컷 뒤로 미룬다');
+  assert.ok(html.includes("if(target.dataset.deferDeathCut==='true')registerUltimateSpentDeath("), '복수자 등록은 적중 즉시');
+  assert.ok(html.includes("else showUltimateSpentDeath(target);}else"), '반격이 없는 피해는 바로 컷');
+});

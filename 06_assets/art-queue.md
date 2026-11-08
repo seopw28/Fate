@@ -5,6 +5,45 @@
 > 마지막 확인: 2026-11-06 (보호막 이펙트, 역전 마법 6장, 그림 없는 마법·함정 모두 완료 상태 확인).
 > 이 큐는 `CLAUDE.md`, `06_assets/README.md`, `02_game-design/game-rules/09-decisions-and-open-issues.md`, `npm run validate:cards`의 경고에서 가리킨다.
 
+## 미완료 P0 — 드로우 마법 대체 2장 (2026-11-08 요청)
+
+**왜**: 카드를 뽑는 마법은 카드 뽑기 기능과 겹쳐 같은 cardId에 다른 효과를 넣었다. 이름이 바뀌어 기존 그림이 맞지 않는다. 이미지는 사용자가 밖에서 생성해 전달한다.
+
+| 카드 | cardId | 지금 쓰는 임시 그림 | 만들 파일 |
+|---|---|---|---|
+| 마력 흡수 | `tower.arcane-insight` | 아케인 인사이트 `spells/generated/arcane-insight.png` | `dist/assets/spells/generated/mana-drain-v1.webp` |
+| 프리즘 탄막 | `arcana.prism-revelation` | 프리즘 계시 `spells/generated/prism-revelation.webp` | `dist/assets/spells/generated/prism-barrage-v1.webp` |
+
+프롬프트: [`06_assets/source-art/spells/replace-draw-2026-11-08-prompts.md`](source-art/spells/replace-draw-2026-11-08-prompts.md)
+
+## 완료 — 마나 증가 마법 대체 2장 (2026-11-08 요청, 2026-11-08 반영)
+
+**왜**: 최대 마나를 영구히 늘리는 마법은 카드 뽑기 기능이 있어 매력이 낮아, 같은 cardId에 다른 효과를 넣었다. 이름이 바뀌어 기존 그림이 맞지 않는다. 이미지는 사용자가 밖에서 생성해 전달한다.
+
+| 카드 | cardId | 지금 쓰는 임시 그림 | 만들 파일 |
+|---|---|---|---|
+| 강철 파쇄탄 | `tower.mana-overflow` | 진홍의 화염구 `spells/generated/crimson-bolt.webp` | `dist/assets/spells/generated/steel-shatter-v1.webp` |
+| 대지의 장벽 | `arcana.rune-crystal` | 대지의 진동 `spells/generated/tremor.webp` | `dist/assets/spells/generated/earth-bulwark-v1.webp` |
+
+프롬프트: [`06_assets/source-art/spells/replace-mana-ramp-2026-11-08-prompts.md`](source-art/spells/replace-mana-ramp-2026-11-08-prompts.md)
+
+반영 절차: 원본 PNG를 `06_assets/source-art/spells/`에 두고 WebP로 변환해 위 경로에 넣는다 → 카드 데이터의 `assetId`를 새 파일로 바꾼다 → `npm run build` → `npm test` → 도감과 손패에서 눈으로 확인한다. 반영되면 이 절을 `(완료)`로 바꾼다.
+
+## 완료 — 그림을 빌려 쓰는 마법 4장 (2026-11-08 요청, 2026-11-08 반영)
+
+**왜**: 자기 그림 없이 다른 카드 그림을 같이 써서 두 카드가 구분되지 않는다. 이미지는 사용자가 밖에서 생성해 전달한다.
+
+| 카드 | cardId | 지금 같이 쓰는 그림 | 만들 파일 |
+|---|---|---|---|
+| 실피드 템페스트 | `tower.sylphid-tempest` | 질풍 회오리 `spells/generated/gale-vortex.webp` | `dist/assets/spells/generated/sylphid-tempest-v1.webp` |
+| 가이아 브레이커 | `tower.gaia-breaker` | 대지 균열 `spells/generated/earth-rift.webp` | `dist/assets/spells/generated/gaia-breaker-v1.webp` |
+| 아주르 썬더폴 | `tower.azure-thunderfall` | 연쇄 번개 `spells/generated/chain-lightning.webp` | `dist/assets/spells/generated/azure-thunderfall-v1.webp` |
+| 볼트 레퀴엠 | `tower.volt-requiem` | 낙뢰 `spells/generated/lightning-strike.webp` | `dist/assets/spells/generated/volt-requiem-v1.webp` |
+
+프롬프트: [`06_assets/source-art/spells/borrowed-art-2026-11-08-prompts.md`](source-art/spells/borrowed-art-2026-11-08-prompts.md)
+
+반영 절차는 위 절과 같다.
+
 ## 미완료 P0 — 신규 함정 4장 (2026-11-07 요청)
 
 **왜**: 기본 덱이 캐릭터 30 / 마법 20 / 함정 10으로 바뀌었는데 기존 함정 4종의 기본 지급량(7장)으로는 함정 10장을 채울 수 없어 함정 4종을 새로 만들었다. 이미지는 사용자가 밖에서 생성해 전달한다.

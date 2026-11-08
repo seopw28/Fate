@@ -34,5 +34,11 @@
 | `spells/tremor.png` | `crack-261103-6ae943c64bf1b3e9a0a3c26e.png` | `dist/assets/spells/generated/tremor.webp` |
 | `spells/great-ruin.png` | `crack-261103-6ae943d95bb9a62dcb98bc53.png` | `dist/assets/spells/generated/great-ruin.webp` |
 | `spells/tempest.png` | `crack-261103-6ae943e68bb79dbec79826b5.png` | `dist/assets/spells/generated/tempest.webp` |
+| `spells/steel-shatter-v1.png` | `crack-261108-6aef4ab04bf6273c2e21905a.png` | `dist/assets/spells/generated/steel-shatter-v1.webp` |
+| `spells/earth-bulwark-v1.png` | `crack-261108-6aef4abaec6843daf874f569.png` | `dist/assets/spells/generated/earth-bulwark-v1.webp` |
+| `spells/sylphid-tempest-v1.png` | `crack-261108-6aef4acb4bf6273c2e2197e1.png` | `dist/assets/spells/generated/sylphid-tempest-v1.webp` |
+| `spells/gaia-breaker-v1.png` | `crack-261108-6aef4ad224e606b179168ac0.png` | `dist/assets/spells/generated/gaia-breaker-v1.webp` |
+| `spells/azure-thunderfall-v1.png` | `crack-261108-6aef4adbb8b93cbda3828918.png` | `dist/assets/spells/generated/azure-thunderfall-v1.webp` |
+| `spells/volt-requiem-v1.png` | `crack-261108-6aef4b009a0c14a82342bcb2.png` | `dist/assets/spells/generated/volt-requiem-v1.webp` |
 
 메모: 매복 지뢰·배수의 진·낙뢰·대지의 진동·폭풍우는 손패의 가로 띠에서 피사체가 보이도록 정사각형(1024×1024)으로 잘라 변환했다.

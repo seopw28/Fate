@@ -650,19 +650,19 @@
     {
       "schemaVersion": 1,
       "cardId": "tower.arcane-insight",
-      "displayName": "아케인 인사이트",
-      "nameKey": "card.tower_arcane_insight",
+      "displayName": "마력 흡수",
+      "nameKey": "card.tower_mana_drain",
       "cardType": "spell",
       "cost": 2,
       "rarity": "common",
       "stats": null,
       "effects": [
         {
-          "effectId": "draw",
-          "trigger": "next_round_start",
-          "target": "self",
-          "amount": 2,
-          "duration": "instant"
+          "effectId": "drain_attack",
+          "trigger": "on_cast",
+          "target": "strongest_enemy",
+          "amount": 3,
+          "duration": "match"
         }
       ],
       "assetId": "spells/generated/arcane-insight.png",
@@ -734,22 +734,22 @@
     {
       "schemaVersion": 1,
       "cardId": "tower.mana-overflow",
-      "displayName": "마나 오버플로",
-      "nameKey": "card.tower_mana_overflow",
+      "displayName": "강철 파쇄탄",
+      "nameKey": "card.tower_steel_shatter",
       "cardType": "spell",
       "cost": 2,
       "rarity": "rare",
       "stats": null,
       "effects": [
         {
-          "effectId": "mana_ramp",
-          "trigger": "next_round_start",
-          "target": "self",
-          "amount": 2,
-          "duration": "match"
+          "effectId": "damage",
+          "trigger": "on_cast",
+          "target": "enemy_hero",
+          "amount": 5,
+          "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/mana-overflow.png",
+      "assetId": "spells/generated/steel-shatter-v1.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -1004,7 +1004,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/gale-vortex.webp",
+      "assetId": "spells/generated/sylphid-tempest-v1.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -1032,7 +1032,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/earth-rift.webp",
+      "assetId": "spells/generated/gaia-breaker-v1.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -1060,7 +1060,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/chain-lightning.webp",
+      "assetId": "spells/generated/azure-thunderfall-v1.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -1088,7 +1088,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/lightning-strike.webp",
+      "assetId": "spells/generated/volt-requiem-v1.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
