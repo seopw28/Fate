@@ -7,13 +7,13 @@
 - 밖에만 맞는 규칙: 그대로
 - 양쪽에 맞는 규칙: 원본은 그대로 두고, 바로 뒤에 :where(축소 4곳) 안쪽에만 적용되는 변환본을 덧붙인다(우선순위 동일)
 - 어디에도 안 맞은 규칙: 선택자의 클래스로 추정(밖에서만 쓰는 클래스 있으면 밖, 안에서만 쓰는 클래스 있으면 안), 추정 불가면 '애매'로 보고
-값 변환: px(절댓값 3 이상)·rem·vw·vh ×0.9. 1~2px, %, em, 숫자, 각도, 시간, @media 조건은 그대로.
+값 변환: px·rem·vw·vh·vmin·vmax ×0.9 (테두리·외곽선의 1~2px 두께만 그대로). cqw·cqh(컨테이너 기준)·ch 는 이미 축소된 크기를 따르므로 그대로. 1~2px, %, em, 숫자, 각도, 시간, @media 조건은 그대로.
 @keyframes 안 값: 그 애니메이션을 쓰는 규칙이 안이면 변환, 밖이면 그대로, 섞이면 '애매'.
 docs/plan-ui-scale-1.md 2-2.
 """
 import os, re, sys, json
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = '05_game-client/app/styles.css'
+SRC = next((sys.argv[i + 1] for i, x in enumerate(sys.argv) if x == '--src'), '05_game-client/app/styles.css')
 SCALE = 0.9
 ZOOMED = 'main.app,#collection-modal,#result,#tier-modal'
 STATIC_OUT = {'arriving','awaken-flare','awaken-flight','awakening-proc-banner','battle-intro','blood-mana-fx','card-depart','card-depart-dest','card-flight','cinematic-skill-fx','cracker-transfer','cracker-transfer-caption','deck-fly','enhance-equip-fly','field-impact-burst','global-spell','guardian-descent','lethal','resolved','resonance-beam','resonance-caption','resonance-gain','resonance-orb','shatter-resonance-fx','shield-break-vfx','spell-absorb-card','spell-vortex','ultimate-cutscene','ultimate-overlay','unit-retiring','attack-trail','gd-emblem','motion-caption','recycle-modal','guardian-select','synth-stage','effect-narration'}
@@ -67,9 +67,8 @@ def parse(css):
 NUM = r'(-?\d*\.?\d+)'
 def scale_values(body):
     count = [0]
-    def rep(m):
+    def rep_any(m):
         v = float(m.group(1)); unit = m.group(2)
-        if unit == 'px' and abs(v) < 3: return m.group(0)
         if v == 0: return m.group(0)
         nv = v * SCALE; s = ('%.2f' % nv).rstrip('0').rstrip('.')
         if s.startswith('0.'): s = s[1:]
@@ -77,8 +76,18 @@ def scale_values(body):
         count[0] += 1
         return s + unit
     # url(...) 와 따옴표 안은 건드리지 않는다
-    parts = re.split(r'(url\([^)]*\)|"[^"]*"|\'[^\']*\')', body)
-    out = ''.join(p if (p.startswith('url(') or p.startswith('"') or p.startswith("'")) else re.sub(NUM + r'(px|rem|vw|vh)\b', rep, p) for p in parts)
+    # 선언 단위로 처리: 1~2px 를 그대로 두는 것은 테두리·외곽선 두께에만 적용한다.
+    # (글자 간격·작은 여백까지 그대로 두면 축소 때보다 글자가 넓어져 줄이 넘어간다 — 3-3 에서 발견)
+    def conv_decl(decl):
+        prop = decl.split(':', 1)[0].strip().lower() if ':' in decl else ''
+        keep_thin = prop.startswith('border') or prop.startswith('outline') or prop.startswith('-webkit-text-stroke')
+        def rep2(m):
+            v = float(m.group(1))
+            if m.group(2) == 'px' and abs(v) < 3 and keep_thin: return m.group(0)
+            return rep_any(m)
+        parts = re.split(r'(url\([^)]*\)|"[^"]*"|\'[^\']*\')', decl)
+        return ''.join(p if (p.startswith('url(') or p.startswith('"') or p.startswith("'")) else re.sub(NUM + r'(px|rem|vw|vh|vmin|vmax)\b', rep2, p) for p in parts)
+    out = re.sub(r'[^;{}]+', lambda m: conv_decl(m.group(0)), body)
     return out, count[0]
 
 def classes(sel):
