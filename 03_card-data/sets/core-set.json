@@ -204,7 +204,7 @@
       "aura": "water",
       "rarity": "common",
       "stats": {
-        "attack": 5,
+        "attack": 4,
         "health": 4
       },
       "effects": [],
