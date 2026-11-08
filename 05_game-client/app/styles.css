@@ -2215,3 +2215,6 @@
   .stage-column>.mana-hud .blood-rate{font-size:7.2px!important}
   .stage-column>.surrender-action{width:var(--bottom-control-size)!important;height:var(--bottom-control-size)!important;min-width:var(--bottom-control-size)!important;min-height:var(--bottom-control-size)!important;padding:0!important;font-size:10.8px!important}
 }
+
+/* 마나 줄의 혈마나 안내 문구(혈마나 1 = ♥ 1 · 첫 1회)는 뺀다 (2026-11-09 PM 요청) */
+.mana-hud .blood-rate{display:none!important}
