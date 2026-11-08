@@ -151,26 +151,26 @@ CHECKS = [
   "const dockO=U.filter(u=>ov(R(u),dock)>0).length,manaO=U.filter(u=>ov(R(u),mana)>0).length,out=U.filter(u=>R(u).left<arena.left||R(u).right>arena.right||R(u).top<arena.top||R(u).bottom>arena.bottom).length;"
   "const gaps=[];[el,zo].forEach(l=>{const us=[...l.querySelectorAll(':scope > .unit')].map(R).sort((a,b)=>a.left-b.left);for(let i=1;i<us.length;i++)gaps.push(us[i].left-us[i-1].right);});"
   "return {ok:U.length===10&&pairs===0&&dockO===0&&manaO===0&&out===0&&Math.min(...gaps)>=40,pairs,dockO,manaO,out,minGap:Math.min(...gaps)};})()"),
- ("소진자는 상대 챔프가 3장 있어도 상대 영웅을 우선 공격한다(반격 없음). 상대 소진자가 있으면 그 소진자를 공격한다",
+ ("소진자는 상대 챔프가 3장 있어도 상대 소환사를 공격한다(반격 없음). 상대 소진자(전역 도발)가 있어도 소환사를 공격한다 (2026-11-08 PM 확정)",
   "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');el.innerHTML='';zo.innerHTML='';const proto=enemyDeck.find(d=>!d.spell);"
   "const hpOf=u=>__q.hp(u);const en=(n,e)=>enemySummonUnit(el,{name:n,art:proto.art,el:'water',atk:2,hp:9,cost:1,effect:e});const foes=[en('적1'),en('적2'),en('적3')];"
   "const mine=summonBattleToken('소진자',4,3,'fire','ultimate-spent');mine.dataset.ultimateSpent='true';mine.dataset.ultimateAggro='true';mine.classList.remove('exhausted');"
   "const e0=enemyHp,foeHp=foes.map(hpOf);selectUnit(mine);attack(foes[0]);for(let i=0;i<80&&enemyHp===e0;i++)await __q.wait(100);await __q.wait(300);"
   "const hero={dmg:e0-enemyHp,foesUntouched:foes.every((u,i)=>hpOf(u)===foeHp[i]),playerHp:playerHp};"
   "const es=en('적소진자','ultimate-spent');es.dataset.ultimateSpent='true';es.dataset.ultimateAggro='true';const m2=summonBattleToken('소진자2',4,3,'fire','ultimate-spent');m2.dataset.ultimateSpent='true';m2.classList.remove('exhausted');"
-  "const e1=enemyHp,sHp=hpOf(es);selectUnit(m2);attackFace(document.querySelector('.duel-hud .enemy'));for(let i=0;i<80&&hpOf(es)===sHp;i++)await __q.wait(100);await __q.wait(300);"
-  "const taunt={spentDmg:sHp-hpOf(es),heroUntouched:enemyHp===e1};"
-  "return {ok:hero.dmg===4&&hero.foesUntouched&&taunt.spentDmg>0&&taunt.heroUntouched,hero,taunt};})()"),
- ("컴퓨터 소진자도 내 챔프가 있어도 내 영웅을 우선 공격한다(내 소진자가 있으면 그 소진자)",
+  "const e1=enemyHp,sHp=hpOf(es);selectUnit(m2);attackFace(document.querySelector('.duel-hud .enemy'));for(let i=0;i<80&&enemyHp===e1;i++)await __q.wait(100);await __q.wait(300);"
+  "const taunt={heroDmg:e1-enemyHp,spentUntouched:hpOf(es)===sHp};"
+  "return {ok:hero.dmg===4&&hero.foesUntouched&&taunt.heroDmg===4&&taunt.spentUntouched,hero,taunt};})()"),
+ ("컴퓨터 소진자도 내 챔프가 있어도 내 소환사를 공격한다(내 소진자가 있어도 소환사). 일반 하수인은 내 소진자를 공격한다",
   "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');el.innerHTML='';zo.innerHTML='';const proto=enemyDeck.find(d=>!d.spell);"
   "const sp=enemySummonUnit(el,{name:'적소진자',art:proto.art,el:'water',atk:6,hp:3,cost:0,effect:'ultimate-spent'});sp.dataset.ultimateSpent='true';sp.dataset.ultimateAggro='true';"
   "const mk=n=>summonBattleToken(n,2,9,'earth');const mine=[mk('아군1'),mk('아군2'),mk('아군3')];"
-  "const noTaunt=chooseEnemyAttackTarget(sp,mine)===null;const my=mine[0];my.dataset.ultimateAggro='true';const taunted=chooseEnemyAttackTarget(sp,mine)===my;delete my.dataset.ultimateAggro;"
+  "const noTaunt=chooseEnemyAttackTarget(sp,mine)===null;const my=mine[0];my.dataset.ultimateAggro='true';const ignoresSpent=chooseEnemyAttackTarget(sp,mine)===null;const normalTaunted=chooseEnemyAttackTarget(enemySummonUnit(el,{name:'적일반0',art:proto.art,el:'water',atk:1,hp:3,cost:0}),mine)===my;delete my.dataset.ultimateAggro;"
   "const normal=enemySummonUnit(el,{name:'적일반',art:proto.art,el:'water',atk:2,hp:3,cost:0});const normalTarget=chooseEnemyAttackTarget(normal,mine)!==null;"
   "const p0=playerHp,hp0=mine.map(u=>__q.hp(u));enemyHand.length=0;enemyMana=0;[...el.querySelectorAll(':scope > .unit')].forEach(u=>{if(u!==sp)u.remove();});"
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<150&&!finished;i++)await __q.wait(100);await __q.wait(200);"
-  "const r={noTaunt,taunted,normalTarget,heroDmg:p0-playerHp,minesUntouched:mine.every((u,i)=>__q.hp(u)===hp0[i])};"
-  "return {ok:noTaunt&&taunted&&normalTarget&&r.heroDmg===6&&r.minesUntouched,...r};})()"),
+  "const r={noTaunt,ignoresSpent,normalTaunted,normalTarget,heroDmg:p0-playerHp,minesUntouched:mine.every((u,i)=>__q.hp(u)===hp0[i])};"
+  "return {ok:noTaunt&&ignoresSpent&&normalTaunted&&normalTarget&&r.heroDmg===6&&r.minesUntouched,...r};})()"),
  ("소진자가 쓰러지는 연출 순서(실제 enemyTurn·endTurn 경로): 적중 → 반격 → 죽음 컷씬 → 컷 종료 → 카드 제거. 다른 연출이 적중을 늦춰도 같은 순서",
   "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');const proto=enemyDeck.find(d=>!d.spell);const ev=[];const s0=()=>performance.now();"
   "const obs=new MutationObserver(ms=>ms.forEach(m=>{m.addedNodes.forEach(n=>{if(n.nodeType!==1)return;const c=String(n.className||'');if(/ultimate-spent-death/.test(c))ev.push('cut');if(n.parentElement===log&&/맞받아쳐/.test(n.textContent))ev.push('counter');if(n.parentElement===log&&/을\\(를\\) 공격해/.test(n.textContent))ev.push('hit');});m.removedNodes.forEach(n=>{if(n.nodeType!==1)return;if(/ultimate-spent-death/.test(String(n.className||'')))ev.push('cutend');if(n.classList?.contains('unit')&&n.dataset.ultimateSpent==='true')ev.push('removed');});}));obs.observe(document.body,{childList:true,subtree:true});"
@@ -187,7 +187,7 @@ CHECKS = [
   "(async()=>{const proto=enemyDeck.find(d=>!d.spell);ultimateLedger.enemy.pending.push({rec:{name:proto.name,art:proto.art,element:proto.el,baseAttack:3,baseHp:4},due:ultimateLedger.enemy.turns+1});"
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<120&&!finished;i++)await __q.wait(100);" + (WAIT % 100) + "const a=document.querySelector('.arena .lane:first-child .unit[data-effect=\"ultimate-avenger\"]');"
   "return {ok:!!a&&__q.atk(a)===10&&__q.hp(a)===19&&finished,finished,atk:a&&__q.atk(a),hp:a&&__q.hp(a)};})()"),
-  ("소진자끼리 교전해 반격으로 둘 다 쓰러지면(유저 공격): 공격받은 적 소진자 컷 → 끝난 뒤 반격으로 쓰러진 내 소진자 컷. 컷이 겹치거나 중간에 지워지지 않고, 두 카드는 각자 컷 뒤에 제거된다 (2026-11-08)",
+  ("소진자끼리 교전해 반격으로 둘 다 쓰러지면(교전 해결 경로, 내 쪽이 공격): 공격받은 적 소진자 컷 → 끝난 뒤 반격으로 쓰러진 내 소진자 컷. 컷이 겹치거나 중간에 지워지지 않고, 두 카드는 각자 컷 뒤에 제거된다 (2026-11-08)",
   "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');const proto=enemyDeck.find(d=>!d.spell);const ev=[];let t0=0;"
   "const obs=new MutationObserver(ms=>ms.forEach(m=>{m.addedNodes.forEach(n=>{if(n.nodeType===1&&/ultimate-spent-death/.test(String(n.className||'')))ev.push(['cut',n.querySelector('.spent-death-copy b')?.textContent,Math.round(performance.now()-t0),document.querySelectorAll('.ultimate-spent-death').length]);});m.removedNodes.forEach(n=>{if(n.nodeType===1&&/ultimate-spent-death/.test(String(n.className||'')))ev.push(['end',n.querySelector('.spent-death-copy b')?.textContent,Math.round(performance.now()-t0)]);});}));obs.observe(document.body,{childList:true,subtree:true});"
   "const reset=async()=>{fxClear();combatPresentationUntil=0;document.querySelectorAll('.ultimate-spent-death').forEach(n=>n.remove());el.innerHTML='';zo.innerHTML='';ev.length=0;['player','enemy'].forEach(k=>{ultimateLedger[k].spent=null;ultimateLedger[k].pending=[];});await __q.wait(300);t0=performance.now();};"
@@ -195,9 +195,9 @@ CHECKS = [
   "const theirs=(name)=>{const s=enemySummonUnit(el,{name,art:proto.art,el:'fire',atk:6,hp:1,cost:0,effect:'ultimate-spent'});s.dataset.ultimateSpent='true';s.dataset.ultimateAggro='true';s.dataset.orderLocked='true';s.classList.remove('exhausted');registerUltimateSpent('enemy',s,{name,art:proto.art,element:'fire',baseAttack:3,baseHp:3});return s;};"
   "const done=async()=>{for(let i=0;i<250&&ev.filter(e=>e[0]==='end').length<2;i++)await __q.wait(100);await __q.wait(300);return ev.map(e=>e.slice());};"
   "const judge=(log,first,second)=>{const cuts=log.filter(e=>e[0]==='cut'),ends=log.filter(e=>e[0]==='end');return cuts.length===2&&ends.length===2&&cuts[0][1]===first&&cuts[1][1]===second&&ends[0][1]===first&&cuts.every(c=>c[3]===1)&&cuts[1][2]>=ends[0][2]&&ends[0][2]-cuts[0][2]>=3500&&ends[1][2]-cuts[1][2]>=3500;};"
-    "await reset();const a=mine('내 소진자');theirs('적 소진자');endTurn(document.querySelector('.turn-actions .end'));const p=await done();await __q.wait(1500);const removed=!a.isConnected&&!el.querySelector('.unit[data-ultimate-spent]');obs.disconnect();"
+    "await reset();const a=mine('내 소진자'),b=theirs('적 소진자');resolveDuel(a,b,{playerAttack:true});const p=await done();await __q.wait(1500);const removed=!a.isConnected&&!el.querySelector('.unit[data-ultimate-spent]');obs.disconnect();"
   "return {ok:judge(p,'적 소진자','내 소진자')&&removed,p,removed};})()"),
-  ("소진자끼리 교전해 반격으로 둘 다 쓰러지면(컴퓨터 공격, 유저와 동일): 공격받은 내 소진자 컷 → 끝난 뒤 반격으로 쓰러진 적 소진자 컷 (2026-11-08)",
+  ("소진자끼리 교전해 반격으로 둘 다 쓰러지면(교전 해결 경로, 상대 쪽이 공격): 공격받은 내 소진자 컷 → 끝난 뒤 반격으로 쓰러진 적 소진자 컷 (2026-11-08)",
   "(async()=>{const el=document.querySelector('.arena .lane:first-child'),zo=document.querySelector('.summon-zone');const proto=enemyDeck.find(d=>!d.spell);const ev=[];let t0=0;"
   "const obs=new MutationObserver(ms=>ms.forEach(m=>{m.addedNodes.forEach(n=>{if(n.nodeType===1&&/ultimate-spent-death/.test(String(n.className||'')))ev.push(['cut',n.querySelector('.spent-death-copy b')?.textContent,Math.round(performance.now()-t0),document.querySelectorAll('.ultimate-spent-death').length]);});m.removedNodes.forEach(n=>{if(n.nodeType===1&&/ultimate-spent-death/.test(String(n.className||'')))ev.push(['end',n.querySelector('.spent-death-copy b')?.textContent,Math.round(performance.now()-t0)]);});}));obs.observe(document.body,{childList:true,subtree:true});"
   "const reset=async()=>{fxClear();combatPresentationUntil=0;document.querySelectorAll('.ultimate-spent-death').forEach(n=>n.remove());el.innerHTML='';zo.innerHTML='';ev.length=0;['player','enemy'].forEach(k=>{ultimateLedger[k].spent=null;ultimateLedger[k].pending=[];});await __q.wait(300);t0=performance.now();};"
@@ -205,7 +205,7 @@ CHECKS = [
   "const theirs=(name)=>{const s=enemySummonUnit(el,{name,art:proto.art,el:'fire',atk:6,hp:1,cost:0,effect:'ultimate-spent'});s.dataset.ultimateSpent='true';s.dataset.ultimateAggro='true';s.dataset.orderLocked='true';s.classList.remove('exhausted');registerUltimateSpent('enemy',s,{name,art:proto.art,element:'fire',baseAttack:3,baseHp:3});return s;};"
   "const done=async()=>{for(let i=0;i<250&&ev.filter(e=>e[0]==='end').length<2;i++)await __q.wait(100);await __q.wait(300);return ev.map(e=>e.slice());};"
   "const judge=(log,first,second)=>{const cuts=log.filter(e=>e[0]==='cut'),ends=log.filter(e=>e[0]==='end');return cuts.length===2&&ends.length===2&&cuts[0][1]===first&&cuts[1][1]===second&&ends[0][1]===first&&cuts.every(c=>c[3]===1)&&cuts[1][2]>=ends[0][2]&&ends[0][2]-cuts[0][2]>=3500&&ends[1][2]-cuts[1][2]>=3500;};"
-    "await reset();theirs('적 소진자');mine('내 소진자');enemyHand.length=0;enemyMana=0;enemyTurn(()=>{});const e=await done();await __q.wait(1500);const removed=!zo.querySelector('.unit')&&!el.querySelector('.unit[data-ultimate-spent]');obs.disconnect();"
+    "await reset();const b=theirs('적 소진자'),a=mine('내 소진자');resolveDuel(b,a);const e=await done();await __q.wait(1500);const removed=!zo.querySelector('.unit')&&!el.querySelector('.unit[data-ultimate-spent]');obs.disconnect();"
   "return {ok:judge(e,'내 소진자','적 소진자')&&removed,e,removed};})()"),
   ("궁극기 연출 순서(유저·컴퓨터 동일): 컷씬이 먼저 뜨고, 컷씬이 걷힌 뒤에 소진자가 필드에 내려온다 (2026-11-08)",
   "(async()=>{const ev=[],seen=(sel,k)=>{if(document.querySelector(sel)&&!ev.includes(k))ev.push(k);};const tick=setInterval(()=>{seen('.ultimate-overlay:not(.enemy-ultimate-overlay)','p-cut');seen('.summon-zone .unit[data-effect=\"ultimate-spent\"]','p-spent');seen('.enemy-ultimate-overlay','e-cut');seen('.arena .lane:first-child .unit[data-effect=\"ultimate-spent\"]','e-spent');},20);"
