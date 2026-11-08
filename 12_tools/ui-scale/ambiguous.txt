@@ -1,0 +1,348 @@
+[코드에 없음] .hero-row
+[코드에 없음] .enemy-row
+[코드에 없음] .player-row
+[코드에 없음] .spell-zone
+[코드에 없음] .spell-zone small
+[코드에 없음] .spell-zone b
+[미관찰: sigil] .spell-zone .sigil
+[미관찰: spell] .spell
+[미관찰: spell] .spell small
+[미관찰: spell] .spell b
+[미관찰: grade-s] .card.summon-card.grade-s
+[미관찰: grade-s] .grade-s .power-grade
+[미관찰: grade-s] .grade-s .card-stats span:first-child
+[미관찰: card-hp-meter] .card-hp-meter
+[미관찰: card-hp-meter] .card-hp-meter i
+[미관찰: card-hp-meter] .card-hp-meter b
+[코드에 없음] .global-summon-card .summon-icon
+[코드에 없음] .global-summon-card .creature-art
+[미관찰: magic-heal] .card.magic-heal
+[미관찰: magic-heal] .card.magic-heal::before
+[미관찰: magic-heal] .card.magic-heal .art
+[미관찰: magic-heal] .card.magic-heal .type,.card.magic-heal .card-stats
+[미관찰: magic-heal] .card.magic-heal h3
+[미관찰: magic-heal] .card.magic-heal p
+[미관찰: magic-field] .magic-field,.magic-field.has-magic
+[미관찰: magic-field-card] .magic-field-card
+[미관찰: magic-field-card, reaction] .magic-field-card.reaction
+[코드에 없음] .magic-field-art
+[코드에 없음] .magic-field-art img
+[미관찰: magic-field-card] .magic-field-card strong
+[미관찰: magic-field-card] .magic-field-card small
+[미관찰: magic-field] .magic-field
+[미관찰: magic-field-card] .magic-field-card
+[코드에 없음] .magic-field-art
+[미관찰: global-spell-card] .global-spell-card
+[미관찰: global-icon, global-spell-card] .global-spell-card .global-icon
+[미관찰: global-spell-card] .global-spell-card small
+[미관찰: global-spell-card] .global-spell-card h2
+[미관찰: global-spell-card] .global-spell-card p
+[미관찰: global-summon] .global-summon
+[코드에 없음] .global-summon-card
+[코드에 없음] .global-summon-card .summon-icon
+[코드에 없음] .global-summon-card small
+[코드에 없음] .global-summon-card h2
+[코드에 없음] .global-summon-card p
+[미관찰: side] .side
+[미관찰: side] .side h2
+[미관찰: side] .side h2 span
+[코드에 없음] .matchup
+[미관찰: element] .element
+[미관찰: element] .element b
+[코드에 없음] .arrow
+[미관찰: legend] .legend
+[코드에 없음] .legend-row
+[코드에 없음] .dot
+[미관찰: rule] .rule
+[코드에 없음] .draw-fx
+[미관찰: side] .side
+[코드에 없음] .enemy-row
+[미관찰: field-attack-line] .field-attack-line
+[미관찰: field-attack-line] .field-attack-line::after
+[미관찰: counter, field-attack-line] .field-attack-line.counter
+[미관찰: counter, field-attack-line] .field-attack-line.counter::after
+[미관찰: global-summon] .global-summon
+[코드에 없음] .global-summon-card .attack-name
+[코드에 없음] .global-summon-card .attack-effect
+[코드에 없음] .global-summon-card .attack-effect strong
+[코드에 없음] .global-summon-card .attack-effect span
+[코드에 없음] .global-summon-card .attack-effect .attack-target
+[코드에 없음] .global-summon-card .attack-element
+[코드에 없음] .battle-rules
+[코드에 없음] .rule-chip
+[코드에 없음] .rule-chip strong
+[코드에 없음] .rule-chip.active
+[코드에 없음] .battle-rules
+[미관찰: gacha-empty] .gacha-empty
+[미관찰: appeal-label] .appeal-label
+[미관찰: character-appeal, gacha-reveal, gacha-reveal-core] .gacha-reveal.character-appeal .gacha-reveal-core
+[미관찰: character-appeal, gacha-reveal] .gacha-reveal.character-appeal::after
+[미관찰: pull-appeal] .pull-appeal
+[미관찰: completion-chip] .completion-chip
+[미관찰: completion-chip, done] .completion-chip.done
+[미관찰: gacha-reveal] .gacha-reveal
+[미관찰: gacha-reveal] .gacha-reveal::before,.gacha-reveal::after
+[미관찰: gacha-reveal] .gacha-reveal::after
+[미관찰: gacha-reveal-core] .gacha-reveal-core
+[미관찰: gacha-card-back, gacha-card-front] .gacha-card-back,.gacha-card-front
+[미관찰: gacha-card-back] .gacha-card-back
+[미관찰: gacha-card-front] .gacha-card-front
+[미관찰: gacha-card-front] .gacha-card-front img
+[미관찰: gacha-card-front] .gacha-card-front h3
+[미관찰: gacha-card-front] .gacha-card-front small
+[미관찰: gacha-reveal] .gacha-reveal.rare
+[미관찰: gacha-card-front, gacha-reveal] .gacha-reveal.rare .gacha-card-front
+[미관찰: gacha-reveal] .gacha-reveal.legendary
+[미관찰: gacha-card-front, gacha-reveal] .gacha-reveal.legendary .gacha-card-front
+[미관찰: gacha-burst] .gacha-burst
+[미관찰: gacha-particle] .gacha-particle
+[미관찰: pull-card, pull-land] .pull-card.pull-land
+[미관찰: global-spell-card] .global-spell-card
+[미관찰: global-icon, global-spell-card] .global-spell-card .global-icon
+[미관찰: global-icon, global-spell-card] .global-spell-card .global-icon img
+[미관찰: global-spell-card] .global-spell-card h2
+[코드에 없음] .global-summon-card
+[코드에 없음] .global-summon-card .summon-icon
+[코드에 없음] .global-summon-card .creature-art
+[코드에 없음] .global-summon-card .attack-effect
+[코드에 없음] .global-summon-card .attack-effect strong
+[코드에 없음] .ultimate-cast
+[코드에 없음] .ultimate-cast:disabled
+[미관찰: ultimate-ring] .ultimate-ring
+[미관찰: r2, ultimate-ring] .ultimate-ring.r2
+[미관찰: ultimate-sigil] .ultimate-sigil
+[미관찰: ultimate-card] .ultimate-card
+[미관찰: ultimate-card] .ultimate-card img
+[미관찰: ultimate-card] .ultimate-card small
+[미관찰: ultimate-card] .ultimate-card h2
+[미관찰: ultimate-card] .ultimate-card p
+[미관찰: ultimate-card] .ultimate-card strong
+[미관찰: ultimate-particle] .ultimate-particle
+[미관찰: cinematic-skill-label] .cinematic-skill-label
+[미관찰: shield-aura-vfx] .shield-aura-vfx
+[미관찰: shield-aura-vfx] .shield-aura-vfx
+[미관찰: cinematic-skill-label] .cinematic-skill-label
+[미관찰: cinematic-skill-label] .cinematic-skill-label::before
+[미관찰: typed-skill-title] .typed-skill-title i
+[미관찰: space, typed-skill-title] .typed-skill-title i.space
+[미관찰: typed-skill-title, ultimate-cutscene-hero] .ultimate-cutscene-hero .typed-skill-title
+[미관찰: typed-skill-title, ultimate-cutscene-hero] .ultimate-cutscene-hero .typed-skill-title i
+[미관찰: cinematic-skill-label] .cinematic-skill-label
+[미관찰: typed-skill-title, ultimate-cutscene-hero] .ultimate-cutscene-hero .typed-skill-title
+[미관찰: ultimate-cutscene-bg] .ultimate-cutscene-bg
+[미관찰: ultimate-cutscene-flow] .ultimate-cutscene-flow
+[미관찰: ultimate-cutscene-slash] .ultimate-cutscene-slash
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero>img
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero>div
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero small
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero strong
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero span
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero>div
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero strong
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero span
+[미관찰: ultimate-effect-typing] .ultimate-effect-typing
+[미관찰: ultimate-effect-typing] .ultimate-effect-typing::after
+[미관찰: ultimate-effect-typing] .ultimate-effect-typing.complete::after
+[미관찰: ultimate-effect-typing] .ultimate-effect-typing::after
+[미관찰: initiative-banner] .initiative-banner
+[미관찰: initiative-banner] .initiative-banner small
+[미관찰: initiative-banner] .initiative-banner strong
+[미관찰: initiative-banner] .initiative-banner span
+[미관찰: initiative-banner] .initiative-banner
+[미관찰: beginner-focus, beginner-help] body.beginner-help [data-beginner-label].beginner-focus::after
+[미관찰: beginner-focus, beginner-help] body.beginner-help .beginner-focus
+[미관찰: beginner-focus, beginner-help] body.beginner-help [data-beginner-label].beginner-focus::after
+[코드에 없음] .gd-cheongryong
+[코드에 없음] .gd-hyeonmu
+[코드에 없음] .gd-none
+[코드에 없음] .gs-skip
+[코드에 없음] .gs-skip small
+[코드에 없음] .gs-skip strong
+[코드에 없음] .gs-skip span
+[코드에 없음] .gs-skip:hover,.gs-skip:focus-visible
+[미관찰: thunder] .card.thunder
+[미관찰: ice] .card.ice
+[미관찰: cinematic-skill-label] .cinematic-skill-label
+[미관찰: ultimate-cutscene-flow] .ultimate-cutscene-flow
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero
+[미관찰: ultimate-cutscene-hero] .ultimate-cutscene-hero strong
+[미관찰: global-spell-card] .global-spell-card, .global-summon-card
+[미관찰: title-word, typed-skill-title] .typed-skill-title .title-word
+[미관찰: typed-skill-title, ultimate-cutscene-hero] .ultimate-cutscene-hero .typed-skill-title
+[미관찰: global-spell-card] .global-spell-card
+[미관찰: global-icon, global-spell-card] .global-spell-card .global-icon
+[미관찰: art-failed] .art.art-failed::before
+[미관찰: card-hp-meter] .card-hp-meter
+[미관찰: draw-flipping] .card.draw-flipping
+[미관찰: draw-revealed] .card.draw-revealed
+[미관찰: initiative-banner] body .initiative-banner
+[미관찰: initiative-banner] body .initiative-banner > small
+[미관찰: initiative-banner, leaving] body .initiative-banner.leaving
+[미관찰: initiative-banner] .initiative-banner .ib-line
+[미관찰: initiative-banner] .initiative-banner .ib-word,.initiative-banner .ib-verdict,.initiative-banner .ib-detail
+[미관찰: initiative-banner] .initiative-banner .ib-verdict
+[미관찰: initiative-banner] .initiative-banner .ib-detail
+[미관찰: initiative-banner] .initiative-banner,.initiative-banner .ib-word,.initiative-banner .ib-verdict,.initiative-banner .ib-detail
+[미관찰: global-spell-card, guardian-awakening] .guardian-awakening .global-spell-card
+[미관찰: global-icon, guardian-awakening] .guardian-awakening .global-icon img
+[미관찰: aura-awaken-choice] .aura-awaken-choice
+[미관찰: aura-awaken-choice-panel] .aura-awaken-choice-panel
+[미관찰: aura-awaken-choice-panel] .aura-awaken-choice-panel .aura-mark
+[미관찰: aura-awaken-choice-panel] .aura-awaken-choice-panel small
+[미관찰: aura-awaken-choice-panel] .aura-awaken-choice-panel h2
+[미관찰: aura-awaken-choice-panel] .aura-awaken-choice-panel>p
+[미관찰: aura-awaken-options] .aura-awaken-options
+[미관찰: aura-awaken-option] .aura-awaken-option
+[미관찰: aura-awaken-option] .aura-awaken-option:hover,.aura-awaken-option:focus-visible
+[미관찰: aura-awaken-option] .aura-awaken-option b
+[미관찰: aura-awaken-desc] .aura-awaken-desc
+[미관찰: aura-awaken-desc] .aura-awaken-desc span
+[미관찰: aura-awaken-desc] .aura-awaken-desc span+span
+[미관찰: aura-awaken-option] .aura-awaken-option em
+[미관찰: aura-awaken-options] .aura-awaken-options
+[미관찰: aura-awaken-choice-panel] .aura-awaken-choice-panel
+[미관찰: aura-awaken-option] .aura-awaken-option
+[미관찰: awaken-field-sigil] .awaken-field-sigil
+[미관찰: awaken-field-sigil] .awaken-field-sigil::before,.awaken-field-sigil::after
+[미관찰: awaken-field-sigil] .awaken-field-sigil::after
+[미관찰: awaken-field-sigil] .awaken-field-sigil img
+[미관찰: awaken-field-sigil, engraving] .awaken-field-sigil.engraving
+[미관찰: awaken-field-sigil, engraving] .awaken-field-sigil.engraving img
+[미관찰: awaken-field-sigil, engraving] .awaken-field-sigil.engraving::before
+[미관찰: awaken-field-sigil, engraving] .awaken-field-sigil.engraving::after
+[미관찰: awaken-field-sigil] .awaken-field-sigil,.awaken-field-sigil::after
+[미관찰: tier-hero] .tier-hero
+[미관찰: tier-emblem] .tier-emblem
+[미관찰: tier-name] .tier-name
+[미관찰: tier-score] .tier-score
+[미관찰: tier-score] .tier-score small
+[미관찰: tier-score-value] .tier-score-value
+[미관찰: rolling, tier-score-value] .tier-score-value.rolling
+[미관찰: settled, tier-score-value] .tier-score-value.settled
+[미관찰: tier-delta] .tier-delta
+[미관찰: tier-delta, up] .tier-delta.up
+[미관찰: down, tier-delta] .tier-delta.down
+[미관찰: same, tier-delta] .tier-delta.same
+[미관찰: tier-actions] .tier-actions
+[미관찰: tier-actions] .tier-actions button
+[미관찰: tier-actions] .tier-actions button:last-child
+[미관찰: tier-actions] .tier-actions button:hover, .tier-actions button:focus-visible
+[미관찰: tier-progress] .tier-progress
+[미관찰: tier-progress] .tier-progress i
+[미관찰: tier-stats] .tier-stats
+[미관찰: tier-stat] .tier-stat
+[미관찰: tier-stat] .tier-stat strong
+[미관찰: leaderboard] .leaderboard
+[미관찰: leaderboard] .leaderboard caption
+[미관찰: leaderboard] .leaderboard th,.leaderboard td
+[미관찰: leaderboard] .leaderboard th
+[미관찰: leaderboard] .leaderboard td:nth-child(2)
+[미관찰: leaderboard, me] .leaderboard tr.me
+[미관찰: tier-hero] .tier-hero
+[미관찰: tier-score] .tier-score
+[미관찰: tier-stats] .tier-stats
+[미관찰: gdx-veil] .gdx-veil
+[미관찰: gdx-pillar] .gdx-pillar
+[미관찰: gdx-ring] .gdx-ring
+[미관찰: gdx-ring, r2] .gdx-ring.r2
+[미관찰: gdx-wave] .gdx-wave
+[미관찰: gdx-spark] .gdx-spark
+[미관찰: gdx-core] .gdx-core
+[미관찰: gdx-sigil] .gdx-sigil
+[미관찰: gdx-core] .gdx-core small
+[미관찰: gdx-title] .gdx-title
+[미관찰: gdx-core] .gdx-core p
+[미관찰: guardian-fly] .guardian-fly .aura-mark
+[코드에 없음] .gd-cheongryong
+[코드에 없음] .gd-namu
+[코드에 없음] .gd-hyeonmu
+[미관찰: dragging] .owned-card.dragging, .deck-row.dragging
+[미관찰: codex-glyph] .codex-glyph
+[미관찰: codex-glyph] .codex-card.missing .codex-glyph
+[미관찰: codex-glyph] .codex-detail-art .codex-glyph
+[미관찰: empty] .synth-slot.empty span
+[미관찰: empty] .synth-slot.empty small
+[미관찰: empty] .synth-slot.empty
+[미관찰: synth-pop] .synth-pop
+[코드에 없음] .synth-swirl
+[미관찰: blocked] .synth-section.blocked
+[미관찰: blocked] .synth-section.blocked b
+[코드에 없음] .synth-spare.lock
+[미관찰: deck] .synth-have .deck.on
+[미관찰: deck] .synth-have .deck.on b
+[미관찰: synth-pop] .synth-card.synth-pop::before
+[미관찰: codex-glyph] .codex-glyph
+[미관찰: codex-glyph] .codex-detail-art .codex-glyph
+[미관찰: empty] .synth-slot.empty span
+[미관찰: pull-card] .pull-card
+[미관찰: pull-card] .pull-card h4
+[미관찰: pull-card] .pull-card small
+[미관찰: gacha-empty] .gacha-empty
+[미관찰: synth-wait] .synth-card.synth-wait span
+[미관찰: synth-wait] .synth-card.synth-wait small
+[미관찰: deck-tab-rename] .deck-tab .deck-tab-rename
+[미관찰: deck-row-pulse] .deck-row.deck-row-pulse
+[미관찰: count-bump] #build-count.count-bump
+[미관찰: add-denied] .owned-card.add-denied
+[미관찰: enh-short] #enhance-grid .synth-pick.enh-short
+[미관찰: enh-short] #enhance-grid .synth-pick.enh-short img
+[미관찰: enh-none] #enhance-grid .enh-none
+[미관찰: enh-equip-land] #enhance-result .synth-card.enh-equip-land
+[코드에 없음] #enhance-result .synth-card.enh-land
+[코드에 없음] .enh-tier .c0
+[코드에 없음] .enh-tier .c1
+[코드에 없음] .enh-tier .c2
+[코드에 없음] .enh-tier .c3
+[미관찰: fresh] .enh-tier i.fresh
+[미관찰: fresh] .enh-tier .c0.fresh
+[미관찰: fresh] .enh-tier .c1.fresh
+[미관찰: fresh] .enh-tier .c2.fresh
+[미관찰: fresh] .enh-tier .c3.fresh
+[미관찰: tier-spark] .enh-tier .tier-spark
+[미관찰: tier-spark] .enh-tier .tier-spark.c0
+[미관찰: tier-spark] .enh-tier .tier-spark.c1
+[미관찰: tier-spark] .enh-tier .tier-spark.c2
+[미관찰: tier-spark] .enh-tier .tier-spark.c3
+[미관찰: fresh, tier-spark] .enh-tier i.fresh, .enh-tier .tier-spark
+[미관찰: old, rewrite] .enh-tier.rewrite .enh-roman.old
+[미관찰: new, rewrite] .enh-tier.rewrite .enh-roman.new
+[미관찰: tier-spark] .enh-tier .tier-spark
+[미관찰: rewrite] .enh-tier.rewrite *
+[미관찰: old, rewrite] .enh-tier.rewrite .enh-roman.old
+[미관찰: completion-chip] .codex-card .completion-chip
+[코드에 없음] .top-collection
+[코드에 없음] .top-collection b
+[코드에 없음] .top-collection small
+[코드에 없음] .top-collection:hover
+[코드에 없음] .top-collection
+[코드에 없음] .top-collection b
+[코드에 없음] .top-collection small
+[코드에 없음] .top-collection:hover
+[미관찰: side] .side
+[미관찰: aura-burn-badge, metal-experience-badge] .metal-experience-badge,.aura-burn-badge
+[미관찰: metal-experience-badge] .metal-experience-badge
+[미관찰: aura-burn-badge] .aura-burn-badge
+[미관찰: aura-burn-badge, metal-experience-badge] .metal-experience-badge>span,.aura-burn-badge>span
+[미관찰: metal-experience-badge] .metal-experience-badge>span
+[미관찰: aura-burn-vfx] .aura-burn-vfx
+[미관찰: aura-burn-vfx] .aura-burn-vfx::before,.aura-burn-vfx::after
+[미관찰: aura-burn-vfx] .aura-burn-vfx::after
+[미관찰: aura-burn-badge] .aura-burn-badge>span
+[미관찰: aura-burn-badge, metal-experience-badge] .metal-experience-badge~.aura-burn-badge
+[미관찰: aura-awaken-choice] .aura-awaken-choice
+[미관찰: aura-awaken-choice-panel] .aura-awaken-choice-panel
+[미관찰: aura-awaken-choice, aura-awaken-choice-panel] .aura-awaken-choice,.aura-awaken-choice-panel
+[미관찰: secret-teaser] .secret-teaser
+[미관찰: secret-broken] .secret-broken
+[미관찰: secret-broken] .secret-broken i
+[미관찰: secret-broken] .secret-broken i:nth-child(1)
+[미관찰: secret-broken] .secret-broken i:nth-child(2)
+[미관찰: secret-broken] .secret-broken i:nth-child(3)
+[미관찰: secret-unlock-note] .secret-unlock-note
+[미관찰: secret-unlock-note] .secret-unlock-note small
+[미관찰: secret-unlock-note] .secret-unlock-note strong
+[미관찰: secret-unlock-note] .secret-unlock-note span
+[미관찰: secret-unlock-note] .secret-unlock-note button
+[미관찰: back-emblem, gacha-card-back] .gacha-card-back[data-skin] .back-emblem

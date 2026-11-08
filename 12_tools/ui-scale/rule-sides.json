@@ -1,0 +1,13802 @@
+[
+{
+"i": 0,
+"sel": ":root",
+"in": 0,
+"out": 260
+},
+{
+"i": 1,
+"sel": "*",
+"in": 880910,
+"out": 15124
+},
+{
+"i": 2,
+"sel": "body",
+"in": 0,
+"out": 260
+},
+{
+"i": 3,
+"sel": "button",
+"in": 125648,
+"out": 544
+},
+{
+"i": 4,
+"sel": ".app",
+"in": 260,
+"out": 0
+},
+{
+"i": 5,
+"sel": "header",
+"in": 260,
+"out": 0
+},
+{
+"i": 6,
+"sel": ".brand",
+"in": 260,
+"out": 0
+},
+{
+"i": 7,
+"sel": ".brand-mark",
+"in": 260,
+"out": 0
+},
+{
+"i": 8,
+"sel": ".top-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 9,
+"sel": ".ghost",
+"in": 3120,
+"out": 0
+},
+{
+"i": 10,
+"sel": ".cracker-wallet",
+"in": 260,
+"out": 0
+},
+{
+"i": 11,
+"sel": ".cracker-wallet strong",
+"in": 260,
+"out": 0
+},
+{
+"i": 12,
+"sel": ".layout",
+"in": 260,
+"out": 0
+},
+{
+"i": 13,
+"sel": ".battle, .side",
+"in": 260,
+"out": 0
+},
+{
+"i": 14,
+"sel": ".battle",
+"in": 260,
+"out": 0
+},
+{
+"i": 15,
+"sel": ".status",
+"in": 260,
+"out": 0
+},
+{
+"i": 16,
+"sel": ".status strong",
+"in": 520,
+"out": 0
+},
+{
+"i": 17,
+"sel": ".hero-row",
+"in": 0,
+"out": 0
+},
+{
+"i": 18,
+"sel": ".enemy-row",
+"in": 0,
+"out": 0
+},
+{
+"i": 19,
+"sel": ".player-row",
+"in": 0,
+"out": 0
+},
+{
+"i": 20,
+"sel": ".player",
+"in": 260,
+"out": 0
+},
+{
+"i": 21,
+"sel": ".enemy",
+"in": 260,
+"out": 0
+},
+{
+"i": 22,
+"sel": ".avatar",
+"in": 520,
+"out": 0
+},
+{
+"i": 23,
+"sel": ".enemy .avatar",
+"in": 260,
+"out": 0
+},
+{
+"i": 24,
+"sel": ".name",
+"in": 520,
+"out": 0
+},
+{
+"i": 25,
+"sel": ".sub",
+"in": 520,
+"out": 0
+},
+{
+"i": 26,
+"sel": ".health",
+"in": 520,
+"out": 0
+},
+{
+"i": 27,
+"sel": ".health::before",
+"in": 520,
+"out": 0
+},
+{
+"i": 28,
+"sel": ".health::after",
+"in": 520,
+"out": 0
+},
+{
+"i": 29,
+"sel": ".health i",
+"in": 520,
+"out": 0
+},
+{
+"i": 30,
+"sel": ".health-value",
+"in": 520,
+"out": 0
+},
+{
+"i": 31,
+"sel": ".enemy .health",
+"in": 260,
+"out": 0
+},
+{
+"i": 32,
+"sel": ".enemy .health i",
+"in": 260,
+"out": 0
+},
+{
+"i": 33,
+"sel": ".turn",
+"in": 260,
+"out": 0
+},
+{
+"i": 34,
+"sel": ".turn b",
+"in": 260,
+"out": 0
+},
+{
+"i": 35,
+"sel": ".turn span",
+"in": 260,
+"out": 0
+},
+{
+"i": 36,
+"sel": ".arena",
+"in": 260,
+"out": 0
+},
+{
+"i": 37,
+"sel": ".arena::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 38,
+"sel": ".arena .lane",
+"in": 520,
+"out": 0
+},
+{
+"i": 39,
+"sel": ".lane",
+"in": 520,
+"out": 0
+},
+{
+"i": 40,
+"sel": ".spell-zone",
+"in": 0,
+"out": 0
+},
+{
+"i": 41,
+"sel": ".spell-zone small",
+"in": 0,
+"out": 0
+},
+{
+"i": 42,
+"sel": ".spell-zone b",
+"in": 0,
+"out": 0
+},
+{
+"i": 43,
+"sel": ".spell-zone .sigil",
+"in": 0,
+"out": 0
+},
+{
+"i": 44,
+"sel": ".unit",
+"in": 980,
+"out": 0
+},
+{
+"i": 45,
+"sel": ".unit.fire",
+"in": 676,
+"out": 0
+},
+{
+"i": 46,
+"sel": ".unit.water",
+"in": 40,
+"out": 0
+},
+{
+"i": 47,
+"sel": ".unit.wind",
+"in": 0,
+"out": 0
+},
+{
+"i": 48,
+"sel": ".unit.earth",
+"in": 0,
+"out": 0
+},
+{
+"i": 49,
+"sel": ".unit .emoji",
+"in": 980,
+"out": 0
+},
+{
+"i": 50,
+"sel": ".unit h4",
+"in": 980,
+"out": 0
+},
+{
+"i": 51,
+"sel": ".stats",
+"in": 980,
+"out": 0
+},
+{
+"i": 52,
+"sel": ".stats span:first-child",
+"in": 980,
+"out": 0
+},
+{
+"i": 53,
+"sel": ".stats span:last-child",
+"in": 980,
+"out": 0
+},
+{
+"i": 54,
+"sel": ".spell",
+"in": 0,
+"out": 0
+},
+{
+"i": 55,
+"sel": ".spell small",
+"in": 0,
+"out": 0
+},
+{
+"i": 56,
+"sel": ".spell b",
+"in": 0,
+"out": 0
+},
+{
+"i": 57,
+"sel": ".hand-wrap",
+"in": 260,
+"out": 0
+},
+{
+"i": 58,
+"sel": ".hand-title",
+"in": 260,
+"out": 0
+},
+{
+"i": 59,
+"sel": ".hand-title b",
+"in": 0,
+"out": 0
+},
+{
+"i": 60,
+"sel": ".deck-stack",
+"in": 260,
+"out": 0
+},
+{
+"i": 61,
+"sel": ".deck-stack::before, .deck-stack::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 62,
+"sel": ".deck-stack::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 63,
+"sel": ".draw-action",
+"in": 260,
+"out": 0
+},
+{
+"i": 64,
+"sel": ".draw-action:hover:not(:disabled)",
+"in": 216,
+"out": 0
+},
+{
+"i": 65,
+"sel": ".draw-action:disabled",
+"in": 44,
+"out": 0
+},
+{
+"i": 66,
+"sel": ".hand-title .draw-status",
+"in": 0,
+"out": 0
+},
+{
+"i": 67,
+"sel": ".mana-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 68,
+"sel": ".mana-pip",
+"in": 1060,
+"out": 0
+},
+{
+"i": 69,
+"sel": ".mana-pip.full",
+"in": 1060,
+"out": 0
+},
+{
+"i": 70,
+"sel": ".mana-hud.spending .mana-pip.full",
+"in": 0,
+"out": 0
+},
+{
+"i": 71,
+"sel": ".mana-spend",
+"in": 0,
+"out": 0
+},
+{
+"i": 72,
+"sel": ".skill-fx",
+"in": 0,
+"out": 68
+},
+{
+"i": 73,
+"sel": ".skill-fx strong",
+"in": 0,
+"out": 68
+},
+{
+"i": 74,
+"sel": ".skill-fx.heal",
+"in": 0,
+"out": 68
+},
+{
+"i": 75,
+"sel": ".skill-fx.heal::before, .skill-fx.heal::after",
+"in": 0,
+"out": 68
+},
+{
+"i": 76,
+"sel": ".skill-fx.heal::before",
+"in": 0,
+"out": 68
+},
+{
+"i": 77,
+"sel": ".skill-fx.heal::after",
+"in": 0,
+"out": 68
+},
+{
+"i": 78,
+"sel": ".skill-fx.shield",
+"in": 0,
+"out": 0
+},
+{
+"i": 79,
+"sel": ".skill-fx.shield::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 80,
+"sel": ".defense-shield-fx",
+"in": 0,
+"out": 64
+},
+{
+"i": 81,
+"sel": ".defense-shield-fx::before",
+"in": 0,
+"out": 64
+},
+{
+"i": 82,
+"sel": ".defense-shield-fx::after",
+"in": 0,
+"out": 64
+},
+{
+"i": 83,
+"sel": ".defense-shield-fx strong",
+"in": 0,
+"out": 64
+},
+{
+"i": 84,
+"sel": ".skill-fx.burn",
+"in": 0,
+"out": 0
+},
+{
+"i": 85,
+"sel": ".skill-fx.burn::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 86,
+"sel": ".skill-fx.rush",
+"in": 0,
+"out": 0
+},
+{
+"i": 87,
+"sel": ".skill-fx.rush::before, .skill-fx.rush::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 88,
+"sel": ".skill-fx.rush::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 89,
+"sel": ".card-flight",
+"in": 0,
+"out": 0
+},
+{
+"i": 90,
+"sel": ".card-flight img",
+"in": 0,
+"out": 0
+},
+{
+"i": 91,
+"sel": ".card-flight span",
+"in": 0,
+"out": 0
+},
+{
+"i": 92,
+"sel": ".motion-caption",
+"in": 0,
+"out": 0
+},
+{
+"i": 93,
+"sel": ".unit.summon-arriving",
+"in": 0,
+"out": 0
+},
+{
+"i": 94,
+"sel": ".unit.summon-arrived",
+"in": 0,
+"out": 0
+},
+{
+"i": 95,
+"sel": ".hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 96,
+"sel": ".card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 97,
+"sel": ".card:hover",
+"in": 2028,
+"out": 0
+},
+{
+"i": 98,
+"sel": ".card.selected",
+"in": 0,
+"out": 0
+},
+{
+"i": 99,
+"sel": ".card.fire",
+"in": 456,
+"out": 0
+},
+{
+"i": 100,
+"sel": ".card.water",
+"in": 460,
+"out": 0
+},
+{
+"i": 101,
+"sel": ".card.wind",
+"in": 388,
+"out": 0
+},
+{
+"i": 102,
+"sel": ".card.earth",
+"in": 172,
+"out": 0
+},
+{
+"i": 103,
+"sel": ".card.neutral",
+"in": 552,
+"out": 0
+},
+{
+"i": 104,
+"sel": ".card.spell-card",
+"in": 320,
+"out": 0
+},
+{
+"i": 105,
+"sel": ".card.spell-card::before",
+"in": 320,
+"out": 0
+},
+{
+"i": 106,
+"sel": ".card.spell-card .art",
+"in": 320,
+"out": 0
+},
+{
+"i": 107,
+"sel": ".card.spell-card h3",
+"in": 320,
+"out": 0
+},
+{
+"i": 108,
+"sel": ".card.spell-card p",
+"in": 320,
+"out": 0
+},
+{
+"i": 109,
+"sel": ".card.spell-card .card-stats",
+"in": 320,
+"out": 0
+},
+{
+"i": 110,
+"sel": ".card.spell-card .type",
+"in": 320,
+"out": 0
+},
+{
+"i": 111,
+"sel": ".card.summon-card",
+"in": 1696,
+"out": 0
+},
+{
+"i": 112,
+"sel": ".card.summon-card .art",
+"in": 1696,
+"out": 0
+},
+{
+"i": 113,
+"sel": ".card.summon-card .type",
+"in": 1696,
+"out": 0
+},
+{
+"i": 114,
+"sel": ".rarity-stars",
+"in": 1696,
+"out": 0
+},
+{
+"i": 115,
+"sel": ".card.summon-card.grade-c",
+"in": 1140,
+"out": 0
+},
+{
+"i": 116,
+"sel": ".card.summon-card.grade-b",
+"in": 204,
+"out": 0
+},
+{
+"i": 117,
+"sel": ".card.summon-card.grade-a",
+"in": 352,
+"out": 0
+},
+{
+"i": 118,
+"sel": ".power-grade",
+"in": 1696,
+"out": 0
+},
+{
+"i": 119,
+"sel": ".grade-c .power-grade",
+"in": 1140,
+"out": 0
+},
+{
+"i": 120,
+"sel": ".grade-b .power-grade",
+"in": 204,
+"out": 0
+},
+{
+"i": 121,
+"sel": ".grade-a .power-grade",
+"in": 352,
+"out": 0
+},
+{
+"i": 122,
+"sel": ".grade-b .card-stats span:first-child",
+"in": 204,
+"out": 0
+},
+{
+"i": 123,
+"sel": ".grade-a .card-stats span:first-child",
+"in": 352,
+"out": 0
+},
+{
+"i": 124,
+"sel": ".card.summon-card.grade-s",
+"in": 0,
+"out": 0
+},
+{
+"i": 125,
+"sel": ".grade-s .power-grade",
+"in": 0,
+"out": 0
+},
+{
+"i": 126,
+"sel": ".grade-s .card-stats span:first-child",
+"in": 0,
+"out": 0
+},
+{
+"i": 127,
+"sel": ".card-hp-meter",
+"in": 0,
+"out": 0
+},
+{
+"i": 128,
+"sel": ".card-hp-meter i",
+"in": 0,
+"out": 0
+},
+{
+"i": 129,
+"sel": ".card-hp-meter b",
+"in": 0,
+"out": 0
+},
+{
+"i": 130,
+"sel": ".command-rail .card .art .card-hp-meter",
+"in": 0,
+"out": 0
+},
+{
+"i": 131,
+"sel": ".creature-art",
+"in": 2332,
+"out": 0
+},
+{
+"i": 132,
+"sel": ".card .art",
+"in": 2028,
+"out": 0
+},
+{
+"i": 133,
+"sel": ".card .art .creature-art",
+"in": 1696,
+"out": 0
+},
+{
+"i": 134,
+"sel": ".card:hover .art .creature-art, .card.selected .art .creature-art",
+"in": 1696,
+"out": 0
+},
+{
+"i": 135,
+"sel": ".unit .creature-art",
+"in": 520,
+"out": 0
+},
+{
+"i": 136,
+"sel": ".unit:hover .creature-art, .unit.selected .creature-art",
+"in": 520,
+"out": 0
+},
+{
+"i": 137,
+"sel": ".global-summon-card .summon-icon",
+"in": 0,
+"out": 0
+},
+{
+"i": 138,
+"sel": ".global-summon-card .creature-art",
+"in": 0,
+"out": 0
+},
+{
+"i": 139,
+"sel": ".card.spell-card .art",
+"in": 320,
+"out": 0
+},
+{
+"i": 140,
+"sel": ".card.spell-card .art::after",
+"in": 320,
+"out": 0
+},
+{
+"i": 141,
+"sel": ".card.spell-card p",
+"in": 320,
+"out": 0
+},
+{
+"i": 142,
+"sel": ".card.trap-card",
+"in": 12,
+"out": 0
+},
+{
+"i": 143,
+"sel": ".card.trap-card::before",
+"in": 12,
+"out": 0
+},
+{
+"i": 144,
+"sel": ".card.trap-card .art",
+"in": 12,
+"out": 0
+},
+{
+"i": 145,
+"sel": ".card.trap-card h3",
+"in": 12,
+"out": 0
+},
+{
+"i": 146,
+"sel": ".card.trap-card p",
+"in": 12,
+"out": 0
+},
+{
+"i": 147,
+"sel": ".card.trap-card .type, .card.trap-card .card-stats",
+"in": 24,
+"out": 0
+},
+{
+"i": 148,
+"sel": ".card.magic-offense",
+"in": 124,
+"out": 0
+},
+{
+"i": 149,
+"sel": ".card.magic-offense::before",
+"in": 124,
+"out": 0
+},
+{
+"i": 150,
+"sel": ".card.magic-offense .art",
+"in": 124,
+"out": 0
+},
+{
+"i": 151,
+"sel": ".card.magic-offense .type, .card.magic-offense .card-stats",
+"in": 248,
+"out": 0
+},
+{
+"i": 152,
+"sel": ".card.magic-offense h3",
+"in": 124,
+"out": 0
+},
+{
+"i": 153,
+"sel": ".card.magic-offense p",
+"in": 124,
+"out": 0
+},
+{
+"i": 154,
+"sel": ".card.magic-buff",
+"in": 124,
+"out": 0
+},
+{
+"i": 155,
+"sel": ".card.magic-buff::before",
+"in": 124,
+"out": 0
+},
+{
+"i": 156,
+"sel": ".card.magic-buff .art",
+"in": 124,
+"out": 0
+},
+{
+"i": 157,
+"sel": ".card.magic-buff .type, .card.magic-buff .card-stats",
+"in": 248,
+"out": 0
+},
+{
+"i": 158,
+"sel": ".card.magic-buff h3",
+"in": 124,
+"out": 0
+},
+{
+"i": 159,
+"sel": ".card.magic-buff p",
+"in": 124,
+"out": 0
+},
+{
+"i": 160,
+"sel": ".card.magic-heal",
+"in": 0,
+"out": 0
+},
+{
+"i": 161,
+"sel": ".card.magic-heal::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 162,
+"sel": ".card.magic-heal .art",
+"in": 0,
+"out": 0
+},
+{
+"i": 163,
+"sel": ".card.magic-heal .type, .card.magic-heal .card-stats",
+"in": 0,
+"out": 0
+},
+{
+"i": 164,
+"sel": ".card.magic-heal h3",
+"in": 0,
+"out": 0
+},
+{
+"i": 165,
+"sel": ".card.magic-heal p",
+"in": 0,
+"out": 0
+},
+{
+"i": 166,
+"sel": ".set-zones",
+"in": 260,
+"out": 0
+},
+{
+"i": 167,
+"sel": ".arena > .set-zones",
+"in": 0,
+"out": 0
+},
+{
+"i": 168,
+"sel": ".set-slot",
+"in": 260,
+"out": 0
+},
+{
+"i": 169,
+"sel": ".set-slot strong",
+"in": 260,
+"out": 0
+},
+{
+"i": 170,
+"sel": ".set-slot .slot-empty",
+"in": 256,
+"out": 0
+},
+{
+"i": 171,
+"sel": ".set-slot.ready",
+"in": 4,
+"out": 0
+},
+{
+"i": 172,
+"sel": ".set-slot.ready strong",
+"in": 4,
+"out": 0
+},
+{
+"i": 173,
+"sel": ".set-slot.ready span",
+"in": 4,
+"out": 0
+},
+{
+"i": 174,
+"sel": ".set-slot.trap-slot",
+"in": 260,
+"out": 0
+},
+{
+"i": 175,
+"sel": ".set-slot.trap-slot strong",
+"in": 260,
+"out": 0
+},
+{
+"i": 176,
+"sel": ".set-slot.trap-slot.ready",
+"in": 4,
+"out": 0
+},
+{
+"i": 177,
+"sel": ".command-rail .set-zones",
+"in": 260,
+"out": 0
+},
+{
+"i": 178,
+"sel": ".unit.snared",
+"in": 0,
+"out": 0
+},
+{
+"i": 179,
+"sel": ".command-rail .set-slot",
+"in": 260,
+"out": 0
+},
+{
+"i": 180,
+"sel": ".command-rail .set-slot strong",
+"in": 260,
+"out": 0
+},
+{
+"i": 181,
+"sel": ".command-rail .set-slot span",
+"in": 260,
+"out": 0
+},
+{
+"i": 182,
+"sel": ".magic-field, .magic-field.has-magic",
+"in": 0,
+"out": 0
+},
+{
+"i": 183,
+"sel": ".magic-field-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 184,
+"sel": ".magic-field-card.ready",
+"in": 0,
+"out": 0
+},
+{
+"i": 185,
+"sel": ".magic-field-card.ready",
+"in": 0,
+"out": 0
+},
+{
+"i": 186,
+"sel": ".magic-field-card.reaction",
+"in": 0,
+"out": 0
+},
+{
+"i": 187,
+"sel": ".magic-field-art",
+"in": 0,
+"out": 0
+},
+{
+"i": 188,
+"sel": ".magic-field-art img",
+"in": 0,
+"out": 0
+},
+{
+"i": 189,
+"sel": ".magic-field-card strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 190,
+"sel": ".magic-field-card small",
+"in": 0,
+"out": 0
+},
+{
+"i": 191,
+"sel": ".magic-field",
+"in": 0,
+"out": 0
+},
+{
+"i": 192,
+"sel": ".magic-field-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 193,
+"sel": ".magic-field-art",
+"in": 0,
+"out": 0
+},
+{
+"i": 194,
+"sel": ".summon-zone",
+"in": 260,
+"out": 0
+},
+{
+"i": 195,
+"sel": ".lane:nth-child(2)",
+"in": 260,
+"out": 0
+},
+{
+"i": 196,
+"sel": ".global-spell",
+"in": 0,
+"out": 0
+},
+{
+"i": 197,
+"sel": ".global-spell-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 198,
+"sel": ".global-spell-card .global-icon",
+"in": 0,
+"out": 0
+},
+{
+"i": 199,
+"sel": ".global-spell-card small",
+"in": 0,
+"out": 0
+},
+{
+"i": 200,
+"sel": ".global-spell-card h2",
+"in": 0,
+"out": 0
+},
+{
+"i": 201,
+"sel": ".global-spell-card p",
+"in": 0,
+"out": 0
+},
+{
+"i": 202,
+"sel": ".asset-fx",
+"in": 0,
+"out": 148
+},
+{
+"i": 203,
+"sel": ".attack-trail",
+"in": 0,
+"out": 96
+},
+{
+"i": 204,
+"sel": ".global-summon",
+"in": 0,
+"out": 0
+},
+{
+"i": 205,
+"sel": ".global-summon-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 206,
+"sel": ".global-summon-card .summon-icon",
+"in": 0,
+"out": 0
+},
+{
+"i": 207,
+"sel": ".global-summon-card small",
+"in": 0,
+"out": 0
+},
+{
+"i": 208,
+"sel": ".global-summon-card h2",
+"in": 0,
+"out": 0
+},
+{
+"i": 209,
+"sel": ".global-summon-card p",
+"in": 0,
+"out": 0
+},
+{
+"i": 210,
+"sel": ".card .cost",
+"in": 2028,
+"out": 0
+},
+{
+"i": 211,
+"sel": ".card .type",
+"in": 2028,
+"out": 0
+},
+{
+"i": 212,
+"sel": ".art",
+"in": 2028,
+"out": 0
+},
+{
+"i": 213,
+"sel": ".card h3",
+"in": 2028,
+"out": 0
+},
+{
+"i": 214,
+"sel": ".card p",
+"in": 3300,
+"out": 0
+},
+{
+"i": 215,
+"sel": ".card .card-stats",
+"in": 2028,
+"out": 0
+},
+{
+"i": 216,
+"sel": ".side",
+"in": 0,
+"out": 0
+},
+{
+"i": 217,
+"sel": ".side h2",
+"in": 0,
+"out": 0
+},
+{
+"i": 218,
+"sel": ".side h2 span",
+"in": 0,
+"out": 0
+},
+{
+"i": 219,
+"sel": ".matchup",
+"in": 0,
+"out": 0
+},
+{
+"i": 220,
+"sel": ".element",
+"in": 0,
+"out": 0
+},
+{
+"i": 221,
+"sel": ".element b",
+"in": 0,
+"out": 0
+},
+{
+"i": 222,
+"sel": ".arrow",
+"in": 0,
+"out": 0
+},
+{
+"i": 223,
+"sel": ".legend",
+"in": 0,
+"out": 0
+},
+{
+"i": 224,
+"sel": ".legend-row",
+"in": 0,
+"out": 0
+},
+{
+"i": 225,
+"sel": ".dot",
+"in": 0,
+"out": 0
+},
+{
+"i": 226,
+"sel": ".rule",
+"in": 0,
+"out": 0
+},
+{
+"i": 227,
+"sel": ".log",
+"in": 260,
+"out": 0
+},
+{
+"i": 228,
+"sel": ".log h3",
+"in": 0,
+"out": 0
+},
+{
+"i": 229,
+"sel": ".log p",
+"in": 1662,
+"out": 0
+},
+{
+"i": 230,
+"sel": ".log p strong",
+"in": 2014,
+"out": 0
+},
+{
+"i": 231,
+"sel": ".end",
+"in": 260,
+"out": 0
+},
+{
+"i": 232,
+"sel": ".result",
+"in": 260,
+"out": 0
+},
+{
+"i": 233,
+"sel": ".result.show",
+"in": 8,
+"out": 0
+},
+{
+"i": 234,
+"sel": ".result-box",
+"in": 260,
+"out": 0
+},
+{
+"i": 235,
+"sel": ".result-box h2",
+"in": 260,
+"out": 0
+},
+{
+"i": 236,
+"sel": ".result-box p",
+"in": 780,
+"out": 0
+},
+{
+"i": 237,
+"sel": ".result-box button",
+"in": 520,
+"out": 0
+},
+{
+"i": 238,
+"sel": ".unit.invulnerable",
+"in": 0,
+"out": 0
+},
+{
+"i": 239,
+"sel": ".stage-column .arena .summon-zone:has(.field-attacker)",
+"in": 0,
+"out": 0
+},
+{
+"i": 240,
+"sel": ".unit.frozen",
+"in": 0,
+"out": 0
+},
+{
+"i": 241,
+"sel": ".unit.selected",
+"in": 0,
+"out": 0
+},
+{
+"i": 242,
+"sel": ".unit.attacking",
+"in": 0,
+"out": 0
+},
+{
+"i": 243,
+"sel": ".unit.exhausted",
+"in": 256,
+"out": 0
+},
+{
+"i": 244,
+"sel": ".unit.exhausted::after",
+"in": 256,
+"out": 0
+},
+{
+"i": 245,
+"sel": ".fx",
+"in": 0,
+"out": 348
+},
+{
+"i": 246,
+"sel": ".hit-fx",
+"in": 0,
+"out": 148
+},
+{
+"i": 247,
+"sel": ".hit-fx.water",
+"in": 0,
+"out": 0
+},
+{
+"i": 248,
+"sel": ".hit-fx.earth",
+"in": 0,
+"out": 0
+},
+{
+"i": 249,
+"sel": ".hit-fx.wind",
+"in": 0,
+"out": 0
+},
+{
+"i": 250,
+"sel": ".hit-fx::before",
+"in": 0,
+"out": 148
+},
+{
+"i": 251,
+"sel": ".hit-fx.water::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 252,
+"sel": ".hit-fx.earth::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 253,
+"sel": ".hit-fx.wind::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 254,
+"sel": ".hit-fx::after",
+"in": 0,
+"out": 148
+},
+{
+"i": 255,
+"sel": ".hit-fx.water::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 256,
+"sel": ".hit-fx.earth::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 257,
+"sel": ".hit-fx.wind::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 258,
+"sel": ".damage-fx",
+"in": 0,
+"out": 148
+},
+{
+"i": 259,
+"sel": ".particle",
+"in": 0,
+"out": 2984
+},
+{
+"i": 260,
+"sel": ".particle.water",
+"in": 0,
+"out": 0
+},
+{
+"i": 261,
+"sel": ".particle.earth",
+"in": 0,
+"out": 0
+},
+{
+"i": 262,
+"sel": ".particle.wind",
+"in": 0,
+"out": 0
+},
+{
+"i": 263,
+"sel": ".screen-flash",
+"in": 0,
+"out": 52
+},
+{
+"i": 264,
+"sel": ".draw-fx",
+"in": 0,
+"out": 0
+},
+{
+"i": 265,
+"sel": ".arena.impact",
+"in": 252,
+"out": 0
+},
+{
+"i": 266,
+"sel": ".hand .card.draw-in",
+"in": 0,
+"out": 0
+},
+{
+"i": 267,
+"sel": ".enemy-row .turn",
+"in": 0,
+"out": 0
+},
+{
+"i": 268,
+"sel": ".card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 269,
+"sel": ".card.summon-card .art",
+"in": 1696,
+"out": 0
+},
+{
+"i": 270,
+"sel": ".hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 271,
+"sel": ".layout",
+"in": 260,
+"out": 0
+},
+{
+"i": 272,
+"sel": ".side",
+"in": 0,
+"out": 0
+},
+{
+"i": 273,
+"sel": ".log",
+"in": 260,
+"out": 0
+},
+{
+"i": 274,
+"sel": ".arena",
+"in": 260,
+"out": 0
+},
+{
+"i": 275,
+"sel": ".hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 276,
+"sel": ".card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 277,
+"sel": ".unit",
+"in": 980,
+"out": 0
+},
+{
+"i": 278,
+"sel": ".enemy-row",
+"in": 0,
+"out": 0
+},
+{
+"i": 279,
+"sel": ".enemy-row .enemy",
+"in": 0,
+"out": 0
+},
+{
+"i": 280,
+"sel": ".enemy-row .turn",
+"in": 0,
+"out": 0
+},
+{
+"i": 281,
+"sel": ".health",
+"in": 520,
+"out": 0
+},
+{
+"i": 282,
+"sel": ".impact-vignette",
+"in": 0,
+"out": 64
+},
+{
+"i": 283,
+"sel": ".impact-core",
+"in": 0,
+"out": 104
+},
+{
+"i": 284,
+"sel": ".shockwave",
+"in": 0,
+"out": 282
+},
+{
+"i": 285,
+"sel": ".shockwave.secondary",
+"in": 0,
+"out": 146
+},
+{
+"i": 286,
+"sel": ".impact-ray",
+"in": 0,
+"out": 812
+},
+{
+"i": 287,
+"sel": ".particle.shard",
+"in": 0,
+"out": 2984
+},
+{
+"i": 288,
+"sel": ".element-wisp",
+"in": 0,
+"out": 1036
+},
+{
+"i": 289,
+"sel": ".unit.unit-dying",
+"in": 0,
+"out": 0
+},
+{
+"i": 290,
+"sel": ".unit.unit-dying .stats, .unit.unit-dying .cost",
+"in": 0,
+"out": 0
+},
+{
+"i": 291,
+"sel": ".unit.unit-dying",
+"in": 0,
+"out": 0
+},
+{
+"i": 292,
+"sel": ".unit.unit-swap-in",
+"in": 0,
+"out": 0
+},
+{
+"i": 293,
+"sel": ".unit.unit-swap-in",
+"in": 0,
+"out": 0
+},
+{
+"i": 294,
+"sel": ".unit.hit-react, .avatar.hit-react",
+"in": 88,
+"out": 0
+},
+{
+"i": 295,
+"sel": ".unit.field-attacker",
+"in": 0,
+"out": 0
+},
+{
+"i": 296,
+"sel": ".unit.field-target, .avatar.field-target",
+"in": 0,
+"out": 0
+},
+{
+"i": 297,
+"sel": ".field-attack-line",
+"in": 0,
+"out": 0
+},
+{
+"i": 298,
+"sel": ".field-attack-line::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 299,
+"sel": ".field-attack-line.counter",
+"in": 0,
+"out": 0
+},
+{
+"i": 300,
+"sel": ".field-attack-line.counter::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 301,
+"sel": ".field-attack-line.lethal",
+"in": 0,
+"out": 0
+},
+{
+"i": 302,
+"sel": ".field-impact-burst",
+"in": 0,
+"out": 0
+},
+{
+"i": 303,
+"sel": ".field-impact-burst i",
+"in": 0,
+"out": 0
+},
+{
+"i": 304,
+"sel": ".field-impact-burst.slash",
+"in": 0,
+"out": 0
+},
+{
+"i": 305,
+"sel": ".field-impact-burst.slash::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 306,
+"sel": ".field-impact-burst.slash i",
+"in": 0,
+"out": 0
+},
+{
+"i": 307,
+"sel": ".field-impact-burst.blunt::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 308,
+"sel": ".field-impact-burst.blunt i",
+"in": 0,
+"out": 0
+},
+{
+"i": 309,
+"sel": ".field-impact-burst.pierce",
+"in": 0,
+"out": 0
+},
+{
+"i": 310,
+"sel": ".field-impact-burst.pierce::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 311,
+"sel": ".field-impact-burst.pierce i:nth-child(n+5)",
+"in": 0,
+"out": 0
+},
+{
+"i": 312,
+"sel": ".field-impact-label",
+"in": 0,
+"out": 60
+},
+{
+"i": 313,
+"sel": ".hero-edge-flash",
+"in": 0,
+"out": 72
+},
+{
+"i": 314,
+"sel": ".hero-edge-flash.enemy-side",
+"in": 0,
+"out": 0
+},
+{
+"i": 315,
+"sel": ".hp-damage-pop",
+"in": 0,
+"out": 72
+},
+{
+"i": 316,
+"sel": ".hp-damage-pop",
+"in": 0,
+"out": 72
+},
+{
+"i": 317,
+"sel": ".hero-edge-flash",
+"in": 0,
+"out": 72
+},
+{
+"i": 318,
+"sel": ".damage-fx",
+"in": 0,
+"out": 148
+},
+{
+"i": 319,
+"sel": ".card.illustrated-magic .art, .command-rail .card.illustrated-magic .art",
+"in": 332,
+"out": 0
+},
+{
+"i": 320,
+"sel": ".card.illustrated-magic .art::after",
+"in": 332,
+"out": 0
+},
+{
+"i": 321,
+"sel": ".card.illustrated-magic .art .magic-art-image",
+"in": 332,
+"out": 0
+},
+{
+"i": 322,
+"sel": ".global-summon",
+"in": 0,
+"out": 0
+},
+{
+"i": 323,
+"sel": ".global-summon-card .attack-name",
+"in": 0,
+"out": 0
+},
+{
+"i": 324,
+"sel": ".global-summon-card .attack-effect",
+"in": 0,
+"out": 0
+},
+{
+"i": 325,
+"sel": ".global-summon-card .attack-effect strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 326,
+"sel": ".global-summon-card .attack-effect span",
+"in": 0,
+"out": 0
+},
+{
+"i": 327,
+"sel": ".global-summon-card .attack-effect .attack-target",
+"in": 0,
+"out": 0
+},
+{
+"i": 328,
+"sel": ".global-summon-card .attack-element",
+"in": 0,
+"out": 0
+},
+{
+"i": 329,
+"sel": ".impact-ray, .particle.shard, .element-wisp, .asset-fx, .attack-trail",
+"in": 0,
+"out": 5076
+},
+{
+"i": 330,
+"sel": ".arena.impact, .unit.hit-react, .avatar.hit-react",
+"in": 340,
+"out": 0
+},
+{
+"i": 331,
+"sel": ".shockwave",
+"in": 0,
+"out": 282
+},
+{
+"i": 332,
+"sel": ".screen-flash",
+"in": 0,
+"out": 52
+},
+{
+"i": 333,
+"sel": ".battle-rules",
+"in": 0,
+"out": 0
+},
+{
+"i": 334,
+"sel": ".rule-chip",
+"in": 0,
+"out": 0
+},
+{
+"i": 335,
+"sel": ".rule-chip strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 336,
+"sel": ".rule-chip.active",
+"in": 0,
+"out": 0
+},
+{
+"i": 337,
+"sel": ".rule-chip.chain.active",
+"in": 0,
+"out": 0
+},
+{
+"i": 338,
+"sel": ".turn-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 339,
+"sel": ".turn-actions .draw-action, .turn-actions .end",
+"in": 520,
+"out": 0
+},
+{
+"i": 340,
+"sel": ".turn-actions .draw-action",
+"in": 260,
+"out": 0
+},
+{
+"i": 341,
+"sel": ".turn-actions .draw-action:hover:not(:disabled)",
+"in": 216,
+"out": 0
+},
+{
+"i": 342,
+"sel": ".turn-actions .end",
+"in": 260,
+"out": 0
+},
+{
+"i": 343,
+"sel": ".turn-actions .end:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 344,
+"sel": ".turn-actions button:disabled",
+"in": 44,
+"out": 0
+},
+{
+"i": 345,
+"sel": ".app",
+"in": 260,
+"out": 0
+},
+{
+"i": 346,
+"sel": "header",
+"in": 260,
+"out": 0
+},
+{
+"i": 347,
+"sel": ".battle",
+"in": 260,
+"out": 0
+},
+{
+"i": 348,
+"sel": ".status, .battle-rules, .enemy-row .turn",
+"in": 260,
+"out": 0
+},
+{
+"i": 349,
+"sel": ".battle-shell",
+"in": 260,
+"out": 0
+},
+{
+"i": 350,
+"sel": ".stage-column",
+"in": 260,
+"out": 0
+},
+{
+"i": 351,
+"sel": ".duel-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 352,
+"sel": ".duel-hud .enemy",
+"in": 260,
+"out": 0
+},
+{
+"i": 353,
+"sel": ".duel-hud .enemy",
+"in": 260,
+"out": 0
+},
+{
+"i": 354,
+"sel": ".duel-hud .enemy:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 355,
+"sel": ".arena .lane:first-child:empty, .arena .lane:first-child.field-empty",
+"in": 220,
+"out": 0
+},
+{
+"i": 356,
+"sel": ".arena .lane:first-child.field-empty::after",
+"in": 220,
+"out": 0
+},
+{
+"i": 357,
+"sel": ".duel-hud .player",
+"in": 260,
+"out": 0
+},
+{
+"i": 358,
+"sel": ".duel-hud > .enemy, .duel-hud > .player",
+"in": 520,
+"out": 0
+},
+{
+"i": 359,
+"sel": ".duel-hud .sub",
+"in": 520,
+"out": 0
+},
+{
+"i": 360,
+"sel": ".duel-hud .hud-id",
+"in": 520,
+"out": 0
+},
+{
+"i": 361,
+"sel": ".duel-hud .player .hud-id",
+"in": 260,
+"out": 0
+},
+{
+"i": 362,
+"sel": ".duel-hud .hud-id .name",
+"in": 520,
+"out": 0
+},
+{
+"i": 363,
+"sel": ".duel-hud .hud-id .sub",
+"in": 520,
+"out": 0
+},
+{
+"i": 364,
+"sel": ".duel-hud .player .hud-id .sub",
+"in": 260,
+"out": 0
+},
+{
+"i": 365,
+"sel": ".duel-hud .sub strong",
+"in": 520,
+"out": 0
+},
+{
+"i": 366,
+"sel": ".duel-hud .sub .deck-stack",
+"in": 260,
+"out": 0
+},
+{
+"i": 367,
+"sel": ".duel-hud .sub .deck-stack::before, .duel-hud .sub .deck-stack::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 368,
+"sel": ".duel-hud .sub .deck-stack strong",
+"in": 260,
+"out": 0
+},
+{
+"i": 369,
+"sel": ".duel-hud .enemy > div:last-child, .duel-hud .player > div:last-child",
+"in": 520,
+"out": 0
+},
+{
+"i": 370,
+"sel": ".duel-hud .health",
+"in": 520,
+"out": 0
+},
+{
+"i": 371,
+"sel": ".enemy .health",
+"in": 260,
+"out": 0
+},
+{
+"i": 372,
+"sel": ".enemy .health i",
+"in": 260,
+"out": 0
+},
+{
+"i": 373,
+"sel": ".command-rail > .turn",
+"in": 260,
+"out": 0
+},
+{
+"i": 374,
+"sel": ".command-rail > .turn > b, .command-rail > .turn > span",
+"in": 520,
+"out": 0
+},
+{
+"i": 375,
+"sel": ".command-rail .mana-hud",
+"in": 0,
+"out": 0
+},
+{
+"i": 376,
+"sel": ".mana-label",
+"in": 260,
+"out": 0
+},
+{
+"i": 377,
+"sel": ".mana-value",
+"in": 260,
+"out": 0
+},
+{
+"i": 378,
+"sel": ".mana-pips",
+"in": 260,
+"out": 0
+},
+{
+"i": 379,
+"sel": ".command-rail .mana-pip",
+"in": 0,
+"out": 0
+},
+{
+"i": 380,
+"sel": ".command-rail .mana-pip.full",
+"in": 0,
+"out": 0
+},
+{
+"i": 381,
+"sel": ".stage-column .arena",
+"in": 260,
+"out": 0
+},
+{
+"i": 382,
+"sel": ".command-rail",
+"in": 260,
+"out": 0
+},
+{
+"i": 383,
+"sel": ".command-rail .hand-wrap",
+"in": 260,
+"out": 0
+},
+{
+"i": 384,
+"sel": ".command-rail .hand-title",
+"in": 260,
+"out": 0
+},
+{
+"i": 385,
+"sel": ".hand-guide",
+"in": 260,
+"out": 0
+},
+{
+"i": 386,
+"sel": ".hand-guide:empty",
+"in": 0,
+"out": 0
+},
+{
+"i": 387,
+"sel": ".command-rail .deck-stack",
+"in": 0,
+"out": 0
+},
+{
+"i": 388,
+"sel": ".command-rail .hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 389,
+"sel": ".command-rail .card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 390,
+"sel": ".command-rail .card:hover, .command-rail .card.selected",
+"in": 2028,
+"out": 0
+},
+{
+"i": 391,
+"sel": ".command-rail .card.selected",
+"in": 0,
+"out": 0
+},
+{
+"i": 392,
+"sel": ".command-rail .card .cost",
+"in": 2028,
+"out": 0
+},
+{
+"i": 393,
+"sel": ".command-rail .card .rarity-stars",
+"in": 1696,
+"out": 0
+},
+{
+"i": 394,
+"sel": ".command-rail .card .art, .command-rail .card.summon-card .art, .command-rail .card.spell-card .art",
+"in": 2028,
+"out": 0
+},
+{
+"i": 395,
+"sel": ".command-rail .card.spell-card .art::after",
+"in": 320,
+"out": 0
+},
+{
+"i": 396,
+"sel": ".command-rail .card .type",
+"in": 2028,
+"out": 0
+},
+{
+"i": 397,
+"sel": ".command-rail .card h3",
+"in": 2028,
+"out": 0
+},
+{
+"i": 398,
+"sel": ".command-rail .card p",
+"in": 3300,
+"out": 0
+},
+{
+"i": 399,
+"sel": ".command-rail .card .card-stats",
+"in": 2028,
+"out": 0
+},
+{
+"i": 400,
+"sel": ".command-rail .turn-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 401,
+"sel": ".command-rail .turn-actions .draw-action, .command-rail .turn-actions .end",
+"in": 520,
+"out": 0
+},
+{
+"i": 402,
+"sel": ".command-rail .turn-actions .end",
+"in": 260,
+"out": 0
+},
+{
+"i": 403,
+"sel": ".app",
+"in": 260,
+"out": 0
+},
+{
+"i": 404,
+"sel": ".battle-shell",
+"in": 260,
+"out": 0
+},
+{
+"i": 405,
+"sel": ".stage-column .arena",
+"in": 260,
+"out": 0
+},
+{
+"i": 406,
+"sel": ".command-rail",
+"in": 260,
+"out": 0
+},
+{
+"i": 407,
+"sel": ".command-rail .hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 408,
+"sel": ".command-rail .card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 409,
+"sel": ".command-rail .turn-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 410,
+"sel": ".enemy > div:last-child, .player > div:last-child",
+"in": 520,
+"out": 0
+},
+{
+"i": 411,
+"sel": ".enemy .health, .command-rail .health",
+"in": 260,
+"out": 0
+},
+{
+"i": 412,
+"sel": ".command-rail .turn-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 413,
+"sel": ".command-rail .card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 414,
+"sel": ".command-rail",
+"in": 260,
+"out": 0
+},
+{
+"i": 415,
+"sel": ".command-rail .player-row",
+"in": 0,
+"out": 0
+},
+{
+"i": 416,
+"sel": ".command-rail .avatar",
+"in": 0,
+"out": 0
+},
+{
+"i": 417,
+"sel": ".command-rail .health",
+"in": 0,
+"out": 0
+},
+{
+"i": 418,
+"sel": ".command-rail .hand-title",
+"in": 260,
+"out": 0
+},
+{
+"i": 419,
+"sel": ".command-rail .hand-title:empty",
+"in": 260,
+"out": 0
+},
+{
+"i": 420,
+"sel": ".command-rail .hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 421,
+"sel": ".command-rail .card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 422,
+"sel": ".command-rail .card .art, .command-rail .card.summon-card .art, .command-rail .card.spell-card .art",
+"in": 2028,
+"out": 0
+},
+{
+"i": 423,
+"sel": ".command-rail .card.spell-card .art::after",
+"in": 320,
+"out": 0
+},
+{
+"i": 424,
+"sel": ".command-rail .card h3",
+"in": 2028,
+"out": 0
+},
+{
+"i": 425,
+"sel": ".command-rail .turn-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 426,
+"sel": ".command-rail .turn-actions .draw-action, .command-rail .turn-actions .end",
+"in": 520,
+"out": 0
+},
+{
+"i": 427,
+"sel": ".command-rail .turn-actions .end",
+"in": 260,
+"out": 0
+},
+{
+"i": 428,
+"sel": ".command-rail .turn-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 429,
+"sel": ".command-rail .turn-actions .draw-action, .command-rail .turn-actions .end",
+"in": 520,
+"out": 0
+},
+{
+"i": 430,
+"sel": ".command-rail .turn-actions .end",
+"in": 260,
+"out": 0
+},
+{
+"i": 431,
+"sel": ".command-rail .turn-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 432,
+"sel": ".command-rail .turn-actions .draw-action, .command-rail .turn-actions .end",
+"in": 520,
+"out": 0
+},
+{
+"i": 433,
+"sel": ".system-log",
+"in": 260,
+"out": 0
+},
+{
+"i": 434,
+"sel": ".command-rail .hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 435,
+"sel": ".command-rail .card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 436,
+"sel": ".command-rail .card:hover, .command-rail .card.selected",
+"in": 2028,
+"out": 0
+},
+{
+"i": 437,
+"sel": ".command-rail .card .cost",
+"in": 2028,
+"out": 0
+},
+{
+"i": 438,
+"sel": ".command-rail .card .rarity-stars",
+"in": 1696,
+"out": 0
+},
+{
+"i": 439,
+"sel": ".command-rail .card .power-grade",
+"in": 1696,
+"out": 0
+},
+{
+"i": 440,
+"sel": ".command-rail .card .art, .command-rail .card.summon-card .art, .command-rail .card.spell-card .art, .command-rail .card.trap-card .art",
+"in": 2028,
+"out": 0
+},
+{
+"i": 441,
+"sel": ".command-rail .card.spell-card .art::after",
+"in": 320,
+"out": 0
+},
+{
+"i": 442,
+"sel": ".command-rail .card .type",
+"in": 2028,
+"out": 0
+},
+{
+"i": 443,
+"sel": ".command-rail .card.spell-card::before, .command-rail .card.trap-card::before",
+"in": 332,
+"out": 0
+},
+{
+"i": 444,
+"sel": ".command-rail .card h3",
+"in": 2028,
+"out": 0
+},
+{
+"i": 445,
+"sel": ".command-rail .card p",
+"in": 3300,
+"out": 0
+},
+{
+"i": 446,
+"sel": ".command-rail .card .card-stats",
+"in": 2028,
+"out": 0
+},
+{
+"i": 447,
+"sel": ".hand-tabs",
+"in": 260,
+"out": 0
+},
+{
+"i": 448,
+"sel": ".hand-tab",
+"in": 520,
+"out": 0
+},
+{
+"i": 449,
+"sel": ".hand-tab b",
+"in": 520,
+"out": 0
+},
+{
+"i": 450,
+"sel": ".hand-tab.active",
+"in": 260,
+"out": 0
+},
+{
+"i": 451,
+"sel": ".hand-tab[data-filter=\"spell\"].active",
+"in": 32,
+"out": 0
+},
+{
+"i": 452,
+"sel": ".command-rail .card.hand-filtered",
+"in": 256,
+"out": 0
+},
+{
+"i": 453,
+"sel": ".command-rail .card.unaffordable",
+"in": 48,
+"out": 0
+},
+{
+"i": 454,
+"sel": ".command-rail .card.unaffordable:hover",
+"in": 48,
+"out": 0
+},
+{
+"i": 455,
+"sel": ".command-rail .card.unaffordable .cost",
+"in": 48,
+"out": 0
+},
+{
+"i": 456,
+"sel": ".command-rail .card.magic-slot-blocked",
+"in": 0,
+"out": 0
+},
+{
+"i": 457,
+"sel": ".command-rail .card.magic-slot-blocked:hover",
+"in": 0,
+"out": 0
+},
+{
+"i": 458,
+"sel": ".command-rail .card.magic-slot-blocked .cost",
+"in": 0,
+"out": 0
+},
+{
+"i": 459,
+"sel": ".command-rail .card.blood-option",
+"in": 48,
+"out": 0
+},
+{
+"i": 460,
+"sel": ".command-rail .card.blood-option::after",
+"in": 48,
+"out": 0
+},
+{
+"i": 461,
+"sel": ".command-rail .card.blood-option .cost",
+"in": 48,
+"out": 0
+},
+{
+"i": 462,
+"sel": ".command-rail.phase-locked .hand, .command-rail.phase-locked .hand-tabs, .command-rail.phase-locked .set-zones",
+"in": 12,
+"out": 0
+},
+{
+"i": 463,
+"sel": ".command-rail.phase-locked .hand .card",
+"in": 24,
+"out": 0
+},
+{
+"i": 464,
+"sel": "body:has(.command-rail.phase-locked) .hand-guide",
+"in": 4,
+"out": 0
+},
+{
+"i": 465,
+"sel": ".blood-rate",
+"in": 260,
+"out": 0
+},
+{
+"i": 466,
+"sel": ".blood-mana-fx",
+"in": 0,
+"out": 0
+},
+{
+"i": 467,
+"sel": ".player.blood-cast .avatar, .player.blood-cast .health",
+"in": 0,
+"out": 0
+},
+{
+"i": 468,
+"sel": ".stage-column > .mana-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 469,
+"sel": ".stage-column > .mana-hud .mana-label",
+"in": 260,
+"out": 0
+},
+{
+"i": 470,
+"sel": ".stage-column > .mana-hud .mana-pips",
+"in": 260,
+"out": 0
+},
+{
+"i": 471,
+"sel": ".stage-column > .mana-hud .mana-value",
+"in": 260,
+"out": 0
+},
+{
+"i": 472,
+"sel": ".stage-column > .mana-hud .mana-pip",
+"in": 1060,
+"out": 0
+},
+{
+"i": 473,
+"sel": ".command-rail .hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 474,
+"sel": ".command-rail .card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 475,
+"sel": ".command-rail .card .art, .command-rail .card.summon-card .art, .command-rail .card.spell-card .art, .command-rail .card.trap-card .art",
+"in": 2028,
+"out": 0
+},
+{
+"i": 476,
+"sel": ".stage-column > .mana-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 477,
+"sel": ".stage-column > .mana-hud .mana-pip",
+"in": 1060,
+"out": 0
+},
+{
+"i": 478,
+"sel": ".command-rail .card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 479,
+"sel": ".command-rail .card .art, .command-rail .card.summon-card .art, .command-rail .card.spell-card .art, .command-rail .card.trap-card .art",
+"in": 2028,
+"out": 0
+},
+{
+"i": 480,
+"sel": ".command-rail .card p",
+"in": 3300,
+"out": 0
+},
+{
+"i": 481,
+"sel": ".battle-rules",
+"in": 0,
+"out": 0
+},
+{
+"i": 482,
+"sel": ".turn-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 483,
+"sel": ".turn-actions .draw-action, .turn-actions .end",
+"in": 520,
+"out": 0
+},
+{
+"i": 484,
+"sel": ".turn-actions .end",
+"in": 260,
+"out": 0
+},
+{
+"i": 485,
+"sel": ".collection-modal",
+"in": 260,
+"out": 0
+},
+{
+"i": 486,
+"sel": ".collection-modal.show",
+"in": 116,
+"out": 0
+},
+{
+"i": 487,
+"sel": ".collection-shell",
+"in": 260,
+"out": 0
+},
+{
+"i": 488,
+"sel": ".collection-head",
+"in": 260,
+"out": 0
+},
+{
+"i": 489,
+"sel": ".collection-head h2",
+"in": 260,
+"out": 0
+},
+{
+"i": 490,
+"sel": ".collection-head p",
+"in": 260,
+"out": 0
+},
+{
+"i": 491,
+"sel": ".collection-wallets",
+"in": 260,
+"out": 0
+},
+{
+"i": 492,
+"sel": ".currency",
+"in": 520,
+"out": 0
+},
+{
+"i": 493,
+"sel": ".currency.cookie",
+"in": 260,
+"out": 0
+},
+{
+"i": 494,
+"sel": ".modal-close",
+"in": 520,
+"out": 0
+},
+{
+"i": 495,
+"sel": ".collection-tabs",
+"in": 260,
+"out": 0
+},
+{
+"i": 496,
+"sel": ".collection-tab",
+"in": 1560,
+"out": 0
+},
+{
+"i": 497,
+"sel": ".collection-tab.active",
+"in": 108,
+"out": 0
+},
+{
+"i": 498,
+"sel": ".collection-view",
+"in": 1560,
+"out": 0
+},
+{
+"i": 499,
+"sel": ".collection-view.active",
+"in": 108,
+"out": 0
+},
+{
+"i": 500,
+"sel": ".gacha-view",
+"in": 260,
+"out": 0
+},
+{
+"i": 501,
+"sel": ".gacha-banner",
+"in": 260,
+"out": 0
+},
+{
+"i": 502,
+"sel": ".gacha-orb",
+"in": 260,
+"out": 0
+},
+{
+"i": 503,
+"sel": ".gacha-banner h3",
+"in": 260,
+"out": 0
+},
+{
+"i": 504,
+"sel": ".gacha-banner p",
+"in": 260,
+"out": 0
+},
+{
+"i": 505,
+"sel": ".gacha-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 506,
+"sel": ".gacha-actions button, .deck-save",
+"in": 780,
+"out": 0
+},
+{
+"i": 507,
+"sel": ".gacha-actions button:disabled",
+"in": 8,
+"out": 0
+},
+{
+"i": 508,
+"sel": ".gacha-results",
+"in": 260,
+"out": 0
+},
+{
+"i": 509,
+"sel": ".pull-card, .owned-card",
+"in": 10500,
+"out": 0
+},
+{
+"i": 510,
+"sel": ".pull-card img, .owned-card img",
+"in": 10500,
+"out": 0
+},
+{
+"i": 511,
+"sel": ".pull-card h4, .owned-card h4",
+"in": 10500,
+"out": 0
+},
+{
+"i": 512,
+"sel": ".pull-card small, .owned-card small",
+"in": 10500,
+"out": 0
+},
+{
+"i": 513,
+"sel": ".pull-card.rare, .owned-card.rare",
+"in": 3596,
+"out": 0
+},
+{
+"i": 514,
+"sel": ".pull-card.legendary, .owned-card.legendary",
+"in": 1276,
+"out": 0
+},
+{
+"i": 515,
+"sel": ".new-badge",
+"in": 84,
+"out": 4
+},
+{
+"i": 516,
+"sel": ".deck-view",
+"in": 260,
+"out": 0
+},
+{
+"i": 517,
+"sel": ".deck-toolbar",
+"in": 260,
+"out": 0
+},
+{
+"i": 518,
+"sel": ".deck-filters",
+"in": 260,
+"out": 0
+},
+{
+"i": 519,
+"sel": ".deck-filter",
+"in": 1392,
+"out": 0
+},
+{
+"i": 520,
+"sel": ".deck-filter.active",
+"in": 348,
+"out": 0
+},
+{
+"i": 521,
+"sel": ".deck-count",
+"in": 260,
+"out": 0
+},
+{
+"i": 522,
+"sel": ".deck-count strong",
+"in": 260,
+"out": 0
+},
+{
+"i": 523,
+"sel": ".deck-content",
+"in": 260,
+"out": 0
+},
+{
+"i": 524,
+"sel": ".owned-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 525,
+"sel": ".owned-card",
+"in": 10500,
+"out": 0
+},
+{
+"i": 526,
+"sel": ".owned-card:hover",
+"in": 10500,
+"out": 0
+},
+{
+"i": 527,
+"sel": ".owned-card.disabled",
+"in": 928,
+"out": 0
+},
+{
+"i": 528,
+"sel": ".owned-card .owned-count",
+"in": 10500,
+"out": 0
+},
+{
+"i": 529,
+"sel": ".deck-list",
+"in": 260,
+"out": 0
+},
+{
+"i": 530,
+"sel": ".deck-list h3",
+"in": 260,
+"out": 0
+},
+{
+"i": 531,
+"sel": ".deck-rows",
+"in": 260,
+"out": 0
+},
+{
+"i": 532,
+"sel": ".deck-row",
+"in": 6380,
+"out": 0
+},
+{
+"i": 533,
+"sel": ".deck-row b",
+"in": 0,
+"out": 0
+},
+{
+"i": 534,
+"sel": ".deck-help",
+"in": 260,
+"out": 0
+},
+{
+"i": 535,
+"sel": ".gacha-empty",
+"in": 0,
+"out": 0
+},
+{
+"i": 536,
+"sel": ".gacha-view",
+"in": 260,
+"out": 0
+},
+{
+"i": 537,
+"sel": ".gacha-banner",
+"in": 260,
+"out": 0
+},
+{
+"i": 538,
+"sel": ".gacha-orb",
+"in": 260,
+"out": 0
+},
+{
+"i": 539,
+"sel": ".gacha-results",
+"in": 260,
+"out": 0
+},
+{
+"i": 540,
+"sel": ".deck-content",
+"in": 260,
+"out": 0
+},
+{
+"i": 541,
+"sel": ".deck-list",
+"in": 260,
+"out": 0
+},
+{
+"i": 542,
+"sel": ".owned-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 543,
+"sel": ".collection-wallets",
+"in": 260,
+"out": 0
+},
+{
+"i": 544,
+"sel": ".currency",
+"in": 520,
+"out": 0
+},
+{
+"i": 545,
+"sel": ".cookie-exchange",
+"in": 260,
+"out": 0
+},
+{
+"i": 546,
+"sel": ".cookie-exchange b",
+"in": 260,
+"out": 0
+},
+{
+"i": 547,
+"sel": ".cookie-exchange strong",
+"in": 780,
+"out": 0
+},
+{
+"i": 548,
+"sel": ".gacha-choice",
+"in": 260,
+"out": 0
+},
+{
+"i": 549,
+"sel": ".gacha-choice-label",
+"in": 260,
+"out": 0
+},
+{
+"i": 550,
+"sel": ".enhance-acquire",
+"in": 260,
+"out": 0
+},
+{
+"i": 551,
+"sel": ".enhance-gate",
+"in": 260,
+"out": 0
+},
+{
+"i": 552,
+"sel": ".enhance-gate:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 553,
+"sel": ".enhance-gate.notice",
+"in": 0,
+"out": 0
+},
+{
+"i": 554,
+"sel": ".appeal-label",
+"in": 0,
+"out": 0
+},
+{
+"i": 555,
+"sel": ".gacha-reveal.character-appeal .gacha-reveal-core",
+"in": 0,
+"out": 0
+},
+{
+"i": 556,
+"sel": ".gacha-reveal.character-appeal::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 557,
+"sel": ".pull-appeal",
+"in": 0,
+"out": 0
+},
+{
+"i": 558,
+"sel": ".completion-chip",
+"in": 0,
+"out": 0
+},
+{
+"i": 559,
+"sel": ".completion-chip.done",
+"in": 0,
+"out": 0
+},
+{
+"i": 560,
+"sel": ".codex-completion",
+"in": 116,
+"out": 0
+},
+{
+"i": 561,
+"sel": ".codex-completion b",
+"in": 116,
+"out": 0
+},
+{
+"i": 562,
+"sel": ".codex-completion button",
+"in": 116,
+"out": 0
+},
+{
+"i": 563,
+"sel": ".collection-shell",
+"in": 260,
+"out": 0
+},
+{
+"i": 564,
+"sel": ".gacha-reveal",
+"in": 0,
+"out": 0
+},
+{
+"i": 565,
+"sel": ".gacha-reveal::before, .gacha-reveal::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 566,
+"sel": ".gacha-reveal::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 567,
+"sel": ".gacha-reveal-core",
+"in": 0,
+"out": 0
+},
+{
+"i": 568,
+"sel": ".gacha-card-back, .gacha-card-front",
+"in": 0,
+"out": 0
+},
+{
+"i": 569,
+"sel": ".gacha-card-back",
+"in": 0,
+"out": 0
+},
+{
+"i": 570,
+"sel": ".gacha-card-front",
+"in": 0,
+"out": 0
+},
+{
+"i": 571,
+"sel": ".gacha-card-front img",
+"in": 0,
+"out": 0
+},
+{
+"i": 572,
+"sel": ".gacha-card-front h3",
+"in": 0,
+"out": 0
+},
+{
+"i": 573,
+"sel": ".gacha-card-front small",
+"in": 0,
+"out": 0
+},
+{
+"i": 574,
+"sel": ".gacha-reveal.revealed .gacha-reveal-core",
+"in": 0,
+"out": 0
+},
+{
+"i": 575,
+"sel": ".gacha-reveal.rare",
+"in": 0,
+"out": 0
+},
+{
+"i": 576,
+"sel": ".gacha-reveal.rare .gacha-card-front",
+"in": 0,
+"out": 0
+},
+{
+"i": 577,
+"sel": ".gacha-reveal.legendary",
+"in": 0,
+"out": 0
+},
+{
+"i": 578,
+"sel": ".gacha-reveal.legendary .gacha-card-front",
+"in": 0,
+"out": 0
+},
+{
+"i": 579,
+"sel": ".gacha-burst",
+"in": 0,
+"out": 0
+},
+{
+"i": 580,
+"sel": ".gacha-reveal.revealed .gacha-burst",
+"in": 0,
+"out": 0
+},
+{
+"i": 581,
+"sel": ".gacha-particle",
+"in": 0,
+"out": 0
+},
+{
+"i": 582,
+"sel": ".pull-card.pull-land",
+"in": 0,
+"out": 0
+},
+{
+"i": 583,
+"sel": ".gacha-reveal::before, .gacha-reveal::after, .gacha-card-back, .gacha-reveal.revealed .gacha-reveal-core, .gacha-reveal.revealed .gacha-burst, .gacha-particle, .pull-card.pull-land",
+"in": 0,
+"out": 0
+},
+{
+"i": 584,
+"sel": ".command-rail .card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 585,
+"sel": ".command-rail .hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 586,
+"sel": ".command-rail .hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 587,
+"sel": ".command-rail .hand > .card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 588,
+"sel": ".command-rail .card .art, .command-rail .card.summon-card .art, .command-rail .card.spell-card .art, .command-rail .card.trap-card .art",
+"in": 2028,
+"out": 0
+},
+{
+"i": 589,
+"sel": ".card:hover, .card.selected, .command-rail .card:hover, .command-rail .card.selected",
+"in": 2028,
+"out": 0
+},
+{
+"i": 590,
+"sel": ".card:hover .art .creature-art, .card.selected .art .creature-art, .unit:hover .creature-art, .unit.selected .creature-art",
+"in": 2216,
+"out": 0
+},
+{
+"i": 591,
+"sel": ".unit",
+"in": 980,
+"out": 0
+},
+{
+"i": 592,
+"sel": ".unit .emoji",
+"in": 980,
+"out": 0
+},
+{
+"i": 593,
+"sel": ".card .art .creature-art, .unit .creature-art, .card-flight img, .clash-art img, .global-summon-card .creature-art",
+"in": 2216,
+"out": 0
+},
+{
+"i": 594,
+"sel": ".card-flight",
+"in": 0,
+"out": 0
+},
+{
+"i": 595,
+"sel": ".card-flight img",
+"in": 0,
+"out": 0
+},
+{
+"i": 596,
+"sel": ".card-flight span",
+"in": 0,
+"out": 0
+},
+{
+"i": 597,
+"sel": ".global-spell-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 598,
+"sel": ".global-spell-card .global-icon",
+"in": 0,
+"out": 0
+},
+{
+"i": 599,
+"sel": ".global-spell-card .global-icon img",
+"in": 0,
+"out": 0
+},
+{
+"i": 600,
+"sel": ".global-spell-card h2",
+"in": 0,
+"out": 0
+},
+{
+"i": 601,
+"sel": ".global-summon-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 602,
+"sel": ".global-summon-card .summon-icon",
+"in": 0,
+"out": 0
+},
+{
+"i": 603,
+"sel": ".global-summon-card .creature-art",
+"in": 0,
+"out": 0
+},
+{
+"i": 604,
+"sel": ".global-summon-card .attack-effect",
+"in": 0,
+"out": 0
+},
+{
+"i": 605,
+"sel": ".global-summon-card .attack-effect strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 606,
+"sel": ".command-rail .card",
+"in": 2028,
+"out": 0
+},
+{
+"i": 607,
+"sel": ".command-rail .card .art, .command-rail .card.summon-card .art, .command-rail .card.spell-card .art, .command-rail .card.trap-card .art",
+"in": 2028,
+"out": 0
+},
+{
+"i": 608,
+"sel": ".unit",
+"in": 980,
+"out": 0
+},
+{
+"i": 609,
+"sel": ".command-rail .card.spell-card, .command-rail .card.trap-card",
+"in": 332,
+"out": 0
+},
+{
+"i": 610,
+"sel": ".command-rail .card.spell-card > h3, .command-rail .card.trap-card > h3",
+"in": 332,
+"out": 0
+},
+{
+"i": 611,
+"sel": ".command-rail .card.spell-card .art, .command-rail .card.trap-card .art",
+"in": 332,
+"out": 0
+},
+{
+"i": 612,
+"sel": ".command-rail .card.spell-card h3, .command-rail .card.trap-card h3",
+"in": 332,
+"out": 0
+},
+{
+"i": 613,
+"sel": ".command-rail .card.spell-card p, .command-rail .card.trap-card p",
+"in": 332,
+"out": 0
+},
+{
+"i": 614,
+"sel": ".command-rail .card.spell-card .card-stats, .command-rail .card.trap-card .card-stats",
+"in": 332,
+"out": 0
+},
+{
+"i": 615,
+"sel": ".command-rail .card.spell-card .card-stats .type, .command-rail .card.trap-card .card-stats .type",
+"in": 332,
+"out": 0
+},
+{
+"i": 616,
+"sel": ".command-rail .card.spell-card, .command-rail .card.trap-card",
+"in": 332,
+"out": 0
+},
+{
+"i": 617,
+"sel": ".command-rail .card.spell-card .art, .command-rail .card.trap-card .art",
+"in": 332,
+"out": 0
+},
+{
+"i": 618,
+"sel": ".collection-shell",
+"in": 260,
+"out": 0
+},
+{
+"i": 619,
+"sel": ".deck-content",
+"in": 260,
+"out": 0
+},
+{
+"i": 620,
+"sel": ".owned-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 621,
+"sel": ".owned-card",
+"in": 10500,
+"out": 0
+},
+{
+"i": 622,
+"sel": ".owned-card img",
+"in": 10500,
+"out": 0
+},
+{
+"i": 623,
+"sel": ".owned-card h4",
+"in": 10500,
+"out": 0
+},
+{
+"i": 624,
+"sel": ".owned-card small",
+"in": 10500,
+"out": 0
+},
+{
+"i": 625,
+"sel": ".owned-card.in-deck",
+"in": 6272,
+"out": 0
+},
+{
+"i": 626,
+"sel": ".owned-count",
+"in": 10500,
+"out": 0
+},
+{
+"i": 627,
+"sel": ".deck-card-controls",
+"in": 10500,
+"out": 0
+},
+{
+"i": 628,
+"sel": ".deck-card-controls button",
+"in": 21000,
+"out": 0
+},
+{
+"i": 629,
+"sel": ".deck-card-controls b",
+"in": 10500,
+"out": 0
+},
+{
+"i": 630,
+"sel": ".deck-summary",
+"in": 116,
+"out": 0
+},
+{
+"i": 631,
+"sel": ".deck-tools",
+"in": 116,
+"out": 0
+},
+{
+"i": 632,
+"sel": ".deck-tools button",
+"in": 232,
+"out": 0
+},
+{
+"i": 633,
+"sel": ".deck-row",
+"in": 6380,
+"out": 0
+},
+{
+"i": 634,
+"sel": ".deck-row img",
+"in": 6380,
+"out": 0
+},
+{
+"i": 635,
+"sel": ".deck-row span",
+"in": 6380,
+"out": 0
+},
+{
+"i": 636,
+"sel": ".deck-row small",
+"in": 6380,
+"out": 0
+},
+{
+"i": 637,
+"sel": ".deck-list h3",
+"in": 260,
+"out": 0
+},
+{
+"i": 638,
+"sel": ".deck-save:disabled",
+"in": 116,
+"out": 0
+},
+{
+"i": 639,
+"sel": ".deck-save.is-main:disabled",
+"in": 116,
+"out": 0
+},
+{
+"i": 640,
+"sel": ".deck-content",
+"in": 260,
+"out": 0
+},
+{
+"i": 641,
+"sel": ".owned-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 642,
+"sel": ".deck-list",
+"in": 260,
+"out": 0
+},
+{
+"i": 643,
+"sel": ".owned-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 644,
+"sel": ".collection-modal",
+"in": 260,
+"out": 0
+},
+{
+"i": 645,
+"sel": ".deck-tools",
+"in": 116,
+"out": 0
+},
+{
+"i": 646,
+"sel": ".deck-toolbar",
+"in": 260,
+"out": 0
+},
+{
+"i": 647,
+"sel": ".set-slot.absorbing",
+"in": 0,
+"out": 0
+},
+{
+"i": 648,
+"sel": ".spell-absorb-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 649,
+"sel": ".spell-absorb-card img",
+"in": 0,
+"out": 0
+},
+{
+"i": 650,
+"sel": ".spell-absorb-card span",
+"in": 0,
+"out": 0
+},
+{
+"i": 651,
+"sel": ".spell-vortex",
+"in": 0,
+"out": 0
+},
+{
+"i": 652,
+"sel": ".spell-vortex::before, .spell-vortex::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 653,
+"sel": ".spell-vortex::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 654,
+"sel": ".spell-absorb-card, .spell-vortex, .set-slot.absorbing",
+"in": 0,
+"out": 0
+},
+{
+"i": 655,
+"sel": ".battle-shell",
+"in": 260,
+"out": 0
+},
+{
+"i": 656,
+"sel": ".stage-column",
+"in": 260,
+"out": 0
+},
+{
+"i": 657,
+"sel": ".stage-column .duel-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 658,
+"sel": ".stage-column .arena",
+"in": 260,
+"out": 0
+},
+{
+"i": 659,
+"sel": ".stage-column .arena .lane",
+"in": 520,
+"out": 0
+},
+{
+"i": 660,
+"sel": ".stage-column .arena .unit",
+"in": 980,
+"out": 0
+},
+{
+"i": 661,
+"sel": ".stage-column > .mana-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 662,
+"sel": ".stage-column, .command-rail",
+"in": 520,
+"out": 0
+},
+{
+"i": 663,
+"sel": ".stage-column .duel-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 664,
+"sel": ".stage-column .arena",
+"in": 260,
+"out": 0
+},
+{
+"i": 665,
+"sel": ".stage-column .arena .unit",
+"in": 980,
+"out": 0
+},
+{
+"i": 666,
+"sel": ".stage-column > .mana-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 667,
+"sel": ".stage-column > .mana-hud .mana-value",
+"in": 260,
+"out": 0
+},
+{
+"i": 668,
+"sel": ".stage-column .arena .lane:first-child",
+"in": 260,
+"out": 0
+},
+{
+"i": 669,
+"sel": ".stage-column .arena .summon-zone",
+"in": 260,
+"out": 0
+},
+{
+"i": 670,
+"sel": ".stage-column .arena .lane:first-child > .unit, .stage-column .arena .summon-zone > .unit",
+"in": 980,
+"out": 0
+},
+{
+"i": 671,
+"sel": ".stage-column .arena .lane:first-child, .stage-column .arena .summon-zone",
+"in": 520,
+"out": 0
+},
+{
+"i": 672,
+"sel": ".stage-column .arena",
+"in": 260,
+"out": 0
+},
+{
+"i": 673,
+"sel": ".stage-column .arena",
+"in": 260,
+"out": 0
+},
+{
+"i": 674,
+"sel": ".stage-column .arena .lane:first-child, .stage-column .arena .summon-zone",
+"in": 520,
+"out": 0
+},
+{
+"i": 675,
+"sel": ".stage-column .arena .lane:first-child > .unit, .stage-column .arena .summon-zone > .unit",
+"in": 980,
+"out": 0
+},
+{
+"i": 676,
+"sel": ".stage-column .arena .unit > h4",
+"in": 980,
+"out": 0
+},
+{
+"i": 677,
+"sel": ".stage-column .arena .unit > .stats",
+"in": 980,
+"out": 0
+},
+{
+"i": 678,
+"sel": ".stage-column .arena .unit > .stats > span",
+"in": 1960,
+"out": 0
+},
+{
+"i": 679,
+"sel": ".hand-tabs",
+"in": 260,
+"out": 0
+},
+{
+"i": 680,
+"sel": ".ultimate-panel",
+"in": 260,
+"out": 0
+},
+{
+"i": 681,
+"sel": ".ultimate-panel.drag-over",
+"in": 0,
+"out": 0
+},
+{
+"i": 682,
+"sel": ".ultimate-panel[hidden], .magic-setting-panel[hidden]",
+"in": 260,
+"out": 0
+},
+{
+"i": 683,
+"sel": ".setting-title",
+"in": 520,
+"out": 0
+},
+{
+"i": 684,
+"sel": ".setting-title strong",
+"in": 520,
+"out": 0
+},
+{
+"i": 685,
+"sel": ".ultimate-slot",
+"in": 52,
+"out": 0
+},
+{
+"i": 686,
+"sel": ".ultimate-slot img",
+"in": 52,
+"out": 0
+},
+{
+"i": 687,
+"sel": ".ultimate-slot h4",
+"in": 52,
+"out": 0
+},
+{
+"i": 688,
+"sel": ".ultimate-slot p",
+"in": 52,
+"out": 0
+},
+{
+"i": 689,
+"sel": ".ultimate-slot-empty",
+"in": 208,
+"out": 0
+},
+{
+"i": 690,
+"sel": ".ultimate-slot-empty.armed",
+"in": 108,
+"out": 0
+},
+{
+"i": 691,
+"sel": ".ultimate-cast",
+"in": 0,
+"out": 0
+},
+{
+"i": 692,
+"sel": ".ultimate-cast:disabled",
+"in": 0,
+"out": 0
+},
+{
+"i": 693,
+"sel": ".ultimate-ready",
+"in": 48,
+"out": 0
+},
+{
+"i": 694,
+"sel": ".magic-setting-panel",
+"in": 260,
+"out": 0
+},
+{
+"i": 695,
+"sel": ".magic-setting-panel .set-zones",
+"in": 260,
+"out": 0
+},
+{
+"i": 696,
+"sel": ".ultimate-overlay",
+"in": 0,
+"out": 0
+},
+{
+"i": 697,
+"sel": ".ultimate-overlay::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 698,
+"sel": ".ultimate-ring",
+"in": 0,
+"out": 0
+},
+{
+"i": 699,
+"sel": ".ultimate-ring.r2",
+"in": 0,
+"out": 0
+},
+{
+"i": 700,
+"sel": ".ultimate-sigil",
+"in": 0,
+"out": 0
+},
+{
+"i": 701,
+"sel": ".ultimate-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 702,
+"sel": ".ultimate-card img",
+"in": 0,
+"out": 0
+},
+{
+"i": 703,
+"sel": ".ultimate-card small",
+"in": 0,
+"out": 0
+},
+{
+"i": 704,
+"sel": ".ultimate-card h2",
+"in": 0,
+"out": 0
+},
+{
+"i": 705,
+"sel": ".ultimate-card p",
+"in": 0,
+"out": 0
+},
+{
+"i": 706,
+"sel": ".ultimate-card strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 707,
+"sel": ".ultimate-particle",
+"in": 0,
+"out": 0
+},
+{
+"i": 708,
+"sel": "body.ultimate-impact .stage-column",
+"in": 0,
+"out": 0
+},
+{
+"i": 709,
+"sel": ".field-ultimate-action",
+"in": 260,
+"out": 0
+},
+{
+"i": 710,
+"sel": ".field-ultimate-action::before",
+"in": 260,
+"out": 0
+},
+{
+"i": 711,
+"sel": ".field-ultimate-action:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 712,
+"sel": ".field-ultimate-action[hidden]",
+"in": 0,
+"out": 0
+},
+{
+"i": 713,
+"sel": ".unit.lone-wolf-active",
+"in": 0,
+"out": 0
+},
+{
+"i": 714,
+"sel": ".surrender-action",
+"in": 260,
+"out": 0
+},
+{
+"i": 715,
+"sel": ".surrender-action:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 716,
+"sel": ".surrender-action.confirm",
+"in": 0,
+"out": 0
+},
+{
+"i": 717,
+"sel": ".surrender-action:disabled",
+"in": 0,
+"out": 0
+},
+{
+"i": 718,
+"sel": ".cracker-transfer",
+"in": 0,
+"out": 0
+},
+{
+"i": 719,
+"sel": ".cracker-transfer-caption",
+"in": 0,
+"out": 0
+},
+{
+"i": 720,
+"sel": ".stage-column",
+"in": 260,
+"out": 0
+},
+{
+"i": 721,
+"sel": ".stage-column > .mana-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 722,
+"sel": ".surrender-action",
+"in": 260,
+"out": 0
+},
+{
+"i": 723,
+"sel": ".surrender-action.confirm",
+"in": 0,
+"out": 0
+},
+{
+"i": 724,
+"sel": ".stage-column",
+"in": 260,
+"out": 0
+},
+{
+"i": 725,
+"sel": ".stage-column",
+"in": 260,
+"out": 0
+},
+{
+"i": 726,
+"sel": ".surrender-action",
+"in": 260,
+"out": 0
+},
+{
+"i": 727,
+"sel": ".stage-column",
+"in": 260,
+"out": 0
+},
+{
+"i": 728,
+"sel": ".stage-column > .arena",
+"in": 260,
+"out": 0
+},
+{
+"i": 729,
+"sel": ".stage-column > .mana-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 730,
+"sel": ".stage-column > .mana-hud::before",
+"in": 260,
+"out": 0
+},
+{
+"i": 731,
+"sel": ".stage-column > .mana-hud .mana-label",
+"in": 260,
+"out": 0
+},
+{
+"i": 732,
+"sel": ".stage-column > .mana-hud .mana-value",
+"in": 260,
+"out": 0
+},
+{
+"i": 733,
+"sel": ".stage-column > .mana-hud .mana-pips",
+"in": 260,
+"out": 0
+},
+{
+"i": 734,
+"sel": ".stage-column > .mana-hud .mana-pips::before",
+"in": 260,
+"out": 0
+},
+{
+"i": 735,
+"sel": ".stage-column > .mana-hud .mana-pips::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 736,
+"sel": ".stage-column > .mana-hud .mana-pip",
+"in": 1060,
+"out": 0
+},
+{
+"i": 737,
+"sel": ".stage-column > .mana-hud .blood-rate",
+"in": 260,
+"out": 0
+},
+{
+"i": 738,
+"sel": ".stage-column > .mana-hud .mana-spend",
+"in": 0,
+"out": 0
+},
+{
+"i": 739,
+"sel": ".stage-column > .mana-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 740,
+"sel": ".field-action-dock",
+"in": 260,
+"out": 0
+},
+{
+"i": 741,
+"sel": ".field-action-dock > button",
+"in": 520,
+"out": 0
+},
+{
+"i": 742,
+"sel": ".field-action-dock > button:hover",
+"in": 520,
+"out": 0
+},
+{
+"i": 743,
+"sel": ".field-action-dock > .surrender-action",
+"in": 0,
+"out": 0
+},
+{
+"i": 744,
+"sel": ".field-action-dock > .field-guardian-ultimate",
+"in": 260,
+"out": 0
+},
+{
+"i": 745,
+"sel": ".field-action-dock > .field-ultimate-action",
+"in": 260,
+"out": 0
+},
+{
+"i": 746,
+"sel": ".stage-column > .duel-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 747,
+"sel": ".stage-column > .duel-hud > .enemy, .stage-column > .duel-hud > .player",
+"in": 520,
+"out": 0
+},
+{
+"i": 748,
+"sel": ".stage-column > .duel-hud > .player .avatar",
+"in": 260,
+"out": 0
+},
+{
+"i": 749,
+"sel": ".stage-column > .duel-hud > .player .hud-id",
+"in": 260,
+"out": 0
+},
+{
+"i": 750,
+"sel": ".stage-column > .duel-hud > .player .health",
+"in": 260,
+"out": 0
+},
+{
+"i": 751,
+"sel": ".stage-column > .mana-hud",
+"in": 260,
+"out": 0
+},
+{
+"i": 752,
+"sel": ".stage-column > .mana-hud::before",
+"in": 260,
+"out": 0
+},
+{
+"i": 753,
+"sel": ".stage-column > .mana-hud .mana-label",
+"in": 260,
+"out": 0
+},
+{
+"i": 754,
+"sel": ".stage-column > .mana-hud .mana-value",
+"in": 260,
+"out": 0
+},
+{
+"i": 755,
+"sel": ".stage-column > .mana-hud .mana-pips",
+"in": 260,
+"out": 0
+},
+{
+"i": 756,
+"sel": ".stage-column > .mana-hud .mana-pips::before, .stage-column > .mana-hud .mana-pips::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 757,
+"sel": ".stage-column > .mana-hud .mana-pip",
+"in": 1060,
+"out": 0
+},
+{
+"i": 758,
+"sel": ".stage-column > .mana-hud .mana-pip.full",
+"in": 1060,
+"out": 0
+},
+{
+"i": 759,
+"sel": ".stage-column > .mana-hud .blood-rate",
+"in": 260,
+"out": 0
+},
+{
+"i": 760,
+"sel": ".stage-column > .surrender-action",
+"in": 260,
+"out": 0
+},
+{
+"i": 761,
+"sel": ".arena > .field-action-dock",
+"in": 260,
+"out": 0
+},
+{
+"i": 762,
+"sel": ".arena > .field-action-dock::before",
+"in": 260,
+"out": 0
+},
+{
+"i": 763,
+"sel": ".arena > .field-action-dock > button",
+"in": 520,
+"out": 0
+},
+{
+"i": 764,
+"sel": ".arena > .field-action-dock > button:hover",
+"in": 520,
+"out": 0
+},
+{
+"i": 765,
+"sel": ".arena > .field-action-dock > .field-ultimate-action:not(.locked):not(:disabled), .arena > .field-action-dock > .field-guardian-ultimate.ready",
+"in": 56,
+"out": 0
+},
+{
+"i": 766,
+"sel": ".arena > .field-action-dock > .field-guardian-ultimate.ready",
+"in": 12,
+"out": 0
+},
+{
+"i": 767,
+"sel": ".arena > .field-action-dock > .field-ultimate-action",
+"in": 260,
+"out": 0
+},
+{
+"i": 768,
+"sel": ".arena > .field-action-dock > .field-ultimate-action:not(.locked):not(:disabled)",
+"in": 44,
+"out": 0
+},
+{
+"i": 769,
+"sel": ".arena > .field-action-dock > .field-ultimate-action .ult-ready-meta, .arena > .field-action-dock > .field-ultimate-action .ult-title",
+"in": 260,
+"out": 0
+},
+{
+"i": 770,
+"sel": ".arena > .field-action-dock > .field-ultimate-action .ult-reason",
+"in": 216,
+"out": 0
+},
+{
+"i": 771,
+"sel": ".arena > .field-action-dock > .field-ultimate-action:not(.locked)",
+"in": 44,
+"out": 0
+},
+{
+"i": 772,
+"sel": ".arena > .field-action-dock > .field-ultimate-action:not(.locked)::before",
+"in": 44,
+"out": 0
+},
+{
+"i": 773,
+"sel": ".arena > .field-action-dock > .field-ultimate-action .ult-ready-label",
+"in": 44,
+"out": 0
+},
+{
+"i": 774,
+"sel": ".arena > .field-action-dock > .field-ultimate-action .ult-ready-meta",
+"in": 44,
+"out": 0
+},
+{
+"i": 775,
+"sel": ".arena > .field-action-dock .ult-title, .arena > .field-action-dock > button::before",
+"in": 736,
+"out": 0
+},
+{
+"i": 776,
+"sel": ".arena > .field-action-dock .ult-reason, .arena > .field-action-dock > button small, .arena > .field-action-dock > button strong",
+"in": 824,
+"out": 0
+},
+{
+"i": 777,
+"sel": ".arena.guardian-awakened",
+"in": 0,
+"out": 0
+},
+{
+"i": 778,
+"sel": ".arena.guardian-awakened::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 779,
+"sel": ".arena.guardian-awakened.guardian-awakened-jujak",
+"in": 0,
+"out": 0
+},
+{
+"i": 780,
+"sel": ".arena.guardian-awakened.guardian-awakened-cheongryong",
+"in": 0,
+"out": 0
+},
+{
+"i": 781,
+"sel": ".arena.guardian-awakened.guardian-awakened-hyeonmu",
+"in": 0,
+"out": 0
+},
+{
+"i": 782,
+"sel": ".arena.guardian-awakened.guardian-awakened-baekho",
+"in": 0,
+"out": 0
+},
+{
+"i": 783,
+"sel": ".arena.guardian-awakened.guardian-awakened-namu",
+"in": 0,
+"out": 0
+},
+{
+"i": 784,
+"sel": ".arena.guardian-awakened::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 785,
+"sel": ".ultimate-spent-death",
+"in": 0,
+"out": 0
+},
+{
+"i": 786,
+"sel": ".ultimate-spent-death::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 787,
+"sel": ".ultimate-spent-death::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 788,
+"sel": ".spent-death-core",
+"in": 0,
+"out": 0
+},
+{
+"i": 789,
+"sel": ".spent-death-half",
+"in": 0,
+"out": 0
+},
+{
+"i": 790,
+"sel": ".spent-death-half img",
+"in": 0,
+"out": 0
+},
+{
+"i": 791,
+"sel": ".spent-death-half.left",
+"in": 0,
+"out": 0
+},
+{
+"i": 792,
+"sel": ".spent-death-half.right",
+"in": 0,
+"out": 0
+},
+{
+"i": 793,
+"sel": ".spent-death-copy",
+"in": 0,
+"out": 0
+},
+{
+"i": 794,
+"sel": ".spent-death-copy small",
+"in": 0,
+"out": 0
+},
+{
+"i": 795,
+"sel": ".spent-death-copy strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 796,
+"sel": ".spent-death-copy b",
+"in": 0,
+"out": 0
+},
+{
+"i": 797,
+"sel": ".spent-death-copy span",
+"in": 0,
+"out": 0
+},
+{
+"i": 798,
+"sel": ".spent-death-shard",
+"in": 0,
+"out": 0
+},
+{
+"i": 799,
+"sel": ".ultimate-spent-death, .spent-death-core, .spent-death-half, .spent-death-copy, .spent-death-shard, .ultimate-spent-death::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 800,
+"sel": ".spent-death-shard",
+"in": 0,
+"out": 0
+},
+{
+"i": 801,
+"sel": ".ultimate-spent-death, .ultimate-spent-death::before, .ultimate-spent-death::after, .spent-death-core, .spent-death-half.left, .spent-death-half.right, .spent-death-copy",
+"in": 0,
+"out": 0
+},
+{
+"i": 802,
+"sel": ".unit[data-effect=\"ultimate-spent\"]",
+"in": 0,
+"out": 0
+},
+{
+"i": 803,
+"sel": ".unit[data-ultimate-aggro=\"true\"]",
+"in": 0,
+"out": 0
+},
+{
+"i": 804,
+"sel": ".unit[data-ultimate-aggro=\"true\"]::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 805,
+"sel": ".unit[data-effect=\"ultimate-avenger\"]",
+"in": 0,
+"out": 0
+},
+{
+"i": 806,
+"sel": ".unit[data-effect=\"ultimate-avenger\"].fire",
+"in": 0,
+"out": 0
+},
+{
+"i": 807,
+"sel": ".unit[data-effect=\"ultimate-avenger\"].water",
+"in": 0,
+"out": 0
+},
+{
+"i": 808,
+"sel": ".unit[data-effect=\"ultimate-avenger\"].wind",
+"in": 0,
+"out": 0
+},
+{
+"i": 809,
+"sel": ".unit[data-effect=\"ultimate-avenger\"].earth",
+"in": 0,
+"out": 0
+},
+{
+"i": 810,
+"sel": ".unit[data-effect=\"ultimate-avenger\"].ice",
+"in": 0,
+"out": 0
+},
+{
+"i": 811,
+"sel": ".unit[data-effect=\"ultimate-avenger\"].thunder",
+"in": 0,
+"out": 0
+},
+{
+"i": 812,
+"sel": ".unit[data-effect=\"ultimate-avenger\"].neutral",
+"in": 0,
+"out": 0
+},
+{
+"i": 813,
+"sel": ".arena .unit[data-effect=\"ultimate-avenger\"] > h4",
+"in": 0,
+"out": 0
+},
+{
+"i": 814,
+"sel": ".unit[data-effect=\"ultimate-avenger\"]",
+"in": 0,
+"out": 0
+},
+{
+"i": 815,
+"sel": ".avenger-arrival",
+"in": 0,
+"out": 0
+},
+{
+"i": 816,
+"sel": ".avenger-arrival::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 817,
+"sel": ".avenger-portrait",
+"in": 0,
+"out": 0
+},
+{
+"i": 818,
+"sel": ".avenger-aura",
+"in": 0,
+"out": 0
+},
+{
+"i": 819,
+"sel": ".avenger-copy",
+"in": 0,
+"out": 0
+},
+{
+"i": 820,
+"sel": ".avenger-copy small",
+"in": 0,
+"out": 0
+},
+{
+"i": 821,
+"sel": ".avenger-copy strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 822,
+"sel": ".avenger-copy q",
+"in": 0,
+"out": 0
+},
+{
+"i": 823,
+"sel": ".avenger-copy span",
+"in": 0,
+"out": 0
+},
+{
+"i": 824,
+"sel": ".avenger-arrival, .avenger-portrait, .avenger-aura, .avenger-copy",
+"in": 0,
+"out": 0
+},
+{
+"i": 825,
+"sel": ".avenger-arrival::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 826,
+"sel": ".avenger-landing-impact",
+"in": 0,
+"out": 100
+},
+{
+"i": 827,
+"sel": ".avenger-landing-impact::before, .avenger-landing-impact::after",
+"in": 0,
+"out": 100
+},
+{
+"i": 828,
+"sel": ".avenger-landing-impact::after",
+"in": 0,
+"out": 100
+},
+{
+"i": 829,
+"sel": ".avenger-landing-flash",
+"in": 0,
+"out": 100
+},
+{
+"i": 830,
+"sel": ".avenger-landing-impact, .avenger-landing-impact::before, .avenger-landing-impact::after, .avenger-landing-flash",
+"in": 0,
+"out": 200
+},
+{
+"i": 831,
+"sel": ".cinematic-skill-fx",
+"in": 0,
+"out": 0
+},
+{
+"i": 832,
+"sel": ".cinematic-skill-fx img",
+"in": 0,
+"out": 0
+},
+{
+"i": 833,
+"sel": ".cinematic-skill-fx.lightning img",
+"in": 0,
+"out": 0
+},
+{
+"i": 834,
+"sel": ".cinematic-skill-fx::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 835,
+"sel": ".cinematic-skill-label",
+"in": 0,
+"out": 0
+},
+{
+"i": 836,
+"sel": ".cinematic-skill-fx, .cinematic-skill-fx img, .cinematic-skill-fx.lightning img, .cinematic-skill-fx::after, .cinematic-skill-label",
+"in": 0,
+"out": 0
+},
+{
+"i": 837,
+"sel": ".cinematic-skill-fx::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 838,
+"sel": ".cinematic-skill-fx.gust.variant-2 img",
+"in": 0,
+"out": 0
+},
+{
+"i": 839,
+"sel": ".cinematic-skill-fx.gust.variant-3 img",
+"in": 0,
+"out": 0
+},
+{
+"i": 840,
+"sel": ".cinematic-skill-fx.lightning.variant-2 img",
+"in": 0,
+"out": 0
+},
+{
+"i": 841,
+"sel": ".cinematic-skill-fx.lightning.variant-3 img",
+"in": 0,
+"out": 0
+},
+{
+"i": 842,
+"sel": ".cinematic-skill-fx.fire img",
+"in": 0,
+"out": 0
+},
+{
+"i": 843,
+"sel": ".cinematic-skill-fx.frost img",
+"in": 0,
+"out": 0
+},
+{
+"i": 844,
+"sel": ".cinematic-skill-fx.earth img",
+"in": 0,
+"out": 0
+},
+{
+"i": 845,
+"sel": ".cinematic-skill-fx.eclipse img",
+"in": 0,
+"out": 0
+},
+{
+"i": 846,
+"sel": ".cinematic-skill-fx.life img",
+"in": 0,
+"out": 0
+},
+{
+"i": 847,
+"sel": ".cinematic-skill-fx.arcane img",
+"in": 0,
+"out": 0
+},
+{
+"i": 848,
+"sel": ".cinematic-skill-fx.void img",
+"in": 0,
+"out": 0
+},
+{
+"i": 849,
+"sel": ".shield-aura-vfx",
+"in": 0,
+"out": 0
+},
+{
+"i": 850,
+"sel": ".unit[data-shield=\"true\"]",
+"in": 0,
+"out": 0
+},
+{
+"i": 851,
+"sel": ".shield-break-vfx",
+"in": 0,
+"out": 0
+},
+{
+"i": 852,
+"sel": ".shield-aura-vfx",
+"in": 0,
+"out": 0
+},
+{
+"i": 853,
+"sel": ".shield-break-vfx",
+"in": 0,
+"out": 0
+},
+{
+"i": 854,
+"sel": ".cinematic-skill-label",
+"in": 0,
+"out": 0
+},
+{
+"i": 855,
+"sel": ".cinematic-skill-label::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 856,
+"sel": ".cinematic-skill-fx, .cinematic-skill-fx img, .cinematic-skill-fx.lightning img, .cinematic-skill-fx::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 857,
+"sel": ".typed-skill-title i",
+"in": 0,
+"out": 0
+},
+{
+"i": 858,
+"sel": ".typed-skill-title i.space",
+"in": 0,
+"out": 0
+},
+{
+"i": 859,
+"sel": ".ultimate-cutscene-hero .typed-skill-title",
+"in": 0,
+"out": 0
+},
+{
+"i": 860,
+"sel": ".ultimate-cutscene-hero .typed-skill-title i",
+"in": 0,
+"out": 0
+},
+{
+"i": 861,
+"sel": ".cinematic-skill-label",
+"in": 0,
+"out": 0
+},
+{
+"i": 862,
+"sel": ".ultimate-cutscene-hero .typed-skill-title",
+"in": 0,
+"out": 0
+},
+{
+"i": 863,
+"sel": ".ultimate-cutscene",
+"in": 0,
+"out": 0
+},
+{
+"i": 864,
+"sel": ".ultimate-cutscene-bg",
+"in": 0,
+"out": 0
+},
+{
+"i": 865,
+"sel": ".ultimate-cutscene-flow",
+"in": 0,
+"out": 0
+},
+{
+"i": 866,
+"sel": ".ultimate-cutscene.lightning-flow .ultimate-cutscene-flow",
+"in": 0,
+"out": 0
+},
+{
+"i": 867,
+"sel": ".ultimate-cutscene-slash",
+"in": 0,
+"out": 0
+},
+{
+"i": 868,
+"sel": ".ultimate-cutscene-hero",
+"in": 0,
+"out": 0
+},
+{
+"i": 869,
+"sel": ".ultimate-cutscene-hero > img",
+"in": 0,
+"out": 0
+},
+{
+"i": 870,
+"sel": ".ultimate-cutscene-hero > div",
+"in": 0,
+"out": 0
+},
+{
+"i": 871,
+"sel": ".ultimate-cutscene-hero small",
+"in": 0,
+"out": 0
+},
+{
+"i": 872,
+"sel": ".ultimate-cutscene-hero strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 873,
+"sel": ".ultimate-cutscene-hero span",
+"in": 0,
+"out": 0
+},
+{
+"i": 874,
+"sel": ".ultimate-cutscene > i",
+"in": 0,
+"out": 0
+},
+{
+"i": 875,
+"sel": ".ultimate-cutscene.lightning-flow > i",
+"in": 0,
+"out": 0
+},
+{
+"i": 876,
+"sel": ".ultimate-cutscene-hero",
+"in": 0,
+"out": 0
+},
+{
+"i": 877,
+"sel": ".ultimate-cutscene-hero > div",
+"in": 0,
+"out": 0
+},
+{
+"i": 878,
+"sel": ".ultimate-cutscene-hero strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 879,
+"sel": ".ultimate-cutscene-hero span",
+"in": 0,
+"out": 0
+},
+{
+"i": 880,
+"sel": ".ultimate-cutscene, .ultimate-cutscene-bg, .ultimate-cutscene-flow, .ultimate-cutscene-slash, .ultimate-cutscene-hero, .ultimate-cutscene > i",
+"in": 0,
+"out": 0
+},
+{
+"i": 881,
+"sel": ".ultimate-cutscene > i",
+"in": 0,
+"out": 0
+},
+{
+"i": 882,
+"sel": ".effect-narration",
+"in": 0,
+"out": 4
+},
+{
+"i": 883,
+"sel": ".effect-narration.trap",
+"in": 0,
+"out": 0
+},
+{
+"i": 884,
+"sel": ".effect-narration small",
+"in": 0,
+"out": 4
+},
+{
+"i": 885,
+"sel": ".effect-narration.trap small",
+"in": 0,
+"out": 0
+},
+{
+"i": 886,
+"sel": ".effect-narration strong",
+"in": 0,
+"out": 4
+},
+{
+"i": 887,
+"sel": ".effect-narration p",
+"in": 0,
+"out": 4
+},
+{
+"i": 888,
+"sel": ".effect-narration p::after",
+"in": 0,
+"out": 4
+},
+{
+"i": 889,
+"sel": ".global-spell",
+"in": 0,
+"out": 0
+},
+{
+"i": 890,
+"sel": ".arena > .field-action-dock",
+"in": 260,
+"out": 0
+},
+{
+"i": 891,
+"sel": ".global-spell.resolved .global-spell-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 892,
+"sel": ".effect-narration",
+"in": 0,
+"out": 4
+},
+{
+"i": 893,
+"sel": ".effect-narration p::after",
+"in": 0,
+"out": 4
+},
+{
+"i": 894,
+"sel": ".awakening-proc-banner",
+"in": 0,
+"out": 0
+},
+{
+"i": 895,
+"sel": ".awakening-proc-banner b",
+"in": 0,
+"out": 0
+},
+{
+"i": 896,
+"sel": ".awakening-proc-banner span",
+"in": 0,
+"out": 0
+},
+{
+"i": 897,
+"sel": ".shatter-resonance-fx",
+"in": 0,
+"out": 0
+},
+{
+"i": 898,
+"sel": ".shatter-resonance-fx::before, .shatter-resonance-fx::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 899,
+"sel": ".shatter-resonance-fx::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 900,
+"sel": ".shatter-resonance-fx i",
+"in": 0,
+"out": 0
+},
+{
+"i": 901,
+"sel": ".shatter-resonance-fx strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 902,
+"sel": ".awakening-proc-banner, .shatter-resonance-fx, .shatter-resonance-fx::before, .shatter-resonance-fx::after, .shatter-resonance-fx i, .shatter-resonance-fx strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 903,
+"sel": ".summon-zone.drop-ready",
+"in": 0,
+"out": 0
+},
+{
+"i": 904,
+"sel": ".summon-zone.drop-ready::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 905,
+"sel": ".magic-setting-panel.drop-ready",
+"in": 0,
+"out": 0
+},
+{
+"i": 906,
+"sel": ".magic-setting-panel.drop-ready::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 907,
+"sel": ".card[draggable=\"true\"], .summon-zone .unit[draggable=\"true\"]",
+"in": 1444,
+"out": 0
+},
+{
+"i": 908,
+"sel": ".card[draggable=\"true\"]:active, .summon-zone .unit[draggable=\"true\"]:active",
+"in": 1444,
+"out": 0
+},
+{
+"i": 909,
+"sel": ".summon-zone .unit.field-dragging",
+"in": 0,
+"out": 0
+},
+{
+"i": 910,
+"sel": ".summon-zone.reordering",
+"in": 0,
+"out": 0
+},
+{
+"i": 911,
+"sel": ".summon-zone.reordering::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 912,
+"sel": ".summon-zone.field-full",
+"in": 0,
+"out": 0
+},
+{
+"i": 913,
+"sel": ".summon-zone.field-full::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 914,
+"sel": ".summon-ground-impact",
+"in": 80,
+"out": 0
+},
+{
+"i": 915,
+"sel": ".summon-ground-impact::before, .summon-ground-impact::after",
+"in": 80,
+"out": 0
+},
+{
+"i": 916,
+"sel": ".summon-ground-impact::after",
+"in": 80,
+"out": 0
+},
+{
+"i": 917,
+"sel": ".summon-ground-impact .ground-crack",
+"in": 640,
+"out": 0
+},
+{
+"i": 918,
+"sel": ".summon-ground-impact .ground-debris",
+"in": 1120,
+"out": 0
+},
+{
+"i": 919,
+"sel": ".field-ultimate-action.locked",
+"in": 216,
+"out": 0
+},
+{
+"i": 920,
+"sel": ".field-ultimate-action.locked::before",
+"in": 216,
+"out": 0
+},
+{
+"i": 921,
+"sel": ".field-ultimate-action.locked:hover",
+"in": 216,
+"out": 0
+},
+{
+"i": 922,
+"sel": ".ultimate-effect-typing",
+"in": 0,
+"out": 0
+},
+{
+"i": 923,
+"sel": ".ultimate-effect-typing::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 924,
+"sel": ".ultimate-effect-typing.complete::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 925,
+"sel": ".ultimate-effect-typing::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 926,
+"sel": ".medium-skill-fx",
+"in": 0,
+"out": 96
+},
+{
+"i": 927,
+"sel": ".medium-skill-fx img",
+"in": 0,
+"out": 96
+},
+{
+"i": 928,
+"sel": ".medium-skill-fx::after",
+"in": 0,
+"out": 96
+},
+{
+"i": 929,
+"sel": ".medium-skill-fx.arcane-circle",
+"in": 0,
+"out": 44
+},
+{
+"i": 930,
+"sel": ".medium-skill-fx.dark-orb",
+"in": 0,
+"out": 0
+},
+{
+"i": 931,
+"sel": ".medium-skill-fx.light-blades",
+"in": 0,
+"out": 0
+},
+{
+"i": 932,
+"sel": ".medium-skill-fx.flame-pillar",
+"in": 0,
+"out": 52
+},
+{
+"i": 933,
+"sel": ".medium-skill-fx",
+"in": 0,
+"out": 96
+},
+{
+"i": 934,
+"sel": ".hand.cancel-ready, .hand-tabs.cancel-ready",
+"in": 0,
+"out": 0
+},
+{
+"i": 935,
+"sel": ".set-slot.cancel-dragging, .ultimate-slot.cancel-dragging",
+"in": 0,
+"out": 0
+},
+{
+"i": 936,
+"sel": ".cancel-hint",
+"in": 52,
+"out": 0
+},
+{
+"i": 937,
+"sel": ".set-slot[draggable=\"true\"], .ultimate-slot[draggable=\"true\"]",
+"in": 52,
+"out": 0
+},
+{
+"i": 938,
+"sel": "button",
+"in": 125648,
+"out": 544
+},
+{
+"i": 939,
+"sel": ".draw-action",
+"in": 260,
+"out": 0
+},
+{
+"i": 940,
+"sel": ".draw-action small",
+"in": 260,
+"out": 0
+},
+{
+"i": 941,
+"sel": ".unit h4",
+"in": 980,
+"out": 0
+},
+{
+"i": 942,
+"sel": ".unit .emoji",
+"in": 980,
+"out": 0
+},
+{
+"i": 943,
+"sel": ".deck-stack, .command-rail .deck-stack",
+"in": 260,
+"out": 0
+},
+{
+"i": 944,
+"sel": ".field-ultimate-action.locked",
+"in": 216,
+"out": 0
+},
+{
+"i": 945,
+"sel": ".field-ultimate-action.locked::before",
+"in": 216,
+"out": 0
+},
+{
+"i": 946,
+"sel": ".field-ultimate-action.locked .ult-title",
+"in": 216,
+"out": 0
+},
+{
+"i": 947,
+"sel": ".field-ultimate-action.locked .ult-reason",
+"in": 216,
+"out": 0
+},
+{
+"i": 948,
+"sel": ".set-slot.armed",
+"in": 0,
+"out": 0
+},
+{
+"i": 949,
+"sel": ".set-slot.armed strong, .set-slot.armed span",
+"in": 0,
+"out": 0
+},
+{
+"i": 950,
+"sel": ".hand.magic-arming .card.spell-card, .hand.magic-arming .card.trap-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 951,
+"sel": ".hand.magic-arming .card.spell-card:hover, .hand.magic-arming .card.trap-card:hover",
+"in": 0,
+"out": 0
+},
+{
+"i": 952,
+"sel": ".set-slot.armed, .hand.magic-arming .card",
+"in": 0,
+"out": 0
+},
+{
+"i": 953,
+"sel": ".unit.swarm-active",
+"in": 0,
+"out": 0
+},
+{
+"i": 954,
+"sel": ".battle-intro",
+"in": 0,
+"out": 0
+},
+{
+"i": 955,
+"sel": ".battle-intro::before, .battle-intro::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 956,
+"sel": ".battle-intro::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 957,
+"sel": ".battle-intro::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 958,
+"sel": ".battle-intro .intro-box",
+"in": 0,
+"out": 0
+},
+{
+"i": 959,
+"sel": ".battle-intro .intro-kicker",
+"in": 0,
+"out": 0
+},
+{
+"i": 960,
+"sel": ".battle-intro .intro-title",
+"in": 0,
+"out": 0
+},
+{
+"i": 961,
+"sel": ".battle-intro .intro-versus",
+"in": 0,
+"out": 0
+},
+{
+"i": 962,
+"sel": ".battle-intro .intro-versus em",
+"in": 0,
+"out": 0
+},
+{
+"i": 963,
+"sel": ".battle-intro .intro-versus span:first-child",
+"in": 0,
+"out": 0
+},
+{
+"i": 964,
+"sel": ".battle-intro .intro-versus span:last-child",
+"in": 0,
+"out": 0
+},
+{
+"i": 965,
+"sel": ".battle-intro .intro-start",
+"in": 0,
+"out": 0
+},
+{
+"i": 966,
+"sel": ".battle-intro, .battle-intro *, .battle-intro::before, .battle-intro::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 967,
+"sel": ".battle-intro",
+"in": 0,
+"out": 0
+},
+{
+"i": 968,
+"sel": ".initiative-banner",
+"in": 0,
+"out": 0
+},
+{
+"i": 969,
+"sel": ".initiative-banner small",
+"in": 0,
+"out": 0
+},
+{
+"i": 970,
+"sel": ".initiative-banner strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 971,
+"sel": ".initiative-banner.enemy strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 972,
+"sel": ".initiative-banner span",
+"in": 0,
+"out": 0
+},
+{
+"i": 973,
+"sel": ".initiative-banner",
+"in": 0,
+"out": 0
+},
+{
+"i": 974,
+"sel": ".guardian-chip",
+"in": 520,
+"out": 0
+},
+{
+"i": 975,
+"sel": ".guardian-select",
+"in": 0,
+"out": 4
+},
+{
+"i": 976,
+"sel": ".enemy-difficulty",
+"in": 260,
+"out": 0
+},
+{
+"i": 977,
+"sel": "body.beginner-help [data-beginner-label]",
+"in": 24,
+"out": 0
+},
+{
+"i": 978,
+"sel": "body.beginner-help [data-beginner-label]::after",
+"in": 24,
+"out": 0
+},
+{
+"i": 979,
+"sel": "body.beginner-help [data-beginner-label].beginner-focus::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 980,
+"sel": ".arena [data-beginner-label]::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 981,
+"sel": ".duel-hud[data-beginner-label]::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 982,
+"sel": ".command-rail .hand-tabs[data-beginner-label]::after, .command-rail .hand[data-beginner-label]::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 983,
+"sel": ".turn-actions [data-beginner-label]::after",
+"in": 520,
+"out": 0
+},
+{
+"i": 984,
+"sel": "body.beginner-help .beginner-focus",
+"in": 0,
+"out": 0
+},
+{
+"i": 985,
+"sel": "body.beginner-help [data-beginner-label].beginner-focus::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 986,
+"sel": "body.beginner-help [data-beginner-label]::after",
+"in": 24,
+"out": 0
+},
+{
+"i": 987,
+"sel": ".gs-board",
+"in": 0,
+"out": 4
+},
+{
+"i": 988,
+"sel": ".gs-card",
+"in": 0,
+"out": 20
+},
+{
+"i": 989,
+"sel": ".gs-card:hover, .gs-card:focus-visible",
+"in": 0,
+"out": 20
+},
+{
+"i": 990,
+"sel": ".gs-card .gd-emblem",
+"in": 0,
+"out": 20
+},
+{
+"i": 991,
+"sel": ".gs-card strong",
+"in": 0,
+"out": 20
+},
+{
+"i": 992,
+"sel": ".gs-card em",
+"in": 0,
+"out": 20
+},
+{
+"i": 993,
+"sel": ".gs-card .gs-desc",
+"in": 0,
+"out": 20
+},
+{
+"i": 994,
+"sel": ".gs-hyeonmu",
+"in": 0,
+"out": 4
+},
+{
+"i": 995,
+"sel": ".gs-baekho",
+"in": 0,
+"out": 4
+},
+{
+"i": 996,
+"sel": ".gs-cheongryong",
+"in": 0,
+"out": 4
+},
+{
+"i": 997,
+"sel": ".gs-jujak",
+"in": 0,
+"out": 4
+},
+{
+"i": 998,
+"sel": ".gs-hyeonmu:hover, .gs-hyeonmu:focus-visible",
+"in": 0,
+"out": 4
+},
+{
+"i": 999,
+"sel": ".gs-baekho:hover, .gs-baekho:focus-visible",
+"in": 0,
+"out": 4
+},
+{
+"i": 1000,
+"sel": ".gs-cheongryong:hover, .gs-cheongryong:focus-visible",
+"in": 0,
+"out": 4
+},
+{
+"i": 1001,
+"sel": ".gs-jujak:hover, .gs-jujak:focus-visible",
+"in": 0,
+"out": 4
+},
+{
+"i": 1002,
+"sel": ".gd-emblem, .gd-avatar",
+"in": 520,
+"out": 20
+},
+{
+"i": 1003,
+"sel": ".gd-cheongryong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1004,
+"sel": ".gd-baekho",
+"in": 260,
+"out": 0
+},
+{
+"i": 1005,
+"sel": ".gd-jujak",
+"in": 260,
+"out": 0
+},
+{
+"i": 1006,
+"sel": ".gd-hyeonmu",
+"in": 0,
+"out": 0
+},
+{
+"i": 1007,
+"sel": ".gd-emblem",
+"in": 0,
+"out": 20
+},
+{
+"i": 1008,
+"sel": ".gd-emblem img, .gd-avatar img",
+"in": 520,
+"out": 20
+},
+{
+"i": 1009,
+"sel": ".gd-emblem img",
+"in": 0,
+"out": 20
+},
+{
+"i": 1010,
+"sel": ".gd-avatar img",
+"in": 520,
+"out": 0
+},
+{
+"i": 1011,
+"sel": ".avatar.gd-avatar",
+"in": 520,
+"out": 0
+},
+{
+"i": 1012,
+"sel": ".gd-none",
+"in": 0,
+"out": 0
+},
+{
+"i": 1013,
+"sel": ".gs-heading",
+"in": 0,
+"out": 4
+},
+{
+"i": 1014,
+"sel": ".gs-heading small",
+"in": 0,
+"out": 4
+},
+{
+"i": 1015,
+"sel": ".gs-heading h2",
+"in": 0,
+"out": 4
+},
+{
+"i": 1016,
+"sel": ".gs-heading p",
+"in": 0,
+"out": 4
+},
+{
+"i": 1017,
+"sel": ".gs-heading .gs-wallet",
+"in": 0,
+"out": 0
+},
+{
+"i": 1018,
+"sel": ".gs-skip",
+"in": 0,
+"out": 0
+},
+{
+"i": 1019,
+"sel": ".gs-skip small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1020,
+"sel": ".gs-skip strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1021,
+"sel": ".gs-skip span",
+"in": 0,
+"out": 0
+},
+{
+"i": 1022,
+"sel": ".gs-skip:hover, .gs-skip:focus-visible",
+"in": 0,
+"out": 0
+},
+{
+"i": 1023,
+"sel": ".gs-card .gs-cost",
+"in": 0,
+"out": 0
+},
+{
+"i": 1024,
+"sel": ".gs-card.gs-poor",
+"in": 0,
+"out": 0
+},
+{
+"i": 1025,
+"sel": ".gs-card.gs-poor:hover",
+"in": 0,
+"out": 0
+},
+{
+"i": 1026,
+"sel": ".gs-card.gs-poor .gs-cost",
+"in": 0,
+"out": 0
+},
+{
+"i": 1027,
+"sel": ".gs-board",
+"in": 0,
+"out": 4
+},
+{
+"i": 1028,
+"sel": ".gs-card .gd-emblem",
+"in": 0,
+"out": 20
+},
+{
+"i": 1029,
+"sel": ".medium-skill-fx.unit-fx",
+"in": 0,
+"out": 52
+},
+{
+"i": 1030,
+"sel": ".medium-skill-fx.unit-fx::after",
+"in": 0,
+"out": 52
+},
+{
+"i": 1031,
+"sel": ".unit.thunder",
+"in": 0,
+"out": 0
+},
+{
+"i": 1032,
+"sel": ".unit.ice",
+"in": 0,
+"out": 0
+},
+{
+"i": 1033,
+"sel": ".card.thunder",
+"in": 0,
+"out": 0
+},
+{
+"i": 1034,
+"sel": ".card.ice",
+"in": 0,
+"out": 0
+},
+{
+"i": 1035,
+"sel": ":root",
+"in": 0,
+"out": 260
+},
+{
+"i": 1036,
+"sel": ".cinematic-skill-fx, .ultimate-cutscene, .global-spell, .global-summon",
+"in": 0,
+"out": 0
+},
+{
+"i": 1037,
+"sel": ".global-spell",
+"in": 0,
+"out": 0
+},
+{
+"i": 1038,
+"sel": ".cinematic-skill-fx img",
+"in": 0,
+"out": 0
+},
+{
+"i": 1039,
+"sel": ".cinematic-skill-label",
+"in": 0,
+"out": 0
+},
+{
+"i": 1040,
+"sel": ".ultimate-cutscene-flow",
+"in": 0,
+"out": 0
+},
+{
+"i": 1041,
+"sel": ".ultimate-cutscene-hero",
+"in": 0,
+"out": 0
+},
+{
+"i": 1042,
+"sel": ".ultimate-cutscene-hero strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1043,
+"sel": ".global-spell-card, .global-summon-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 1044,
+"sel": ".effect-narration",
+"in": 0,
+"out": 4
+},
+{
+"i": 1045,
+"sel": ".typed-skill-title .title-word",
+"in": 0,
+"out": 0
+},
+{
+"i": 1046,
+"sel": ".ultimate-cutscene-hero .typed-skill-title",
+"in": 0,
+"out": 0
+},
+{
+"i": 1047,
+"sel": ".global-spell",
+"in": 0,
+"out": 0
+},
+{
+"i": 1048,
+"sel": ".global-spell-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 1049,
+"sel": ".global-spell-card .global-icon",
+"in": 0,
+"out": 0
+},
+{
+"i": 1050,
+"sel": ".creature-art, .magic-art-image",
+"in": 2664,
+"out": 0
+},
+{
+"i": 1051,
+"sel": ".art.art-failed .creature-art, .art.art-failed .magic-art-image",
+"in": 0,
+"out": 0
+},
+{
+"i": 1052,
+"sel": ".art.art-failed::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1053,
+"sel": ".ultimate-slot-empty.ultimate-cta",
+"in": 208,
+"out": 0
+},
+{
+"i": 1054,
+"sel": ".ultimate-slot-empty.ultimate-cta .cta-main",
+"in": 208,
+"out": 0
+},
+{
+"i": 1055,
+"sel": ".ultimate-slot-empty.ultimate-cta small",
+"in": 208,
+"out": 0
+},
+{
+"i": 1056,
+"sel": ".ultimate-slot-empty.ultimate-cta:hover:not(:disabled)",
+"in": 128,
+"out": 0
+},
+{
+"i": 1057,
+"sel": ".ultimate-slot-empty.ultimate-cta.armed",
+"in": 108,
+"out": 0
+},
+{
+"i": 1058,
+"sel": ".ultimate-slot-empty.ultimate-cta:disabled",
+"in": 80,
+"out": 0
+},
+{
+"i": 1059,
+"sel": ".hand.ultimate-arming .card.summon-card",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1060,
+"sel": ".hand.ultimate-arming .card.summon-card:hover",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1061,
+"sel": ".ultimate-slot-empty.ultimate-cta, .hand.ultimate-arming .card.summon-card",
+"in": 1480,
+"out": 0
+},
+{
+"i": 1062,
+"sel": ".draw-action.blood-option, .turn-actions .draw-action.blood-option",
+"in": 164,
+"out": 0
+},
+{
+"i": 1063,
+"sel": ".ult-preview",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1064,
+"sel": ".hand.ultimate-arming .card.summon-card .ult-preview",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1065,
+"sel": ".hand.ultimate-arming .card.summon-card > p, .hand.ultimate-arming .card.summon-card > .card-stats",
+"in": 2544,
+"out": 0
+},
+{
+"i": 1066,
+"sel": ".ult-preview small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1067,
+"sel": ".ult-preview strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1068,
+"sel": ".ult-preview p",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1069,
+"sel": ".ult-preview .ult-meta",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1070,
+"sel": ".ult-preview .ult-meta span",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1071,
+"sel": ".ult-preview em",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1072,
+"sel": ".hand.ultimate-arming .card.summon-card",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1073,
+"sel": ".hand.ultimate-arming .card.summon-card .art",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1074,
+"sel": ".hand.ultimate-arming .card.summon-card h3",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1075,
+"sel": ".command-rail .hand.ultimate-arming",
+"in": 108,
+"out": 0
+},
+{
+"i": 1076,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1077,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card > .cost, .command-rail .hand.ultimate-arming .card.summon-card > .type, .command-rail .hand.ultimate-arming .card.summon-card > .rarity-stars, .command-rail .hand.ultimate-arming .card.summon-card > .power-grade, .command-rail .hand.ultimate-arming .card.summon-card .card-hp-meter",
+"in": 3816,
+"out": 0
+},
+{
+"i": 1078,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card .art",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1079,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card > h3",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1080,
+"sel": ".command-rail .hand.ultimate-arming .ult-name",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1081,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card .ult-preview",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1082,
+"sel": ".command-rail .hand.ultimate-arming .ult-body",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1083,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1084,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1085,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card::before, .command-rail .hand.ultimate-arming .card.summon-card::after",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1086,
+"sel": ".ult-block",
+"in": 2544,
+"out": 0
+},
+{
+"i": 1087,
+"sel": ".ult-effect",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1088,
+"sel": ".ult-cond",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1089,
+"sel": ".ult-label",
+"in": 2544,
+"out": 0
+},
+{
+"i": 1090,
+"sel": ".ult-cond .ult-label",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1091,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-effect p",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1092,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-cond em",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1093,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-meta",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1094,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-meta span",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1095,
+"sel": ".card-hp-meter",
+"in": 0,
+"out": 0
+},
+{
+"i": 1096,
+"sel": ".command-rail .card.summon-card > .type, .command-rail .card.summon-card > .rarity-stars",
+"in": 3392,
+"out": 0
+},
+{
+"i": 1097,
+"sel": ".command-rail .card.summon-card > h3",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1098,
+"sel": ".command-rail .card.summon-card > p",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1099,
+"sel": ".command-rail .card.summon-card > .art",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1100,
+"sel": ".command-rail .card.summon-card .card-stats",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1101,
+"sel": ".command-rail .card.summon-card .card-stats > span:first-child",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1102,
+"sel": ".command-rail .card.summon-card .card-stats > span:last-child",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1103,
+"sel": ".command-rail .card.summon-card .card-stats .power-grade",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1104,
+"sel": ".command-rail .card.summon-card .card-stats > span:not(.power-grade)",
+"in": 3392,
+"out": 0
+},
+{
+"i": 1105,
+"sel": ".command-rail .card.summon-card .card-stats .grade-bonus",
+"in": 556,
+"out": 0
+},
+{
+"i": 1106,
+"sel": ".card-back-design",
+"in": 2180,
+"out": 0
+},
+{
+"i": 1107,
+"sel": ".card-back-design::before",
+"in": 2180,
+"out": 0
+},
+{
+"i": 1108,
+"sel": ".draw-flight",
+"in": 0,
+"out": 0
+},
+{
+"i": 1109,
+"sel": ".card-back-face",
+"in": 0,
+"out": 0
+},
+{
+"i": 1110,
+"sel": ".card.draw-flipping",
+"in": 0,
+"out": 0
+},
+{
+"i": 1111,
+"sel": ".card.draw-revealed",
+"in": 0,
+"out": 0
+},
+{
+"i": 1112,
+"sel": ".draw-sheen",
+"in": 0,
+"out": 0
+},
+{
+"i": 1113,
+"sel": "body .initiative-banner",
+"in": 0,
+"out": 0
+},
+{
+"i": 1114,
+"sel": "body .initiative-banner > small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1115,
+"sel": "body .initiative-banner.leaving",
+"in": 0,
+"out": 0
+},
+{
+"i": 1116,
+"sel": ".initiative-banner .ib-line",
+"in": 0,
+"out": 0
+},
+{
+"i": 1117,
+"sel": ".initiative-banner .ib-word, .initiative-banner .ib-verdict, .initiative-banner .ib-detail",
+"in": 0,
+"out": 0
+},
+{
+"i": 1118,
+"sel": ".initiative-banner .ib-verdict",
+"in": 0,
+"out": 0
+},
+{
+"i": 1119,
+"sel": ".initiative-banner.enemy .ib-verdict",
+"in": 0,
+"out": 0
+},
+{
+"i": 1120,
+"sel": ".initiative-banner .ib-detail",
+"in": 0,
+"out": 0
+},
+{
+"i": 1121,
+"sel": ".initiative-banner, .initiative-banner .ib-word, .initiative-banner .ib-verdict, .initiative-banner .ib-detail",
+"in": 0,
+"out": 0
+},
+{
+"i": 1122,
+"sel": "body .hp-damage-pop",
+"in": 0,
+"out": 72
+},
+{
+"i": 1123,
+"sel": "body .hp-damage-pop",
+"in": 0,
+"out": 72
+},
+{
+"i": 1124,
+"sel": ".border-impact",
+"in": 0,
+"out": 38
+},
+{
+"i": 1125,
+"sel": ".border-impact",
+"in": 0,
+"out": 38
+},
+{
+"i": 1126,
+"sel": "body:has(.guardian-select)::after",
+"in": 0,
+"out": 4
+},
+{
+"i": 1127,
+"sel": ".guardian-select.gs-olympus",
+"in": 0,
+"out": 0
+},
+{
+"i": 1128,
+"sel": ".guardian-select.gs-olympus .gs-heading",
+"in": 0,
+"out": 0
+},
+{
+"i": 1129,
+"sel": ".guardian-select.gs-olympus .gs-heading small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1130,
+"sel": ".guardian-select.gs-olympus .gs-heading .gs-wallet",
+"in": 0,
+"out": 0
+},
+{
+"i": 1131,
+"sel": ".guardian-select.gs-olympus .gs-board",
+"in": 0,
+"out": 0
+},
+{
+"i": 1132,
+"sel": ".guardian-select.gs-olympus .gs-jujak",
+"in": 0,
+"out": 0
+},
+{
+"i": 1133,
+"sel": ".guardian-select.gs-olympus .gs-cheongryong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1134,
+"sel": ".guardian-select.gs-olympus .gs-hyeonmu",
+"in": 0,
+"out": 0
+},
+{
+"i": 1135,
+"sel": ".guardian-select.gs-olympus .gs-baekho",
+"in": 0,
+"out": 0
+},
+{
+"i": 1136,
+"sel": ".guardian-select.gs-olympus .gs-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 1137,
+"sel": ".guardian-select.gs-olympus .gs-card::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1138,
+"sel": ".guardian-select.gs-olympus .gs-card::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1139,
+"sel": ".guardian-select.gs-olympus .gs-card .gd-emblem",
+"in": 0,
+"out": 0
+},
+{
+"i": 1140,
+"sel": ".guardian-select.gs-olympus .gs-card strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1141,
+"sel": ".guardian-select.gs-olympus .gs-card em",
+"in": 0,
+"out": 0
+},
+{
+"i": 1142,
+"sel": ".guardian-select.gs-olympus .gs-card em::before, .guardian-select.gs-olympus .gs-card em::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1143,
+"sel": ".guardian-select.gs-olympus .gs-card em::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1144,
+"sel": ".guardian-select.gs-olympus .gs-power",
+"in": 0,
+"out": 0
+},
+{
+"i": 1145,
+"sel": ".guardian-select.gs-olympus .gs-card > *",
+"in": 0,
+"out": 0
+},
+{
+"i": 1146,
+"sel": ".guardian-select.gs-olympus .gs-card .gs-desc",
+"in": 0,
+"out": 0
+},
+{
+"i": 1147,
+"sel": ".guardian-select.gs-olympus .gs-card .gs-cost",
+"in": 0,
+"out": 0
+},
+{
+"i": 1148,
+"sel": ".guardian-select.gs-olympus .gs-card:hover, .guardian-select.gs-olympus .gs-card:focus-visible",
+"in": 0,
+"out": 0
+},
+{
+"i": 1149,
+"sel": ".guardian-select.gs-olympus .gs-card.gs-poor:hover",
+"in": 0,
+"out": 0
+},
+{
+"i": 1150,
+"sel": ".guardian-select.gs-olympus .gs-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 1151,
+"sel": ".guardian-select.gs-olympus .gs-face > *",
+"in": 0,
+"out": 0
+},
+{
+"i": 1152,
+"sel": ".guardian-select.gs-olympus .gs-face .gs-desc",
+"in": 0,
+"out": 0
+},
+{
+"i": 1153,
+"sel": ".guardian-select.gs-olympus .gs-face .gs-note",
+"in": 0,
+"out": 0
+},
+{
+"i": 1154,
+"sel": ".guardian-select.gs-olympus .gs-hyeonmu .gs-face",
+"in": 0,
+"out": 0
+},
+{
+"i": 1155,
+"sel": ".guardian-select.gs-olympus .gs-face > *",
+"in": 0,
+"out": 0
+},
+{
+"i": 1156,
+"sel": ".guardian-select.gs-olympus .gs-face",
+"in": 0,
+"out": 0
+},
+{
+"i": 1157,
+"sel": ".guardian-select.gs-olympus .gs-face::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1158,
+"sel": ".guardian-select.gs-olympus .gs-card:hover .gs-face::before, .guardian-select.gs-olympus .gs-card:focus-visible .gs-face::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1159,
+"sel": ".guardian-select.gs-olympus .gs-jujak .gs-face::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1160,
+"sel": ".guardian-select.gs-olympus .gs-cheongryong .gs-face::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1161,
+"sel": ".guardian-select.gs-olympus .gs-hyeonmu .gs-face::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1162,
+"sel": ".guardian-select.gs-olympus .gs-baekho .gs-face::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1163,
+"sel": ".guardian-select.gs-olympus .gs-face",
+"in": 0,
+"out": 0
+},
+{
+"i": 1164,
+"sel": ".guardian-select.gs-olympus .gs-face em::before, .guardian-select.gs-olympus .gs-face em::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1165,
+"sel": ".guardian-select.gs-olympus .gs-skip strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1166,
+"sel": ".synth-stage.synth-fail.revealed .stage-mat",
+"in": 0,
+"out": 0
+},
+{
+"i": 1167,
+"sel": ".synth-stage.synth-fail .synth-fail-box",
+"in": 0,
+"out": 0
+},
+{
+"i": 1168,
+"sel": ".synth-stage.synth-fail .sf-lost-title",
+"in": 0,
+"out": 0
+},
+{
+"i": 1169,
+"sel": ".synth-stage.synth-fail .sf-lost-title b",
+"in": 0,
+"out": 0
+},
+{
+"i": 1170,
+"sel": ".synth-stage.synth-fail .sf-lost",
+"in": 0,
+"out": 0
+},
+{
+"i": 1171,
+"sel": ".synth-stage.synth-fail .synth-lost",
+"in": 0,
+"out": 0
+},
+{
+"i": 1172,
+"sel": ".synth-stage.synth-fail .synth-lost img",
+"in": 0,
+"out": 0
+},
+{
+"i": 1173,
+"sel": ".synth-stage.synth-fail .synth-lost::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1174,
+"sel": ".synth-stage.synth-fail .sf-chance",
+"in": 0,
+"out": 0
+},
+{
+"i": 1175,
+"sel": ".synth-stage.synth-fail .sf-chance span",
+"in": 0,
+"out": 0
+},
+{
+"i": 1176,
+"sel": ".synth-stage.synth-fail .sf-chance strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1177,
+"sel": ".synth-stage.synth-fail .sf-chance small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1178,
+"sel": ".synth-stage.synth-fail.revealed .stage-mat",
+"in": 0,
+"out": 0
+},
+{
+"i": 1179,
+"sel": "#codex-view.codex-view.active",
+"in": 4,
+"out": 0
+},
+{
+"i": 1180,
+"sel": "#codex-view .codex-body",
+"in": 260,
+"out": 0
+},
+{
+"i": 1181,
+"sel": "#codex-view .codex-toolbar",
+"in": 260,
+"out": 0
+},
+{
+"i": 1182,
+"sel": "#codex-view .codex-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 1183,
+"sel": "#codex-view .codex-detail",
+"in": 260,
+"out": 0
+},
+{
+"i": 1184,
+"sel": "#codex-view .codex-summary",
+"in": 260,
+"out": 0
+},
+{
+"i": 1185,
+"sel": "#codex-view .codex-total",
+"in": 116,
+"out": 0
+},
+{
+"i": 1186,
+"sel": "#codex-view .codex-total-num b",
+"in": 116,
+"out": 0
+},
+{
+"i": 1187,
+"sel": "#codex-view .codex-stat",
+"in": 812,
+"out": 0
+},
+{
+"i": 1188,
+"sel": "#codex-view .codex-stat small",
+"in": 812,
+"out": 0
+},
+{
+"i": 1189,
+"sel": "#codex-view .codex-stat b",
+"in": 812,
+"out": 0
+},
+{
+"i": 1190,
+"sel": "#enhance-view .synth-altar > #enhance-gate",
+"in": 260,
+"out": 0
+},
+{
+"i": 1191,
+"sel": "#enhance-view .synth-altar",
+"in": 260,
+"out": 0
+},
+{
+"i": 1192,
+"sel": "#enhance-view .synth-altar > #enhance-result",
+"in": 260,
+"out": 0
+},
+{
+"i": 1193,
+"sel": "#enhance-view #enhance-result .synth-card",
+"in": 260,
+"out": 0
+},
+{
+"i": 1194,
+"sel": "#enhance-view .synth-altar > .synth-odds, #enhance-view .synth-altar > #enhance-go, #enhance-view .synth-altar > .enhance-acquire",
+"in": 780,
+"out": 0
+},
+{
+"i": 1195,
+"sel": "#enhance-view .synth-altar > #enhance-gate:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 1196,
+"sel": "#enhance-view .synth-help, #enhance-view #enhance-count",
+"in": 520,
+"out": 0
+},
+{
+"i": 1197,
+"sel": "#enhance-result .synth-card.enh-slot",
+"in": 84,
+"out": 0
+},
+{
+"i": 1198,
+"sel": "#enhance-result .enh-chance",
+"in": 84,
+"out": 0
+},
+{
+"i": 1199,
+"sel": "#enhance-result .enh-chance b",
+"in": 84,
+"out": 0
+},
+{
+"i": 1200,
+"sel": "#enhance-result .enh-chance small",
+"in": 84,
+"out": 0
+},
+{
+"i": 1201,
+"sel": "#enhance-result .enh-mats",
+"in": 84,
+"out": 0
+},
+{
+"i": 1202,
+"sel": "#enhance-result .enh-mats i",
+"in": 252,
+"out": 0
+},
+{
+"i": 1203,
+"sel": "#enhance-result .enh-mats i.on",
+"in": 252,
+"out": 0
+},
+{
+"i": 1204,
+"sel": "#enhance-result .enh-mats em",
+"in": 32,
+"out": 0
+},
+{
+"i": 1205,
+"sel": "#enhance-view .synth-odds",
+"in": 260,
+"out": 0
+},
+{
+"i": 1206,
+"sel": "#enhance-view .enh-outcome",
+"in": 520,
+"out": 0
+},
+{
+"i": 1207,
+"sel": "#enhance-view .enh-outcome small",
+"in": 520,
+"out": 0
+},
+{
+"i": 1208,
+"sel": "#enhance-view .enh-outcome b",
+"in": 520,
+"out": 0
+},
+{
+"i": 1209,
+"sel": "#enhance-view .enh-outcome span",
+"in": 520,
+"out": 0
+},
+{
+"i": 1210,
+"sel": "#enhance-view .enh-outcome.ok",
+"in": 260,
+"out": 0
+},
+{
+"i": 1211,
+"sel": "#enhance-view .enh-outcome.ok small, #enhance-view .enh-outcome.ok b",
+"in": 520,
+"out": 0
+},
+{
+"i": 1212,
+"sel": "#enhance-view .enh-outcome.ng",
+"in": 260,
+"out": 0
+},
+{
+"i": 1213,
+"sel": "#enhance-view .enh-outcome.ng small, #enhance-view .enh-outcome.ng b",
+"in": 520,
+"out": 0
+},
+{
+"i": 1214,
+"sel": "#enhance-view #enhance-go",
+"in": 260,
+"out": 0
+},
+{
+"i": 1215,
+"sel": "#enhance-view #enhance-go:not(:disabled):hover",
+"in": 32,
+"out": 0
+},
+{
+"i": 1216,
+"sel": "#enhance-view #enhance-go:disabled",
+"in": 228,
+"out": 0
+},
+{
+"i": 1217,
+"sel": "#enhance-view #enhance-go .eg-main",
+"in": 84,
+"out": 0
+},
+{
+"i": 1218,
+"sel": "#enhance-view #enhance-go .eg-sub",
+"in": 84,
+"out": 0
+},
+{
+"i": 1219,
+"sel": "#enhance-view .enhance-acquire",
+"in": 260,
+"out": 0
+},
+{
+"i": 1220,
+"sel": "#enhance-view .enhance-acquire:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 1221,
+"sel": ".field-guardian-ultimate",
+"in": 260,
+"out": 0
+},
+{
+"i": 1222,
+"sel": ".field-guardian-ultimate::before",
+"in": 260,
+"out": 0
+},
+{
+"i": 1223,
+"sel": ".field-guardian-ultimate small",
+"in": 260,
+"out": 0
+},
+{
+"i": 1224,
+"sel": ".field-guardian-ultimate.ready",
+"in": 12,
+"out": 0
+},
+{
+"i": 1225,
+"sel": ".field-guardian-ultimate.just-ready",
+"in": 202,
+"out": 0
+},
+{
+"i": 1226,
+"sel": ".field-guardian-ultimate.just-ready",
+"in": 202,
+"out": 0
+},
+{
+"i": 1227,
+"sel": ".field-guardian-ultimate.active",
+"in": 0,
+"out": 0
+},
+{
+"i": 1228,
+"sel": ".field-guardian-ultimate:disabled",
+"in": 248,
+"out": 0
+},
+{
+"i": 1229,
+"sel": ".field-guardian-ultimate[hidden]",
+"in": 4,
+"out": 0
+},
+{
+"i": 1230,
+"sel": ".guardian-awakening .global-spell-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 1231,
+"sel": ".guardian-awakening .global-icon img",
+"in": 0,
+"out": 0
+},
+{
+"i": 1232,
+"sel": ".aura-awaken-choice",
+"in": 0,
+"out": 0
+},
+{
+"i": 1233,
+"sel": ".aura-awaken-choice-panel",
+"in": 0,
+"out": 0
+},
+{
+"i": 1234,
+"sel": ".aura-awaken-choice-panel .aura-mark",
+"in": 0,
+"out": 0
+},
+{
+"i": 1235,
+"sel": ".aura-awaken-choice-panel small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1236,
+"sel": ".aura-awaken-choice-panel h2",
+"in": 0,
+"out": 0
+},
+{
+"i": 1237,
+"sel": ".aura-awaken-choice-panel > p",
+"in": 0,
+"out": 0
+},
+{
+"i": 1238,
+"sel": ".aura-awaken-options",
+"in": 0,
+"out": 0
+},
+{
+"i": 1239,
+"sel": ".aura-awaken-option",
+"in": 0,
+"out": 0
+},
+{
+"i": 1240,
+"sel": ".aura-awaken-option:hover, .aura-awaken-option:focus-visible",
+"in": 0,
+"out": 0
+},
+{
+"i": 1241,
+"sel": ".aura-awaken-option b",
+"in": 0,
+"out": 0
+},
+{
+"i": 1242,
+"sel": ".aura-awaken-desc",
+"in": 0,
+"out": 0
+},
+{
+"i": 1243,
+"sel": ".aura-awaken-desc span",
+"in": 0,
+"out": 0
+},
+{
+"i": 1244,
+"sel": ".aura-awaken-desc span + span",
+"in": 0,
+"out": 0
+},
+{
+"i": 1245,
+"sel": ".aura-awaken-option em",
+"in": 0,
+"out": 0
+},
+{
+"i": 1246,
+"sel": ".aura-awaken-options",
+"in": 0,
+"out": 0
+},
+{
+"i": 1247,
+"sel": ".aura-awaken-choice-panel",
+"in": 0,
+"out": 0
+},
+{
+"i": 1248,
+"sel": ".aura-awaken-option",
+"in": 0,
+"out": 0
+},
+{
+"i": 1249,
+"sel": ".awaken-field-sigil",
+"in": 0,
+"out": 0
+},
+{
+"i": 1250,
+"sel": ".awaken-field-sigil::before, .awaken-field-sigil::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1251,
+"sel": ".awaken-field-sigil::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1252,
+"sel": ".awaken-field-sigil img",
+"in": 0,
+"out": 0
+},
+{
+"i": 1253,
+"sel": ".arena > .lane",
+"in": 520,
+"out": 0
+},
+{
+"i": 1254,
+"sel": ".arena > .lane > .unit, .arena > .lane > .summon-zone > .unit",
+"in": 980,
+"out": 0
+},
+{
+"i": 1255,
+"sel": ".awaken-field-sigil.engraving",
+"in": 0,
+"out": 0
+},
+{
+"i": 1256,
+"sel": ".awaken-field-sigil.engraving img",
+"in": 0,
+"out": 0
+},
+{
+"i": 1257,
+"sel": ".awaken-field-sigil.engraving::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1258,
+"sel": ".awaken-field-sigil.engraving::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1259,
+"sel": ".awaken-field-sigil, .awaken-field-sigil::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1260,
+"sel": ".arena:has(.field-guardian-ultimate:not([hidden]))",
+"in": 256,
+"out": 0
+},
+{
+"i": 1261,
+"sel": ".arena:has(.field-guardian-ultimate:not([hidden])) .field-ultimate-action",
+"in": 256,
+"out": 0
+},
+{
+"i": 1262,
+"sel": ".arena:has(.field-guardian-ultimate:not([hidden])) .field-ultimate-action.locked",
+"in": 212,
+"out": 0
+},
+{
+"i": 1263,
+"sel": ".arena:has(.field-guardian-ultimate:not([hidden])) .field-guardian-ultimate",
+"in": 256,
+"out": 0
+},
+{
+"i": 1264,
+"sel": ".result",
+"in": 260,
+"out": 0
+},
+{
+"i": 1265,
+"sel": ".result.lose",
+"in": 4,
+"out": 0
+},
+{
+"i": 1266,
+"sel": ".result-box",
+"in": 260,
+"out": 0
+},
+{
+"i": 1267,
+"sel": ".result-box::before, .result-box::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 1268,
+"sel": ".result-box::before",
+"in": 260,
+"out": 0
+},
+{
+"i": 1269,
+"sel": ".result-box::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 1270,
+"sel": ".result-box h2",
+"in": 260,
+"out": 0
+},
+{
+"i": 1271,
+"sel": ".result.narrative-title .result-box h2",
+"in": 0,
+"out": 0
+},
+{
+"i": 1272,
+"sel": ".result-box p",
+"in": 780,
+"out": 0
+},
+{
+"i": 1273,
+"sel": ".result-box button",
+"in": 520,
+"out": 0
+},
+{
+"i": 1274,
+"sel": ".result-question",
+"in": 260,
+"out": 0
+},
+{
+"i": 1275,
+"sel": ".result-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 1276,
+"sel": ".result-actions button",
+"in": 520,
+"out": 0
+},
+{
+"i": 1277,
+"sel": ".result-actions button:last-child",
+"in": 260,
+"out": 0
+},
+{
+"i": 1278,
+"sel": ".result-actions button:hover, .result-actions button:focus-visible",
+"in": 520,
+"out": 0
+},
+{
+"i": 1279,
+"sel": ".result-rank",
+"in": 260,
+"out": 0
+},
+{
+"i": 1280,
+"sel": ".result-rank strong",
+"in": 520,
+"out": 0
+},
+{
+"i": 1281,
+"sel": ".result-rank span",
+"in": 520,
+"out": 0
+},
+{
+"i": 1282,
+"sel": ".result-rank .rank-before",
+"in": 260,
+"out": 0
+},
+{
+"i": 1283,
+"sel": ".result-rank .rank-after",
+"in": 260,
+"out": 0
+},
+{
+"i": 1284,
+"sel": ".result-rank .rank-delta",
+"in": 260,
+"out": 0
+},
+{
+"i": 1285,
+"sel": ".result-rank-note",
+"in": 260,
+"out": 0
+},
+{
+"i": 1286,
+"sel": ".result.auto-transition .result-rank, .result.auto-transition .result-rank-note, .result.auto-transition .result-box button",
+"in": 0,
+"out": 0
+},
+{
+"i": 1287,
+"sel": ".result.auto-transition .result-box::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1288,
+"sel": ".result.restart-transition .result-box::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1289,
+"sel": ".result",
+"in": 260,
+"out": 0
+},
+{
+"i": 1290,
+"sel": ".result::before",
+"in": 260,
+"out": 0
+},
+{
+"i": 1291,
+"sel": ".result-box",
+"in": 260,
+"out": 0
+},
+{
+"i": 1292,
+"sel": ".result-box::before, .result-box::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 1293,
+"sel": ".result-kicker",
+"in": 260,
+"out": 0
+},
+{
+"i": 1294,
+"sel": ".result-emblem",
+"in": 260,
+"out": 0
+},
+{
+"i": 1295,
+"sel": ".result-box h2",
+"in": 260,
+"out": 0
+},
+{
+"i": 1296,
+"sel": ".result-box > p#result-copy",
+"in": 260,
+"out": 0
+},
+{
+"i": 1297,
+"sel": ".result-rank",
+"in": 260,
+"out": 0
+},
+{
+"i": 1298,
+"sel": ".result-rank strong",
+"in": 520,
+"out": 0
+},
+{
+"i": 1299,
+"sel": ".result-rank .rank-delta",
+"in": 260,
+"out": 0
+},
+{
+"i": 1300,
+"sel": ".result-rank-note",
+"in": 260,
+"out": 0
+},
+{
+"i": 1301,
+"sel": ".result-question",
+"in": 260,
+"out": 0
+},
+{
+"i": 1302,
+"sel": ".result-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 1303,
+"sel": ".result-actions button",
+"in": 520,
+"out": 0
+},
+{
+"i": 1304,
+"sel": ".result-actions button:last-child",
+"in": 260,
+"out": 0
+},
+{
+"i": 1305,
+"sel": ".result-rank",
+"in": 260,
+"out": 0
+},
+{
+"i": 1306,
+"sel": ".result-rank .rank-before, .result-rank .rank-after",
+"in": 520,
+"out": 0
+},
+{
+"i": 1307,
+"sel": ".result-rank .rank-delta",
+"in": 260,
+"out": 0
+},
+{
+"i": 1308,
+"sel": ".result-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 1309,
+"sel": ".result-box",
+"in": 260,
+"out": 0
+},
+{
+"i": 1310,
+"sel": ".tier-modal",
+"in": 260,
+"out": 0
+},
+{
+"i": 1311,
+"sel": ".tier-modal.show",
+"in": 0,
+"out": 0
+},
+{
+"i": 1312,
+"sel": ".tier-panel",
+"in": 260,
+"out": 0
+},
+{
+"i": 1313,
+"sel": ".tier-head",
+"in": 260,
+"out": 0
+},
+{
+"i": 1314,
+"sel": ".tier-head small",
+"in": 260,
+"out": 0
+},
+{
+"i": 1315,
+"sel": ".tier-head h2",
+"in": 260,
+"out": 0
+},
+{
+"i": 1316,
+"sel": ".tier-head p",
+"in": 260,
+"out": 0
+},
+{
+"i": 1317,
+"sel": ".tier-hero",
+"in": 0,
+"out": 0
+},
+{
+"i": 1318,
+"sel": ".tier-emblem",
+"in": 0,
+"out": 0
+},
+{
+"i": 1319,
+"sel": ".tier-name",
+"in": 0,
+"out": 0
+},
+{
+"i": 1320,
+"sel": ".tier-score",
+"in": 0,
+"out": 0
+},
+{
+"i": 1321,
+"sel": ".tier-score small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1322,
+"sel": ".tier-score-value",
+"in": 0,
+"out": 0
+},
+{
+"i": 1323,
+"sel": ".tier-score-value.rolling",
+"in": 0,
+"out": 0
+},
+{
+"i": 1324,
+"sel": ".tier-score-value.settled",
+"in": 0,
+"out": 0
+},
+{
+"i": 1325,
+"sel": ".tier-delta",
+"in": 0,
+"out": 0
+},
+{
+"i": 1326,
+"sel": ".tier-delta.up",
+"in": 0,
+"out": 0
+},
+{
+"i": 1327,
+"sel": ".tier-delta.down",
+"in": 0,
+"out": 0
+},
+{
+"i": 1328,
+"sel": ".tier-delta.same",
+"in": 0,
+"out": 0
+},
+{
+"i": 1329,
+"sel": ".tier-actions",
+"in": 0,
+"out": 0
+},
+{
+"i": 1330,
+"sel": ".tier-actions button",
+"in": 0,
+"out": 0
+},
+{
+"i": 1331,
+"sel": ".tier-actions button:last-child",
+"in": 0,
+"out": 0
+},
+{
+"i": 1332,
+"sel": ".tier-actions button:hover, .tier-actions button:focus-visible",
+"in": 0,
+"out": 0
+},
+{
+"i": 1333,
+"sel": ".tier-progress",
+"in": 0,
+"out": 0
+},
+{
+"i": 1334,
+"sel": ".tier-progress i",
+"in": 0,
+"out": 0
+},
+{
+"i": 1335,
+"sel": ".tier-stats",
+"in": 0,
+"out": 0
+},
+{
+"i": 1336,
+"sel": ".tier-stat",
+"in": 0,
+"out": 0
+},
+{
+"i": 1337,
+"sel": ".tier-stat strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1338,
+"sel": ".leaderboard",
+"in": 0,
+"out": 0
+},
+{
+"i": 1339,
+"sel": ".leaderboard caption",
+"in": 0,
+"out": 0
+},
+{
+"i": 1340,
+"sel": ".leaderboard th, .leaderboard td",
+"in": 0,
+"out": 0
+},
+{
+"i": 1341,
+"sel": ".leaderboard th",
+"in": 0,
+"out": 0
+},
+{
+"i": 1342,
+"sel": ".leaderboard td:nth-child(2)",
+"in": 0,
+"out": 0
+},
+{
+"i": 1343,
+"sel": ".leaderboard tr.me",
+"in": 0,
+"out": 0
+},
+{
+"i": 1344,
+"sel": ".tier-hero",
+"in": 0,
+"out": 0
+},
+{
+"i": 1345,
+"sel": ".tier-score",
+"in": 0,
+"out": 0
+},
+{
+"i": 1346,
+"sel": ".tier-stats",
+"in": 0,
+"out": 0
+},
+{
+"i": 1347,
+"sel": ".tier-panel",
+"in": 260,
+"out": 0
+},
+{
+"i": 1348,
+"sel": ".effect-narration.summon",
+"in": 0,
+"out": 4
+},
+{
+"i": 1349,
+"sel": ".effect-narration.summon small",
+"in": 0,
+"out": 4
+},
+{
+"i": 1350,
+"sel": ".effect-narration.summon strong",
+"in": 0,
+"out": 4
+},
+{
+"i": 1351,
+"sel": ".effect-narration.summon p",
+"in": 0,
+"out": 4
+},
+{
+"i": 1352,
+"sel": ".effect-narration.summon p::after",
+"in": 0,
+"out": 4
+},
+{
+"i": 1353,
+"sel": ".hand-guide.initiative-guide",
+"in": 4,
+"out": 0
+},
+{
+"i": 1354,
+"sel": ".guardian-select",
+"in": 0,
+"out": 4
+},
+{
+"i": 1355,
+"sel": ".guardian-select .gs-board",
+"in": 0,
+"out": 4
+},
+{
+"i": 1356,
+"sel": ".guardian-select .gs-hyeonmu",
+"in": 0,
+"out": 4
+},
+{
+"i": 1357,
+"sel": ".guardian-select .gs-baekho",
+"in": 0,
+"out": 4
+},
+{
+"i": 1358,
+"sel": ".guardian-select .gs-cheongryong",
+"in": 0,
+"out": 4
+},
+{
+"i": 1359,
+"sel": ".guardian-select .gs-jujak",
+"in": 0,
+"out": 4
+},
+{
+"i": 1360,
+"sel": ".guardian-select .gs-card",
+"in": 0,
+"out": 20
+},
+{
+"i": 1361,
+"sel": ".guardian-select .gs-card .gd-emblem",
+"in": 0,
+"out": 20
+},
+{
+"i": 1362,
+"sel": ".guardian-select .gs-card strong",
+"in": 0,
+"out": 20
+},
+{
+"i": 1363,
+"sel": ".guardian-select .gs-card em",
+"in": 0,
+"out": 20
+},
+{
+"i": 1364,
+"sel": ".guardian-select .gs-card .gs-desc",
+"in": 0,
+"out": 20
+},
+{
+"i": 1365,
+"sel": ".guardian-select .gs-card .gs-cost",
+"in": 0,
+"out": 0
+},
+{
+"i": 1366,
+"sel": ".guardian-select .gs-card:hover, .guardian-select .gs-card:focus-visible",
+"in": 0,
+"out": 20
+},
+{
+"i": 1367,
+"sel": ".guardian-select .gs-skip",
+"in": 0,
+"out": 0
+},
+{
+"i": 1368,
+"sel": ".guardian-select .gs-skip strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1369,
+"sel": ".guardian-select .gs-skip span, .guardian-select .gs-skip small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1370,
+"sel": ".guardian-select .gs-heading",
+"in": 0,
+"out": 4
+},
+{
+"i": 1371,
+"sel": ".guardian-select .gs-heading h2",
+"in": 0,
+"out": 4
+},
+{
+"i": 1372,
+"sel": ".guardian-select .gs-heading small",
+"in": 0,
+"out": 4
+},
+{
+"i": 1373,
+"sel": ".guardian-select .gs-heading p, .guardian-select .gs-heading .gs-wallet",
+"in": 0,
+"out": 4
+},
+{
+"i": 1374,
+"sel": ".duel-hud .player .avatar.guardian-landed",
+"in": 0,
+"out": 0
+},
+{
+"i": 1375,
+"sel": ".command-rail .hand.ultimate-arming .ult-name",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1376,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1377,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-effect p",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1378,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-cond em",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1379,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-meta span",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1380,
+"sel": ".command-rail .card.summon-card .card-stats > span:first-child, .command-rail .card.summon-card .card-stats > span:last-child",
+"in": 3392,
+"out": 0
+},
+{
+"i": 1381,
+"sel": ".command-rail .card.summon-card .card-stats > span:first-child",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1382,
+"sel": ".command-rail .card.summon-card .card-stats > span:last-child",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1383,
+"sel": ".command-rail .card.summon-card .card-stats .grade-bonus",
+"in": 556,
+"out": 0
+},
+{
+"i": 1384,
+"sel": ".command-rail .card.summon-card > p",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1385,
+"sel": ".rule-trigger",
+"in": 1460,
+"out": 0
+},
+{
+"i": 1386,
+"sel": ".rule-key",
+"in": 1348,
+"out": 0
+},
+{
+"i": 1387,
+"sel": ".command-rail .card.summon-card .card-stats .power-grade",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1388,
+"sel": ".command-rail .card.summon-card .card-stats",
+"in": 1696,
+"out": 0
+},
+{
+"i": 1389,
+"sel": ".arena .unit > h4",
+"in": 980,
+"out": 0
+},
+{
+"i": 1390,
+"sel": ".arena .unit > .stats",
+"in": 980,
+"out": 0
+},
+{
+"i": 1391,
+"sel": ".arena .unit > .stats > span",
+"in": 1960,
+"out": 0
+},
+{
+"i": 1392,
+"sel": ".arena .unit > .stats > span:first-child",
+"in": 980,
+"out": 0
+},
+{
+"i": 1393,
+"sel": ".arena .unit > .stats > span:last-child",
+"in": 980,
+"out": 0
+},
+{
+"i": 1394,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1395,
+"sel": ".command-rail .hand.ultimate-arming .ult-body",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1396,
+"sel": ".command-rail .hand.ultimate-arming .ult-name",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1397,
+"sel": ".command-rail .hand.ultimate-arming .ult-effect",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1398,
+"sel": ".command-rail .hand.ultimate-arming .ult-cond",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1399,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card .art",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1400,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card .art img",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1401,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-meta",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1402,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-meta span",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1403,
+"sel": ".ultimate-panel",
+"in": 260,
+"out": 0
+},
+{
+"i": 1404,
+"sel": ".ultimate-panel .setting-title",
+"in": 260,
+"out": 0
+},
+{
+"i": 1405,
+"sel": ".ultimate-panel .setting-title strong",
+"in": 260,
+"out": 0
+},
+{
+"i": 1406,
+"sel": ".ultimate-slot-empty.ultimate-cta",
+"in": 208,
+"out": 0
+},
+{
+"i": 1407,
+"sel": ".ultimate-slot-empty.ultimate-cta small",
+"in": 208,
+"out": 0
+},
+{
+"i": 1408,
+"sel": ".ultimate-slot-empty.ultimate-cta:hover:not(:disabled)",
+"in": 128,
+"out": 0
+},
+{
+"i": 1409,
+"sel": ".ultimate-slot-empty.ultimate-cta.armed",
+"in": 108,
+"out": 0
+},
+{
+"i": 1410,
+"sel": ".command-rail .hand.ultimate-arming",
+"in": 108,
+"out": 0
+},
+{
+"i": 1411,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1412,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card.fire",
+"in": 292,
+"out": 0
+},
+{
+"i": 1413,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card.water",
+"in": 300,
+"out": 0
+},
+{
+"i": 1414,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card.ice",
+"in": 0,
+"out": 0
+},
+{
+"i": 1415,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card.wind",
+"in": 196,
+"out": 0
+},
+{
+"i": 1416,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card.thunder",
+"in": 0,
+"out": 0
+},
+{
+"i": 1417,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card.earth",
+"in": 108,
+"out": 0
+},
+{
+"i": 1418,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card.neutral",
+"in": 376,
+"out": 0
+},
+{
+"i": 1419,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card:hover",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1420,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card .art",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1421,
+"sel": ".command-rail .hand.ultimate-arming .ult-name",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1422,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-meta",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1423,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-meta span",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1424,
+"sel": ".command-rail .hand.ultimate-arming .ult-block",
+"in": 2544,
+"out": 0
+},
+{
+"i": 1425,
+"sel": ".command-rail .hand.ultimate-arming .ult-effect",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1426,
+"sel": ".command-rail .hand.ultimate-arming .ult-cond",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1427,
+"sel": ".command-rail .hand.ultimate-arming .ult-label",
+"in": 2544,
+"out": 0
+},
+{
+"i": 1428,
+"sel": ".command-rail .hand.ultimate-arming .ult-cond .ult-label",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1429,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-effect p",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1430,
+"sel": ".command-rail .hand.ultimate-arming .ult-preview .ult-cond em",
+"in": 1272,
+"out": 0
+},
+{
+"i": 1431,
+"sel": ".command-rail .hand.ultimate-arming.aura-candidate-mode .card.summon-card.aura-ultimate-mismatch",
+"in": 980,
+"out": 0
+},
+{
+"i": 1432,
+"sel": ".command-rail .hand.ultimate-arming.aura-candidate-mode .card.summon-card.aura-ultimate-match",
+"in": 292,
+"out": 0
+},
+{
+"i": 1433,
+"sel": ".command-rail .hand.ultimate-arming .card.summon-card.aura-ultimate-match .ult-name::after",
+"in": 292,
+"out": 0
+},
+{
+"i": 1434,
+"sel": ".command-rail .hand.ultimate-arming.aura-candidate-mode .card.summon-card.aura-ultimate-match:hover",
+"in": 292,
+"out": 0
+},
+{
+"i": 1435,
+"sel": ".guardian-select.gs-olympus .gs-face::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1436,
+"sel": ".guardian-select.gs-olympus .gs-power",
+"in": 0,
+"out": 0
+},
+{
+"i": 1437,
+"sel": ".guardian-select.gs-olympus .gs-card strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1438,
+"sel": ".arena .field-ultimate-action.locked, .arena .field-guardian-ultimate",
+"in": 476,
+"out": 0
+},
+{
+"i": 1439,
+"sel": ".arena .field-ultimate-action.locked::before, .arena .field-guardian-ultimate::before",
+"in": 476,
+"out": 0
+},
+{
+"i": 1440,
+"sel": ".arena .field-ultimate-action.locked .ult-title, .arena .field-guardian-ultimate strong",
+"in": 476,
+"out": 0
+},
+{
+"i": 1441,
+"sel": ".arena .field-ultimate-action.locked .ult-reason, .arena .field-guardian-ultimate small",
+"in": 476,
+"out": 0
+},
+{
+"i": 1442,
+"sel": ".field-ultimate-action .ult-ready-name",
+"in": 0,
+"out": 0
+},
+{
+"i": 1443,
+"sel": ".command-rail > .turn",
+"in": 260,
+"out": 0
+},
+{
+"i": 1444,
+"sel": ".command-rail .hand-wrap > .hand-title:empty",
+"in": 260,
+"out": 0
+},
+{
+"i": 1445,
+"sel": ".command-rail .card.spell-card > p, .command-rail .card.trap-card > p",
+"in": 332,
+"out": 0
+},
+{
+"i": 1446,
+"sel": ".guardian-descent",
+"in": 0,
+"out": 0
+},
+{
+"i": 1447,
+"sel": ".guardian-descent.leaving",
+"in": 0,
+"out": 0
+},
+{
+"i": 1448,
+"sel": ".guardian-descent > i",
+"in": 0,
+"out": 0
+},
+{
+"i": 1449,
+"sel": ".gdx-veil",
+"in": 0,
+"out": 0
+},
+{
+"i": 1450,
+"sel": ".gdx-pillar",
+"in": 0,
+"out": 0
+},
+{
+"i": 1451,
+"sel": ".gdx-ring",
+"in": 0,
+"out": 0
+},
+{
+"i": 1452,
+"sel": ".gdx-ring.r2",
+"in": 0,
+"out": 0
+},
+{
+"i": 1453,
+"sel": ".gdx-wave",
+"in": 0,
+"out": 0
+},
+{
+"i": 1454,
+"sel": ".gdx-spark",
+"in": 0,
+"out": 0
+},
+{
+"i": 1455,
+"sel": ".gdx-core",
+"in": 0,
+"out": 0
+},
+{
+"i": 1456,
+"sel": ".gdx-sigil",
+"in": 0,
+"out": 0
+},
+{
+"i": 1457,
+"sel": ".gdx-core small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1458,
+"sel": ".gdx-title",
+"in": 0,
+"out": 0
+},
+{
+"i": 1459,
+"sel": ".gdx-core p",
+"in": 0,
+"out": 0
+},
+{
+"i": 1460,
+"sel": ".unit.guardian-blessed, .avatar.guardian-blessed",
+"in": 0,
+"out": 0
+},
+{
+"i": 1461,
+"sel": ".guardian-descent *, .unit.guardian-blessed, .avatar.guardian-blessed",
+"in": 0,
+"out": 0
+},
+{
+"i": 1462,
+"sel": ".aura-mark",
+"in": 520,
+"out": 20
+},
+{
+"i": 1463,
+"sel": ".aura-mark::before",
+"in": 520,
+"out": 20
+},
+{
+"i": 1464,
+"sel": ".aura-mark::after",
+"in": 520,
+"out": 20
+},
+{
+"i": 1465,
+"sel": ".aura-mark b",
+"in": 0,
+"out": 0
+},
+{
+"i": 1466,
+"sel": ".gd-avatar .aura-mark",
+"in": 520,
+"out": 0
+},
+{
+"i": 1467,
+"sel": ".guardian-fly .aura-mark",
+"in": 0,
+"out": 0
+},
+{
+"i": 1468,
+"sel": ".gd-cheongryong",
+"in": 0,
+"out": 0
+},
+{
+"i": 1469,
+"sel": ".gd-jujak",
+"in": 260,
+"out": 0
+},
+{
+"i": 1470,
+"sel": ".gd-namu",
+"in": 0,
+"out": 0
+},
+{
+"i": 1471,
+"sel": ".gd-baekho",
+"in": 260,
+"out": 0
+},
+{
+"i": 1472,
+"sel": ".gd-hyeonmu",
+"in": 0,
+"out": 0
+},
+{
+"i": 1473,
+"sel": ".guardian-select.gs-aura .gs-board",
+"in": 0,
+"out": 4
+},
+{
+"i": 1474,
+"sel": ".guardian-select.gs-aura .gs-card",
+"in": 0,
+"out": 20
+},
+{
+"i": 1475,
+"sel": ".guardian-select.gs-aura .gs-card:hover, .guardian-select.gs-aura .gs-card:focus-visible",
+"in": 0,
+"out": 20
+},
+{
+"i": 1476,
+"sel": ".guardian-select.gs-aura .gs-card .gd-emblem.aura-mark",
+"in": 0,
+"out": 0
+},
+{
+"i": 1477,
+"sel": ".guardian-select.gs-aura .gs-card > *",
+"in": 0,
+"out": 100
+},
+{
+"i": 1478,
+"sel": ".guardian-select.gs-aura .gs-card strong",
+"in": 0,
+"out": 20
+},
+{
+"i": 1479,
+"sel": ".guardian-select.gs-aura .gs-card em",
+"in": 0,
+"out": 20
+},
+{
+"i": 1480,
+"sel": ".guardian-select.gs-aura .gs-power",
+"in": 0,
+"out": 20
+},
+{
+"i": 1481,
+"sel": ".guardian-select.gs-aura .gs-desc",
+"in": 0,
+"out": 20
+},
+{
+"i": 1482,
+"sel": ".guardian-select.gs-aura .gs-note",
+"in": 0,
+"out": 4
+},
+{
+"i": 1483,
+"sel": ".guardian-select.gs-aura .gs-skip",
+"in": 0,
+"out": 0
+},
+{
+"i": 1484,
+"sel": ".guardian-select.gs-aura .gs-heading",
+"in": 0,
+"out": 4
+},
+{
+"i": 1485,
+"sel": ".guardian-select.gs-aura .gs-desc .gs-note",
+"in": 0,
+"out": 4
+},
+{
+"i": 1486,
+"sel": ".guardian-select.gs-aura .gs-board",
+"in": 0,
+"out": 4
+},
+{
+"i": 1487,
+"sel": ".guardian-select.gs-aura .gs-card",
+"in": 0,
+"out": 20
+},
+{
+"i": 1488,
+"sel": ".guardian-select.gs-aura .gs-card > *",
+"in": 0,
+"out": 100
+},
+{
+"i": 1489,
+"sel": ".guardian-select.gs-aura .gs-card .gd-emblem.aura-mark, .guardian-select.gs-aura .gs-card > .gd-emblem",
+"in": 0,
+"out": 20
+},
+{
+"i": 1490,
+"sel": ".guardian-select.gs-aura .aura-mark img",
+"in": 0,
+"out": 20
+},
+{
+"i": 1491,
+"sel": ".aura-mark",
+"in": 520,
+"out": 20
+},
+{
+"i": 1492,
+"sel": ".aura-mark img",
+"in": 520,
+"out": 20
+},
+{
+"i": 1493,
+"sel": ".guardian-select.gs-aura .gs-card strong",
+"in": 0,
+"out": 20
+},
+{
+"i": 1494,
+"sel": ".guardian-select.gs-aura .gs-card em",
+"in": 0,
+"out": 20
+},
+{
+"i": 1495,
+"sel": ".guardian-select.gs-aura .gs-power",
+"in": 0,
+"out": 20
+},
+{
+"i": 1496,
+"sel": ".guardian-select.gs-aura .gs-desc",
+"in": 0,
+"out": 20
+},
+{
+"i": 1497,
+"sel": ".guardian-select.gs-aura .gs-desc .gs-note",
+"in": 0,
+"out": 4
+},
+{
+"i": 1498,
+"sel": ".guardian-select.gs-aura .gs-card:hover, .guardian-select.gs-aura .gs-card:focus-visible",
+"in": 0,
+"out": 20
+},
+{
+"i": 1499,
+"sel": ".guardian-select.gs-aura .gs-card em",
+"in": 0,
+"out": 20
+},
+{
+"i": 1500,
+"sel": ".guardian-select.gs-aura .gs-mood",
+"in": 0,
+"out": 0
+},
+{
+"i": 1501,
+"sel": ".guardian-select.gs-aura .gs-card",
+"in": 0,
+"out": 20
+},
+{
+"i": 1502,
+"sel": ".guardian-select.gs-aura .gs-board",
+"in": 0,
+"out": 4
+},
+{
+"i": 1503,
+"sel": ".guardian-select.gs-aura .gs-board::before",
+"in": 0,
+"out": 4
+},
+{
+"i": 1504,
+"sel": ".guardian-select.gs-aura .gs-board::after",
+"in": 0,
+"out": 4
+},
+{
+"i": 1505,
+"sel": ".guardian-select.gs-aura .gs-card",
+"in": 0,
+"out": 20
+},
+{
+"i": 1506,
+"sel": ".guardian-select.gs-aura .gs-jujak",
+"in": 0,
+"out": 4
+},
+{
+"i": 1507,
+"sel": ".guardian-select.gs-aura .gs-cheongryong",
+"in": 0,
+"out": 4
+},
+{
+"i": 1508,
+"sel": ".guardian-select.gs-aura .gs-namu",
+"in": 0,
+"out": 4
+},
+{
+"i": 1509,
+"sel": ".guardian-select.gs-aura .gs-baekho",
+"in": 0,
+"out": 4
+},
+{
+"i": 1510,
+"sel": ".guardian-select.gs-aura .gs-hyeonmu",
+"in": 0,
+"out": 4
+},
+{
+"i": 1511,
+"sel": ".guardian-select.gs-aura .gs-card .gd-emblem, .guardian-select.gs-aura .gs-card .gd-emblem.aura-mark",
+"in": 0,
+"out": 20
+},
+{
+"i": 1512,
+"sel": ".guardian-select.gs-aura .gs-card strong",
+"in": 0,
+"out": 20
+},
+{
+"i": 1513,
+"sel": ".guardian-select.gs-aura .gs-card em",
+"in": 0,
+"out": 20
+},
+{
+"i": 1514,
+"sel": ".guardian-select.gs-aura .gs-card .gs-power",
+"in": 0,
+"out": 20
+},
+{
+"i": 1515,
+"sel": ".guardian-select.gs-aura .gs-card .gs-desc",
+"in": 0,
+"out": 20
+},
+{
+"i": 1516,
+"sel": ".guardian-select.gs-aura .gs-card:hover, .guardian-select.gs-aura .gs-card:focus-visible",
+"in": 0,
+"out": 20
+},
+{
+"i": 1517,
+"sel": ".aura-pentagon-core",
+"in": 0,
+"out": 4
+},
+{
+"i": 1518,
+"sel": ".aura-pentagon-core::before",
+"in": 0,
+"out": 4
+},
+{
+"i": 1519,
+"sel": ".aura-pentagon-core span",
+"in": 0,
+"out": 4
+},
+{
+"i": 1520,
+"sel": ".guardian-select.gs-aura .gs-board",
+"in": 0,
+"out": 4
+},
+{
+"i": 1521,
+"sel": ".guardian-select.gs-aura .gs-card",
+"in": 0,
+"out": 20
+},
+{
+"i": 1522,
+"sel": ".guardian-select.gs-aura .gs-jujak",
+"in": 0,
+"out": 4
+},
+{
+"i": 1523,
+"sel": ".guardian-select.gs-aura .gs-namu, .guardian-select.gs-aura .gs-baekho",
+"in": 0,
+"out": 8
+},
+{
+"i": 1524,
+"sel": ".guardian-select.gs-aura .gs-card .gs-desc",
+"in": 0,
+"out": 20
+},
+{
+"i": 1525,
+"sel": ".aura-pentagon-core",
+"in": 0,
+"out": 4
+},
+{
+"i": 1526,
+"sel": ":where(.card.summon-card[data-persona], .arena .unit[data-persona])",
+"in": 1952,
+"out": 0
+},
+{
+"i": 1527,
+"sel": "[data-persona=\"fire\"]",
+"in": 700,
+"out": 0
+},
+{
+"i": 1528,
+"sel": "[data-persona=\"water\"]",
+"in": 448,
+"out": 0
+},
+{
+"i": 1529,
+"sel": "[data-persona=\"wood\"]",
+"in": 252,
+"out": 0
+},
+{
+"i": 1530,
+"sel": "[data-persona=\"metal\"]",
+"in": 392,
+"out": 0
+},
+{
+"i": 1531,
+"sel": "[data-persona=\"earth\"]",
+"in": 160,
+"out": 0
+},
+{
+"i": 1532,
+"sel": ".command-rail .hand:not(.ultimate-arming) .card.summon-card[data-persona], .arena .unit[data-persona]",
+"in": 680,
+"out": 0
+},
+{
+"i": 1533,
+"sel": ".command-rail .hand:not(.ultimate-arming) .card.summon-card[data-rarity=\"rare\"]::before, .arena .unit[data-rarity=\"rare\"]::before",
+"in": 72,
+"out": 0
+},
+{
+"i": 1534,
+"sel": ".command-rail .hand:not(.ultimate-arming) .card.summon-card[data-rarity=\"legendary\"]::before, .arena .unit[data-rarity=\"legendary\"]::before",
+"in": 64,
+"out": 0
+},
+{
+"i": 1535,
+"sel": ".command-rail .hand:not(.ultimate-arming) .card.summon-card[data-rarity] > h3",
+"in": 424,
+"out": 0
+},
+{
+"i": 1536,
+"sel": ".card-back-design[data-persona]",
+"in": 0,
+"out": 0
+},
+{
+"i": 1537,
+"sel": ".card-back-design[data-persona]::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1538,
+"sel": ".card-back-design .back-emblem",
+"in": 1530,
+"out": 0
+},
+{
+"i": 1539,
+"sel": ".summon-zone.replace-picking .unit",
+"in": 0,
+"out": 0
+},
+{
+"i": 1540,
+"sel": ".summon-zone.replace-picking .unit::after, .summon-zone .unit.replace-target::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 1541,
+"sel": ".summon-zone .unit.replace-target",
+"in": 0,
+"out": 0
+},
+{
+"i": 1542,
+"sel": ".sound-wrap",
+"in": 260,
+"out": 0
+},
+{
+"i": 1543,
+"sel": "body:has(.battle-intro) .sound-wrap, body:has(.guardian-select) .sound-wrap",
+"in": 4,
+"out": 0
+},
+{
+"i": 1544,
+"sel": "body:has(.guardian-select):not(:has(#collection-modal.show)) header .ghost[onclick=\"openCollection('deck')\"]",
+"in": 0,
+"out": 0
+},
+{
+"i": 1545,
+"sel": ".sound-panel",
+"in": 260,
+"out": 0
+},
+{
+"i": 1546,
+"sel": ".sound-panel[hidden]",
+"in": 148,
+"out": 0
+},
+{
+"i": 1547,
+"sel": ".sound-panel label",
+"in": 520,
+"out": 0
+},
+{
+"i": 1548,
+"sel": ".sound-panel output",
+"in": 520,
+"out": 0
+},
+{
+"i": 1549,
+"sel": ".sound-panel input[type=\"range\"]",
+"in": 520,
+"out": 0
+},
+{
+"i": 1550,
+"sel": ".sound-mute",
+"in": 260,
+"out": 0
+},
+{
+"i": 1551,
+"sel": ".sound-mute:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 1552,
+"sel": ".owned-card[draggable=\"true\"]",
+"in": 0,
+"out": 0
+},
+{
+"i": 1553,
+"sel": ".owned-card.dragging, .deck-row.dragging",
+"in": 0,
+"out": 0
+},
+{
+"i": 1554,
+"sel": ".deck-row[draggable=\"true\"]",
+"in": 6380,
+"out": 0
+},
+{
+"i": 1555,
+"sel": ".deck-list",
+"in": 260,
+"out": 0
+},
+{
+"i": 1556,
+"sel": ".deck-list.drag-over",
+"in": 0,
+"out": 0
+},
+{
+"i": 1557,
+"sel": ".deck-list.drag-denied",
+"in": 0,
+"out": 0
+},
+{
+"i": 1558,
+"sel": ".owned-grid.drag-over",
+"in": 0,
+"out": 0
+},
+{
+"i": 1559,
+"sel": ".collection-tab",
+"in": 1560,
+"out": 0
+},
+{
+"i": 1560,
+"sel": ".shop-tag",
+"in": 260,
+"out": 0
+},
+{
+"i": 1561,
+"sel": ".deck-sep",
+"in": 232,
+"out": 0
+},
+{
+"i": 1562,
+"sel": ".deck-comp",
+"in": 116,
+"out": 0
+},
+{
+"i": 1563,
+"sel": ".deck-bar",
+"in": 116,
+"out": 0
+},
+{
+"i": 1564,
+"sel": ".deck-bar i",
+"in": 348,
+"out": 0
+},
+{
+"i": 1565,
+"sel": ".deck-legend",
+"in": 116,
+"out": 0
+},
+{
+"i": 1566,
+"sel": ".deck-legend i",
+"in": 348,
+"out": 0
+},
+{
+"i": 1567,
+"sel": ".deck-legend b",
+"in": 348,
+"out": 0
+},
+{
+"i": 1568,
+"sel": ".deck-curve-label",
+"in": 116,
+"out": 0
+},
+{
+"i": 1569,
+"sel": ".deck-curve",
+"in": 116,
+"out": 0
+},
+{
+"i": 1570,
+"sel": ".deck-curve div",
+"in": 928,
+"out": 0
+},
+{
+"i": 1571,
+"sel": ".deck-curve i",
+"in": 928,
+"out": 0
+},
+{
+"i": 1572,
+"sel": ".deck-curve b",
+"in": 928,
+"out": 0
+},
+{
+"i": 1573,
+"sel": ".deck-curve small",
+"in": 928,
+"out": 0
+},
+{
+"i": 1574,
+"sel": ".deck-group-toggle",
+"in": 116,
+"out": 0
+},
+{
+"i": 1575,
+"sel": ".deck-group-toggle button",
+"in": 348,
+"out": 0
+},
+{
+"i": 1576,
+"sel": ".deck-group-toggle button.active",
+"in": 116,
+"out": 0
+},
+{
+"i": 1577,
+"sel": ".deck-group",
+"in": 580,
+"out": 0
+},
+{
+"i": 1578,
+"sel": ".deck-group-head",
+"in": 580,
+"out": 0
+},
+{
+"i": 1579,
+"sel": ".deck-group-head b",
+"in": 580,
+"out": 0
+},
+{
+"i": 1580,
+"sel": ".codex-view",
+"in": 260,
+"out": 0
+},
+{
+"i": 1581,
+"sel": ".codex-summary",
+"in": 260,
+"out": 0
+},
+{
+"i": 1582,
+"sel": ".codex-total",
+"in": 116,
+"out": 0
+},
+{
+"i": 1583,
+"sel": ".codex-total-num b",
+"in": 116,
+"out": 0
+},
+{
+"i": 1584,
+"sel": ".codex-total-num span",
+"in": 116,
+"out": 0
+},
+{
+"i": 1585,
+"sel": ".codex-progress",
+"in": 116,
+"out": 0
+},
+{
+"i": 1586,
+"sel": ".codex-progress i",
+"in": 116,
+"out": 0
+},
+{
+"i": 1587,
+"sel": ".codex-stat",
+"in": 812,
+"out": 0
+},
+{
+"i": 1588,
+"sel": ".codex-stat small",
+"in": 812,
+"out": 0
+},
+{
+"i": 1589,
+"sel": ".codex-stat b",
+"in": 812,
+"out": 0
+},
+{
+"i": 1590,
+"sel": ".codex-stat b span",
+"in": 812,
+"out": 0
+},
+{
+"i": 1591,
+"sel": ".codex-stat.type-champion",
+"in": 116,
+"out": 0
+},
+{
+"i": 1592,
+"sel": ".codex-stat.type-spell",
+"in": 116,
+"out": 0
+},
+{
+"i": 1593,
+"sel": ".codex-stat.type-trap",
+"in": 116,
+"out": 0
+},
+{
+"i": 1594,
+"sel": ".codex-stat.rarity-legendary b",
+"in": 116,
+"out": 0
+},
+{
+"i": 1595,
+"sel": ".codex-stat.rarity-rare b",
+"in": 116,
+"out": 0
+},
+{
+"i": 1596,
+"sel": ".codex-toolbar",
+"in": 260,
+"out": 0
+},
+{
+"i": 1597,
+"sel": ".codex-seg",
+"in": 1820,
+"out": 0
+},
+{
+"i": 1598,
+"sel": ".codex-seg button",
+"in": 3648,
+"out": 0
+},
+{
+"i": 1599,
+"sel": ".codex-seg button.active",
+"in": 904,
+"out": 0
+},
+{
+"i": 1600,
+"sel": ".codex-body",
+"in": 260,
+"out": 0
+},
+{
+"i": 1601,
+"sel": ".codex-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 1602,
+"sel": ".codex-card",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1603,
+"sel": ".codex-card:hover",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1604,
+"sel": ".codex-card.selected",
+"in": 0,
+"out": 0
+},
+{
+"i": 1605,
+"sel": ".codex-no",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1606,
+"sel": ".codex-type",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1607,
+"sel": ".codex-card.type-champion .codex-type",
+"in": 19140,
+"out": 0
+},
+{
+"i": 1608,
+"sel": ".codex-card.type-spell .codex-type",
+"in": 4640,
+"out": 0
+},
+{
+"i": 1609,
+"sel": ".codex-card.type-trap .codex-type",
+"in": 1044,
+"out": 0
+},
+{
+"i": 1610,
+"sel": ".codex-art",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1611,
+"sel": ".codex-card.type-spell .codex-art, .codex-card.type-trap .codex-art",
+"in": 5684,
+"out": 0
+},
+{
+"i": 1612,
+"sel": ".codex-card.type-spell .codex-art",
+"in": 4640,
+"out": 0
+},
+{
+"i": 1613,
+"sel": ".codex-card.type-trap .codex-art",
+"in": 1044,
+"out": 0
+},
+{
+"i": 1614,
+"sel": ".codex-art img",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1615,
+"sel": ".codex-glyph",
+"in": 0,
+"out": 0
+},
+{
+"i": 1616,
+"sel": ".codex-name",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1617,
+"sel": ".codex-card small",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1618,
+"sel": ".codex-own",
+"in": 10672,
+"out": 0
+},
+{
+"i": 1619,
+"sel": ".codex-card.rarity-rare.got",
+"in": 3596,
+"out": 0
+},
+{
+"i": 1620,
+"sel": ".codex-card.rarity-legendary.got",
+"in": 1276,
+"out": 0
+},
+{
+"i": 1621,
+"sel": ".codex-card.common.got, .codex-card.rarity-common.got",
+"in": 5800,
+"out": 0
+},
+{
+"i": 1622,
+"sel": ".codex-card.missing",
+"in": 14152,
+"out": 0
+},
+{
+"i": 1623,
+"sel": ".codex-card.missing .codex-art img, .codex-detail-art.missing img",
+"in": 14152,
+"out": 0
+},
+{
+"i": 1624,
+"sel": ".codex-card.missing .codex-art",
+"in": 14152,
+"out": 0
+},
+{
+"i": 1625,
+"sel": ".codex-card.missing .codex-glyph",
+"in": 0,
+"out": 0
+},
+{
+"i": 1626,
+"sel": ".codex-card.missing .codex-name",
+"in": 14152,
+"out": 0
+},
+{
+"i": 1627,
+"sel": ".codex-card.missing .codex-no, .codex-card.missing small",
+"in": 28304,
+"out": 0
+},
+{
+"i": 1628,
+"sel": ".codex-card.missing .codex-type",
+"in": 14152,
+"out": 0
+},
+{
+"i": 1629,
+"sel": ".codex-lock",
+"in": 14152,
+"out": 0
+},
+{
+"i": 1630,
+"sel": ".codex-detail",
+"in": 260,
+"out": 0
+},
+{
+"i": 1631,
+"sel": ".codex-detail-art",
+"in": 116,
+"out": 0
+},
+{
+"i": 1632,
+"sel": ".codex-detail-art.type-spell, .codex-detail-art.type-trap",
+"in": 0,
+"out": 0
+},
+{
+"i": 1633,
+"sel": ".codex-detail-art.type-spell",
+"in": 0,
+"out": 0
+},
+{
+"i": 1634,
+"sel": ".codex-detail-art.type-trap",
+"in": 0,
+"out": 0
+},
+{
+"i": 1635,
+"sel": ".codex-detail-art.rarity-rare.got",
+"in": 0,
+"out": 0
+},
+{
+"i": 1636,
+"sel": ".codex-detail-art.rarity-legendary.got",
+"in": 0,
+"out": 0
+},
+{
+"i": 1637,
+"sel": ".codex-detail-art.missing",
+"in": 0,
+"out": 0
+},
+{
+"i": 1638,
+"sel": ".codex-detail-art img",
+"in": 116,
+"out": 0
+},
+{
+"i": 1639,
+"sel": ".codex-detail-art .codex-glyph",
+"in": 0,
+"out": 0
+},
+{
+"i": 1640,
+"sel": ".codex-detail-meta small",
+"in": 116,
+"out": 0
+},
+{
+"i": 1641,
+"sel": ".codex-detail-meta h3",
+"in": 116,
+"out": 0
+},
+{
+"i": 1642,
+"sel": ".codex-detail-meta p",
+"in": 116,
+"out": 0
+},
+{
+"i": 1643,
+"sel": ".codex-detail-stats",
+"in": 116,
+"out": 0
+},
+{
+"i": 1644,
+"sel": ".codex-detail-stats span",
+"in": 464,
+"out": 0
+},
+{
+"i": 1645,
+"sel": ".codex-detail-stats b",
+"in": 348,
+"out": 0
+},
+{
+"i": 1646,
+"sel": ".codex-detail-state",
+"in": 116,
+"out": 0
+},
+{
+"i": 1647,
+"sel": ".codex-detail-state.got",
+"in": 116,
+"out": 0
+},
+{
+"i": 1648,
+"sel": ".codex-detail-state.missing",
+"in": 0,
+"out": 0
+},
+{
+"i": 1649,
+"sel": ".codex-summary",
+"in": 260,
+"out": 0
+},
+{
+"i": 1650,
+"sel": ".codex-total",
+"in": 116,
+"out": 0
+},
+{
+"i": 1651,
+"sel": ".codex-body",
+"in": 260,
+"out": 0
+},
+{
+"i": 1652,
+"sel": ".codex-detail",
+"in": 260,
+"out": 0
+},
+{
+"i": 1653,
+"sel": ".codex-detail-art, .codex-detail-art.type-spell, .codex-detail-art.type-trap",
+"in": 116,
+"out": 0
+},
+{
+"i": 1654,
+"sel": ".deck-curve",
+"in": 116,
+"out": 0
+},
+{
+"i": 1655,
+"sel": ".synth-view",
+"in": 520,
+"out": 0
+},
+{
+"i": 1656,
+"sel": ".synth-altar",
+"in": 520,
+"out": 0
+},
+{
+"i": 1657,
+"sel": ".synth-slots",
+"in": 260,
+"out": 0
+},
+{
+"i": 1658,
+"sel": ".synth-slot",
+"in": 1044,
+"out": 0
+},
+{
+"i": 1659,
+"sel": ".synth-slot.empty span",
+"in": 0,
+"out": 0
+},
+{
+"i": 1660,
+"sel": ".synth-slot.empty small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1661,
+"sel": ".synth-slot.empty",
+"in": 0,
+"out": 0
+},
+{
+"i": 1662,
+"sel": ".synth-slot.filled",
+"in": 264,
+"out": 0
+},
+{
+"i": 1663,
+"sel": ".synth-slot.filled.rare",
+"in": 0,
+"out": 0
+},
+{
+"i": 1664,
+"sel": ".synth-slot.filled.legendary",
+"in": 0,
+"out": 0
+},
+{
+"i": 1665,
+"sel": ".synth-slot img",
+"in": 264,
+"out": 0
+},
+{
+"i": 1666,
+"sel": ".synth-slot b, .synth-slot small",
+"in": 528,
+"out": 0
+},
+{
+"i": 1667,
+"sel": ".synth-slot b",
+"in": 264,
+"out": 0
+},
+{
+"i": 1668,
+"sel": ".synth-slot small",
+"in": 264,
+"out": 0
+},
+{
+"i": 1669,
+"sel": ".synth-slot.filled::after",
+"in": 264,
+"out": 0
+},
+{
+"i": 1670,
+"sel": ".synth-arrow",
+"in": 260,
+"out": 0
+},
+{
+"i": 1671,
+"sel": "#synth-view .synth-arrow, #synth-view #synth-result",
+"in": 520,
+"out": 0
+},
+{
+"i": 1672,
+"sel": "#synth-view .synth-slots",
+"in": 260,
+"out": 0
+},
+{
+"i": 1673,
+"sel": ".synth-slots-head",
+"in": 116,
+"out": 0
+},
+{
+"i": 1674,
+"sel": ".synth-slots-head b",
+"in": 116,
+"out": 0
+},
+{
+"i": 1675,
+"sel": ".synth-slots-head small",
+"in": 116,
+"out": 0
+},
+{
+"i": 1676,
+"sel": "#synth-view .synth-slot.filled b",
+"in": 264,
+"out": 0
+},
+{
+"i": 1677,
+"sel": "#synth-view .synth-slot.filled small",
+"in": 264,
+"out": 0
+},
+{
+"i": 1678,
+"sel": ".synth-slot.vacant",
+"in": 780,
+"out": 0
+},
+{
+"i": 1679,
+"sel": ".synth-slot.vacant span",
+"in": 780,
+"out": 0
+},
+{
+"i": 1680,
+"sel": ".synth-result",
+"in": 520,
+"out": 0
+},
+{
+"i": 1681,
+"sel": ".synth-card",
+"in": 376,
+"out": 0
+},
+{
+"i": 1682,
+"sel": ".synth-card.rare",
+"in": 0,
+"out": 0
+},
+{
+"i": 1683,
+"sel": ".synth-card.legendary",
+"in": 0,
+"out": 0
+},
+{
+"i": 1684,
+"sel": ".synth-card img",
+"in": 84,
+"out": 0
+},
+{
+"i": 1685,
+"sel": ".synth-card h4",
+"in": 84,
+"out": 0
+},
+{
+"i": 1686,
+"sel": ".synth-card small",
+"in": 460,
+"out": 0
+},
+{
+"i": 1687,
+"sel": ".synth-card.unknown",
+"in": 292,
+"out": 0
+},
+{
+"i": 1688,
+"sel": ".synth-card.unknown span",
+"in": 292,
+"out": 0
+},
+{
+"i": 1689,
+"sel": ".synth-pop",
+"in": 0,
+"out": 0
+},
+{
+"i": 1690,
+"sel": ".synth-swirl",
+"in": 0,
+"out": 0
+},
+{
+"i": 1691,
+"sel": ".synth-altar.busy .synth-slots",
+"in": 0,
+"out": 0
+},
+{
+"i": 1692,
+"sel": ".synth-odds",
+"in": 520,
+"out": 0
+},
+{
+"i": 1693,
+"sel": ".synth-odd",
+"in": 176,
+"out": 0
+},
+{
+"i": 1694,
+"sel": ".synth-odd small",
+"in": 176,
+"out": 0
+},
+{
+"i": 1695,
+"sel": ".synth-odd b",
+"in": 176,
+"out": 0
+},
+{
+"i": 1696,
+"sel": ".synth-odd.rare",
+"in": 88,
+"out": 0
+},
+{
+"i": 1697,
+"sel": ".synth-odd.rare b",
+"in": 88,
+"out": 0
+},
+{
+"i": 1698,
+"sel": ".synth-odd.legendary",
+"in": 0,
+"out": 0
+},
+{
+"i": 1699,
+"sel": ".synth-odd.legendary b",
+"in": 0,
+"out": 0
+},
+{
+"i": 1700,
+"sel": ".synth-odds-hint",
+"in": 116,
+"out": 0
+},
+{
+"i": 1701,
+"sel": ".synth-go",
+"in": 520,
+"out": 0
+},
+{
+"i": 1702,
+"sel": ".synth-go:disabled",
+"in": 308,
+"out": 0
+},
+{
+"i": 1703,
+"sel": ".synth-help",
+"in": 520,
+"out": 0
+},
+{
+"i": 1704,
+"sel": ".synth-pool",
+"in": 520,
+"out": 0
+},
+{
+"i": 1705,
+"sel": ".synth-pool-head",
+"in": 520,
+"out": 0
+},
+{
+"i": 1706,
+"sel": ".synth-count",
+"in": 520,
+"out": 0
+},
+{
+"i": 1707,
+"sel": ".synth-grid",
+"in": 520,
+"out": 0
+},
+{
+"i": 1708,
+"sel": ".synth-pick",
+"in": 19400,
+"out": 0
+},
+{
+"i": 1709,
+"sel": ".synth-pick:hover:not(:disabled)",
+"in": 19400,
+"out": 0
+},
+{
+"i": 1710,
+"sel": ".synth-pick.rare",
+"in": 3596,
+"out": 0
+},
+{
+"i": 1711,
+"sel": ".synth-pick.legendary",
+"in": 0,
+"out": 0
+},
+{
+"i": 1712,
+"sel": ".synth-pick img",
+"in": 19400,
+"out": 0
+},
+{
+"i": 1713,
+"sel": ".synth-pick b",
+"in": 76384,
+"out": 0
+},
+{
+"i": 1714,
+"sel": ".synth-pick small",
+"in": 19400,
+"out": 0
+},
+{
+"i": 1715,
+"sel": ".synth-spare",
+"in": 19400,
+"out": 0
+},
+{
+"i": 1716,
+"sel": ".synth-pick.locked, .synth-pick:disabled",
+"in": 0,
+"out": 0
+},
+{
+"i": 1717,
+"sel": ".synth-pick.locked img",
+"in": 0,
+"out": 0
+},
+{
+"i": 1718,
+"sel": ".synth-pick.locked .synth-spare",
+"in": 0,
+"out": 0
+},
+{
+"i": 1719,
+"sel": ".synth-view",
+"in": 520,
+"out": 0
+},
+{
+"i": 1720,
+"sel": ".synth-altar",
+"in": 520,
+"out": 0
+},
+{
+"i": 1721,
+"sel": ".synth-pool-head",
+"in": 520,
+"out": 0
+},
+{
+"i": 1722,
+"sel": ".synth-pool-head .synth-count",
+"in": 520,
+"out": 0
+},
+{
+"i": 1723,
+"sel": ".codex-seg button.synth-dup",
+"in": 116,
+"out": 0
+},
+{
+"i": 1724,
+"sel": ".synth-auto",
+"in": 260,
+"out": 0
+},
+{
+"i": 1725,
+"sel": ".synth-auto:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 1726,
+"sel": ".synth-section",
+"in": 376,
+"out": 0
+},
+{
+"i": 1727,
+"sel": ".synth-section b",
+"in": 376,
+"out": 0
+},
+{
+"i": 1728,
+"sel": ".synth-section.blocked",
+"in": 0,
+"out": 0
+},
+{
+"i": 1729,
+"sel": ".synth-section.blocked b",
+"in": 0,
+"out": 0
+},
+{
+"i": 1730,
+"sel": ".synth-pick",
+"in": 19400,
+"out": 0
+},
+{
+"i": 1731,
+"sel": ".synth-pick-main",
+"in": 9396,
+"out": 0
+},
+{
+"i": 1732,
+"sel": ".synth-pick-main:disabled",
+"in": 0,
+"out": 0
+},
+{
+"i": 1733,
+"sel": ".synth-pick.picked",
+"in": 172,
+"out": 0
+},
+{
+"i": 1734,
+"sel": ".synth-picked",
+"in": 88,
+"out": 0
+},
+{
+"i": 1735,
+"sel": ".synth-spare",
+"in": 19400,
+"out": 0
+},
+{
+"i": 1736,
+"sel": ".synth-spare.lock",
+"in": 0,
+"out": 0
+},
+{
+"i": 1737,
+"sel": ".synth-have",
+"in": 9396,
+"out": 0
+},
+{
+"i": 1738,
+"sel": ".synth-have span",
+"in": 28188,
+"out": 0
+},
+{
+"i": 1739,
+"sel": ".synth-have b",
+"in": 28188,
+"out": 0
+},
+{
+"i": 1740,
+"sel": ".synth-have .deck.on",
+"in": 0,
+"out": 0
+},
+{
+"i": 1741,
+"sel": ".synth-have .deck.on b",
+"in": 0,
+"out": 0
+},
+{
+"i": 1742,
+"sel": ".synth-have .free.on",
+"in": 18792,
+"out": 0
+},
+{
+"i": 1743,
+"sel": ".synth-have .free.on b",
+"in": 18792,
+"out": 0
+},
+{
+"i": 1744,
+"sel": ".synth-stepper",
+"in": 9396,
+"out": 0
+},
+{
+"i": 1745,
+"sel": ".synth-stepper button",
+"in": 28188,
+"out": 0
+},
+{
+"i": 1746,
+"sel": ".synth-stepper button.max",
+"in": 9396,
+"out": 0
+},
+{
+"i": 1747,
+"sel": ".synth-stepper button:disabled",
+"in": 12904,
+"out": 0
+},
+{
+"i": 1748,
+"sel": ".synth-stepper b",
+"in": 9396,
+"out": 0
+},
+{
+"i": 1749,
+"sel": ".synth-pick.picked .synth-stepper b",
+"in": 88,
+"out": 0
+},
+{
+"i": 1750,
+"sel": ".synth-pick.locked",
+"in": 0,
+"out": 0
+},
+{
+"i": 1751,
+"sel": ".synth-pick.locked img",
+"in": 0,
+"out": 0
+},
+{
+"i": 1752,
+"sel": ".synth-pick:hover:not(.locked)",
+"in": 19400,
+"out": 0
+},
+{
+"i": 1753,
+"sel": ".synth-grid",
+"in": 520,
+"out": 0
+},
+{
+"i": 1754,
+"sel": ".synth-circle",
+"in": 0,
+"out": 4
+},
+{
+"i": 1755,
+"sel": ".synth-circle .sc-halo",
+"in": 0,
+"out": 4
+},
+{
+"i": 1756,
+"sel": ".synth-circle g",
+"in": 0,
+"out": 48
+},
+{
+"i": 1757,
+"sel": ".synth-circle circle.line, .synth-circle circle.dash, .synth-circle circle.thin, .synth-circle polygon.line2, .synth-circle .line2 polygon",
+"in": 0,
+"out": 32
+},
+{
+"i": 1758,
+"sel": ".synth-circle circle.line",
+"in": 0,
+"out": 8
+},
+{
+"i": 1759,
+"sel": ".synth-circle circle.thin",
+"in": 0,
+"out": 8
+},
+{
+"i": 1760,
+"sel": ".synth-circle circle.dash",
+"in": 0,
+"out": 4
+},
+{
+"i": 1761,
+"sel": ".synth-circle .line2 polygon, .synth-circle polygon.line2",
+"in": 0,
+"out": 12
+},
+{
+"i": 1762,
+"sel": ".synth-circle .tick line",
+"in": 0,
+"out": 240
+},
+{
+"i": 1763,
+"sel": ".synth-circle .fill polygon",
+"in": 0,
+"out": 64
+},
+{
+"i": 1764,
+"sel": ".synth-circle .sc-spark circle",
+"in": 0,
+"out": 12
+},
+{
+"i": 1765,
+"sel": ".synth-circle .sc-outer",
+"in": 0,
+"out": 4
+},
+{
+"i": 1766,
+"sel": ".synth-circle .sc-mid",
+"in": 0,
+"out": 4
+},
+{
+"i": 1767,
+"sel": ".synth-circle .sc-star",
+"in": 0,
+"out": 4
+},
+{
+"i": 1768,
+"sel": ".synth-circle .sc-inner",
+"in": 0,
+"out": 4
+},
+{
+"i": 1769,
+"sel": ".synth-circle .sc-oct",
+"in": 0,
+"out": 4
+},
+{
+"i": 1770,
+"sel": ".synth-circle .sc-oct polygon",
+"in": 0,
+"out": 4
+},
+{
+"i": 1771,
+"sel": ".synth-circle .sc-spark.s1",
+"in": 0,
+"out": 4
+},
+{
+"i": 1772,
+"sel": ".synth-circle .sc-spark.s2",
+"in": 0,
+"out": 4
+},
+{
+"i": 1773,
+"sel": ".synth-circle .sc-spark.s3",
+"in": 0,
+"out": 4
+},
+{
+"i": 1774,
+"sel": ".synth-circle .sc-core",
+"in": 0,
+"out": 4
+},
+{
+"i": 1775,
+"sel": ".synth-card.synth-pop::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 1776,
+"sel": ".synth-circle *",
+"in": 0,
+"out": 436
+},
+{
+"i": 1777,
+"sel": ".collection-shell",
+"in": 260,
+"out": 0
+},
+{
+"i": 1778,
+"sel": ".collection-shell",
+"in": 260,
+"out": 0
+},
+{
+"i": 1779,
+"sel": ".collection-modal",
+"in": 260,
+"out": 0
+},
+{
+"i": 1780,
+"sel": ".codex-view",
+"in": 260,
+"out": 0
+},
+{
+"i": 1781,
+"sel": ".codex-summary",
+"in": 260,
+"out": 0
+},
+{
+"i": 1782,
+"sel": ".codex-total",
+"in": 116,
+"out": 0
+},
+{
+"i": 1783,
+"sel": ".codex-total-num b",
+"in": 116,
+"out": 0
+},
+{
+"i": 1784,
+"sel": ".codex-total-num span",
+"in": 116,
+"out": 0
+},
+{
+"i": 1785,
+"sel": ".codex-progress",
+"in": 116,
+"out": 0
+},
+{
+"i": 1786,
+"sel": ".codex-stat",
+"in": 812,
+"out": 0
+},
+{
+"i": 1787,
+"sel": ".codex-stat small",
+"in": 812,
+"out": 0
+},
+{
+"i": 1788,
+"sel": ".codex-stat b",
+"in": 812,
+"out": 0
+},
+{
+"i": 1789,
+"sel": ".codex-seg button",
+"in": 3648,
+"out": 0
+},
+{
+"i": 1790,
+"sel": ".codex-body",
+"in": 260,
+"out": 0
+},
+{
+"i": 1791,
+"sel": ".codex-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 1792,
+"sel": ".codex-card",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1793,
+"sel": ".codex-no",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1794,
+"sel": ".codex-type",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1795,
+"sel": ".codex-name",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1796,
+"sel": ".codex-card small",
+"in": 24824,
+"out": 0
+},
+{
+"i": 1797,
+"sel": ".codex-own",
+"in": 10672,
+"out": 0
+},
+{
+"i": 1798,
+"sel": ".codex-glyph",
+"in": 0,
+"out": 0
+},
+{
+"i": 1799,
+"sel": ".codex-lock",
+"in": 14152,
+"out": 0
+},
+{
+"i": 1800,
+"sel": ".codex-detail",
+"in": 260,
+"out": 0
+},
+{
+"i": 1801,
+"sel": ".codex-detail-art, .codex-detail-art.type-spell, .codex-detail-art.type-trap",
+"in": 116,
+"out": 0
+},
+{
+"i": 1802,
+"sel": ".codex-detail-meta",
+"in": 116,
+"out": 0
+},
+{
+"i": 1803,
+"sel": ".codex-detail-meta small",
+"in": 116,
+"out": 0
+},
+{
+"i": 1804,
+"sel": ".codex-detail-meta h3",
+"in": 116,
+"out": 0
+},
+{
+"i": 1805,
+"sel": ".codex-detail-meta p",
+"in": 116,
+"out": 0
+},
+{
+"i": 1806,
+"sel": ".codex-detail-stats span",
+"in": 464,
+"out": 0
+},
+{
+"i": 1807,
+"sel": ".codex-detail-state",
+"in": 116,
+"out": 0
+},
+{
+"i": 1808,
+"sel": ".codex-detail-art .codex-glyph",
+"in": 0,
+"out": 0
+},
+{
+"i": 1809,
+"sel": ".collection-head",
+"in": 260,
+"out": 0
+},
+{
+"i": 1810,
+"sel": ".collection-head h2",
+"in": 260,
+"out": 0
+},
+{
+"i": 1811,
+"sel": ".collection-head p",
+"in": 260,
+"out": 0
+},
+{
+"i": 1812,
+"sel": ".collection-head .currency",
+"in": 520,
+"out": 0
+},
+{
+"i": 1813,
+"sel": ".collection-tabs",
+"in": 260,
+"out": 0
+},
+{
+"i": 1814,
+"sel": ".collection-tab",
+"in": 1560,
+"out": 0
+},
+{
+"i": 1815,
+"sel": ".deck-view",
+"in": 260,
+"out": 0
+},
+{
+"i": 1816,
+"sel": ".deck-toolbar",
+"in": 260,
+"out": 0
+},
+{
+"i": 1817,
+"sel": ".deck-filter",
+"in": 1392,
+"out": 0
+},
+{
+"i": 1818,
+"sel": ".deck-tools button",
+"in": 232,
+"out": 0
+},
+{
+"i": 1819,
+"sel": ".deck-count",
+"in": 260,
+"out": 0
+},
+{
+"i": 1820,
+"sel": ".deck-count strong",
+"in": 260,
+"out": 0
+},
+{
+"i": 1821,
+"sel": ".deck-content",
+"in": 260,
+"out": 0
+},
+{
+"i": 1822,
+"sel": ".owned-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 1823,
+"sel": ".owned-card",
+"in": 10500,
+"out": 0
+},
+{
+"i": 1824,
+"sel": ".owned-card h4",
+"in": 10500,
+"out": 0
+},
+{
+"i": 1825,
+"sel": ".owned-card small",
+"in": 10500,
+"out": 0
+},
+{
+"i": 1826,
+"sel": ".owned-count",
+"in": 10500,
+"out": 0
+},
+{
+"i": 1827,
+"sel": ".deck-card-controls",
+"in": 10500,
+"out": 0
+},
+{
+"i": 1828,
+"sel": ".deck-card-controls button",
+"in": 21000,
+"out": 0
+},
+{
+"i": 1829,
+"sel": ".deck-card-controls button:hover:not(:disabled)",
+"in": 10500,
+"out": 0
+},
+{
+"i": 1830,
+"sel": ".deck-card-controls b",
+"in": 10500,
+"out": 0
+},
+{
+"i": 1831,
+"sel": ".deck-row",
+"in": 6380,
+"out": 0
+},
+{
+"i": 1832,
+"sel": ".deck-row img",
+"in": 6380,
+"out": 0
+},
+{
+"i": 1833,
+"sel": ".deck-row-actions",
+"in": 6380,
+"out": 0
+},
+{
+"i": 1834,
+"sel": ".deck-row-actions button",
+"in": 12760,
+"out": 0
+},
+{
+"i": 1835,
+"sel": ".deck-row-actions button:hover:not(:disabled)",
+"in": 6380,
+"out": 0
+},
+{
+"i": 1836,
+"sel": ".deck-row-actions button:disabled",
+"in": 6380,
+"out": 0
+},
+{
+"i": 1837,
+"sel": ".deck-list",
+"in": 260,
+"out": 0
+},
+{
+"i": 1838,
+"sel": ".deck-rows",
+"in": 260,
+"out": 0
+},
+{
+"i": 1839,
+"sel": ".deck-list",
+"in": 260,
+"out": 0
+},
+{
+"i": 1840,
+"sel": ".deck-list h3",
+"in": 260,
+"out": 0
+},
+{
+"i": 1841,
+"sel": ".deck-row",
+"in": 6380,
+"out": 0
+},
+{
+"i": 1842,
+"sel": ".deck-row img",
+"in": 6380,
+"out": 0
+},
+{
+"i": 1843,
+"sel": ".deck-row small",
+"in": 6380,
+"out": 0
+},
+{
+"i": 1844,
+"sel": ".deck-summary, .deck-legend",
+"in": 232,
+"out": 0
+},
+{
+"i": 1845,
+"sel": ".deck-group-head",
+"in": 580,
+"out": 0
+},
+{
+"i": 1846,
+"sel": ".deck-group-toggle button",
+"in": 348,
+"out": 0
+},
+{
+"i": 1847,
+"sel": ".deck-curve",
+"in": 116,
+"out": 0
+},
+{
+"i": 1848,
+"sel": ".deck-save",
+"in": 260,
+"out": 0
+},
+{
+"i": 1849,
+"sel": ".deck-help",
+"in": 260,
+"out": 0
+},
+{
+"i": 1850,
+"sel": ".synth-view",
+"in": 520,
+"out": 0
+},
+{
+"i": 1851,
+"sel": ".synth-altar",
+"in": 520,
+"out": 0
+},
+{
+"i": 1852,
+"sel": ".synth-slot b",
+"in": 264,
+"out": 0
+},
+{
+"i": 1853,
+"sel": ".synth-slot small",
+"in": 264,
+"out": 0
+},
+{
+"i": 1854,
+"sel": ".synth-slot.empty span",
+"in": 0,
+"out": 0
+},
+{
+"i": 1855,
+"sel": ".synth-card",
+"in": 376,
+"out": 0
+},
+{
+"i": 1856,
+"sel": ".synth-card h4",
+"in": 84,
+"out": 0
+},
+{
+"i": 1857,
+"sel": ".synth-card small",
+"in": 460,
+"out": 0
+},
+{
+"i": 1858,
+"sel": ".synth-circle",
+"in": 0,
+"out": 4
+},
+{
+"i": 1859,
+"sel": ".synth-odd small",
+"in": 176,
+"out": 0
+},
+{
+"i": 1860,
+"sel": ".synth-odd b",
+"in": 176,
+"out": 0
+},
+{
+"i": 1861,
+"sel": ".synth-odds-hint",
+"in": 116,
+"out": 0
+},
+{
+"i": 1862,
+"sel": ".synth-go",
+"in": 520,
+"out": 0
+},
+{
+"i": 1863,
+"sel": ".synth-help",
+"in": 520,
+"out": 0
+},
+{
+"i": 1864,
+"sel": ".synth-grid",
+"in": 520,
+"out": 0
+},
+{
+"i": 1865,
+"sel": ".synth-pick",
+"in": 19400,
+"out": 0
+},
+{
+"i": 1866,
+"sel": ".synth-pick b",
+"in": 76384,
+"out": 0
+},
+{
+"i": 1867,
+"sel": ".synth-pick small",
+"in": 19400,
+"out": 0
+},
+{
+"i": 1868,
+"sel": ".synth-have span",
+"in": 28188,
+"out": 0
+},
+{
+"i": 1869,
+"sel": ".synth-have b",
+"in": 28188,
+"out": 0
+},
+{
+"i": 1870,
+"sel": ".synth-stepper",
+"in": 9396,
+"out": 0
+},
+{
+"i": 1871,
+"sel": ".synth-stepper button",
+"in": 28188,
+"out": 0
+},
+{
+"i": 1872,
+"sel": ".synth-section",
+"in": 376,
+"out": 0
+},
+{
+"i": 1873,
+"sel": ".synth-count",
+"in": 520,
+"out": 0
+},
+{
+"i": 1874,
+"sel": ".synth-auto",
+"in": 260,
+"out": 0
+},
+{
+"i": 1875,
+"sel": ".synth-pool-head .codex-seg button",
+"in": 1852,
+"out": 0
+},
+{
+"i": 1876,
+"sel": ".gacha-view",
+"in": 260,
+"out": 0
+},
+{
+"i": 1877,
+"sel": ".gacha-banner",
+"in": 260,
+"out": 0
+},
+{
+"i": 1878,
+"sel": ".gacha-orb",
+"in": 260,
+"out": 0
+},
+{
+"i": 1879,
+"sel": ".gacha-banner h3",
+"in": 260,
+"out": 0
+},
+{
+"i": 1880,
+"sel": ".gacha-banner p",
+"in": 260,
+"out": 0
+},
+{
+"i": 1881,
+"sel": ".shop-tag",
+"in": 260,
+"out": 0
+},
+{
+"i": 1882,
+"sel": ".gacha-actions button",
+"in": 520,
+"out": 0
+},
+{
+"i": 1883,
+"sel": ".gacha-actions small",
+"in": 520,
+"out": 0
+},
+{
+"i": 1884,
+"sel": ".gacha-results",
+"in": 260,
+"out": 0
+},
+{
+"i": 1885,
+"sel": ".pull-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 1886,
+"sel": ".pull-card h4",
+"in": 0,
+"out": 0
+},
+{
+"i": 1887,
+"sel": ".pull-card small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1888,
+"sel": ".gacha-empty",
+"in": 0,
+"out": 0
+},
+{
+"i": 1889,
+"sel": ".gacha-placeholder",
+"in": 260,
+"out": 0
+},
+{
+"i": 1890,
+"sel": ".gacha-placeholder .ghosts",
+"in": 260,
+"out": 0
+},
+{
+"i": 1891,
+"sel": ".gacha-placeholder .ghost",
+"in": 2600,
+"out": 0
+},
+{
+"i": 1892,
+"sel": ".gacha-placeholder p",
+"in": 260,
+"out": 0
+},
+{
+"i": 1893,
+"sel": ".gacha-placeholder .ghosts",
+"in": 260,
+"out": 0
+},
+{
+"i": 1894,
+"sel": ".synth-card",
+"in": 376,
+"out": 0
+},
+{
+"i": 1895,
+"sel": ".synth-circle",
+"in": 0,
+"out": 4
+},
+{
+"i": 1896,
+"sel": ".synth-altar",
+"in": 520,
+"out": 0
+},
+{
+"i": 1897,
+"sel": ".deck-help",
+"in": 260,
+"out": 0
+},
+{
+"i": 1898,
+"sel": ".deck-curve",
+"in": 116,
+"out": 0
+},
+{
+"i": 1899,
+"sel": ".deck-comp",
+"in": 116,
+"out": 0
+},
+{
+"i": 1900,
+"sel": ".deck-curve-label",
+"in": 116,
+"out": 0
+},
+{
+"i": 1901,
+"sel": ".collection-modal",
+"in": 260,
+"out": 0
+},
+{
+"i": 1902,
+"sel": ":root",
+"in": 0,
+"out": 260
+},
+{
+"i": 1903,
+"sel": ".damage-fx",
+"in": 0,
+"out": 148
+},
+{
+"i": 1904,
+"sel": "body .hp-damage-pop",
+"in": 0,
+"out": 72
+},
+{
+"i": 1905,
+"sel": ".synth-stage",
+"in": 0,
+"out": 4
+},
+{
+"i": 1906,
+"sel": ".synth-stage > *",
+"in": 0,
+"out": 16
+},
+{
+"i": 1907,
+"sel": ".synth-stage .stage-circle",
+"in": 0,
+"out": 4
+},
+{
+"i": 1908,
+"sel": ".synth-stage .stage-circle .synth-circle",
+"in": 0,
+"out": 4
+},
+{
+"i": 1909,
+"sel": ".synth-stage.casting .stage-circle",
+"in": 0,
+"out": 0
+},
+{
+"i": 1910,
+"sel": ".synth-stage.revealed .stage-circle",
+"in": 0,
+"out": 4
+},
+{
+"i": 1911,
+"sel": ".synth-stage .stage-mat",
+"in": 0,
+"out": 0
+},
+{
+"i": 1912,
+"sel": ".synth-stage .stage-mat.rare",
+"in": 0,
+"out": 0
+},
+{
+"i": 1913,
+"sel": ".synth-stage .stage-mat.legendary",
+"in": 0,
+"out": 0
+},
+{
+"i": 1914,
+"sel": ".synth-stage .stage-mat img",
+"in": 0,
+"out": 0
+},
+{
+"i": 1915,
+"sel": ".synth-stage.revealed .stage-mat",
+"in": 0,
+"out": 0
+},
+{
+"i": 1916,
+"sel": ".synth-stage .stage-flash",
+"in": 0,
+"out": 4
+},
+{
+"i": 1917,
+"sel": ".synth-stage.revealed .stage-flash",
+"in": 0,
+"out": 4
+},
+{
+"i": 1918,
+"sel": ".synth-stage .stage-result",
+"in": 0,
+"out": 4
+},
+{
+"i": 1919,
+"sel": ".synth-stage .stage-card",
+"in": 0,
+"out": 4
+},
+{
+"i": 1920,
+"sel": ".synth-stage .stage-card.rare",
+"in": 0,
+"out": 0
+},
+{
+"i": 1921,
+"sel": ".synth-stage .stage-card.legendary",
+"in": 0,
+"out": 0
+},
+{
+"i": 1922,
+"sel": ".synth-stage .stage-card img",
+"in": 0,
+"out": 4
+},
+{
+"i": 1923,
+"sel": ".synth-stage .stage-card h3",
+"in": 0,
+"out": 4
+},
+{
+"i": 1924,
+"sel": ".synth-stage .stage-card small",
+"in": 0,
+"out": 4
+},
+{
+"i": 1925,
+"sel": ".synth-stage .stage-card .new-badge",
+"in": 0,
+"out": 4
+},
+{
+"i": 1926,
+"sel": ".synth-stage .stage-close",
+"in": 0,
+"out": 4
+},
+{
+"i": 1927,
+"sel": ".synth-stage .stage-caption",
+"in": 0,
+"out": 4
+},
+{
+"i": 1928,
+"sel": ".synth-stage.revealed .stage-caption",
+"in": 0,
+"out": 4
+},
+{
+"i": 1929,
+"sel": ".synth-stage:not(.revealed) .stage-result",
+"in": 0,
+"out": 0
+},
+{
+"i": 1930,
+"sel": ".synth-card.synth-wait span",
+"in": 0,
+"out": 0
+},
+{
+"i": 1931,
+"sel": ".synth-card.synth-wait small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1932,
+"sel": ".synth-stage *, .synth-stage",
+"in": 0,
+"out": 484
+},
+{
+"i": 1933,
+"sel": ".skill-fx strong",
+"in": 0,
+"out": 68
+},
+{
+"i": 1934,
+"sel": ".skill-fx strong .fx-title",
+"in": 0,
+"out": 68
+},
+{
+"i": 1935,
+"sel": ".skill-fx strong .fx-line",
+"in": 0,
+"out": 0
+},
+{
+"i": 1936,
+"sel": ".collection-head",
+"in": 260,
+"out": 0
+},
+{
+"i": 1937,
+"sel": ".collection-head > div:first-child",
+"in": 260,
+"out": 0
+},
+{
+"i": 1938,
+"sel": ".collection-head .currency, .collection-head .sound-wrap .ghost, .collection-head .modal-close",
+"in": 896,
+"out": 0
+},
+{
+"i": 1939,
+"sel": ".collection-head .sound-wrap .ghost",
+"in": 116,
+"out": 0
+},
+{
+"i": 1940,
+"sel": ".collection-head .modal-close",
+"in": 260,
+"out": 0
+},
+{
+"i": 1941,
+"sel": ".collection-head .currency",
+"in": 520,
+"out": 0
+},
+{
+"i": 1942,
+"sel": ".collection-head .sound-panel",
+"in": 116,
+"out": 0
+},
+{
+"i": 1943,
+"sel": ".deck-switcher",
+"in": 260,
+"out": 0
+},
+{
+"i": 1944,
+"sel": ".deck-tabs",
+"in": 116,
+"out": 0
+},
+{
+"i": 1945,
+"sel": ".deck-tab",
+"in": 232,
+"out": 0
+},
+{
+"i": 1946,
+"sel": ".deck-tab b",
+"in": 116,
+"out": 0
+},
+{
+"i": 1947,
+"sel": ".deck-tab .deck-tab-rename",
+"in": 0,
+"out": 0
+},
+{
+"i": 1948,
+"sel": ".deck-tab small",
+"in": 116,
+"out": 0
+},
+{
+"i": 1949,
+"sel": ".deck-tab small em",
+"in": 116,
+"out": 0
+},
+{
+"i": 1950,
+"sel": ".deck-tab.complete small",
+"in": 116,
+"out": 0
+},
+{
+"i": 1951,
+"sel": ".deck-tab.editing",
+"in": 116,
+"out": 0
+},
+{
+"i": 1952,
+"sel": ".deck-tab.active",
+"in": 116,
+"out": 0
+},
+{
+"i": 1953,
+"sel": ".deck-tab.add",
+"in": 116,
+"out": 0
+},
+{
+"i": 1954,
+"sel": ".deck-manage",
+"in": 116,
+"out": 0
+},
+{
+"i": 1955,
+"sel": ".deck-manage label",
+"in": 116,
+"out": 0
+},
+{
+"i": 1956,
+"sel": ".deck-manage input",
+"in": 116,
+"out": 0
+},
+{
+"i": 1957,
+"sel": ".deck-manage input:focus",
+"in": 116,
+"out": 0
+},
+{
+"i": 1958,
+"sel": ".deck-manage button",
+"in": 232,
+"out": 0
+},
+{
+"i": 1959,
+"sel": ".deck-manage button:disabled",
+"in": 116,
+"out": 0
+},
+{
+"i": 1960,
+"sel": ".deck-view",
+"in": 260,
+"out": 0
+},
+{
+"i": 1961,
+"sel": ".deck-battle-note",
+"in": 116,
+"out": 0
+},
+{
+"i": 1962,
+"sel": ".owned-card",
+"in": 10500,
+"out": 0
+},
+{
+"i": 1963,
+"sel": ".deck-fly",
+"in": 0,
+"out": 0
+},
+{
+"i": 1964,
+"sel": ".enhance-equip-fly",
+"in": 0,
+"out": 0
+},
+{
+"i": 1965,
+"sel": ".deck-row.deck-row-pulse",
+"in": 0,
+"out": 0
+},
+{
+"i": 1966,
+"sel": "#build-count.count-bump",
+"in": 0,
+"out": 0
+},
+{
+"i": 1967,
+"sel": ".owned-card.add-denied",
+"in": 0,
+"out": 0
+},
+{
+"i": 1968,
+"sel": "body .command-rail .hand.ultimate-arming.aura-candidate-mode .card.summon-card.aura-ultimate-mismatch, body .hand.ultimate-arming.aura-candidate-mode .card.summon-card.aura-ultimate-mismatch",
+"in": 980,
+"out": 0
+},
+{
+"i": 1969,
+"sel": "#enhance-grid .synth-pick.enh-short",
+"in": 0,
+"out": 0
+},
+{
+"i": 1970,
+"sel": "#enhance-grid .synth-pick.enh-short img",
+"in": 0,
+"out": 0
+},
+{
+"i": 1971,
+"sel": "#enhance-grid .synth-pick:not(:disabled)",
+"in": 10004,
+"out": 0
+},
+{
+"i": 1972,
+"sel": "#enhance-grid .enh-none",
+"in": 0,
+"out": 0
+},
+{
+"i": 1973,
+"sel": "#enhance-result .synth-card.enh-slot",
+"in": 84,
+"out": 0
+},
+{
+"i": 1974,
+"sel": "#enhance-result .synth-card.enh-equip-land",
+"in": 0,
+"out": 0
+},
+{
+"i": 1975,
+"sel": "#enhance-result .synth-card h4",
+"in": 84,
+"out": 0
+},
+{
+"i": 1976,
+"sel": "#enhance-result .synth-card",
+"in": 260,
+"out": 0
+},
+{
+"i": 1977,
+"sel": "#enhance-result .synth-card h4",
+"in": 84,
+"out": 0
+},
+{
+"i": 1978,
+"sel": "#enhance-result .synth-card small",
+"in": 344,
+"out": 0
+},
+{
+"i": 1979,
+"sel": "#enhance-result .synth-card.enh-land",
+"in": 0,
+"out": 0
+},
+{
+"i": 1980,
+"sel": ".synth-stage.enh-stage .stage-mat",
+"in": 0,
+"out": 0
+},
+{
+"i": 1981,
+"sel": ".synth-stage.enh-stage.casting .stage-circle",
+"in": 0,
+"out": 0
+},
+{
+"i": 1982,
+"sel": ".synth-stage .enh-banner",
+"in": 0,
+"out": 0
+},
+{
+"i": 1983,
+"sel": ".synth-stage.enh-success",
+"in": 0,
+"out": 0
+},
+{
+"i": 1984,
+"sel": ".synth-stage.enh-success .enh-banner",
+"in": 0,
+"out": 0
+},
+{
+"i": 1985,
+"sel": ".synth-stage.enh-success .stage-flash",
+"in": 0,
+"out": 0
+},
+{
+"i": 1986,
+"sel": ".synth-stage.enh-success .stage-circle .synth-circle",
+"in": 0,
+"out": 0
+},
+{
+"i": 1987,
+"sel": ".synth-stage.enh-success .stage-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 1988,
+"sel": ".synth-stage.enh-success .stage-card small",
+"in": 0,
+"out": 0
+},
+{
+"i": 1989,
+"sel": ".synth-stage.enh-success .stage-caption",
+"in": 0,
+"out": 0
+},
+{
+"i": 1990,
+"sel": ".synth-stage.enh-fail",
+"in": 0,
+"out": 0
+},
+{
+"i": 1991,
+"sel": ".synth-stage.enh-fail .stage-flash",
+"in": 0,
+"out": 0
+},
+{
+"i": 1992,
+"sel": ".synth-stage.enh-fail .stage-circle",
+"in": 0,
+"out": 0
+},
+{
+"i": 1993,
+"sel": ".synth-stage.enh-fail .stage-circle .synth-circle",
+"in": 0,
+"out": 0
+},
+{
+"i": 1994,
+"sel": ".synth-stage.enh-fail .enh-banner",
+"in": 0,
+"out": 0
+},
+{
+"i": 1995,
+"sel": ".synth-stage.enh-fail .stage-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 1996,
+"sel": ".synth-stage.enh-fail .stage-caption",
+"in": 0,
+"out": 0
+},
+{
+"i": 1997,
+"sel": ".synth-stage .enh-shards",
+"in": 0,
+"out": 0
+},
+{
+"i": 1998,
+"sel": ".synth-stage .enh-shards i",
+"in": 0,
+"out": 0
+},
+{
+"i": 1999,
+"sel": ".synth-stage.enh-stage, .synth-stage.enh-stage *",
+"in": 0,
+"out": 0
+},
+{
+"i": 2000,
+"sel": ".synth-pick, .owned-card, .codex-card, .synth-card, .stage-card",
+"in": 55100,
+"out": 4
+},
+{
+"i": 2001,
+"sel": ".enh-tier",
+"in": 37648,
+"out": 0
+},
+{
+"i": 2002,
+"sel": ".enh-tier i",
+"in": 0,
+"out": 0
+},
+{
+"i": 2003,
+"sel": ".enh-tier i.on",
+"in": 0,
+"out": 0
+},
+{
+"i": 2004,
+"sel": ".enh-tier .c0",
+"in": 0,
+"out": 0
+},
+{
+"i": 2005,
+"sel": ".enh-tier .c1",
+"in": 0,
+"out": 0
+},
+{
+"i": 2006,
+"sel": ".enh-tier .c2",
+"in": 0,
+"out": 0
+},
+{
+"i": 2007,
+"sel": ".enh-tier .c3",
+"in": 0,
+"out": 0
+},
+{
+"i": 2008,
+"sel": ".stage-card .enh-tier i",
+"in": 0,
+"out": 0
+},
+{
+"i": 2009,
+"sel": "#enhance-grid .synth-pick .synth-spare",
+"in": 10004,
+"out": 0
+},
+{
+"i": 2010,
+"sel": ".owned-card:has(.enh-tier i.on) .owned-count, .codex-card:has(.enh-tier i.on) .codex-no",
+"in": 0,
+"out": 0
+},
+{
+"i": 2011,
+"sel": ".enh-tier i.fresh",
+"in": 0,
+"out": 0
+},
+{
+"i": 2012,
+"sel": ".enh-tier .c0.fresh",
+"in": 0,
+"out": 0
+},
+{
+"i": 2013,
+"sel": ".enh-tier .c1.fresh",
+"in": 0,
+"out": 0
+},
+{
+"i": 2014,
+"sel": ".enh-tier .c2.fresh",
+"in": 0,
+"out": 0
+},
+{
+"i": 2015,
+"sel": ".enh-tier .c3.fresh",
+"in": 0,
+"out": 0
+},
+{
+"i": 2016,
+"sel": ".enh-tier .tier-spark",
+"in": 0,
+"out": 0
+},
+{
+"i": 2017,
+"sel": ".enh-tier .tier-spark.c0",
+"in": 0,
+"out": 0
+},
+{
+"i": 2018,
+"sel": ".enh-tier .tier-spark.c1",
+"in": 0,
+"out": 0
+},
+{
+"i": 2019,
+"sel": ".enh-tier .tier-spark.c2",
+"in": 0,
+"out": 0
+},
+{
+"i": 2020,
+"sel": ".enh-tier .tier-spark.c3",
+"in": 0,
+"out": 0
+},
+{
+"i": 2021,
+"sel": ".enh-tier i.fresh, .enh-tier .tier-spark",
+"in": 0,
+"out": 0
+},
+{
+"i": 2022,
+"sel": ".hand .card[data-enh-tier], .arena .unit[data-enh-tier]",
+"in": 0,
+"out": 0
+},
+{
+"i": 2023,
+"sel": ".arena .unit .enh-tier i",
+"in": 0,
+"out": 0
+},
+{
+"i": 2024,
+"sel": ".command-rail .hand .card.summon-card[data-rarity]::before, .arena .unit[data-rarity]::before",
+"in": 1952,
+"out": 0
+},
+{
+"i": 2025,
+"sel": ".enh-tier",
+"in": 37648,
+"out": 0
+},
+{
+"i": 2026,
+"sel": ".enh-tier > *",
+"in": 37648,
+"out": 0
+},
+{
+"i": 2027,
+"sel": ".enh-roman",
+"in": 37648,
+"out": 0
+},
+{
+"i": 2028,
+"sel": ".arena .unit .enh-roman",
+"in": 980,
+"out": 0
+},
+{
+"i": 2029,
+"sel": ".stage-card .enh-tier",
+"in": 0,
+"out": 0
+},
+{
+"i": 2030,
+"sel": ".stage-card .enh-roman",
+"in": 0,
+"out": 0
+},
+{
+"i": 2031,
+"sel": ".synth-stage.enh-stage .stage-card .new-badge",
+"in": 0,
+"out": 0
+},
+{
+"i": 2032,
+"sel": ".codex-card .enh-tier",
+"in": 4988,
+"out": 0
+},
+{
+"i": 2033,
+"sel": ".enh-tier.rewrite .enh-roman.old",
+"in": 0,
+"out": 0
+},
+{
+"i": 2034,
+"sel": ".enh-tier.rewrite .enh-roman.new",
+"in": 0,
+"out": 0
+},
+{
+"i": 2035,
+"sel": ".enh-tier .tier-spark",
+"in": 0,
+"out": 0
+},
+{
+"i": 2036,
+"sel": ".enh-tier.rewrite *",
+"in": 0,
+"out": 0
+},
+{
+"i": 2037,
+"sel": ".enh-tier.rewrite .enh-roman.old",
+"in": 0,
+"out": 0
+},
+{
+"i": 2038,
+"sel": ".codex-card .enh-tier, .owned-card .enh-tier, .synth-pick .enh-tier",
+"in": 34888,
+"out": 0
+},
+{
+"i": 2039,
+"sel": "#enhance-result .synth-card .enh-tier",
+"in": 84,
+"out": 0
+},
+{
+"i": 2040,
+"sel": ".synth-odds",
+"in": 520,
+"out": 0
+},
+{
+"i": 2041,
+"sel": ".synth-odds > .synth-odd",
+"in": 176,
+"out": 0
+},
+{
+"i": 2042,
+"sel": ".synth-odds > .synth-odds-hint",
+"in": 116,
+"out": 0
+},
+{
+"i": 2043,
+"sel": ".codex-card .completion-chip",
+"in": 0,
+"out": 0
+},
+{
+"i": 2044,
+"sel": ".codex-card .tier-pick",
+"in": 4988,
+"out": 0
+},
+{
+"i": 2045,
+"sel": ".codex-card .tier-pick b",
+"in": 24940,
+"out": 0
+},
+{
+"i": 2046,
+"sel": ".codex-card .tier-pick b.on",
+"in": 5228,
+"out": 0
+},
+{
+"i": 2047,
+"sel": ".codex-card .tier-pick b.on:hover",
+"in": 5228,
+"out": 0
+},
+{
+"i": 2048,
+"sel": ".codex-card .tier-pick b.sel",
+"in": 4988,
+"out": 0
+},
+{
+"i": 2049,
+"sel": ".codex-detail-art",
+"in": 116,
+"out": 0
+},
+{
+"i": 2050,
+"sel": "#synth-view .synth-altar",
+"in": 260,
+"out": 0
+},
+{
+"i": 2051,
+"sel": "#synth-view .synth-altar",
+"in": 260,
+"out": 0
+},
+{
+"i": 2052,
+"sel": "#synth-view .synth-slots",
+"in": 260,
+"out": 0
+},
+{
+"i": 2053,
+"sel": "#synth-view .synth-slots > .synth-slot",
+"in": 1044,
+"out": 0
+},
+{
+"i": 2054,
+"sel": "#synth-view .synth-altar",
+"in": 260,
+"out": 0
+},
+{
+"i": 2055,
+"sel": "#synth-view .synth-help",
+"in": 260,
+"out": 0
+},
+{
+"i": 2056,
+"sel": "#synth-view .synth-odds-hint",
+"in": 116,
+"out": 0
+},
+{
+"i": 2057,
+"sel": "#synth-view .synth-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 2058,
+"sel": "#synth-view .synth-slots > .synth-slot:not(.empty)",
+"in": 1044,
+"out": 0
+},
+{
+"i": 2059,
+"sel": "#synth-view .synth-slots > .synth-slot b",
+"in": 264,
+"out": 0
+},
+{
+"i": 2060,
+"sel": "#synth-view .synth-altar > :not(.synth-slots)",
+"in": 1560,
+"out": 0
+},
+{
+"i": 2061,
+"sel": ".top-actions .cracker-wallet[hidden]",
+"in": 260,
+"out": 0
+},
+{
+"i": 2062,
+"sel": ".top-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 2063,
+"sel": ".top-collection",
+"in": 0,
+"out": 0
+},
+{
+"i": 2064,
+"sel": ".top-collection b",
+"in": 0,
+"out": 0
+},
+{
+"i": 2065,
+"sel": ".top-collection small",
+"in": 0,
+"out": 0
+},
+{
+"i": 2066,
+"sel": ".top-collection:hover",
+"in": 0,
+"out": 0
+},
+{
+"i": 2067,
+"sel": ".top-collection",
+"in": 0,
+"out": 0
+},
+{
+"i": 2068,
+"sel": ".top-collection b",
+"in": 0,
+"out": 0
+},
+{
+"i": 2069,
+"sel": ".top-collection small",
+"in": 0,
+"out": 0
+},
+{
+"i": 2070,
+"sel": ".top-collection:hover",
+"in": 0,
+"out": 0
+},
+{
+"i": 2071,
+"sel": ".top-actions",
+"in": 260,
+"out": 0
+},
+{
+"i": 2072,
+"sel": ".top-actions > *",
+"in": 780,
+"out": 0
+},
+{
+"i": 2073,
+"sel": ".top-nav",
+"in": 260,
+"out": 0
+},
+{
+"i": 2074,
+"sel": ".top-nav-btn",
+"in": 1560,
+"out": 0
+},
+{
+"i": 2075,
+"sel": ".top-nav-btn > i",
+"in": 1560,
+"out": 0
+},
+{
+"i": 2076,
+"sel": ".top-nav-btn:hover",
+"in": 1560,
+"out": 0
+},
+{
+"i": 2077,
+"sel": ".top-nav-btn.main",
+"in": 780,
+"out": 0
+},
+{
+"i": 2078,
+"sel": ".top-nav-btn.shop",
+"in": 520,
+"out": 0
+},
+{
+"i": 2079,
+"sel": ".top-nav-btn.shop:hover",
+"in": 520,
+"out": 0
+},
+{
+"i": 2080,
+"sel": ".top-nav-btn.shop.current",
+"in": 36,
+"out": 0
+},
+{
+"i": 2081,
+"sel": ".util-group",
+"in": 260,
+"out": 0
+},
+{
+"i": 2082,
+"sel": ".util-group #sound-toggle",
+"in": 144,
+"out": 0
+},
+{
+"i": 2083,
+"sel": ".util-group #sound-toggle:hover",
+"in": 144,
+"out": 0
+},
+{
+"i": 2084,
+"sel": ".util-toggle",
+"in": 260,
+"out": 0
+},
+{
+"i": 2085,
+"sel": ".util-toggle:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 2086,
+"sel": ".util-toggle .toggle-track",
+"in": 260,
+"out": 0
+},
+{
+"i": 2087,
+"sel": ".util-toggle .toggle-track::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 2088,
+"sel": ".util-toggle.on",
+"in": 0,
+"out": 0
+},
+{
+"i": 2089,
+"sel": ".util-toggle.on .toggle-track",
+"in": 0,
+"out": 0
+},
+{
+"i": 2090,
+"sel": ".util-toggle.on .toggle-track::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 2091,
+"sel": ".top-nav-btn.current",
+"in": 108,
+"out": 0
+},
+{
+"i": 2092,
+"sel": "#sound-toggle",
+"in": 260,
+"out": 0
+},
+{
+"i": 2093,
+"sel": "body:has(#collection-modal.show) .top-nav",
+"in": 116,
+"out": 0
+},
+{
+"i": 2094,
+"sel": "body:has(.guardian-select) .top-nav, body:has(.battle-intro) .top-nav",
+"in": 4,
+"out": 0
+},
+{
+"i": 2095,
+"sel": ":root",
+"in": 0,
+"out": 260
+},
+{
+"i": 2096,
+"sel": "main.app, #collection-modal, #result, #tier-modal",
+"in": 1040,
+"out": 0
+},
+{
+"i": 2097,
+"sel": "main.app",
+"in": 260,
+"out": 0
+},
+{
+"i": 2098,
+"sel": ".side",
+"in": 0,
+"out": 0
+},
+{
+"i": 2099,
+"sel": ".command-rail, .stage-column",
+"in": 520,
+"out": 0
+},
+{
+"i": 2100,
+"sel": ".stage-column, .command-rail",
+"in": 520,
+"out": 0
+},
+{
+"i": 2101,
+"sel": ".collection-shell",
+"in": 260,
+"out": 0
+},
+{
+"i": 2102,
+"sel": ".unit",
+"in": 980,
+"out": 0
+},
+{
+"i": 2103,
+"sel": ".metal-experience-badge, .aura-burn-badge",
+"in": 0,
+"out": 0
+},
+{
+"i": 2104,
+"sel": ".metal-experience-badge",
+"in": 0,
+"out": 0
+},
+{
+"i": 2105,
+"sel": ".aura-burn-badge",
+"in": 0,
+"out": 0
+},
+{
+"i": 2106,
+"sel": ".metal-experience-badge > span, .aura-burn-badge > span",
+"in": 0,
+"out": 0
+},
+{
+"i": 2107,
+"sel": ".metal-experience-badge > span",
+"in": 0,
+"out": 0
+},
+{
+"i": 2108,
+"sel": ".unit[data-metal-experienced=\"true\"] > .metal-experience-badge > span",
+"in": 0,
+"out": 0
+},
+{
+"i": 2109,
+"sel": ".unit[data-aura-burn], .unit[data-burn]",
+"in": 0,
+"out": 0
+},
+{
+"i": 2110,
+"sel": ".unit[data-aura-burn=\"2\"]",
+"in": 0,
+"out": 0
+},
+{
+"i": 2111,
+"sel": ".aura-burn-vfx",
+"in": 0,
+"out": 0
+},
+{
+"i": 2112,
+"sel": ".aura-burn-vfx::before, .aura-burn-vfx::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 2113,
+"sel": ".aura-burn-vfx::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 2114,
+"sel": ".aura-burn-badge > span",
+"in": 0,
+"out": 0
+},
+{
+"i": 2115,
+"sel": ".metal-experience-badge ~ .aura-burn-badge",
+"in": 0,
+"out": 0
+},
+{
+"i": 2116,
+"sel": ".bomb-badge",
+"in": 264,
+"out": 0
+},
+{
+"i": 2117,
+"sel": ".bomb-badge > span",
+"in": 264,
+"out": 0
+},
+{
+"i": 2118,
+"sel": ".unit[data-bomb-turns=\"1\"] .bomb-badge > span",
+"in": 132,
+"out": 0
+},
+{
+"i": 2119,
+"sel": ".bomb-badge ~ .metal-experience-badge, .bomb-badge ~ .aura-burn-badge",
+"in": 0,
+"out": 0
+},
+{
+"i": 2120,
+"sel": ".bomb-badge ~ .metal-experience-badge ~ .aura-burn-badge",
+"in": 0,
+"out": 0
+},
+{
+"i": 2121,
+"sel": ".unit[data-aura-burn=\"2\"] > .aura-burn-badge > span",
+"in": 0,
+"out": 0
+},
+{
+"i": 2122,
+"sel": ".unit.aura-burn-tick",
+"in": 0,
+"out": 0
+},
+{
+"i": 2123,
+"sel": ".unit[data-aura-burn], .unit[data-burn], .aura-burn-vfx::before, .aura-burn-vfx::after, .unit.aura-burn-tick",
+"in": 0,
+"out": 0
+},
+{
+"i": 2124,
+"sel": ".global-spell.owner-enemy .global-spell-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 2125,
+"sel": ".global-spell.owner-player .global-spell-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 2126,
+"sel": ".global-spell .owner-tag",
+"in": 0,
+"out": 0
+},
+{
+"i": 2127,
+"sel": ".global-spell.owner-enemy .owner-tag",
+"in": 0,
+"out": 0
+},
+{
+"i": 2128,
+"sel": ".global-spell.owner-player .owner-tag",
+"in": 0,
+"out": 0
+},
+{
+"i": 2129,
+"sel": ".global-spell.owner-enemy .global-spell-card::before, .global-spell.owner-player .global-spell-card::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 2130,
+"sel": ".global-spell .global-spell-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 2131,
+"sel": ".global-spell.owner-enemy .global-spell-card::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 2132,
+"sel": ".global-spell.owner-player .global-spell-card::before",
+"in": 0,
+"out": 0
+},
+{
+"i": 2133,
+"sel": ".global-spell.owner-enemy .global-spell-card, .global-spell.owner-player .global-spell-card",
+"in": 0,
+"out": 0
+},
+{
+"i": 2134,
+"sel": ".spell-target-ring",
+"in": 0,
+"out": 44
+},
+{
+"i": 2135,
+"sel": ".spell-target-ring::after",
+"in": 0,
+"out": 44
+},
+{
+"i": 2136,
+"sel": ".spell-target-ring",
+"in": 0,
+"out": 44
+},
+{
+"i": 2137,
+"sel": ".effect-narration.ultimate",
+"in": 0,
+"out": 0
+},
+{
+"i": 2138,
+"sel": ".effect-narration.ultimate small",
+"in": 0,
+"out": 0
+},
+{
+"i": 2139,
+"sel": ".effect-narration.ultimate strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 2140,
+"sel": ".spell-target-ring.ult",
+"in": 0,
+"out": 0
+},
+{
+"i": 2141,
+"sel": ".unit.ult-affected, .avatar.ult-affected",
+"in": 0,
+"out": 0
+},
+{
+"i": 2142,
+"sel": ".unit.ult-affected, .avatar.ult-affected",
+"in": 0,
+"out": 0
+},
+{
+"i": 2143,
+"sel": ".spell-target-ring.ult::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 2144,
+"sel": ".card-depart",
+"in": 0,
+"out": 0
+},
+{
+"i": 2145,
+"sel": ".card-depart img",
+"in": 0,
+"out": 0
+},
+{
+"i": 2146,
+"sel": ".card-depart .cd-art",
+"in": 0,
+"out": 0
+},
+{
+"i": 2147,
+"sel": ".card-depart-dest",
+"in": 0,
+"out": 0
+},
+{
+"i": 2148,
+"sel": ".card-depart-dest b",
+"in": 0,
+"out": 0
+},
+{
+"i": 2149,
+"sel": ".card-depart-dest small",
+"in": 0,
+"out": 0
+},
+{
+"i": 2150,
+"sel": ".card-depart-dest",
+"in": 0,
+"out": 0
+},
+{
+"i": 2151,
+"sel": ".awaken-flight",
+"in": 0,
+"out": 0
+},
+{
+"i": 2152,
+"sel": ".awaken-flight .awaken-face",
+"in": 0,
+"out": 0
+},
+{
+"i": 2153,
+"sel": ".awaken-flight .awaken-face.has-mark",
+"in": 0,
+"out": 0
+},
+{
+"i": 2154,
+"sel": ".awaken-flight .awaken-face .aura-mark",
+"in": 0,
+"out": 0
+},
+{
+"i": 2155,
+"sel": ".awaken-flight .awaken-glow",
+"in": 0,
+"out": 0
+},
+{
+"i": 2156,
+"sel": ".awaken-flight.returning",
+"in": 0,
+"out": 0
+},
+{
+"i": 2157,
+"sel": ".awaken-flare",
+"in": 0,
+"out": 0
+},
+{
+"i": 2158,
+"sel": ".awaken-flare::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 2159,
+"sel": ".duel-hud .avatar.awaken-departing",
+"in": 0,
+"out": 0
+},
+{
+"i": 2160,
+"sel": ".duel-hud .avatar.awaken-departing.hit-react",
+"in": 0,
+"out": 0
+},
+{
+"i": 2161,
+"sel": ".aura-awaken-choice",
+"in": 0,
+"out": 0
+},
+{
+"i": 2162,
+"sel": ".aura-awaken-choice.arriving",
+"in": 0,
+"out": 0
+},
+{
+"i": 2163,
+"sel": ".aura-awaken-choice.arriving .aura-awaken-choice-panel",
+"in": 0,
+"out": 0
+},
+{
+"i": 2164,
+"sel": ".aura-awaken-choice-panel",
+"in": 0,
+"out": 0
+},
+{
+"i": 2165,
+"sel": ".awaken-flight, .awaken-flare",
+"in": 0,
+"out": 0
+},
+{
+"i": 2166,
+"sel": ".duel-hud .avatar.awaken-departing",
+"in": 0,
+"out": 0
+},
+{
+"i": 2167,
+"sel": ".aura-awaken-choice, .aura-awaken-choice-panel",
+"in": 0,
+"out": 0
+},
+{
+"i": 2168,
+"sel": ".aura-awaken-choice.arriving .aura-awaken-choice-panel",
+"in": 0,
+"out": 0
+},
+{
+"i": 2169,
+"sel": ".resonance-orb",
+"in": 0,
+"out": 0
+},
+{
+"i": 2170,
+"sel": ".resonance-orb i",
+"in": 0,
+"out": 0
+},
+{
+"i": 2171,
+"sel": ".resonance-orb b",
+"in": 0,
+"out": 0
+},
+{
+"i": 2172,
+"sel": ".resonance-orb b:has(.aura-mark)",
+"in": 0,
+"out": 0
+},
+{
+"i": 2173,
+"sel": ".resonance-orb .aura-mark",
+"in": 0,
+"out": 0
+},
+{
+"i": 2174,
+"sel": ".resonance-caption",
+"in": 0,
+"out": 0
+},
+{
+"i": 2175,
+"sel": ".resonance-caption small",
+"in": 0,
+"out": 0
+},
+{
+"i": 2176,
+"sel": ".resonance-caption strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 2177,
+"sel": ".resonance-beam",
+"in": 0,
+"out": 0
+},
+{
+"i": 2178,
+"sel": ".unit.resonance-lit",
+"in": 0,
+"out": 0
+},
+{
+"i": 2179,
+"sel": ".resonance-gain",
+"in": 0,
+"out": 0
+},
+{
+"i": 2180,
+"sel": ".resonance-gain b",
+"in": 0,
+"out": 0
+},
+{
+"i": 2181,
+"sel": ".unit .stats span.resonance-pop",
+"in": 0,
+"out": 0
+},
+{
+"i": 2182,
+"sel": ".duel-hud .avatar.resonance-departing",
+"in": 0,
+"out": 0
+},
+{
+"i": 2183,
+"sel": ".resonance-orb, .resonance-beam",
+"in": 0,
+"out": 0
+},
+{
+"i": 2184,
+"sel": ".duel-hud .avatar.resonance-departing",
+"in": 0,
+"out": 0
+},
+{
+"i": 2185,
+"sel": ".top-nav-btn.secret",
+"in": 260,
+"out": 0
+},
+{
+"i": 2186,
+"sel": ".top-nav-btn.secret:hover",
+"in": 260,
+"out": 0
+},
+{
+"i": 2187,
+"sel": ".top-nav-btn.secret.current",
+"in": 44,
+"out": 0
+},
+{
+"i": 2188,
+"sel": ".collection-tab.secret-tab.active",
+"in": 44,
+"out": 0
+},
+{
+"i": 2189,
+"sel": ".secret-view",
+"in": 260,
+"out": 0
+},
+{
+"i": 2190,
+"sel": ".secret-head",
+"in": 260,
+"out": 0
+},
+{
+"i": 2191,
+"sel": ".secret-intro",
+"in": 260,
+"out": 0
+},
+{
+"i": 2192,
+"sel": ".secret-intro b",
+"in": 260,
+"out": 0
+},
+{
+"i": 2193,
+"sel": ".secret-intro span",
+"in": 260,
+"out": 0
+},
+{
+"i": 2194,
+"sel": ".secret-progress",
+"in": 260,
+"out": 0
+},
+{
+"i": 2195,
+"sel": ".secret-progress b",
+"in": 88,
+"out": 0
+},
+{
+"i": 2196,
+"sel": ".secret-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 2197,
+"sel": ".secret-block",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2198,
+"sel": ".secret-art",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2199,
+"sel": ".secret-art img",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2200,
+"sel": ".secret-body",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2201,
+"sel": ".secret-body small",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2202,
+"sel": ".secret-body h4",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2203,
+"sel": ".secret-go",
+"in": 2156,
+"out": 0
+},
+{
+"i": 2204,
+"sel": ".secret-go:hover:not(:disabled)",
+"in": 0,
+"out": 0
+},
+{
+"i": 2205,
+"sel": ".secret-go:disabled",
+"in": 2156,
+"out": 0
+},
+{
+"i": 2206,
+"sel": ".secret-block.locked .secret-art img",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2207,
+"sel": ".secret-block.locked.owned .secret-art img",
+"in": 0,
+"out": 0
+},
+{
+"i": 2208,
+"sel": ".secret-mystery",
+"in": 2156,
+"out": 0
+},
+{
+"i": 2209,
+"sel": ".secret-hint",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2210,
+"sel": ".secret-chains",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2211,
+"sel": ".secret-chains .chain",
+"in": 4664,
+"out": 0
+},
+{
+"i": 2212,
+"sel": ".secret-chains .chain.a",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2213,
+"sel": ".secret-chains .chain.b",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2214,
+"sel": ".secret-lock",
+"in": 2332,
+"out": 0
+},
+{
+"i": 2215,
+"sel": ".secret-block.unlocked",
+"in": 0,
+"out": 0
+},
+{
+"i": 2216,
+"sel": ".secret-block.unlocked .secret-art img",
+"in": 0,
+"out": 0
+},
+{
+"i": 2217,
+"sel": ".secret-pair",
+"in": 176,
+"out": 0
+},
+{
+"i": 2218,
+"sel": ".secret-teaser",
+"in": 0,
+"out": 0
+},
+{
+"i": 2219,
+"sel": ".secret-broken",
+"in": 0,
+"out": 0
+},
+{
+"i": 2220,
+"sel": ".secret-broken i",
+"in": 0,
+"out": 0
+},
+{
+"i": 2221,
+"sel": ".secret-broken i:nth-child(1)",
+"in": 0,
+"out": 0
+},
+{
+"i": 2222,
+"sel": ".secret-broken i:nth-child(2)",
+"in": 0,
+"out": 0
+},
+{
+"i": 2223,
+"sel": ".secret-broken i:nth-child(3)",
+"in": 0,
+"out": 0
+},
+{
+"i": 2224,
+"sel": ".secret-toast",
+"in": 260,
+"out": 0
+},
+{
+"i": 2225,
+"sel": ".secret-unlock-note",
+"in": 0,
+"out": 0
+},
+{
+"i": 2226,
+"sel": ".secret-unlock-note small",
+"in": 0,
+"out": 0
+},
+{
+"i": 2227,
+"sel": ".secret-unlock-note strong",
+"in": 0,
+"out": 0
+},
+{
+"i": 2228,
+"sel": ".secret-unlock-note span",
+"in": 0,
+"out": 0
+},
+{
+"i": 2229,
+"sel": ".secret-unlock-note button",
+"in": 0,
+"out": 0
+},
+{
+"i": 2230,
+"sel": ".secret-head",
+"in": 260,
+"out": 0
+},
+{
+"i": 2231,
+"sel": ".secret-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 2232,
+"sel": ".recycle-modal",
+"in": 0,
+"out": 260
+},
+{
+"i": 2233,
+"sel": ".recycle-modal.show",
+"in": 0,
+"out": 0
+},
+{
+"i": 2234,
+"sel": ".recycle-panel",
+"in": 0,
+"out": 260
+},
+{
+"i": 2235,
+"sel": ".recycle-panel h2",
+"in": 0,
+"out": 260
+},
+{
+"i": 2236,
+"sel": ".recycle-panel p",
+"in": 0,
+"out": 260
+},
+{
+"i": 2237,
+"sel": ".recycle-actions",
+"in": 0,
+"out": 260
+},
+{
+"i": 2238,
+"sel": ".recycle-actions button",
+"in": 0,
+"out": 520
+},
+{
+"i": 2239,
+"sel": ".recycle-yes",
+"in": 0,
+"out": 260
+},
+{
+"i": 2240,
+"sel": ".recycle-no",
+"in": 0,
+"out": 260
+},
+{
+"i": 2241,
+"sel": "html",
+"in": 0,
+"out": 260
+},
+{
+"i": 2242,
+"sel": "#sound-toggle, .util-toggle-label, .rule-key",
+"in": 1868,
+"out": 0
+},
+{
+"i": 2243,
+"sel": "[data-skin=\"fire\"], [data-field-skin=\"fire\"]",
+"in": 454,
+"out": 0
+},
+{
+"i": 2244,
+"sel": "[data-skin=\"water\"], [data-field-skin=\"water\"]",
+"in": 454,
+"out": 0
+},
+{
+"i": 2245,
+"sel": "[data-skin=\"wood\"], [data-field-skin=\"wood\"]",
+"in": 454,
+"out": 0
+},
+{
+"i": 2246,
+"sel": "[data-skin=\"metal\"], [data-field-skin=\"metal\"]",
+"in": 64,
+"out": 0
+},
+{
+"i": 2247,
+"sel": "[data-skin=\"earth\"], [data-field-skin=\"earth\"]",
+"in": 124,
+"out": 0
+},
+{
+"i": 2248,
+"sel": ".card-back-design[data-skin], .gacha-card-back[data-skin]",
+"in": 1530,
+"out": 0
+},
+{
+"i": 2249,
+"sel": ".card-back-design[data-skin]::before",
+"in": 1530,
+"out": 0
+},
+{
+"i": 2250,
+"sel": ".card-back-design[data-skin] .back-emblem",
+"in": 1530,
+"out": 0
+},
+{
+"i": 2251,
+"sel": ".gacha-card-back[data-skin] .back-emblem",
+"in": 0,
+"out": 0
+},
+{
+"i": 2252,
+"sel": ".arena[data-field-skin], .skin-field-preview[data-field-skin]",
+"in": 20,
+"out": 0
+},
+{
+"i": 2253,
+"sel": ".arena[data-field-skin], .skin-field-preview[data-field-skin]",
+"in": 20,
+"out": 0
+},
+{
+"i": 2254,
+"sel": ".pile-back",
+"in": 1820,
+"out": 0
+},
+{
+"i": 2255,
+"sel": ".pile-back.card-back-design",
+"in": 1820,
+"out": 0
+},
+{
+"i": 2256,
+"sel": ".pile-back.card-back-design[data-skin]",
+"in": 1230,
+"out": 0
+},
+{
+"i": 2257,
+"sel": ".pile-back.card-back-design::before",
+"in": 1820,
+"out": 0
+},
+{
+"i": 2258,
+"sel": ".pile-back .back-emblem",
+"in": 1230,
+"out": 0
+},
+{
+"i": 2259,
+"sel": ".deck-stack::before, .deck-stack::after, .duel-hud .sub .deck-stack::before, .duel-hud .sub .deck-stack::after",
+"in": 260,
+"out": 0
+},
+{
+"i": 2260,
+"sel": ".duel-hud .sub .deck-stack, .deck-stack, .command-rail .deck-stack",
+"in": 260,
+"out": 0
+},
+{
+"i": 2261,
+"sel": ".deck-stack .pile-back",
+"in": 260,
+"out": 0
+},
+{
+"i": 2262,
+"sel": ".enemy-piles",
+"in": 260,
+"out": 0
+},
+{
+"i": 2263,
+"sel": ".enemy-piles .pile-hand",
+"in": 260,
+"out": 0
+},
+{
+"i": 2264,
+"sel": ".enemy-piles .pile-hand .pile-back",
+"in": 1300,
+"out": 0
+},
+{
+"i": 2265,
+"sel": ".enemy-piles .pile-deck .pile-back",
+"in": 260,
+"out": 0
+},
+{
+"i": 2266,
+"sel": ".enemy-piles .pile-deck.empty",
+"in": 0,
+"out": 0
+},
+{
+"i": 2267,
+"sel": ".gacha-view",
+"in": 260,
+"out": 0
+},
+{
+"i": 2268,
+"sel": ".shop-subtabs",
+"in": 260,
+"out": 0
+},
+{
+"i": 2269,
+"sel": ".shop-subtab",
+"in": 520,
+"out": 0
+},
+{
+"i": 2270,
+"sel": ".shop-subtab.active",
+"in": 260,
+"out": 0
+},
+{
+"i": 2271,
+"sel": ".shop-panel",
+"in": 520,
+"out": 0
+},
+{
+"i": 2272,
+"sel": ".shop-panel[hidden]",
+"in": 260,
+"out": 0
+},
+{
+"i": 2273,
+"sel": ".shop-panel.shop-cosmetic",
+"in": 260,
+"out": 0
+},
+{
+"i": 2274,
+"sel": ".cosmetic-head",
+"in": 260,
+"out": 0
+},
+{
+"i": 2275,
+"sel": ".cosmetic-help",
+"in": 260,
+"out": 0
+},
+{
+"i": 2276,
+"sel": ".skin-grid",
+"in": 260,
+"out": 0
+},
+{
+"i": 2277,
+"sel": ".skin-card",
+"in": 384,
+"out": 0
+},
+{
+"i": 2278,
+"sel": ".skin-card.applied",
+"in": 64,
+"out": 0
+},
+{
+"i": 2279,
+"sel": ".skin-card h4",
+"in": 384,
+"out": 0
+},
+{
+"i": 2280,
+"sel": ".skin-card small",
+"in": 384,
+"out": 0
+},
+{
+"i": 2281,
+"sel": ".skin-preview",
+"in": 384,
+"out": 0
+},
+{
+"i": 2282,
+"sel": ".skin-preview .card-back-design",
+"in": 360,
+"out": 0
+},
+{
+"i": 2283,
+"sel": ".skin-preview.field",
+"in": 24,
+"out": 0
+},
+{
+"i": 2284,
+"sel": ".skin-field-preview",
+"in": 24,
+"out": 0
+},
+{
+"i": 2285,
+"sel": ".skin-field-preview i",
+"in": 48,
+"out": 0
+},
+{
+"i": 2286,
+"sel": ".skin-btn",
+"in": 384,
+"out": 0
+},
+{
+"i": 2287,
+"sel": ".skin-btn.apply",
+"in": 120,
+"out": 0
+},
+{
+"i": 2288,
+"sel": ".skin-btn:disabled",
+"in": 84,
+"out": 0
+},
+{
+"i": 2289,
+"sel": ".skin-notice",
+"in": 260,
+"out": 0
+},
+{
+"i": 2290,
+"sel": ".skin-notice[hidden]",
+"in": 196,
+"out": 0
+},
+{
+"i": 2291,
+"sel": ".cookie-cost",
+"in": 520,
+"out": 0
+},
+{
+"i": 2292,
+"sel": ".cookie-cost.short",
+"in": 104,
+"out": 0
+},
+{
+"i": 2293,
+"sel": ".secret-ready-badge",
+"in": 176,
+"out": 0
+},
+{
+"i": 2294,
+"sel": ".secret-block.ready",
+"in": 176,
+"out": 0
+},
+{
+"i": 2295,
+"sel": ".secret-open",
+"in": 176,
+"out": 0
+},
+{
+"i": 2296,
+"sel": ".secret-open:hover:not(:disabled)",
+"in": 0,
+"out": 0
+},
+{
+"i": 2297,
+"sel": ".secret-open:disabled",
+"in": 176,
+"out": 0
+},
+{
+"i": 2298,
+"sel": ".shop-panel",
+"in": 520,
+"out": 0
+},
+{
+"i": 2299,
+"sel": ".skin-grid",
+"in": 260,
+"out": 0
+}
+]
