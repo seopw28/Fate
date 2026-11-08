@@ -5,7 +5,7 @@ const path = require('node:path');
 
 const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
 
-test('화염 피해 마법은 생존한 적 챔프에게 화상 1을 남긴다', () => {
+test('화염 피해 마법은 생존한 적 하수인에게 화상 1을 남긴다', () => {
   assert.ok(html.includes("function applyFireSpellBurn(card,target,outcome)"));
   assert.ok(html.includes("getElement(card)!=='fire'||card?.dataset?.effect==='black-flame'"), '비화염 주문과 자체 화상 주문은 제외해야 한다');
   assert.ok(html.includes('applyFireSpellBurn(card,unit,result)'), '단일·광역 화염 주문의 피해 결과를 화상 판정에 전달해야 한다');

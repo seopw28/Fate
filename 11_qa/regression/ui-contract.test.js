@@ -25,18 +25,18 @@ test('prototype cards stay out of the approved collection UI', () => {
 
 test('magic cards keep a stable rail composition', () => {
   /* 예전에는 마법·함정 카드 높이를 276px, 그림을 122px 로 못박아 '안정'을 만들었다.
-     그런데 챔프 카드는 폭을 따라가는 5:7 실루엣이라, 레일이 좁아지면 마법 카드만
-     유독 길쭉해졌다 (실측 1440px: 챔프 137x191(비율 1.4) vs 마법 137x276(2.0)).
-     이제는 고정 픽셀이 아니라 챔프와 같은 비율을 공유해 안정을 만든다. */
+     그런데 하수인 카드는 폭을 따라가는 5:7 실루엣이라, 레일이 좁아지면 마법 카드만
+     유독 길쭉해졌다 (실측 1440px: 하수인 137x191(비율 1.4) vs 마법 137x276(2.0)).
+     이제는 고정 픽셀이 아니라 하수인과 같은 비율을 공유해 안정을 만든다. */
   const magicBlock = html.slice(
     html.indexOf('.command-rail .card.spell-card,'),
     html.indexOf('.command-rail .card.spell-card > h3'));
-  assert.ok(magicBlock.includes('aspect-ratio:5/7'), '마법·함정도 챔프와 같은 5:7 실루엣이어야 한다');
+  assert.ok(magicBlock.includes('aspect-ratio:5/7'), '마법·함정도 하수인과 같은 5:7 실루엣이어야 한다');
   assert.ok(!magicBlock.includes('height:276px'), '고정 높이로 돌아가면 좁은 레일에서 다시 길쭉해진다');
   assert.ok(!magicBlock.includes('aspect-ratio:auto'), '비율을 풀면 카드마다 실루엣이 달라진다');
   /* 그림 크기는 카드 종류와 무관하게 공통 규칙 하나가 정한다 */
   assert.ok(html.includes('.command-rail .card .art,.command-rail .card.summon-card .art,.command-rail .card.spell-card .art,.command-rail .card.trap-card .art { width:100%; height:auto; min-height:0; aspect-ratio:4/3;'),
-    '그림은 챔프·마법·함정이 같은 4:3 규칙을 공유해야 한다');
+    '그림은 하수인·마법·함정이 같은 4:3 규칙을 공유해야 한다');
   assert.ok(!html.includes('flex:0 0 122px'), '그림 높이를 고정하면 카드가 그림에 밀려 길어진다');
 });
 
@@ -143,7 +143,7 @@ test('equipped ultimate remains visible when temporarily locked', () => {
 });
 
 test('ready ultimate action uses a compact two-line cost layout', () => {
-  assert.ok(html.includes('ult-ready-label">궁극기 발동'), 'Ready action must use one clear Korean action label');
+  assert.ok(html.includes('ult-ready-label">영웅 강림'), 'Ready action must use one clear Korean action label');
   assert.ok(html.includes("ult-ready-meta\">마나 '+ultimateState.cost+' 소모 · '+ultimateState.title"), 'Second line must show mana cost and ultimate title');
   assert.ok(html.includes('.field-ultimate-action:not(.locked)::before{display:none}'), 'Ready action must hide the duplicated English ULTIMATE label');
 });

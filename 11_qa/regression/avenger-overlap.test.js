@@ -193,8 +193,8 @@ test('컷신이 큐에 밀려도 카드가 먼저 보이지 않는다', async ()
   assert.ok(order.indexOf('카드 등장') > order.indexOf('컷신:끝'), '등장은 컷신이 끝난 뒤여야 한다');
 });
 
-/* 2026-11-07 PM 확정: 체력 40% 기준 장치(최후의 저항·역전 돌진·영웅 회복 잠금)는 모두 폐지. */
-test('체력 40% 기준 장치(최후의 저항·역전 돌진·영웅 회복 잠금)는 하나도 남지 않는다', () => {
+/* 2026-11-07 PM 확정: 체력 40% 기준 장치(최후의 저항·역전 돌진·소환사 회복 잠금)는 모두 폐지. */
+test('체력 40% 기준 장치(최후의 저항·역전 돌진·소환사 회복 잠금)는 하나도 남지 않는다', () => {
   assert.ok(!html.includes('showDesperateNotice') && !html.includes('desperate-toast'), '토스트가 남아 있다');
   assert.ok(!html.includes('DESPERATE_TOAST_MS') && !html.includes('desperateNoticeUntil'), '안내 길이/대기 상수가 남아 있다');
   assert.ok(!html.includes('.health.desperate'), '게이지 CSS가 남아 있다');

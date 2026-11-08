@@ -41,7 +41,7 @@ test('복수자는 소진자 사망 시점의 턴 수 +2 에 강림하고, 강�
   assert.ok(!html.includes('if(active){switchToAwakeningBgm();'), '체력 40 이하는 BGM 전환 조건이 아니다');
 });
 
-test('묘지 재사용: 덱에 챔프가 없을 때 카드 뽑기를 누르면 예/아니오로 묻고, 자동 드로우는 재사용하지 않는다', () => {
+test('묘지 재사용: 덱에 하수인이 없을 때 카드 뽑기를 누르면 예/아니오로 묻고, 자동 드로우는 재사용하지 않는다', () => {
   assert.ok(html.includes('function canRecycleGraveyard(side){return heroHpOf(side)>GRAVEYARD_RECYCLE_HP_COST&&recyclableGraveyard(side).length>0;}'));
   assert.ok(html.includes("!/^ultimate-(spent|avenger)$/.test(card.effect||'')"));
   assert.ok(html.includes("function drawCard(){ if(!deck.length){"), '자동 드로우는 재사용하지 않는다');
@@ -52,19 +52,19 @@ test('묘지 재사용: 덱에 챔프가 없을 때 카드 뽑기를 누르면 �
   assert.ok(html.includes("if(!deckHasChampion(enemyDeck)&&canRecycleGraveyard('enemy'))recycleGraveyardIntoDeck('enemy');if(!enemyDeck.length)return false;"), '컴퓨터는 카드 뽑기 행동에서만, 같은 조건이면 예');
 });
 
-test('체력 40% 기준 효과(역전 돌진·영웅 회복 잠금·최후의 저항)는 하나도 남지 않고 카드 자체의 돌진 효과는 유지한다', () => {
+test('체력 40% 기준 효과(역전 돌진·소환사 회복 잠금·최후의 저항)는 하나도 남지 않고 카드 자체의 돌진 효과는 유지한다', () => {
   for (const gone of ['comebackRushActive', 'playerHeroHealingLocked', 'comebackLockEntered', 'desperateActive', 'DESPERATE_HP', 'desperate-toast', 'LAST STAND', '역전 돌진']) {
     assert.ok(!html.includes(gone), gone + ' 가 남아 있다');
   }
   assert.ok(html.includes("if(effect==='rush'||effect==='blink-shield'){unit.classList.remove('exhausted');unit.dataset.rush='true';"), '카드의 돌진 효과는 유지');
 });
 
-test('복수자는 착지 연출 뒤 상대 영웅에게 7 피해를 주고(양쪽 공통), 0이 되면 즉시 승패가 정해진다', () => {
+test('복수자는 착지 연출 뒤 상대 소환사에게 7 피해를 주고(양쪽 공통), 0이 되면 즉시 승패가 정해진다', () => {
   assert.ok(html.includes('AVENGER_HERO_DAMAGE=7'));
   assert.ok(html.includes("setTimeout(()=>dealAvengerHeroDamage(side,partner),AVENGER_LANDING_MS+120)"), '착지 연출 뒤에 피해');
   assert.ok(html.includes("if(reason==='cleared')return;setTimeout(()=>dealAvengerHeroDamage"), '전투가 치워졌으면 피해 없음');
-  assert.ok(html.includes("if(player&&enemyHp<=0)finish(true,"), '상대 영웅 0 → 승리');
-  assert.ok(html.includes("else if(!player&&playerHp<=0)finish(false,"), '내 영웅 0 → 패배');
+  assert.ok(html.includes("if(player&&enemyHp<=0)finish(true,"), '상대 소환사 0 → 승리');
+  assert.ok(html.includes("else if(!player&&playerHp<=0)finish(false,"), '내 소환사 0 → 패배');
 });
 
 test('소진자는 상대 하수인이나 상대 소진자(전역 도발)가 있어도 소환사를 공격한다 (양쪽 공통, 2026-11-08 PM 확정)', () => {

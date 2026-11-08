@@ -8,7 +8,7 @@
 
 ## 강철 파쇄탄 — `steel-shatter-v1.png`
 
-카드: 희귀 · 금속 · 비용 2 · 상대 영웅에게 5 피해. cardId `tower.mana-overflow`(`core-set.json`). 임시 그림: 진홍의 화염구.
+카드: 희귀 · 금속 · 비용 2 · 상대 소환사에게 5 피해. cardId `tower.mana-overflow`(`core-set.json`). 임시 그림: 진홍의 화염구.
 
 ```text
 Use case: stylized-concept
@@ -26,7 +26,7 @@ Constraints: no people, no humanoid figures, no readable text, no letters, no nu
 
 ## 대지의 장벽 — `earth-bulwark-v1.png`
 
-카드: 희귀 · 대지 · 비용 2 · 내 챔프 전원에게 보호막(다음 피해 1회 무효). cardId `arcana.rune-crystal`(`character-expansions.json`). 임시 그림: 대지의 진동.
+카드: 희귀 · 대지 · 비용 2 · 내 하수인 전원에게 보호막(다음 피해 1회 무효). cardId `arcana.rune-crystal`(`character-expansions.json`). 임시 그림: 대지의 진동.
 
 ```text
 Use case: stylized-concept

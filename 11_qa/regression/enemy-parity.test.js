@@ -27,7 +27,7 @@ test('컴퓨터 혈마나: 유저와 같은 공식(배틀 첫 1번 마나 1당 �
   assert.ok(html.includes('function recordEnemyBloodManaUse(){if(enemyBloodManaBattleUses++===0)return;enemyBloodManaUses++;}'));
   assert.ok(html.includes('unlocked=turnNumber>=BLOOD_MANA_UNLOCK_TURN;return {shortage,rate,healthCost,unlocked,affordable:shortage===0||(unlocked&&enemyHp>healthCost)}'));
   assert.ok(html.includes('상대 혈마나 ♥'), '상대 혈마나 로그');
-  assert.ok(html.includes("showBloodManaSpend(healthCost,'enemy')"), '상대 영웅 쪽에 혈마나 연출');
+  assert.ok(html.includes("showBloodManaSpend(healthCost,'enemy')"), '상대 소환사 쪽에 혈마나 연출');
   /* 마법(비함정)은 유저처럼 마나로만 쓴다 */
   assert.ok(html.includes('x.card.spell&&x.card.cost<=enemyMana')||html.includes('x.card.cost<=enemyMana'));
   assert.ok(!between('function setEnemyMagic()', 'function resolveEnemySpell').includes('else enemyPayCost(card.cost,\'마법'), '마법에는 혈마나를 쓰지 않는다 (함정만 혈마나 허용)');
@@ -42,7 +42,7 @@ test('컴퓨터 소환·교체·뽑기는 한 박자씩 보여 주고 손패·�
   assert.ok(html.includes("label.textContent='덱 '+enemyDeck.length+'장 · 손패 '+enemyHand.length+'장'"));
 });
 
-test('컴퓨터 필드 교체: 가득 찬 전장에서만, 비용은 유저와 같다(마나 + 영웅 체력 = 새 카드 비용), 원래 카드는 묘지로', () => {
+test('컴퓨터 필드 교체: 가득 찬 전장에서만, 비용은 유저와 같다(마나 + 소환사 체력 = 새 카드 비용), 원래 카드는 묘지로', () => {
   const plan = between('function enemyPlanReplace(lane)', 'function replaceEnemyUnit');
   assert.ok(plan.includes('if(all.length<FIELD_CARD_LIMIT)return null;'));
   assert.ok(plan.includes('x.card.cost<=enemyMana&&enemyHp>x.card.cost'));
@@ -54,7 +54,7 @@ test('컴퓨터 필드 교체: 가득 찬 전장에서만, 비용은 유저와 �
   assert.ok(html.includes('function replaceHpCost(card){return Number(card?.querySelector(\'.cost\')?.textContent)||0;}'), '유저 교체 비용 정의가 그대로다');
 });
 
-test('시작 손패: 유저·컴퓨터가 같은 보장(시작 마나 이하 챔프 2장 + 함정 아닌 마법 1장)을 쓴다', () => {
+test('시작 손패: 유저·컴퓨터가 같은 보장(시작 마나 이하 하수인 2장 + 함정 아닌 마법 1장)을 쓴다', () => {
   assert.ok(html.includes('function openingHandIndexes(pile){'));
   assert.ok(html.includes('let enemyHand = takeCards(enemyDeck,openingHandIndexes(enemyDeck)).map(gradeCardData);'));
   assert.ok(!html.includes('enemyDeck.splice(0,5)'), '덱 위에서 그냥 5장을 떼지 않는다');

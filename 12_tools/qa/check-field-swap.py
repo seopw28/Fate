@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""필드 챔프 교체가 '5장에서 5장, 같은 칸'으로 보이는지(2026-11-08 PM 피드백) 실제 브라우저에서 확인한다.
+"""필드 하수인 교체가 '5장에서 5장, 같은 칸'으로 보이는지(2026-11-08 PM 피드백) 실제 브라우저에서 확인한다.
 
 세 경로(유저 수동 교체, 궁극기 소진자 제물, 복수자 강림 제물)와 컴퓨터 교체를 재현하고,
 매 프레임 필드의 유닛 수(소멸 연출 중인 카드 포함 DOM 수)와 교체 칸 밖 카드들의 가로 위치를 기록한다.
@@ -35,7 +35,7 @@ SCENARIOS = {
  "spent": ("player", """(()=>{const proto=enemyOriginalDeck.find(d=>!d.spell);__s.start('player');
   const u=sendUltimateToGraveyard({name:'소진자',art:proto.art,element:'fire',baseAttack:3,baseHp:3});return u?'ok':'null';})()"""),
  "avenger": ("player", """(()=>{const proto=enemyOriginalDeck.find(d=>!d.spell);__s.start('player');
-  const u=summonUltimateAvenger('player',{name:'쓰러진 영웅',art:proto.art,element:'fire',baseAttack:3,baseHp:3});return u?'ok':'null';})()"""),
+  const u=summonUltimateAvenger('player',{name:'쓰러진 소진자',art:proto.art,element:'fire',baseAttack:3,baseHp:3});return u?'ok':'null';})()"""),
  "enemy": ("enemy", """(()=>{const lane=__s.lane('enemy');const strong=enemyOriginalDeck.find(d=>!d.spell);
   const data={...strong,cost:3,atk:9,atkFinal:9,hp:9,name:'강자',grade:{key:'a',label:'A급'}};enemyMana=9;enemyHp=100;
   __s.start('enemy');replaceEnemyUnit(lane,data,lane.children[2]);return 'ok';})()"""),
@@ -91,7 +91,7 @@ def main():
             replaced = '약졸2' if name in ('manual', 'enemy') else '약졸4'
             fin = rel(rec[-1]) if rec else {}
             newcomer = [n for n in fin if n not in first]
-            same_cell = len(newcomer) == 1 and not far(fin[newcomer[0]], first.get(replaced), 40)  # 130% 소진자는 겉보기 폭만큼 왼쪽 끝이 어긋난다
+            same_cell = len(newcomer) == 1 and not far(fin[newcomer[0]], first.get(replaced), 40)  # 크게 표시되는 소진자는 겉보기 폭만큼 왼쪽 끝이 어긋난다
             samples = [(r["t"], r["dom"]) for r in rec[:: max(1, len(rec) // 14)]]
             ok = res == 'ok' and max_dom == 5 and max_live <= 5 and not moved and same_cell and not errors
             fails += not ok

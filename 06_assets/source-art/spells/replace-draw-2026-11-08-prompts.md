@@ -8,7 +8,7 @@
 
 ## 마력 흡수 — `mana-drain-v1.png`
 
-카드: 일반 · 물 · 비용 2 · 가장 강한 상대 챔프의 공격력을 3 영구히 낮춘다. cardId `tower.arcane-insight`(`core-set.json`). 임시 그림: 아케인 인사이트.
+카드: 일반 · 물 · 비용 2 · 가장 강한 상대 하수인의 공격력을 3 영구히 낮춘다. cardId `tower.arcane-insight`(`core-set.json`). 임시 그림: 아케인 인사이트.
 
 ```text
 Use case: stylized-concept
@@ -26,7 +26,7 @@ Constraints: no people, no humanoid figures, no readable text, no letters, no nu
 
 ## 프리즘 탄막 — `prism-barrage-v1.png`
 
-카드: 일반 · 금속 · 비용 2 · 무작위 상대 챔프에게 2 피해를 3번 준다. cardId `arcana.prism-revelation`(`character-expansions.json`). 임시 그림: 프리즘 계시.
+카드: 일반 · 금속 · 비용 2 · 무작위 상대 하수인에게 2 피해를 3번 준다. cardId `arcana.prism-revelation`(`character-expansions.json`). 임시 그림: 프리즘 계시.
 
 ```text
 Use case: stylized-concept

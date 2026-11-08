@@ -67,7 +67,7 @@ def check(name, cond, detail):
 
 
 def setup(pg):
-    """장면을 세팅하고, 상대 챔프 등장 연출(카드 착지음)이 끝날 때까지 기다린다. 기다리지 않으면 그 착지음(기존 합성음)이 검사 구간에 섞여 들어온다."""
+    """장면을 세팅하고, 상대 하수인 등장 연출(카드 착지음)이 끝날 때까지 기다린다. 기다리지 않으면 그 착지음(기존 합성음)이 검사 구간에 섞여 들어온다."""
     pg.evaluate(SETUP)
     pg.wait_for_function("performance.now() > enemyPlacementRevealAt + 600")
     pg.wait_for_timeout(300)
@@ -92,17 +92,17 @@ with sync_playwright() as p:
     pg.wait_for_timeout(2500)  # 샘플 로딩
     setup(pg)
 
-    # 1. 아주르 썬더폴: 내 물 챔프가 상대 챔프를 공격
+    # 1. 아주르 썬더폴: 내 물 하수인이 상대 하수인을 공격
     reset(pg)
     pg.evaluate("""() => { const w = document.querySelector('.summon-zone .unit.water'), e = document.querySelector('.arena .lane:first-child > .unit'); w.classList.remove('exhausted'); resolveDuel(w, e, { playerAttack: true }); }""")
     pg.wait_for_timeout(1700)
     c = counts(pg)
     check("썬더폴: 번개 소리가 난다", c.get("playLightning:", 0) + c.get("playLightning", 0) == 1, c)
     check("썬더폴: 물 피격음이 나지 않는다", c.get("playHit:water", 0) == 0, c.get("playHit:water", 0))
-    # 상대 불 챔프의 반격 모션은 별개의 공격이라 자기 휘두르는 소리를 낸다. 썬더폴을 쓰는 내 물 챔프의 휘두르는 소리(@water)만 없어야 한다.
+    # 상대 불 하수인의 반격 모션은 별개의 공격이라 자기 휘두르는 소리를 낸다. 썬더폴을 쓰는 내 물 하수인의 휘두르는 소리(@water)만 없어야 한다.
     check("썬더폴: 휘두르는 소리·기존 합성음이 섞이지 않는다", sum(v for k, v in c.items() if k.endswith("@water")) == 0 and not any(k.startswith("legacy:") for k in c), c)
 
-    # 2. 같은 물 챔프의 연속 공격에서도 마찬가지, 그리고 시간이 지나면 음소거가 풀린다
+    # 2. 같은 물 하수인의 연속 공격에서도 마찬가지, 그리고 시간이 지나면 음소거가 풀린다
     pg.wait_for_timeout(1500)
     reset(pg)
     pg.evaluate("impact(document.querySelector('.arena .lane:first-child > .unit'), 5, 'water')")

@@ -34,7 +34,7 @@ CHECKS = [
   return {ok:dim&&c.isConnected&&mana===1&&playerHp===100,dim,still:c.isConnected,mana,hp:playerHp};})()"""),
  ("세팅 슬롯은 함정 1칸뿐이다",
   """(()=>{const slots=[...document.querySelectorAll('.set-slot')].map(s=>s.id);return {ok:slots.length===1&&slots[0]==='magic-slot-0'&&MAGIC_SLOT_KINDS.join()==='reaction',slots};})()"""),
- ("대재앙: 함정 칸에 세팅하면 5턴을 세고, 대기 턴이 찬 내 턴 시작에 양쪽 챔프를 모두 파괴한다",
+ ("대재앙: 함정 칸에 세팅하면 5턴을 세고, 대기 턴이 찬 내 턴 시작에 양쪽 하수인을 모두 파괴한다",
   """(async()=>{battlePhase='setup';maxMana=mana=10;updateMana();summonBattleToken('아군',2,5,'earth');const c=__card('storm.great-ruin');const isTrap=c.classList.contains('trap-card');setHandFilter('spell');playCard(c);if(!setMagicCards.length)playCard(c);await __wait(900);
   const m=setMagicCards[0],slotText=document.querySelector('#magic-slot-0')?.textContent||'';const early=triggerTrap('field_state');const stillSet=setMagicCards.length===1;
   turnNumber=m.readyTurn;triggerTrap('field_state');await __wait(5000);/* 안내 2.3초 → 중앙 소개 1.7초 → 파괴 */const left=document.querySelectorAll('.summon-zone .unit:not([data-destroyed="true"])').length;

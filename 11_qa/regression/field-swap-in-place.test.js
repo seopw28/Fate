@@ -10,7 +10,7 @@ const fn = (name) => {
   return html.slice(start, html.indexOf('\n', start));
 };
 
-/* 2026-11-08 PM 피드백: 가득 찬 필드에서 챔프를 바꿀 때 잠깐 6장이 되어 보이면 안 된다.
+/* 2026-11-08 PM 피드백: 가득 찬 필드에서 하수인을 바꿀 때 잠깐 6장이 되어 보이면 안 된다.
    원인은 Element.remove 의 0.42초 소멸 연출이다. 새 카드를 먼저 넣고 옛 카드를 remove() 하면 옛 카드가 DOM 에 남아
    5칸 격자에서 여섯 번째가 다음 줄로 밀렸다. 동작은 12_tools/qa/check-field-swap.py 가 브라우저에서 프레임마다 센다. */
 
@@ -19,7 +19,7 @@ test('같은 칸 교체 도우미: 옛 카드는 즉시 필드에서 빼고 새 
   const place = fn('placeSwapIncoming');
   assert.ok(begin.includes("closest('.arena')"), '소멸 연출은 필드 밖(.arena)의 복제본이 맡는다');
   assert.ok(begin.includes('cloneNode(true)') && begin.includes('FIELD_SWAP_MS'), '복제본이 정해진 시간 동안 가라앉는다');
-  assert.ok(begin.includes('r.left+r.width/2-w/2'), '130% 소진자도 중심 기준으로 맞춘다');
+  assert.ok(begin.includes('r.left+r.width/2-w/2'), '크게 표시되는 소진자도 중심 기준으로 맞춘다');
   assert.ok(place.includes('insertBefore(unit,slot.old)') && place.includes('removeChild(slot.old)'),
     '새 카드를 옛 카드 자리에 넣고 같은 동기 구간에서 옛 카드를 DOM 에서 뺀다(remove() 의 지연 소멸을 쓰지 않는다)');
   assert.match(html, /const FIELD_SWAP_MS=560;/, '교체 연출은 0.5~0.8초 안쪽');

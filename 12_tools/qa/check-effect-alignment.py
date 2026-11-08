@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""효과 위치 측정: 카드·영웅을 기준으로 그려지는 효과가 기준점(대상 중심 등)에서 몇 px 벗어나는지 잰다.
+"""효과 위치 측정: 카드·소환사를 기준으로 그려지는 효과가 기준점(대상 중심 등)에서 몇 px 벗어나는지 잰다.
 
 사용: python3 -I 12_tools/qa/check-effect-alignment.py [--save 파일] [--compare 파일]
   --save    측정값을 json으로 저장 (화면 배율 작업 전 기준)
@@ -17,7 +17,7 @@ QUERY = '?skipIntro&guardian=baekho&difficulty=normal&seed=ui-scale-baseline'
 CASES = [
     ('소환 마법진', '.summon-zone > .unit', 'bottom-5', 'summonLandingImpact(t)'),
     ('피해 타격(카드)', '.summon-zone > .unit', 'center', "impact(t,3,'fire')"),
-    ('피해 타격(영웅)', '.player .avatar', 'center', "impact(t,3,'fire')"),
+    ('피해 타격(소환사)', '.player .avatar', 'center', "impact(t,3,'fire')"),
     ('스킬 라벨', '.summon-zone > .unit', 'center', "showSkillEffect('heal',t,'회복 +2')"),
     ('방어 방패', '.summon-zone > .unit', 'center', "showDefenseShield(t,'방어함')"),
     ('교환 피해 숫자', '.summon-zone > .unit', 'center', 'showExchangeDamageNumber(t,3,false)'),

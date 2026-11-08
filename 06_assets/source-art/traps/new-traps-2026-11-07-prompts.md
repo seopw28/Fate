@@ -6,7 +6,7 @@
 
 ## 불씨 덫 — `ember-snare-v1.png`
 
-카드: 일반 · 불 · 비용 1 · 상대 챔프가 소환되면 그 챔프에게 2 피해. 임시 그림: 매복 지뢰.
+카드: 일반 · 불 · 비용 1 · 상대 하수인이 소환되면 그 하수인에게 2 피해. 임시 그림: 매복 지뢰.
 
 ```text
 Use case: stylized-concept
@@ -24,7 +24,7 @@ Constraints: no people, no humanoid figures, no readable text, no letters, no nu
 
 ## 강철 방패 — `steel-guard-v1.png`
 
-카드: 일반 · 금속 · 비용 2 · 내 영웅이 공격받으면 그 피해를 절반으로 줄인다. 임시 그림: 역류 장벽.
+카드: 일반 · 금속 · 비용 2 · 내 소환사가 공격받으면 그 피해를 절반으로 줄인다. 임시 그림: 역류 장벽.
 
 ```text
 Use case: stylized-concept
@@ -42,7 +42,7 @@ Constraints: no people, no humanoid figures, no readable text, no letters, no nu
 
 ## 늪의 속박 — `swamp-bind-v1.png`
 
-카드: 희귀 · 대지 · 비용 2 · 상대 챔프가 소환되면 그 챔프는 다음 공격 1회를 하지 못한다. 임시 그림: 서먼 널리파이어.
+카드: 희귀 · 대지 · 비용 2 · 상대 하수인이 소환되면 그 하수인은 다음 공격 1회를 하지 못한다. 임시 그림: 서먼 널리파이어.
 
 ```text
 Use case: stylized-concept
@@ -60,7 +60,7 @@ Constraints: no people, no humanoid figures, no creatures, no readable text, no 
 
 ## 결속의 함성 — `rally-cry-v1.png`
 
-카드: 희귀 · 불 · 비용 3 · 상대 챔프가 내 챔프보다 3장 이상 많아지면 내 챔프 전체 공격력 +2(이번 대전 동안). 임시 그림: 배수의 진.
+카드: 희귀 · 불 · 비용 3 · 상대 하수인이 내 하수인보다 3장 이상 많아지면 내 하수인 전체 공격력 +2(이번 대전 동안). 임시 그림: 배수의 진.
 
 ```text
 Use case: stylized-concept

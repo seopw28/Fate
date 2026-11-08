@@ -102,7 +102,7 @@ test('연출이 중간에 끊겨도 프로필이 사라진 채 남지 않는다'
   assert.ok(fn.includes("querySelectorAll('.awaken-flight:not(.returning),.awaken-flare')"), '남은 고스트와 빛을 치워야 한다');
 });
 
-test('비행 중 영웅 피격이 들어와도 떠난 프로필이 꿈틀대지 않는다', () => {
+test('비행 중 소환사 피격이 들어와도 떠난 프로필이 꿈틀대지 않는다', () => {
   /* damageUnit→impact() 는 연출 큐를 안 거치는 경로가 있어(화상 틱 등 예약된 setTimeout)
      비행 중에 hit-react 가 같은 transform 을 잡을 수 있다. 실측으로 확인한 경합이다. */
   assert.ok(/\.duel-hud \.avatar\.awaken-departing\.hit-react\{animation:none/.test(html),

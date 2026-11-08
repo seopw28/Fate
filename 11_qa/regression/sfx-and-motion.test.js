@@ -626,7 +626,7 @@ test('효과 표시: 돌아가는 원+글자(rush) 대신 카드 테두리 임�
   assert.ok(html.includes('function borderImpact(target,'), 'Border impact helper must exist');
 });
 
-test('타격: 영웅을 직접 쳐도 아바타 자리에 오라 타격 이펙트가 나온다', () => {
+test('타격: 소환사를 직접 쳐도 아바타 자리에 오라 타격 이펙트가 나온다', () => {
   const html = fs.readFileSync(path.join(__dirname, '../../dist/index.html'), 'utf8');
   assert.ok(!html.includes("if(target.classList.contains('avatar')){heroHealthImpact(target,damage);return;}"), 'impact() must not return early for hero avatars');
   assert.ok(html.includes("const hero=target.classList.contains('avatar');if(hero)heroHealthImpact(target,damage);"), 'Hero hits keep the HP bar feedback and add hit VFX');

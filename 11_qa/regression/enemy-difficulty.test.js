@@ -43,7 +43,7 @@ test('난이도는 자원 보정 없이 판단력과 실수율로만 구분된�
   assert.ok(!html.includes('difficultyDamageMultiplier'));
 });
 
-test('상대도 챔프 능력·마법·함정·궁극기를 같은 자원 규칙으로 사용한다', () => {
+test('상대도 하수인 능력·마법·함정·궁극기를 같은 자원 규칙으로 사용한다', () => {
   assert.ok(html.includes('function triggerEnemyBattlecry(unit,data)'));
   assert.ok(html.includes('function resolveEnemySpell(card)'));
   assert.ok(html.includes('function triggerEnemyTrap(event,context={})'));
@@ -55,7 +55,7 @@ test('상대도 챔프 능력·마법·함정·궁극기를 같은 자원 규칙
   assert.ok(html.includes("triggerEnemyTrap('enemy_hero_attacked',{attacker:selected,damage})"));
 });
 
-test('상대 필드가 비어 있으면 마법·궁극기보다 챔피언 소환을 우선한다', () => {
+test('상대 필드가 비어 있으면 마법·궁극기보다 하수인 소환을 우선한다', () => {
   assert.ok(html.includes('function summonEnemyPriorityChampion(lane)'));
   assert.ok(html.includes("if(lane.querySelector(':scope > .unit:not([data-destroyed=\"true\"])'))return false"));
   const turn = html.slice(html.indexOf('function enemyTurn(){'), html.indexOf('function selectUnit('));

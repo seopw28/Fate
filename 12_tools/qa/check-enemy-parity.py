@@ -19,7 +19,7 @@ window.__q={
 """
 
 CHECKS = [
- ("시작 손패: 컴퓨터도 시작 마나 이하 챔프 2장 이상을 보장받는다",
+ ("시작 손패: 컴퓨터도 시작 마나 이하 하수인 2장 이상을 보장받는다",
   "(()=>{const n=enemyHand.filter(c=>!c.spell&&c.cost<=STARTING_MANA).length;return {ok:n>=2&&enemyHand.length===OPENING_HAND_SIZE,n,size:enemyHand.length};})()"),
  ("첫 턴 자동 드로우: 컴퓨터도 자기 첫 턴에는 뽑지 않고, 둘째 턴부터 뽑으며, 손패 8장이면 뽑지 않는다",
   "(()=>{enemyTurnsTaken=0;enemyHand.length=0;const first=enemyAutoDraw(),h1=enemyHand.length;const second=enemyAutoDraw(),h2=enemyHand.length;while(enemyHand.length<8)enemyHand.push(enemyDeck[0]||__q.champ());const before=enemyDeck.length;enemyAutoDraw();"
@@ -34,10 +34,10 @@ CHECKS = [
  ("카드 뽑기 제한: 손패 8장이면 뽑지 않고, 지불 뒤 체력이 1 이상 남아야 한다(체력 == 혈마나 비용이면 불가)",
   "(()=>{enemyHand.length=0;for(let i=0;i<8;i++)enemyHand.push(__q.champ());enemyMana=10;enemyDrawActionsUsed=0;const full=performEnemyDrawAction();enemyHand.length=0;enemyMana=0;enemyHp=2;enemyBloodManaBattleUses=0;enemyDrawActionsUsed=0;const dead=performEnemyDrawAction();"
   "return {ok:!full&&!dead&&enemyMana===0&&enemyHp===2,full,dead};})()"),
- ("컴퓨터 AI 판단: 손패에 낼 챔프가 없고 마나가 남으면 뽑고, 챔프가 충분하면 뽑지 않는다",
+ ("컴퓨터 AI 판단: 손패에 낼 하수인이 없고 마나가 남으면 뽑고, 하수인이 충분하면 뽑지 않는다",
   "(()=>{enemyMana=6;enemyDrawActionsUsed=0;enemyHp=100;enemyHand.length=0;const none=enemyWantsDraw();enemyHand.push(__q.champ(),__q.champ(),__q.champ(),__q.champ());const plenty=enemyWantsDraw();enemyHand.length=0;enemyMana=0;enemyBloodManaBattleUses=0;enemyHp=100;const blood=enemyWantsDraw();enemyHp=30;const poor=enemyWantsDraw();"
   "return {ok:none&&!plenty&&blood&&!poor,none,plenty,blood,poor};})()"),
- ("필드 교체: 가득 찬 전장에서 더 강한 손패 챔프로 가장 약한 카드를 교체하고, 마나 + 영웅 체력(새 카드 비용)을 내고 원래 카드는 묘지로 간다",
+ ("필드 교체: 가득 찬 전장에서 더 강한 손패 하수인으로 가장 약한 카드를 교체하고, 마나 + 소환사 체력(새 카드 비용)을 내고 원래 카드는 묘지로 간다",
   "(()=>{const lane=__q.lane();__q.fill(5,1,1);const strong=__q.champ({cost:3,atk:9,atkFinal:9,hp:9,name:'강자',grade:{key:'a',label:'A급'}});enemyHand.length=0;enemyHand.push(strong);enemyMana=5;enemyHp=100;enemyGraveyard.length=0;"
   "const plan=enemyPlanReplace(lane);if(!plan)return {ok:false,why:'no plan'};enemyHand.splice(plan.index,1);replaceEnemyUnit(lane,plan.card,plan.target);const names=[...lane.querySelectorAll(':scope > .unit:not(.unit-dying) h4')].map(h=>h.textContent);"
   "return {ok:names.length===5&&names.includes('강자')&&enemyMana===2&&enemyHp===97&&enemyGraveyard.length===1,names,mana:enemyMana,hp:enemyHp,yard:enemyGraveyard.length};})()"),
@@ -45,14 +45,14 @@ CHECKS = [
   "(()=>{const lane=__q.lane();__q.fill(5,5,5);const weakHand=__q.champ({cost:2,atk:5,atkFinal:5,hp:5});enemyHand.length=0;enemyHand.push(weakHand);enemyMana=5;enemyHp=100;const similar=enemyPlanReplace(lane);"
   "__q.fill(5,1,1);const strong=__q.champ({cost:3,atk:9,atkFinal:9,hp:9});enemyHand.length=0;enemyHand.push(strong);enemyHp=42;const lowHp=enemyPlanReplace(lane);enemyHp=100;[...lane.children].forEach(u=>u.dataset.ultimateSpent='true');const spent=enemyPlanReplace(lane);"
   "return {ok:!similar&&!lowHp&&!spent,similar:!!similar,lowHp:!!lowHp,spent:!!spent};})()"),
- ("공격 대상: 컴퓨터도 난이도와 무관하게 맨 왼쪽 챔프, 일반 도발이 있으면 도발 챔프, 소진자는 영웅(소진자 도발이 있으면 그쪽)",
+ ("공격 대상: 컴퓨터도 난이도와 무관하게 맨 왼쪽 하수인, 일반 도발이 있으면 도발 하수인, 소진자는 소환사(소진자 도발이 있으면 그쪽)",
   "(()=>{const mk=(extra={})=>{const u=document.createElement('div');u.className='unit';Object.assign(u.dataset,extra);u.innerHTML='<h4>x</h4><div class=\"stats\"><span>⚔ 3</span><span>♥ 3</span></div>';return u;};"
   "const attacker=mk(),spent=mk({ultimateSpent:'true'}),a=mk(),b=mk(),c=mk({taunt:'true'});const res=[];for(const d of ['normal','nightmare','hell']){enemyDifficulty=d;res.push(chooseEnemyAttackTarget(attacker,[a,b])===a,chooseEnemyAttackTarget(attacker,[a,b,c])===c,chooseEnemyAttackTarget(spent,[a,b,c])===null);}"
   "return {ok:res.every(Boolean),res};})()"),
  ("물 오라: 컴퓨터도 비용 2 이상 카드를 낼 때 확률로 마나를 회복하고, 회복은 이번 턴 최대 마나를 넘지 않는다",
   "(()=>{enemyGuardian='cheongryong';guardianProc=()=>true;enemyTurnMaxMana=5;enemyMana=1;enemyCardPlayedHook(1);const cheap=enemyMana;enemyCardPlayedHook(2);const after=enemyMana;enemyMana=5;enemyCardPlayedHook(3);const capped=enemyMana;"
   "return {ok:cheap===1&&after>1&&after<=5&&capped===5,cheap,after,capped};})()"),
- ("컴퓨터 턴 흐름: 낼 챔프가 없으면 실제 턴에서 카드 뽑기(로그)와 소환을 한 박자씩 이어서 하고, 손패·덱 라벨이 갱신된다",
+ ("컴퓨터 턴 흐름: 낼 하수인이 없으면 실제 턴에서 카드 뽑기(로그)와 소환을 한 박자씩 이어서 하고, 손패·덱 라벨이 갱신된다",
   "(async()=>{enemyTurnsTaken=1;enemyTurnMaxMana=maxMana=10;turnNumber=4;enemyHp=100;enemyBloodManaBattleUses=0;enemyBloodManaUses=0;enemySetMagic.length=0;enemyUltimate=null;__q.lane().innerHTML='';"
   "const champs=enemyOriginalDeck.filter(d=>!d.spell&&d.cost<=2).slice(0,8);enemyHand.length=0;enemyDeck.length=0;enemyDeck.push(...champs.map(d=>({...d})));"
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<200&&!finished;i++)await __q.wait(100);await __q.wait(200);"

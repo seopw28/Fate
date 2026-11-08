@@ -46,7 +46,7 @@ test('조작부에 붙는 짧은 맥락 설명은 그대로 남긴다', () => {
   assert.ok(html.includes('function startBeginnerGuideSequence'));
   assert.ok(html.includes('function showBeginnerEndTurnGuide'));
   assert.ok(html.includes('showBeginnerEndTurnGuide(2800)'));
-  for (const label of ['이번 턴에 쓸 수 있는 마나예요. 카드 비용만큼 줄어요', '손패의 챔프를 누르면 여기에 소환돼요', '준비가 끝났다면 눌러 공격을 시작해요']) {
+  for (const label of ['이번 턴에 쓸 수 있는 마나예요. 카드 비용만큼 줄어요', '손패의 하수인을 누르면 여기에 소환돼요', '준비가 끝났다면 눌러 공격을 시작해요']) {
     assert.ok(html.includes(label), label + ' 맥락 설명이 있어야 한다');
   }
 });

@@ -24,7 +24,7 @@ test('각 교전은 실제 연출 완료 후 0.3초 쉬고 다음 공격을 시�
   assert.ok(!html.includes('PLAYER_AUTO_ATTACK_INTERVAL'));
 });
 
-test('영웅 직접 공격은 카드 피격보다 짧은 완료 시간을 사용한다', () => {
+test('소환사 직접 공격은 카드 피격보다 짧은 완료 시간을 사용한다', () => {
   assert.ok(html.includes("heroTarget=target.classList.contains('avatar')"));
   assert.ok(html.includes('heroTarget?COMBAT_TIMING.heroImpactTail:COMBAT_TIMING.cardImpactTail'));
   assert.ok(html.includes("target?.classList?.contains('avatar')?COMBAT_TIMING.heroImpactTail:COMBAT_TIMING.cardImpactTail"));

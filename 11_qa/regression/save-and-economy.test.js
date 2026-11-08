@@ -81,7 +81,7 @@ test('오라 선택: 성격의 오라 5종을 오각형 꼭짓점에 배치하�
   assert.ok(html.includes("<img src=\"'+aura.sigil+'\" alt=\"'+aura.name+' 문양\">"), 'Aura marks must use images instead of letter glyphs');
 });
 
-test('금속의 오라: 맨 왼쪽 챔프가 전투 경험으로 공격력을 한 번 성장시킨다', () => {
+test('금속의 오라: 맨 왼쪽 하수인이 전투 경험으로 공격력을 한 번 성장시킨다', () => {
   assert.ok(html.includes("survivalStep:.26,maxChance:.90,attackGain:4,short:'전투 경험'"));
   assert.ok(html.includes("unit.dataset.metalSurvivalTurns=String((Number(unit.dataset.metalSurvivalTurns)||0)+1)"));
   assert.ok(html.includes("front.dataset.metalExperienced='true'"), 'Metal attack growth must be limited to once per champion');
@@ -218,7 +218,7 @@ test('PRD: 카드 뽑기는 전체 카드 풀·10회 보장·51번째 전설 보
   assert.ok(html.includes("forceRare?(roll<.10?'legendary':'rare')"), 'Guaranteed slot must be 90% rare and 10% legendary');
   assert.ok(html.includes('Number(collectionState.legendaryMisses||0)>=50'), 'The 51st consecutive miss must force a legendary');
   assert.ok(html.includes('collectionState.legendaryMisses=isLegendary?0:'), 'A legendary result must reset the miss counter');
-  assert.ok(html.includes('챔프·마법·함정 카드를 획득합니다.'), 'The shop must disclose the complete card pool');
+  assert.ok(html.includes('하수인·마법·함정 카드를 획득합니다.'), 'The shop must disclose the complete card pool');
 });
 
 test('PRD: 합성은 서로 다른 카드와 같은 카드 중복을 모두 허용한다', () => {
@@ -276,20 +276,20 @@ test('궁극기: 사용 가능 턴·재사용 대기·강한 카드 분류가 �
     const fn = html.slice(html.indexOf('function activateUltimate()'));
     const body = fn.slice(0, fn.indexOf('sendUltimateToGraveyard'));
     assert.ok(body.includes('mana-=cost'), '궁극기 비용은 일반 마나에서만 나간다');
-    assert.ok(!/playerHp\s*-=/.test(body), '궁극기 발동이 영웅 체력을 지불하면 안 된다');
+    assert.ok(!/playerHp\s*-=/.test(body), '궁극기 발동이 소환사 체력을 지불하면 안 된다');
     assert.ok(!/bloodMana/i.test(body), '궁극기 발동 경로에 혈마나가 끼어들면 안 된다');
   }
   {
     /* 잠금 사유 판정에도 체력으로 푸는 예외가 없어야 한다. */
     const fn = html.slice(html.indexOf('function ultimateLockReason()'));
     const body = fn.slice(0, fn.indexOf('function armUltimateSetting'));
-    assert.ok(!/playerHp/.test(body), '궁극기 잠금 판정이 영웅 체력을 조건으로 쓰면 안 된다');
+    assert.ok(!/playerHp/.test(body), '궁극기 잠금 판정이 소환사 체력을 조건으로 쓰면 안 된다');
   }
 });
 
 test('궁극기: 전장이 가득 찼을 때만 맨 오른쪽 아군을 제물로 삼고, 순서 고정·전역 도발 소진자(기본 공격력 +7 / 체력 1)를 즉시 공격 가능하게 배치한다', () => {
   assert.ok(!html.includes("if(fieldCount>=FIELD_CARD_LIMIT)return '내 전장 6장 · 궁극기 사용 불가'"));
-  assert.ok(!html.includes('제물로 삼을 아군 챔프 필요'), '제물 필요 잠금 문구는 폐지됐다');
+  assert.ok(!html.includes('제물로 삼을 아군 하수인 필요'), '제물 필요 잠금 문구는 폐지됐다');
   assert.ok(html.includes('full=lane.querySelectorAll(\':scope > .unit:not(.unit-dying)\').length>=FIELD_CARD_LIMIT,victim=full?'), '전장이 가득 찼을 때만 제물을 정한다 (양쪽 공통)');
   assert.ok(html.includes("const spec=enemyUltimate;if(!spec||!enemyUltimateCondition(spec)||ultimateJustEquipped('enemy',spec))return false;"), '컴퓨터 발동 조건에 제물 필요가 없다');
   assert.ok(html.includes("ULTIMATE_SPENT_ATTACK_BONUS=7,ULTIMATE_SPENT_HP=1"));
@@ -297,7 +297,7 @@ test('궁극기: 전장이 가득 찼을 때만 맨 오른쪽 아군을 제물�
   assert.ok(html.includes("summonBattleToken(spec.name,stats.attack,stats.hp,spec.element,'ultimate-spent',slot)"));
   assert.ok(html.includes("unit.dataset.ultimateSpent='true'"));
   assert.ok(html.includes("unit.dataset.rush='true';unit.classList.remove('exhausted');unit.querySelector('.emoji').innerHTML"), '내려놓은 즉시 공격할 수 있다');
-  assert.ok(html.includes('.unit[data-effect="ultimate-spent"]{scale:1.3'), '소진자는 130% 크기');
+  assert.ok(html.includes('.unit[data-effect="ultimate-spent"]{scale:1.15'), '소진자는 일반 카드 대비 115% 크기');
   assert.ok(html.includes("unit.dataset.ultimateAggro='true'"));
   assert.ok(html.includes("unit.dataset.orderLocked='true'"));
   assert.ok(html.includes("unit.draggable=battlePhase==='setup'&&!locked"));
@@ -329,10 +329,10 @@ test('복수자: 궁극기마다 소진자 기본 능력치 +7/+15 로 강림하
   assert.ok(html.includes('AVENGER_ATTACK_BONUS=7,AVENGER_HP_BONUS=15'));
   assert.ok(html.includes('function pickAvengerAppearance(side,rec)'));
   assert.ok(html.includes("collectionState.deck.map(deckEntry):enemyOriginalDeck"), '내 덱 구성 / 컴퓨터 원래 덱 리스트에서 고른다');
-  assert.ok(html.includes('pool=source.filter(card=>!card.spell&&card.art)'), '오라 구분 없이 챔프 카드 한 장');
+  assert.ok(html.includes('pool=source.filter(card=>!card.spell&&card.art)'), '오라 구분 없이 하수인 카드 한 장');
   assert.ok(html.includes("attack=rec.baseAttack+AVENGER_ATTACK_BONUS,hp=rec.baseHp+AVENGER_HP_BONUS"), '능력치는 소진자 원래(강화 전) 능력치 기준');
   assert.ok(html.includes("summonBattleToken(partner.name,attack,hp,partner.el,'ultimate-avenger',slot)"));
-  assert.ok(html.includes("if(units.length>=FIELD_CARD_LIMIT){const replace=units.at(-1);"), '전장이 가득 차면 기존 챔프 1장을 교체해 강림한다');
+  assert.ok(html.includes("if(units.length>=FIELD_CARD_LIMIT){const replace=units.at(-1);"), '전장이 가득 차면 기존 하수인 1장을 교체해 강림한다');
   assert.ok(html.includes('function showAvengerArrival(partner,source,unit)'));
   assert.ok(html.includes("source.name+'의 복수를 하고 말겠어!'"));
   assert.ok(html.includes('AVENGER DESCENT'));
@@ -340,7 +340,7 @@ test('복수자: 궁극기마다 소진자 기본 능력치 +7/+15 로 강림하
   assert.ok(html.includes('showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral)'));
   assert.ok(html.includes('.unit[data-effect="ultimate-avenger"]'), '복수자 카드만 전용 테두리와 오라를 사용해야 한다');
   assert.ok(html.includes('.arena .unit[data-effect="ultimate-avenger"]>h4'), '복수자도 기존 카드 이름 영역을 유지해야 한다');
-  assert.ok(html.includes('z-index:6;scale:1.3;border:2.7px solid var(--avenger-accent)'), '복수자는 전장에서 30% 확대하고 오라색 굵은 테두리를 사용해야 한다');
+  assert.ok(html.includes('z-index:6;scale:1.25;border:2.7px solid var(--avenger-accent)'), '복수자는 전장에서 일반 카드 대비 15% 확대하고 오라색 굵은 테두리를 사용해야 한다');
   assert.equal(html.includes('avenger-crown-vfx'), false, '복수자 카드에 왕관 장식을 다시 붙이면 안 된다');
   assert.equal(html.includes('decorateAvengerUnit'), false, '왕관 장식용 DOM 로직을 다시 사용하면 안 된다');
   assert.equal(html.includes('crown-body'), false, 'CSS 도형 왕관을 다시 사용하면 안 된다');
@@ -372,7 +372,7 @@ test('복수자가 두 번째로 등장한 뒤부터 내 턴 시작에 덱에서
   assert.ok(html.includes("advanceUltimateLedger('player');"), '내 턴 시작에 복수자 시계가 흐른다');
 });
 
-test('영웅 본체 회복은 체력 수준과 무관하게 항상 가능하다 (회복 잠금 폐지)', () => {
+test('소환사 본체 회복은 체력 수준과 무관하게 항상 가능하다 (회복 잠금 폐지)', () => {
   assert.ok(html.includes('function healPlayerHero(amount){const requested=Math.max(0,Number(amount)||0);if(!requested)return 0;const healed=Math.min(requested,HERO_MAX_HP-playerHp);'));
   assert.ok(html.includes('heroHealed=healPlayerHero(amount)'));
   assert.ok(html.includes('healed=healPlayerHero(8)'));

@@ -6,7 +6,7 @@
 
 - 서버 없는 정적 브라우저 목업. `npm run build`가 `05_game-client/app`과 카드·런타임 소스를 합쳐 `dist/`를 만든다.
 - 앱 모듈 5개는 ES 모듈이 아니라 **하나의 classic script로 이어 붙여** 실행된다. 순서는 `05_game-client/app/app.sources.json`이 정한다.
-- 카드 219장(챔프 169, 마법 41, 함정 9), 효과 ID 54종. 컴퓨터 상대와의 대전만 있다(유저 대전 없음).
+- 카드 219장(하수인 169, 마법 41, 함정 9), 효과 ID 54종. 컴퓨터 상대와의 대전만 있다(유저 대전 없음).
 - 저장은 브라우저 `localStorage` 두 키뿐이다: `primal-collection-v1`(재화·보유 카드·덱), `fate.audio.v2`(음량).
 
 ## 2. 정본과 생성물
@@ -28,7 +28,7 @@
 | `01-battle-core.js` | 256KB | 전투 상태, 카드 생성, 드로우·마나·혈마나, 공격·피해, 마법·함정·궁극기·복수자, 묘지 재사용, 컴퓨터 AI |
 | `02-battle-presentation.js` | 110KB | 성격 오라, 사운드, 애니메이션, 입력 모드, 전투 표현 |
 | `03-collection-progression.js` | 79KB | 덱 편집, 도감, 뽑기, 합성, 강화, 역전 마법, 컬렉션 |
-| `04-hero-pressure.js` | 7KB | 영웅 압박 챔프(스플래시·등장 피해·자폭) |
+| `04-hero-pressure.js` | 7KB | 소환사 압박 하수인(스플래시·등장 피해·자폭) |
 
 규칙 문서는 `02_game-design/game-rules/`의 01~10번이 정본이다. 결정과 미결은 `09-decisions-and-open-issues.md`에 모여 있다.
 
