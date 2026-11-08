@@ -160,7 +160,7 @@
         "health": 9
       },
       "effects": [],
-      "assetId": "characters/collected/heliotrope-estelle.png",
+      "assetId": "characters/collected/heliotrope-estelle.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -184,7 +184,7 @@
         "health": 6
       },
       "effects": [],
-      "assetId": "characters/collected/heliotrope-seraphina.png",
+      "assetId": "characters/collected/heliotrope-seraphina.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -208,7 +208,7 @@
         "health": 4
       },
       "effects": [],
-      "assetId": "characters/collected/heliotrope-ophelia.png",
+      "assetId": "characters/collected/heliotrope-ophelia.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -517,7 +517,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "traps/generated/summon-nullifier.png",
+      "assetId": "traps/generated/summon-nullifier.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -581,7 +581,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/meteor-fall.png",
+      "assetId": "spells/generated/meteor-fall.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -609,7 +609,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/amaterasu.png",
+      "assetId": "spells/generated/amaterasu.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -665,7 +665,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "spells/generated/arcane-insight.png",
+      "assetId": "spells/generated/arcane-insight.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -693,7 +693,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/sacred-purge.png",
+      "assetId": "spells/generated/sacred-purge.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -721,7 +721,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/void-recall.png",
+      "assetId": "spells/generated/void-recall.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -777,7 +777,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "spells/generated/soul-return.png",
+      "assetId": "spells/generated/soul-return.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -805,7 +805,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "traps/generated/summon-nullifier.png",
+      "assetId": "traps/generated/summon-nullifier.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [

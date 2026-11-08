@@ -11,7 +11,7 @@
 
 | 카드 | cardId | 지금 쓰는 임시 그림 | 만들 파일 |
 |---|---|---|---|
-| 마력 흡수 | `tower.arcane-insight` | 아케인 인사이트 `spells/generated/arcane-insight.png` | `dist/assets/spells/generated/mana-drain-v1.webp` |
+| 마력 흡수 | `tower.arcane-insight` | 아케인 인사이트 `spells/generated/arcane-insight.webp` | `dist/assets/spells/generated/mana-drain-v1.webp` |
 | 프리즘 탄막 | `arcana.prism-revelation` | 프리즘 계시 `spells/generated/prism-revelation.webp` | `dist/assets/spells/generated/prism-barrage-v1.webp` |
 
 프롬프트: [`06_assets/source-art/spells/replace-draw-2026-11-08-prompts.md`](source-art/spells/replace-draw-2026-11-08-prompts.md)
@@ -52,7 +52,7 @@
 |---|---|---|---|
 | 불씨 덫 | `core.ember-snare` | 매복 지뢰 `traps/generated/ambush-mine.webp` | `dist/assets/traps/generated/ember-snare-v1.webp` |
 | 강철 방패 | `core.steel-guard` | 역류 장벽 `traps/generated/counter-current.webp` | `dist/assets/traps/generated/steel-guard-v1.webp` |
-| 늪의 속박 | `core.swamp-bind` | 서먼 널리파이어 `traps/generated/summon-nullifier.png` | `dist/assets/traps/generated/swamp-bind-v1.webp` |
+| 늪의 속박 | `core.swamp-bind` | 서먼 널리파이어 `traps/generated/summon-nullifier.webp` | `dist/assets/traps/generated/swamp-bind-v1.webp` |
 | 결속의 함성 | `core.rally-cry` | 배수의 진 `traps/generated/last-stand.webp` | `dist/assets/traps/generated/rally-cry-v1.webp` |
 
 프롬프트: [`06_assets/source-art/traps/new-traps-2026-11-07-prompts.md`](source-art/traps/new-traps-2026-11-07-prompts.md)
@@ -65,8 +65,8 @@
 
 | 만들 것 | 쓰임 | 만들 파일 |
 |---|---|---|
-| ① 보호막 깨짐 (메인) | 공격이 보호막에 막히는 순간 카드 위에 0.4~0.6초 겹쳐 터지는 이펙트 | `dist/assets/vfx/shield/shield-break-v1.png` (투명 배경 PNG) |
-| ② 보호막 유지 표시 | 보호막이 있는 동안 카드 테두리를 감싸는 은은한 막 — 지금은 금색 box-shadow뿐이라 잘 안 보임 | `dist/assets/vfx/shield/shield-aura-v1.png` (투명 배경, 카드 비율 세로 2:3) |
+| ① 보호막 깨짐 (메인) | 공격이 보호막에 막히는 순간 카드 위에 0.4~0.6초 겹쳐 터지는 이펙트 | `dist/assets/vfx/shield/shield-break-v1.webp` (투명 배경 PNG) |
+| ② 보호막 유지 표시 | 보호막이 있는 동안 카드 테두리를 감싸는 은은한 막 — 지금은 금색 box-shadow뿐이라 잘 안 보임 | `dist/assets/vfx/shield/shield-aura-v1.webp` (투명 배경, 카드 비율 세로 2:3) |
 | ③ (선택) 절대방어 | 궁극기 절대방어 발동 시 아군 전체에 씌우는 더 강한 버전 | `dist/assets/vfx/shield/shield-absolute-v1.png` |
 
 완료 기록: ① `shield-break-v1.png`, ② `shield-aura-v1.png`를 투명 PNG로 생성해 전투 런타임에 연결했다. 보호막 상태 변화는 `data-shield`를 감시해 오라를 자동 부착·제거하고, 피해 차단 시 카드 중심에 파괴 버스트를 표시한다. ③ 절대방어 전용 이미지는 선택 항목으로 남기고 현재는 동일 보호막 체계를 재사용한다.

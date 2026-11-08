@@ -13,7 +13,7 @@
 - `registry/`: 효과 ID와 현재 구현·승인 자산의 연결
 - `scripts/`: 사양과 레지스트리 자동 검증
 
-기존 `07_vfx-motion/`은 실행 엔진과 모션 프리셋을, `06_assets/vfx/`는 빌드에 포함되는 최종 자산을 담당합니다. `effects/`는 그 앞단의 제작 파이프라인입니다.
+기존 `07_vfx-motion/`은 실행 엔진과 모션 프리셋을, `dist/assets/vfx/`는 게임이 실제로 불러오는 WebP 실행본을 담당합니다. `effects/approved/`의 PNG가 고해상도 원본이고, `effects/`는 그 앞단의 제작 파이프라인입니다. (2026-11-08: `06_assets/vfx/`의 중복 사본은 제거)
 
 ## 기본 명령
 

@@ -24,7 +24,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-1.png",
+      "assetId": "characters/astra/character-1.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -55,7 +55,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-2.png",
+      "assetId": "characters/astra/character-2.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -86,7 +86,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/astra/character-3.png",
+      "assetId": "characters/astra/character-3.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -117,7 +117,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-4.png",
+      "assetId": "characters/astra/character-4.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -148,7 +148,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-5.png",
+      "assetId": "characters/astra/character-5.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -179,7 +179,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/astra/character-6.png",
+      "assetId": "characters/astra/character-6.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -210,7 +210,7 @@
           "duration": "round"
         }
       ],
-      "assetId": "characters/astra/character-7.png",
+      "assetId": "characters/astra/character-7.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -241,7 +241,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-8.png",
+      "assetId": "characters/astra/character-8.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -272,7 +272,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-9.png",
+      "assetId": "characters/astra/character-9.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -303,7 +303,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/astra/character-10.png",
+      "assetId": "characters/astra/character-10.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -334,7 +334,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/astra/character-11.png",
+      "assetId": "characters/astra/character-11.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -365,7 +365,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/astra/character-12.png",
+      "assetId": "characters/astra/character-12.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -396,7 +396,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-13.png",
+      "assetId": "characters/astra/character-13.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -427,7 +427,7 @@
           "duration": "round"
         }
       ],
-      "assetId": "characters/astra/character-14.png",
+      "assetId": "characters/astra/character-14.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -458,7 +458,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-15.png",
+      "assetId": "characters/astra/character-15.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -489,7 +489,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/astra/character-16.png",
+      "assetId": "characters/astra/character-16.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -520,7 +520,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-17.png",
+      "assetId": "characters/astra/character-17.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -551,7 +551,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/astra/character-18.png",
+      "assetId": "characters/astra/character-18.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -582,7 +582,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-19.png",
+      "assetId": "characters/astra/character-19.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -613,7 +613,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/astra/character-20.png",
+      "assetId": "characters/astra/character-20.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -644,7 +644,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-21.png",
+      "assetId": "characters/astra/character-21.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -675,7 +675,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/astra/character-22.png",
+      "assetId": "characters/astra/character-22.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -706,7 +706,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-23.png",
+      "assetId": "characters/astra/character-23.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -737,7 +737,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-24.png",
+      "assetId": "characters/astra/character-24.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -768,7 +768,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/astra/character-25.png",
+      "assetId": "characters/astra/character-25.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -799,7 +799,7 @@
           "duration": "once_per_round"
         }
       ],
-      "assetId": "characters/astra/character-26.png",
+      "assetId": "characters/astra/character-26.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -830,7 +830,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/astra/character-27.png",
+      "assetId": "characters/astra/character-27.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -861,7 +861,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/archio/character-1.png",
+      "assetId": "characters/archio/character-1.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -892,7 +892,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/archio/character-3.png",
+      "assetId": "characters/archio/character-3.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -923,7 +923,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/archio/character-4.png",
+      "assetId": "characters/archio/character-4.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -954,7 +954,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/archio/character-5.png",
+      "assetId": "characters/archio/character-5.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -985,7 +985,7 @@
           "duration": "round"
         }
       ],
-      "assetId": "characters/archio/character-6.png",
+      "assetId": "characters/archio/character-6.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -1016,7 +1016,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/archio/character-8.png",
+      "assetId": "characters/archio/character-8.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -1047,7 +1047,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/archio/character-9.png",
+      "assetId": "characters/archio/character-9.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -1078,7 +1078,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/archio/character-10.png",
+      "assetId": "characters/archio/character-10.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -1109,7 +1109,7 @@
           "duration": "once_per_round"
         }
       ],
-      "assetId": "characters/archio/character-11.png",
+      "assetId": "characters/archio/character-11.webp",
       "deckLimit": 2,
       "acquisition": {
         "sources": [
@@ -1140,7 +1140,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/archio/character-12.png",
+      "assetId": "characters/archio/character-12.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -1171,7 +1171,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/archio/character-13.png",
+      "assetId": "characters/archio/character-13.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -1202,7 +1202,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/archio/character-14.png",
+      "assetId": "characters/archio/character-14.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -1233,7 +1233,7 @@
           "duration": "instant"
         }
       ],
-      "assetId": "characters/archio/character-16.png",
+      "assetId": "characters/archio/character-16.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -1264,7 +1264,7 @@
           "duration": "match"
         }
       ],
-      "assetId": "characters/archio/character-17.png",
+      "assetId": "characters/archio/character-17.webp",
       "deckLimit": 3,
       "acquisition": {
         "sources": [
@@ -1295,7 +1295,7 @@
           "duration": "round"
         }
       ],
-      "assetId": "characters/archio/character-19.png",
+      "assetId": "characters/archio/character-19.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [
@@ -1326,7 +1326,7 @@
           "duration": "once_per_round"
         }
       ],
-      "assetId": "characters/archio/character-20.png",
+      "assetId": "characters/archio/character-20.webp",
       "deckLimit": 1,
       "acquisition": {
         "sources": [

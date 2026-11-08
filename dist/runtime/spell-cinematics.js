@@ -1,8 +1,8 @@
 (function attachSpellCinematics(root) {
   const effects = {
-    life: { asset: 'assets/vfx/cinematic/life-bloom-v1.png', color: '#7dffd2' },
-    arcane: { asset: 'assets/vfx/cinematic/arcane-revelation-v1.png', color: '#b98cff' },
-    void: { asset: 'assets/vfx/cinematic/void-gate-v1.png', color: '#c74fff' }
+    life: { asset: 'assets/vfx/cinematic/life-bloom-v1.webp', color: '#7dffd2' },
+    arcane: { asset: 'assets/vfx/cinematic/arcane-revelation-v1.webp', color: '#b98cff' },
+    void: { asset: 'assets/vfx/cinematic/void-gate-v1.webp', color: '#c74fff' }
   };
 
   root.showSpellCinematicEffect = function showSpellCinematicEffect(kind, label) {
