@@ -25,7 +25,9 @@ for (const card of cardSet.cards) {
   card.auraKey = AURA_KEY[card.aura];
 }
 const battleStarter = JSON.parse(await readFile(resolve(root, '03_card-data/sets/battle-starter.json'), 'utf8'));
-const cardsJs = `globalThis.PrimalCardSet = Object.freeze(${JSON.stringify(cardSet)});\nglobalThis.PrimalBattleStarter = Object.freeze(${JSON.stringify(battleStarter)});\n`;
+// 오라 기본 덱 5종 (2026-11-09). 사람과 컴퓨터가 같은 목록에서 고른다.
+const auraDecks = JSON.parse(await readFile(resolve(root, '03_card-data/sets/aura-decks.json'), 'utf8'));
+const cardsJs = `globalThis.PrimalCardSet = Object.freeze(${JSON.stringify(cardSet)});\nglobalThis.PrimalBattleStarter = Object.freeze(${JSON.stringify(battleStarter)});\nglobalThis.PrimalAuraDecks = Object.freeze(${JSON.stringify(auraDecks)});\n`;
 await writeFile(resolve(output, 'cards.js'), cardsJs);
 // HTML/CSS/앱 로직의 정본은 05_game-client/app 아래에 둔다. dist는 항상 이 소스에서 재생성한다.
 const indexPath = resolve(root, 'dist/index.html');

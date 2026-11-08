@@ -68,6 +68,25 @@ for (const [index, card] of cards.entries()) {
   for (const effect of card.effects ?? []) if (effect.cardRef && !ids.has(effect.cardRef)) errors.push(`${at}: unknown cardRef ${effect.cardRef}`);
 }
 
+// 오라 기본 덱 5종 (2026-11-09): 60장 = 하수인 30(덱 오라 20 + 다른 오라 10) + 마법 20 + 함정 10, 같은 카드 7장 이하
+const auraDecks = JSON.parse(await readFile(resolve(here, '../sets/aura-decks.json'), 'utf8'));
+const deckAuras = new Set();
+for (const deck of auraDecks.decks ?? []) {
+  const at = `aura-decks.${deck.deckId}`;
+  if (!allowedAuras.has(deck.aura)) errors.push(`${at}: invalid aura`);
+  deckAuras.add(deck.aura);
+  const tally = { champion: 0, spell: 0, trap: 0, sameAura: 0, total: 0 };
+  for (const { cardId, count } of deck.cards ?? []) {
+    const card = cardsById.get(cardId);
+    if (!card) { errors.push(`${at}: unknown cardId ${cardId}`); continue; }
+    if (!Number.isInteger(count) || count < 1 || count > 7) errors.push(`${at}: ${cardId} count must be 1..7`);
+    tally[card.cardType] += count; tally.total += count;
+    if (card.cardType === 'champion' && card.aura === deck.aura) tally.sameAura += count;
+  }
+  if (tally.total !== 60 || tally.champion !== 30 || tally.spell !== 20 || tally.trap !== 10 || tally.sameAura !== 20) errors.push(`${at}: must be 60 = champion 30 (same aura 20) + spell 20 + trap 10, got ${JSON.stringify(tally)}`);
+}
+if (deckAuras.size !== 5) errors.push('aura-decks: one deck per aura (5) required');
+
 const missingArt = cards.filter(card => card.cardType !== 'champion' && !/\.(png|webp|jpe?g|avif)$/i.test(card.assetId ?? '') && card.releaseState !== 'prototype');
 if (missingArt.length) console.warn(`[art-queue] 일러스트 없는 마법/함정 ${missingArt.length}장 — Codex 토큰 회복 시 0순위로 생성 (06_assets/art-queue.md): ${missingArt.map(card => card.displayName).join(', ')}`);
 
@@ -75,5 +94,5 @@ if (errors.length) {
   console.error(errors.join('\n'));
   process.exitCode = 1;
 } else {
-  console.log(`Validated ${cards.length} cards from ${setId}@${setVersion} and ${battleStarter.cardIds.length} starter slots; all references are valid.`);
+  console.log(`Validated ${cards.length} cards from ${setId}@${setVersion}, ${battleStarter.cardIds.length} starter slots and ${auraDecks.decks.length} aura decks; all references are valid.`);
 }

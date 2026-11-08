@@ -5801,7 +5801,7 @@
       "rarity": "common",
       "stats": {
         "attack": 4,
-        "health": 6
+        "health": 5
       },
       "effects": [
         {
@@ -5956,7 +5956,7 @@
       "rarity": "rare",
       "stats": {
         "attack": 6,
-        "health": 8
+        "health": 7
       },
       "effects": [
         {
@@ -6382,7 +6382,7 @@
       "rarity": "common",
       "stats": {
         "attack": 4,
-        "health": 5
+        "health": 6
       },
       "effects": [],
       "assetId": "characters/baekyeon/char-ea.webp",
@@ -6436,7 +6436,7 @@
       "rarity": "common",
       "stats": {
         "attack": 5,
-        "health": 5
+        "health": 6
       },
       "effects": [],
       "assetId": "characters/gadam/char-c.webp",
@@ -6521,7 +6521,7 @@
       "rarity": "rare",
       "stats": {
         "attack": 5,
-        "health": 5
+        "health": 6
       },
       "effects": [
         {
@@ -6583,7 +6583,7 @@
       "rarity": "rare",
       "stats": {
         "attack": 7,
-        "health": 6
+        "health": 7
       },
       "effects": [
         {
@@ -6676,7 +6676,7 @@
       "rarity": "common",
       "stats": {
         "attack": 3,
-        "health": 3
+        "health": 4
       },
       "effects": [
         {
@@ -6792,7 +6792,7 @@
       "rarity": "common",
       "stats": {
         "attack": 5,
-        "health": 6
+        "health": 7
       },
       "effects": [],
       "assetId": "characters/astrum/char-f.webp",

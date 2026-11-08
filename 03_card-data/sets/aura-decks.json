@@ -1,0 +1,920 @@
+{
+  "schemaVersion": 1,
+  "decks": [
+    {
+      "deckId": "aura.fire",
+      "aura": "fire",
+      "name": "불의 덱",
+      "cards": [
+        {
+          "cardId": "pressure.baek-haryeon",
+          "count": 2
+        },
+        {
+          "cardId": "pressure.seol-choyeong",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.seo-nayun",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.yun-dabin",
+          "count": 2
+        },
+        {
+          "cardId": "core.marie-waveblade",
+          "count": 2
+        },
+        {
+          "cardId": "archio.rosalind",
+          "count": 2
+        },
+        {
+          "cardId": "astrum.kang-hajin",
+          "count": 2
+        },
+        {
+          "cardId": "archio.brida",
+          "count": 2
+        },
+        {
+          "cardId": "gadam.min-jihyeon",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.hwang-juha",
+          "count": 2
+        },
+        {
+          "cardId": "pressure.han-sobing",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.namgung-ahyeon",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.cheon-mua",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.im-cheonga",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.yu-soha",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.baekri-on",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.yang-sogae",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.kim-hajin",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.choi-jian",
+          "count": 2
+        },
+        {
+          "cardId": "reversal.judgment",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.bulwark",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.giant-hunt",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.weight-toll",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.life-siphon",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.insight",
+          "count": 1
+        },
+        {
+          "cardId": "core.spring-of-restoration",
+          "count": 2
+        },
+        {
+          "cardId": "core.crimson-bolt",
+          "count": 2
+        },
+        {
+          "cardId": "tower.arcane-insight",
+          "count": 2
+        },
+        {
+          "cardId": "storm.tremor",
+          "count": 1
+        },
+        {
+          "cardId": "arcana.prism-revelation",
+          "count": 1
+        },
+        {
+          "cardId": "core.frozen-chain",
+          "count": 1
+        },
+        {
+          "cardId": "storm.firestorm",
+          "count": 1
+        },
+        {
+          "cardId": "volt.chain-lightning",
+          "count": 1
+        },
+        {
+          "cardId": "storm.tempest",
+          "count": 1
+        },
+        {
+          "cardId": "arcana.earth-rift",
+          "count": 1
+        },
+        {
+          "cardId": "tower.mana-overflow",
+          "count": 1
+        },
+        {
+          "cardId": "core.ember-snare",
+          "count": 2
+        },
+        {
+          "cardId": "core.steel-guard",
+          "count": 2
+        },
+        {
+          "cardId": "core.ambush-mine",
+          "count": 1
+        },
+        {
+          "cardId": "core.counter-current",
+          "count": 1
+        },
+        {
+          "cardId": "core.last-stand",
+          "count": 1
+        },
+        {
+          "cardId": "core.swamp-bind",
+          "count": 1
+        },
+        {
+          "cardId": "core.rally-cry",
+          "count": 1
+        },
+        {
+          "cardId": "tower.summon-nullifier",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "deckId": "aura.water",
+      "aura": "water",
+      "name": "물의 덱",
+      "cards": [
+        {
+          "cardId": "pressure.han-sobing",
+          "count": 2
+        },
+        {
+          "cardId": "pressure.namgung-ahyeon",
+          "count": 2
+        },
+        {
+          "cardId": "archio.estelle",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.baek-jisu",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.shin-sia",
+          "count": 2
+        },
+        {
+          "cardId": "gadam.seo-rakyeong",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.cha-yuhyeon",
+          "count": 2
+        },
+        {
+          "cardId": "gadam.seo-yugyeong",
+          "count": 2
+        },
+        {
+          "cardId": "gadam.seo-jian",
+          "count": 2
+        },
+        {
+          "cardId": "astrum.baek-eunbi",
+          "count": 2
+        },
+        {
+          "cardId": "pressure.baek-haryeon",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.seol-choyeong",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.cheon-mua",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.im-cheonga",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.yu-soha",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.baekri-on",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.yang-sogae",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.kim-hajin",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.park-sea",
+          "count": 2
+        },
+        {
+          "cardId": "reversal.judgment",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.bulwark",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.giant-hunt",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.weight-toll",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.life-siphon",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.insight",
+          "count": 1
+        },
+        {
+          "cardId": "core.spring-of-restoration",
+          "count": 2
+        },
+        {
+          "cardId": "core.crimson-bolt",
+          "count": 2
+        },
+        {
+          "cardId": "tower.arcane-insight",
+          "count": 2
+        },
+        {
+          "cardId": "storm.tremor",
+          "count": 1
+        },
+        {
+          "cardId": "arcana.prism-revelation",
+          "count": 1
+        },
+        {
+          "cardId": "core.frozen-chain",
+          "count": 1
+        },
+        {
+          "cardId": "storm.firestorm",
+          "count": 1
+        },
+        {
+          "cardId": "volt.chain-lightning",
+          "count": 1
+        },
+        {
+          "cardId": "storm.tempest",
+          "count": 1
+        },
+        {
+          "cardId": "arcana.earth-rift",
+          "count": 1
+        },
+        {
+          "cardId": "tower.mana-overflow",
+          "count": 1
+        },
+        {
+          "cardId": "core.ember-snare",
+          "count": 2
+        },
+        {
+          "cardId": "core.steel-guard",
+          "count": 2
+        },
+        {
+          "cardId": "core.ambush-mine",
+          "count": 1
+        },
+        {
+          "cardId": "core.counter-current",
+          "count": 1
+        },
+        {
+          "cardId": "core.last-stand",
+          "count": 1
+        },
+        {
+          "cardId": "core.swamp-bind",
+          "count": 1
+        },
+        {
+          "cardId": "core.rally-cry",
+          "count": 1
+        },
+        {
+          "cardId": "tower.summon-nullifier",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "deckId": "aura.wood",
+      "aura": "wood",
+      "name": "나무의 덱",
+      "cards": [
+        {
+          "cardId": "pressure.cheon-mua",
+          "count": 2
+        },
+        {
+          "cardId": "pressure.im-cheonga",
+          "count": 2
+        },
+        {
+          "cardId": "astrum.lee-sieun",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.choi-jian",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.mun-hayeon",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.kang-seoyul",
+          "count": 2
+        },
+        {
+          "cardId": "gadam.baek-yunseul",
+          "count": 2
+        },
+        {
+          "cardId": "gadam.baek-sejin",
+          "count": 2
+        },
+        {
+          "cardId": "astrum.chae-yuna",
+          "count": 2
+        },
+        {
+          "cardId": "gadam.baek-jeonghwa",
+          "count": 2
+        },
+        {
+          "cardId": "pressure.baek-haryeon",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.seol-choyeong",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.han-sobing",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.namgung-ahyeon",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.yu-soha",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.baekri-on",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.yang-sogae",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.kim-hajin",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.baek-jisu",
+          "count": 2
+        },
+        {
+          "cardId": "reversal.judgment",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.bulwark",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.giant-hunt",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.weight-toll",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.life-siphon",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.insight",
+          "count": 1
+        },
+        {
+          "cardId": "core.spring-of-restoration",
+          "count": 2
+        },
+        {
+          "cardId": "core.crimson-bolt",
+          "count": 2
+        },
+        {
+          "cardId": "tower.arcane-insight",
+          "count": 2
+        },
+        {
+          "cardId": "storm.tremor",
+          "count": 1
+        },
+        {
+          "cardId": "arcana.prism-revelation",
+          "count": 1
+        },
+        {
+          "cardId": "core.frozen-chain",
+          "count": 1
+        },
+        {
+          "cardId": "storm.firestorm",
+          "count": 1
+        },
+        {
+          "cardId": "volt.chain-lightning",
+          "count": 1
+        },
+        {
+          "cardId": "storm.tempest",
+          "count": 1
+        },
+        {
+          "cardId": "arcana.earth-rift",
+          "count": 1
+        },
+        {
+          "cardId": "tower.mana-overflow",
+          "count": 1
+        },
+        {
+          "cardId": "core.ember-snare",
+          "count": 2
+        },
+        {
+          "cardId": "core.steel-guard",
+          "count": 2
+        },
+        {
+          "cardId": "core.ambush-mine",
+          "count": 1
+        },
+        {
+          "cardId": "core.counter-current",
+          "count": 1
+        },
+        {
+          "cardId": "core.last-stand",
+          "count": 1
+        },
+        {
+          "cardId": "core.swamp-bind",
+          "count": 1
+        },
+        {
+          "cardId": "core.rally-cry",
+          "count": 1
+        },
+        {
+          "cardId": "tower.summon-nullifier",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "deckId": "aura.metal",
+      "aura": "metal",
+      "name": "금속의 덱",
+      "cards": [
+        {
+          "cardId": "pressure.yu-soha",
+          "count": 2
+        },
+        {
+          "cardId": "pressure.baekri-on",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.jeong-sieun",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.park-sea",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.oh-eunsol",
+          "count": 2
+        },
+        {
+          "cardId": "gadam.oh-yuran",
+          "count": 2
+        },
+        {
+          "cardId": "archio.noel",
+          "count": 2
+        },
+        {
+          "cardId": "inquisition.cassandra",
+          "count": 2
+        },
+        {
+          "cardId": "astrum.seo-doa",
+          "count": 2
+        },
+        {
+          "cardId": "astrum.cha-seoyul",
+          "count": 2
+        },
+        {
+          "cardId": "pressure.baek-haryeon",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.seol-choyeong",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.han-sobing",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.namgung-ahyeon",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.cheon-mua",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.im-cheonga",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.yang-sogae",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.kim-hajin",
+          "count": 1
+        },
+        {
+          "cardId": "archio.winifred",
+          "count": 2
+        },
+        {
+          "cardId": "reversal.judgment",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.bulwark",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.giant-hunt",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.weight-toll",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.life-siphon",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.insight",
+          "count": 1
+        },
+        {
+          "cardId": "core.spring-of-restoration",
+          "count": 2
+        },
+        {
+          "cardId": "core.crimson-bolt",
+          "count": 2
+        },
+        {
+          "cardId": "tower.arcane-insight",
+          "count": 2
+        },
+        {
+          "cardId": "storm.tremor",
+          "count": 1
+        },
+        {
+          "cardId": "arcana.prism-revelation",
+          "count": 1
+        },
+        {
+          "cardId": "core.frozen-chain",
+          "count": 1
+        },
+        {
+          "cardId": "storm.firestorm",
+          "count": 1
+        },
+        {
+          "cardId": "volt.chain-lightning",
+          "count": 1
+        },
+        {
+          "cardId": "storm.tempest",
+          "count": 1
+        },
+        {
+          "cardId": "arcana.earth-rift",
+          "count": 1
+        },
+        {
+          "cardId": "tower.mana-overflow",
+          "count": 1
+        },
+        {
+          "cardId": "core.ember-snare",
+          "count": 2
+        },
+        {
+          "cardId": "core.steel-guard",
+          "count": 2
+        },
+        {
+          "cardId": "core.ambush-mine",
+          "count": 1
+        },
+        {
+          "cardId": "core.counter-current",
+          "count": 1
+        },
+        {
+          "cardId": "core.last-stand",
+          "count": 1
+        },
+        {
+          "cardId": "core.swamp-bind",
+          "count": 1
+        },
+        {
+          "cardId": "core.rally-cry",
+          "count": 1
+        },
+        {
+          "cardId": "tower.summon-nullifier",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "deckId": "aura.earth",
+      "aura": "earth",
+      "name": "대지의 덱",
+      "cards": [
+        {
+          "cardId": "pressure.yang-sogae",
+          "count": 2
+        },
+        {
+          "cardId": "baekyeon.kim-hajin",
+          "count": 2
+        },
+        {
+          "cardId": "junhy.dan-hwa",
+          "count": 2
+        },
+        {
+          "cardId": "archio.winifred",
+          "count": 2
+        },
+        {
+          "cardId": "gangho.cho-a",
+          "count": 2
+        },
+        {
+          "cardId": "archio.tanya",
+          "count": 2
+        },
+        {
+          "cardId": "astra.pierre",
+          "count": 2
+        },
+        {
+          "cardId": "archio.seraphina",
+          "count": 2
+        },
+        {
+          "cardId": "inquisition.aurelia",
+          "count": 2
+        },
+        {
+          "cardId": "bellarion.adelin-orwell",
+          "count": 2
+        },
+        {
+          "cardId": "pressure.baek-haryeon",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.seol-choyeong",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.han-sobing",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.namgung-ahyeon",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.cheon-mua",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.im-cheonga",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.yu-soha",
+          "count": 1
+        },
+        {
+          "cardId": "pressure.baekri-on",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.yun-dabin",
+          "count": 2
+        },
+        {
+          "cardId": "reversal.judgment",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.bulwark",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.giant-hunt",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.weight-toll",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.life-siphon",
+          "count": 1
+        },
+        {
+          "cardId": "reversal.insight",
+          "count": 1
+        },
+        {
+          "cardId": "core.spring-of-restoration",
+          "count": 2
+        },
+        {
+          "cardId": "core.crimson-bolt",
+          "count": 2
+        },
+        {
+          "cardId": "tower.arcane-insight",
+          "count": 2
+        },
+        {
+          "cardId": "storm.tremor",
+          "count": 1
+        },
+        {
+          "cardId": "arcana.prism-revelation",
+          "count": 1
+        },
+        {
+          "cardId": "core.frozen-chain",
+          "count": 1
+        },
+        {
+          "cardId": "storm.firestorm",
+          "count": 1
+        },
+        {
+          "cardId": "volt.chain-lightning",
+          "count": 1
+        },
+        {
+          "cardId": "storm.tempest",
+          "count": 1
+        },
+        {
+          "cardId": "arcana.earth-rift",
+          "count": 1
+        },
+        {
+          "cardId": "tower.mana-overflow",
+          "count": 1
+        },
+        {
+          "cardId": "core.ember-snare",
+          "count": 2
+        },
+        {
+          "cardId": "core.steel-guard",
+          "count": 2
+        },
+        {
+          "cardId": "core.ambush-mine",
+          "count": 1
+        },
+        {
+          "cardId": "core.counter-current",
+          "count": 1
+        },
+        {
+          "cardId": "core.last-stand",
+          "count": 1
+        },
+        {
+          "cardId": "core.swamp-bind",
+          "count": 1
+        },
+        {
+          "cardId": "core.rally-cry",
+          "count": 1
+        },
+        {
+          "cardId": "tower.summon-nullifier",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
