@@ -108,3 +108,4 @@
 - 2026-11-08 5-1 완료: 11_qa/regression/ui-scale-1.test.js(축소·배율 변수·?scale= 재등장 시 실패, 1.0 기준 높이 확인)와 npm test 에 qa:alignment(효과 위치, 소환 마법진 1px 이내) 추가. 축소 재등장 정규식은 zoom 속성만 잡고 파일 이름(zoomblur)·주석은 잡지 않음을 확인
 - 2026-11-08 5-2 완료: 08-controls-and-dev.md(배율 1.0 원칙, ?scale= 삭제, qa:overflow·qa:alignment 설명), frontend-handoff.md(7. 알려진 문제에 배율 변경과 unverified.md 안내)
 - 5-2 중 발견(이 작업 범위 밖, 고치지 않음): 08 문서 5절은 "버튼에 white-space:nowrap 금지"인데 11/8 줄바꿈 수정 때 #sound-toggle 버튼에 nowrap 을 넣었다. frontend-handoff.md 7절의 "컴퓨터 묘지 재사용은 턴 시작" 설명은 11/8 컴퓨터 비대칭 제거(카드 뽑기 때만 재사용)로 옛 내용이 됐다
+- 2026-11-08 5-3 앞부분 완료: 최종 npm test 통과(325개, 넘침·줄바꿈 OK, 효과 위치 OK). 브랜치는 origin/main 바로 위라 그대로 fast-forward 가능. **main 반영과 배포는 PM 확인 대기** (외출 중 진행 범위를 여기까지로 합의)
