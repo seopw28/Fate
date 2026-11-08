@@ -2218,3 +2218,11 @@
 
 /* 마나 줄의 혈마나 안내 문구(혈마나 1 = ♥ 1 · 첫 1회)는 뺀다 (2026-11-09 PM 요청) */
 .mana-hud .blood-rate{display:none!important}
+
+/* 마나 줄의 '마나' 글자는 빼고, 기권 버튼은 좌우로 넓힌다 (2026-11-09 PM 요청). 마나 줄은 넓어진 기권 버튼 폭만큼 오른쪽에서 시작한다 */
+@media(max-width:1849px){
+  .stage-column{--surrender-w:72px}
+  .stage-column>.mana-hud .mana-label{display:none!important}
+  .stage-column>.surrender-action{width:var(--surrender-w)!important;min-width:var(--surrender-w)!important}
+  .stage-column>.mana-hud{width:calc(100% - var(--surrender-w) - var(--bottom-control-gap))!important;margin-left:calc(var(--surrender-w) + var(--bottom-control-gap))!important}
+}
