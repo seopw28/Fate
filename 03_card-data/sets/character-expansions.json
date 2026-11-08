@@ -5549,6 +5549,1446 @@
         ],
         "characterId": "gaecheon-yu-soha"
       }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.lee-gaeun",
+      "nameKey": "card.baekyeon_lee_gaeun",
+      "displayName": "엘프 이가은",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 2,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "heal_bless",
+          "trigger": "on_summon",
+          "target": "weakest_ally",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-ca.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-lee-gaeun"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "astrum.yun-sia",
+      "nameKey": "card.astrum_yun_sia",
+      "displayName": "궁수 윤시아",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "hero_splash",
+          "trigger": "on_attack",
+          "target": "enemy_hero",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/astrum/char-h.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "astrum-yun-sia"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "astrum.lee-sieun",
+      "nameKey": "card.astrum_lee_sieun",
+      "displayName": "재생 헌터 이시은",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 4
+      },
+      "effects": [],
+      "assetId": "characters/astrum/char-a.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "astrum-lee-sieun"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.choi-jian",
+      "nameKey": "card.baekyeon_choi_jian",
+      "displayName": "방출계 최지안",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 4
+      },
+      "effects": [
+        {
+          "effectId": "arcane_arrow",
+          "trigger": "on_summon",
+          "target": "enemy_hero",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-cc.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-choi-jian"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.mun-hayeon",
+      "nameKey": "card.baekyeon_mun_hayeon",
+      "displayName": "칼렌 문하연",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 5
+      },
+      "effects": [
+        {
+          "effectId": "summon_wolf",
+          "trigger": "on_summon",
+          "target": "ally_field",
+          "amount": 1,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-ec.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-mun-hayeon"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "astrum.han-yerin",
+      "nameKey": "card.astrum_han_yerin",
+      "displayName": "식물술사 한예린",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 5
+      },
+      "effects": [
+        {
+          "effectId": "draw",
+          "trigger": "on_summon",
+          "target": "self",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/astrum/char-c.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "astrum-han-yerin"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "inquisition.maren",
+      "nameKey": "card.inquisition_maren",
+      "displayName": "약초사 마렌",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 2,
+        "health": 5
+      },
+      "effects": [
+        {
+          "effectId": "mass_heal",
+          "trigger": "on_summon",
+          "target": "all_allies",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/inquisition/char-1.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "inquisition-maren"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.kang-seoyul",
+      "nameKey": "card.baekyeon_kang_seoyul",
+      "displayName": "늑대 수인 강서율",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 5,
+        "health": 5
+      },
+      "effects": [
+        {
+          "effectId": "lone_wolf",
+          "trigger": "passive",
+          "target": "self",
+          "amount": 3,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-bc.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-kang-seoyul"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.baek-yunseul",
+      "nameKey": "card.gadam_baek_yunseul",
+      "displayName": "백산가 백윤슬",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "mass_heal",
+          "trigger": "on_summon",
+          "target": "all_allies",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gadam/char-k.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-baek-yunseul"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.baek-sejin",
+      "nameKey": "card.gadam_baek_sejin",
+      "displayName": "전략실장 백세진",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "wood",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "draw",
+          "trigger": "on_summon",
+          "target": "self",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gadam/char-j.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-baek-sejin"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.baek-doyeon",
+      "nameKey": "card.gadam_baek_doyeon",
+      "displayName": "바이오 사장 백도연",
+      "cardType": "champion",
+      "cost": 5,
+      "aura": "wood",
+      "rarity": "rare",
+      "stats": {
+        "attack": 5,
+        "health": 7
+      },
+      "effects": [
+        {
+          "effectId": "summon_wolf",
+          "trigger": "on_summon",
+          "target": "ally_field",
+          "amount": 1,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/gadam/char-i.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-baek-doyeon"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "astrum.chae-yuna",
+      "nameKey": "card.astrum_chae_yuna",
+      "displayName": "바람술사 채윤아",
+      "cardType": "champion",
+      "cost": 5,
+      "aura": "wood",
+      "rarity": "rare",
+      "stats": {
+        "attack": 6,
+        "health": 5
+      },
+      "effects": [
+        {
+          "effectId": "piercing_shot",
+          "trigger": "on_attack",
+          "target": "enemy_line",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/astrum/char-e.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "astrum-chae-yuna"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.song-chaeyoung",
+      "nameKey": "card.baekyeon_song_chaeyoung",
+      "displayName": "의료 교수 송채영",
+      "cardType": "champion",
+      "cost": 5,
+      "aura": "wood",
+      "rarity": "rare",
+      "stats": {
+        "attack": 4,
+        "health": 8
+      },
+      "effects": [
+        {
+          "effectId": "mass_heal",
+          "trigger": "on_summon",
+          "target": "all_allies",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-fb.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-song-chaeyoung"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.baek-jeonghwa",
+      "nameKey": "card.gadam_baek_jeonghwa",
+      "displayName": "백산 회장 백정화",
+      "cardType": "champion",
+      "cost": 6,
+      "aura": "wood",
+      "rarity": "rare",
+      "stats": {
+        "attack": 6,
+        "health": 8
+      },
+      "effects": [
+        {
+          "effectId": "battle_enhance",
+          "trigger": "on_summon",
+          "target": "all_allies",
+          "amount": 1,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/gadam/char-h.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-baek-jeonghwa"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.han-seorin",
+      "nameKey": "card.baekyeon_han_seorin",
+      "displayName": "간섭계 한서린",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "water",
+      "rarity": "common",
+      "stats": {
+        "attack": 2,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "draw",
+          "trigger": "on_summon",
+          "target": "self",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-aa.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-han-seorin"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.seo-eunchae",
+      "nameKey": "card.gadam_seo_eunchae",
+      "displayName": "해륜가 서은채",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "water",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "hero_splash",
+          "trigger": "on_attack",
+          "target": "enemy_hero",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gadam/char-g.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-seo-eunchae"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.baek-jisu",
+      "nameKey": "card.baekyeon_baek_jisu",
+      "displayName": "엘프 백지수",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "water",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 5
+      },
+      "effects": [
+        {
+          "effectId": "arcane_arrow",
+          "trigger": "on_summon",
+          "target": "enemy_hero",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-cb.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-baek-jisu"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.shin-sia",
+      "nameKey": "card.baekyeon_shin_sia",
+      "displayName": "변칙계 신시아",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "water",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 5
+      },
+      "effects": [],
+      "assetId": "characters/baekyeon/char-eb.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-shin-sia"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.cha-yuhyeon",
+      "nameKey": "card.baekyeon_cha_yuhyeon",
+      "displayName": "뱀파이어 차유현",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "water",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "swarm_bulwark",
+          "trigger": "passive",
+          "target": "self",
+          "amount": 1,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-da.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-cha-yuhyeon"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.seo-rakyeong",
+      "nameKey": "card.gadam_seo_rakyeong",
+      "displayName": "중공업 상무 서라경",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "water",
+      "rarity": "common",
+      "stats": {
+        "attack": 5,
+        "health": 5
+      },
+      "effects": [
+        {
+          "effectId": "arcane_arrow",
+          "trigger": "on_summon",
+          "target": "enemy_hero",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gadam/char-f.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-seo-rakyeong"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.seo-yugyeong",
+      "nameKey": "card.gadam_seo_yugyeong",
+      "displayName": "호텔 대표 서유경",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "water",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "mass_heal",
+          "trigger": "on_summon",
+          "target": "all_allies",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gadam/char-e.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-seo-yugyeong"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.seo-jian",
+      "nameKey": "card.gadam_seo_jian",
+      "displayName": "해륜 부회장 서지안",
+      "cardType": "champion",
+      "cost": 5,
+      "aura": "water",
+      "rarity": "rare",
+      "stats": {
+        "attack": 5,
+        "health": 7
+      },
+      "effects": [
+        {
+          "effectId": "draw",
+          "trigger": "on_summon",
+          "target": "self",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gadam/char-d.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-seo-jian"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "astrum.ma-yuri",
+      "nameKey": "card.astrum_ma_yuri",
+      "displayName": "물술사 마유리",
+      "cardType": "champion",
+      "cost": 5,
+      "aura": "water",
+      "rarity": "rare",
+      "stats": {
+        "attack": 4,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "freeze_strongest",
+          "trigger": "on_summon",
+          "target": "strongest_enemy",
+          "amount": 2,
+          "duration": "round"
+        }
+      ],
+      "assetId": "characters/astrum/char-d.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "astrum-ma-yuri"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "astrum.baek-eunbi",
+      "nameKey": "card.astrum_baek_eunbi",
+      "displayName": "빙결술사 백은비",
+      "cardType": "champion",
+      "cost": 6,
+      "aura": "water",
+      "rarity": "rare",
+      "stats": {
+        "attack": 6,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "freeze_strongest",
+          "trigger": "on_summon",
+          "target": "strongest_enemy",
+          "amount": 2,
+          "duration": "round"
+        }
+      ],
+      "assetId": "characters/astrum/char-j.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "astrum-baek-eunbi"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.seol-yuran",
+      "nameKey": "card.baekyeon_seol_yuran",
+      "displayName": "결학 교수 설유란",
+      "cardType": "champion",
+      "cost": 6,
+      "aura": "water",
+      "rarity": "rare",
+      "stats": {
+        "attack": 5,
+        "health": 7
+      },
+      "effects": [
+        {
+          "effectId": "weaken_all",
+          "trigger": "on_summon",
+          "target": "all_enemies",
+          "amount": 1,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-fc.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-seol-yuran"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.jeong-sieun",
+      "nameKey": "card.baekyeon_jeong_sieun",
+      "displayName": "고양이 수인 정시은",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "metal",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 4
+      },
+      "effects": [
+        {
+          "effectId": "swarm_fury",
+          "trigger": "passive",
+          "target": "self",
+          "amount": 3,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-bb.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-jeong-sieun"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.park-sea",
+      "nameKey": "card.baekyeon_park_sea",
+      "displayName": "뱀파이어 박세아",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "metal",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 5
+      },
+      "effects": [
+        {
+          "effectId": "arcane_arrow",
+          "trigger": "on_summon",
+          "target": "enemy_hero",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-db.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-park-sea"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.oh-eunsol",
+      "nameKey": "card.baekyeon_oh_eunsol",
+      "displayName": "칼렌 오은솔",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "metal",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 5
+      },
+      "effects": [],
+      "assetId": "characters/baekyeon/char-ea.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-oh-eunsol"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "astrum.mun-sora",
+      "nameKey": "card.astrum_mun_sora",
+      "displayName": "음파술사 문소라",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "metal",
+      "rarity": "common",
+      "stats": {
+        "attack": 2,
+        "health": 4
+      },
+      "effects": [
+        {
+          "effectId": "weaken_all",
+          "trigger": "on_summon",
+          "target": "all_enemies",
+          "amount": 1,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/astrum/char-b.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "astrum-mun-sora"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.oh-yuran",
+      "nameKey": "card.gadam_oh_yuran",
+      "displayName": "백화점 대표 오유란",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "metal",
+      "rarity": "common",
+      "stats": {
+        "attack": 5,
+        "health": 5
+      },
+      "effects": [],
+      "assetId": "characters/gadam/char-c.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-oh-yuran"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.oh-seogyeong",
+      "nameKey": "card.gadam_oh_seogyeong",
+      "displayName": "운성 부회장 오서경",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "metal",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "draw",
+          "trigger": "on_summon",
+          "target": "self",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gadam/char-b.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-oh-seogyeong"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "inquisition.cassandra",
+      "nameKey": "card.inquisition_cassandra",
+      "displayName": "감시관 카산드라",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "metal",
+      "rarity": "common",
+      "stats": {
+        "attack": 6,
+        "health": 4
+      },
+      "effects": [
+        {
+          "effectId": "lone_wolf",
+          "trigger": "passive",
+          "target": "self",
+          "amount": 3,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/inquisition/char-3.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "inquisition-cassandra"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "astrum.seo-doa",
+      "nameKey": "card.astrum_seo_doa",
+      "displayName": "염동술사 서도아",
+      "cardType": "champion",
+      "cost": 5,
+      "aura": "metal",
+      "rarity": "rare",
+      "stats": {
+        "attack": 5,
+        "health": 5
+      },
+      "effects": [
+        {
+          "effectId": "sword_aura",
+          "trigger": "on_summon",
+          "target": "leftmost_enemy",
+          "amount": 3,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/astrum/char-g.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "astrum-seo-doa"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.ryu-haewon",
+      "nameKey": "card.baekyeon_ryu_haewon",
+      "displayName": "교수 류해원",
+      "cardType": "champion",
+      "cost": 5,
+      "aura": "metal",
+      "rarity": "rare",
+      "stats": {
+        "attack": 5,
+        "health": 7
+      },
+      "effects": [
+        {
+          "effectId": "armor_pierce",
+          "trigger": "on_attack",
+          "target": "enemy",
+          "amount": 1,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-fa.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-ryu-haewon"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "astrum.cha-seoyul",
+      "nameKey": "card.astrum_cha_seoyul",
+      "displayName": "낙뢰술사 차서율",
+      "cardType": "champion",
+      "cost": 6,
+      "aura": "metal",
+      "rarity": "rare",
+      "stats": {
+        "attack": 7,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "piercing_shot",
+          "trigger": "on_attack",
+          "target": "enemy_line",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/astrum/char-i.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "astrum-cha-seoyul"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.go-segyeong",
+      "nameKey": "card.baekyeon_go_segyeong",
+      "displayName": "뱀파이어 교수 고세경",
+      "cardType": "champion",
+      "cost": 6,
+      "aura": "metal",
+      "rarity": "rare",
+      "stats": {
+        "attack": 6,
+        "health": 7
+      },
+      "effects": [
+        {
+          "effectId": "armor_pierce",
+          "trigger": "on_attack",
+          "target": "enemy",
+          "amount": 2,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-fd.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-go-segyeong"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.oh-hyegyeong",
+      "nameKey": "card.gadam_oh_hyegyeong",
+      "displayName": "운성 회장 오혜경",
+      "cardType": "champion",
+      "cost": 6,
+      "aura": "metal",
+      "rarity": "rare",
+      "stats": {
+        "attack": 6,
+        "health": 8
+      },
+      "effects": [
+        {
+          "effectId": "weaken_all",
+          "trigger": "on_summon",
+          "target": "all_enemies",
+          "amount": 1,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/gadam/char-a.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-oh-hyegyeong"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.seo-nayun",
+      "nameKey": "card.baekyeon_seo_nayun",
+      "displayName": "여우 수인 서나윤",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "fire",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "burn",
+          "trigger": "on_attack",
+          "target": "enemy",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-ba.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-seo-nayun"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.min-gahyeon",
+      "nameKey": "card.gadam_min_gahyeon",
+      "displayName": "세광가 민가현",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "fire",
+      "rarity": "common",
+      "stats": {
+        "attack": 2,
+        "health": 4
+      },
+      "effects": [
+        {
+          "effectId": "draw",
+          "trigger": "on_summon",
+          "target": "self",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gadam/char-n.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-min-gahyeon"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.yun-dabin",
+      "nameKey": "card.baekyeon_yun_dabin",
+      "displayName": "방출계 윤다빈",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "fire",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 4
+      },
+      "effects": [
+        {
+          "effectId": "arcane_arrow",
+          "trigger": "on_summon",
+          "target": "enemy_hero",
+          "amount": 2,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-ac.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-yun-dabin"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.kwon-nari",
+      "nameKey": "card.baekyeon_kwon_nari",
+      "displayName": "뱀파이어 권나리",
+      "cardType": "champion",
+      "cost": 3,
+      "aura": "fire",
+      "rarity": "common",
+      "stats": {
+        "attack": 5,
+        "health": 4
+      },
+      "effects": [],
+      "assetId": "characters/baekyeon/char-dc.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-kwon-nari"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "astrum.kang-hajin",
+      "nameKey": "card.astrum_kang_hajin",
+      "displayName": "강화술사 강하진",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "fire",
+      "rarity": "common",
+      "stats": {
+        "attack": 5,
+        "health": 6
+      },
+      "effects": [],
+      "assetId": "characters/astrum/char-f.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "astrum-kang-hajin"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.min-seoa",
+      "nameKey": "card.gadam_min_seoa",
+      "displayName": "세광 본부장 민서아",
+      "cardType": "champion",
+      "cost": 4,
+      "aura": "fire",
+      "rarity": "common",
+      "stats": {
+        "attack": 4,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "draw",
+          "trigger": "on_summon",
+          "target": "self",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/gadam/char-m.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-min-seoa"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "inquisition.eloise",
+      "nameKey": "card.inquisition_eloise",
+      "displayName": "백작 영애 엘로이즈",
+      "cardType": "champion",
+      "cost": 5,
+      "aura": "fire",
+      "rarity": "rare",
+      "stats": {
+        "attack": 6,
+        "health": 6
+      },
+      "effects": [
+        {
+          "effectId": "explosive_mark",
+          "trigger": "on_attack",
+          "target": "enemy",
+          "amount": 3,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/inquisition/char-4.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "inquisition-eloise"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "gadam.min-jihyeon",
+      "nameKey": "card.gadam_min_jihyeon",
+      "displayName": "미디어 대표 민지현",
+      "cardType": "champion",
+      "cost": 5,
+      "aura": "fire",
+      "rarity": "rare",
+      "stats": {
+        "attack": 5,
+        "health": 7
+      },
+      "effects": [
+        {
+          "effectId": "battle_enhance",
+          "trigger": "on_summon",
+          "target": "all_allies",
+          "amount": 1,
+          "duration": "match"
+        }
+      ],
+      "assetId": "characters/gadam/char-l.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "gadam-min-jihyeon"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.hwang-juha",
+      "nameKey": "card.baekyeon_hwang_juha",
+      "displayName": "전투 교수 황주하",
+      "cardType": "champion",
+      "cost": 6,
+      "aura": "fire",
+      "rarity": "rare",
+      "stats": {
+        "attack": 7,
+        "health": 7
+      },
+      "effects": [
+        {
+          "effectId": "sword_aura",
+          "trigger": "on_summon",
+          "target": "leftmost_enemy",
+          "amount": 3,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-fe.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-hwang-juha"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "baekyeon.kim-hajin",
+      "nameKey": "card.baekyeon_kim_hajin",
+      "displayName": "강화계 김하진",
+      "cardType": "champion",
+      "cost": 2,
+      "aura": "earth",
+      "rarity": "common",
+      "stats": {
+        "attack": 3,
+        "health": 3
+      },
+      "effects": [
+        {
+          "effectId": "hero_splash",
+          "trigger": "on_attack",
+          "target": "enemy_hero",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/baekyeon/char-ab.webp",
+      "deckLimit": 3,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "baekyeon-kim-hajin"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "cardId": "inquisition.aurelia",
+      "nameKey": "card.inquisition_aurelia",
+      "displayName": "전 성녀 아우렐리아",
+      "cardType": "champion",
+      "cost": 5,
+      "aura": "earth",
+      "rarity": "rare",
+      "stats": {
+        "attack": 5,
+        "health": 7
+      },
+      "effects": [
+        {
+          "effectId": "blink_shield",
+          "trigger": "on_summon",
+          "target": "self",
+          "amount": 1,
+          "duration": "instant"
+        }
+      ],
+      "assetId": "characters/inquisition/char-2.webp",
+      "deckLimit": 2,
+      "acquisition": {
+        "sources": [
+          "summon"
+        ],
+        "characterId": "inquisition-aurelia"
+      }
     }
   ]
 }
