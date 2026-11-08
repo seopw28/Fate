@@ -345,7 +345,7 @@ test('복수자: 궁극기마다 소진자 기본 능력치 +7/+15 로 강림하
   assert.equal(html.includes('decorateAvengerUnit'), false, '왕관 장식용 DOM 로직을 다시 사용하면 안 된다');
   assert.equal(html.includes('crown-body'), false, 'CSS 도형 왕관을 다시 사용하면 안 된다');
   assert.ok(html.includes("wave.className='avenger-landing-impact'"));
-  assert.ok(html.includes("arena?.animate([{transform:'none'},{transform:'translateY(13px) scale(.985)'"));
+  assert.ok(html.includes("arena?.animate([{transform:'none'},{transform:'translateY(11.7px) scale(.985)'"));
   assert.ok(!html.includes('damageUnit(target,5,partner.el)'), '강림 시 상대 전장 5 피해는 폐지됐다');
   for (const gone of ['firstUltimateSpec', 'firstUltimateCompanion', 'avengerSummoned', 'matchEnemyUltimateCompanion', 'seedAvengerFromLatestFallenUltimate']) {
     assert.ok(!html.includes(gone), `${gone}: 최초 궁극기·같은 오라 동료·배틀당 1회 규칙은 폐지됐다`);
