@@ -33,20 +33,20 @@
   ];
 
   const assets = {
-    fireSlash: { count: 35, path: i => `assets/vfx/fire/fx2_swordFire/spell_decap_1_zoomblur_${i}.png`, fps: 24 },
-    fireBall: { count: 20, path: i => `assets/vfx/fire/fx3_fireBall/spell_decap_2_ball_${i}.png`, fps: 22 },
-    waterRise: { count: 22, path: i => `assets/vfx/water/fx1_blue_topEffect/spell_bluetop_1_${i}.png`, fps: 24 },
-    earthBurst: { count: 19, path: i => `assets/vfx/earth/fx10_blackExplosion/smoke_black_1_19_${i}.png`, fps: 22 },
-    windGustV1: { static: true, path: () => 'assets/vfx/cinematic/wind-gust-v1.png' },
-    windGustV2: { static: true, path: () => 'assets/vfx/cinematic/wind-gust-v2.png' },
-    windGustV3: { static: true, path: () => 'assets/vfx/cinematic/wind-gust-v3.png' },
-    lightningStrikeV1: { static: true, path: () => 'assets/vfx/cinematic/lightning-strike-v1.png' },
-    lightningStrikeV2: { static: true, path: () => 'assets/vfx/cinematic/lightning-strike-v2.png' },
-    lightningStrikeV3: { static: true, path: () => 'assets/vfx/cinematic/lightning-strike-v3.png' },
-    arcaneCircleMedium: { static: true, path: () => 'assets/vfx/medium/arcane-circle-v1.png' },
-    darkOrbMedium: { static: true, path: () => 'assets/vfx/medium/dark-orb-v1.png' },
-    lightBladesMedium: { static: true, path: () => 'assets/vfx/medium/light-blades-v1.png' },
-    flamePillarMedium: { static: true, path: () => 'assets/vfx/medium/flame-pillar-v1.png' }
+    fireSlash: { count: 35, path: i => `assets/vfx/fire/fx2_swordFire/spell_decap_1_zoomblur_${i}.webp`, fps: 24 },
+    fireBall: { count: 20, path: i => `assets/vfx/fire/fx3_fireBall/spell_decap_2_ball_${i}.webp`, fps: 22 },
+    waterRise: { count: 22, path: i => `assets/vfx/water/fx1_blue_topEffect/spell_bluetop_1_${i}.webp`, fps: 24 },
+    earthBurst: { count: 19, path: i => `assets/vfx/earth/fx10_blackExplosion/smoke_black_1_19_${i}.webp`, fps: 22 },
+    windGustV1: { static: true, path: () => 'assets/vfx/cinematic/wind-gust-v1.webp' },
+    windGustV2: { static: true, path: () => 'assets/vfx/cinematic/wind-gust-v2.webp' },
+    windGustV3: { static: true, path: () => 'assets/vfx/cinematic/wind-gust-v3.webp' },
+    lightningStrikeV1: { static: true, path: () => 'assets/vfx/cinematic/lightning-strike-v1.webp' },
+    lightningStrikeV2: { static: true, path: () => 'assets/vfx/cinematic/lightning-strike-v2.webp' },
+    lightningStrikeV3: { static: true, path: () => 'assets/vfx/cinematic/lightning-strike-v3.webp' },
+    arcaneCircleMedium: { static: true, path: () => 'assets/vfx/medium/arcane-circle-v1.webp' },
+    darkOrbMedium: { static: true, path: () => 'assets/vfx/medium/dark-orb-v1.webp' },
+    lightBladesMedium: { static: true, path: () => 'assets/vfx/medium/light-blades-v1.webp' },
+    flamePillarMedium: { static: true, path: () => 'assets/vfx/medium/flame-pillar-v1.webp' }
   };
 
   global.TCG_VFX = { elements, presets, assets };
