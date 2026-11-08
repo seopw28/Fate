@@ -55,7 +55,7 @@
         if(unit.dataset.graveRecorded!=='true'){
           unit.dataset.graveRecorded='true';
           const max=Number(unit.dataset.maxHp)||1,atk=statOf(unit,false);
-          (side==='player'?allyGraveyard:enemyGraveyard).push({name:nameOf(unit),art:unit.dataset.art,el:getElement(unit),element:getElement(unit),atk,attack:atk,hp:max,maxHp:max,effect:unit.dataset.effect||'',cost:Number(unit.dataset.cost)||1});
+          buryOrVanish(side,{name:nameOf(unit),art:unit.dataset.art,el:getElement(unit),element:getElement(unit),atk,attack:atk,hp:max,maxHp:max,effect:unit.dataset.effect||'',cost:Number(unit.dataset.cost)||1});
         }
         const hp=unit.querySelector('.stats span:last-child');if(hp)hp.textContent='♥ 0';
         removeFieldUnit(unit);updateSynergyHud();
