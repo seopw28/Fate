@@ -571,7 +571,7 @@
        카드 크기 = min(행 높이가 허락하는 크기, 칸 폭 − 72px). 칸 폭이 커질수록 간격도 같이 커지고, 어떤 폭에서도 칸 사이 간격은 72px 아래로 줄지 않는다.
        행 높이 = (필드 높이 − 위아래 여백 − 독 간격) / 2, 카드 높이 = (행 높이 − 4px) / 1.3 — 130% 소진자·복수자가 옆 행·가운데 독·마나 바를 덮지 않는다. */
     .stage-column .arena{container-type:size;--field-gap:48.6px;--field-pad:7.2px;gap:var(--field-gap);padding:var(--field-pad) 16.2px;grid-template-rows:minmax(0,1fr) minmax(0,1fr);align-content:stretch}
-    .stage-column .arena{--row-h:calc((100cqh - 2 * var(--field-pad) - var(--field-gap)) / 2);--card-h:calc((var(--row-h) - 3.6px) / 1.3);--card-w:calc(1.1 * min(calc(var(--card-h) * 5 / 7),calc((100cqw - 32.4px) / 5 - 64.8px)))} /* 2026-11-08 PM: 전장 카드 110%. 소진자·복수자는 그 위에서 115%(처음 크기 대비 126.5%)라 130% 기준 행 높이 안에 들어간다 */
+    .stage-column .arena{--row-h:calc((100cqh - 2 * var(--field-pad) - var(--field-gap)) / 2);--card-h:calc((var(--row-h) - 3.6px) / 1.375);--card-w:calc(1.1 * min(calc(var(--card-h) * 5 / 7),calc((100cqw - 32.4px) / 5 - 64.8px)))} /* 2026-11-08 PM: 전장 카드 110%. 소진자·복수자는 그 위에서 115%(처음 크기 대비 126.5%)라 130% 기준 행 높이 안에 들어간다 */
     .stage-column .arena .lane:first-child,.stage-column .arena .summon-zone{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:0;padding:0;min-height:0;height:var(--row-h);align-self:start;overflow:visible;justify-content:stretch;align-items:center}
     .stage-column .arena .lane:first-child > .unit,.stage-column .arena .summon-zone > .unit{width:var(--card-w);max-width:none;height:auto;aspect-ratio:5/7;justify-self:center}
     /* 작은 카드에서도 능력치 알약·이름이 카드 밖으로 나가지 않게 카드 폭에 맞춰 줄인다 */
@@ -584,7 +584,7 @@
     .surrender-action{position:absolute;z-index:8;left:16.2px;bottom:10.8px;min-width:118.8px;min-height:41.4px;padding:9.9px 18px;border:2px solid #9b7436;border-radius:9.9px;background:linear-gradient(180deg,#3b301d,#211a10);color:#f2c96f;font-size:11.7px;font-weight:900;letter-spacing:.06em;text-shadow:0 .9px 1.8px #000;box-shadow:0 4.5px 14.4px #0009,inset 0 .9px 0 #ffe7a244;transition:.18s}.surrender-action:hover{transform:translateY(-1.8px);border-color:#f3c566;color:#fff1b5;background:linear-gradient(180deg,#59451f,#2d210e);box-shadow:0 7.2px 19.8px #000a,0 0 16.2px #d69b3655,inset 0 .9px 0 #fff0ae66}.surrender-action.confirm{border-color:#ffd66e;color:#241b0b;background:linear-gradient(180deg,#ffe08a,#d69b32);text-shadow:none;box-shadow:0 0 0 3.6px #d8a33a33,0 0 21.6px #f1bd4f88;animation:surrender-confirm 1s ease-in-out infinite}.surrender-action:disabled{opacity:.45;cursor:not-allowed;transform:none;animation:none}@keyframes surrender-confirm{50%{filter:brightness(1.18);box-shadow:0 0 0 6.3px #d8a33a22,0 0 28.8px #f1bd4faa}}.cracker-transfer{position:fixed;z-index:30;left:var(--start-x);top:var(--start-y);color:#ffe28d;font-size:18px;text-shadow:0 0 8px #ffd45c,0 0 18px #ef9d28;pointer-events:none;animation:cracker-transfer var(--duration) cubic-bezier(.2,.72,.24,1) forwards;animation-delay:var(--delay)}.cracker-transfer-caption{position:fixed;z-index:31;left:50%;top:42%;transform:translate(-50%,-50%);padding:13px 22px;border:1px solid #d8aa55;border-radius:12px;background:#18130eef;color:#ffe19a;font-size:16px;font-weight:900;box-shadow:0 0 36px #e9a72f66;pointer-events:none;animation:cracker-caption 1.25s ease-out forwards}@keyframes cracker-transfer{0%{transform:translate(-50%,-50%) scale(.35) rotate(0);opacity:0}15%{opacity:1;transform:translate(-50%,-50%) scale(1.25) rotate(45deg)}70%{opacity:1}100%{transform:translate(calc(var(--dx) - 50%),calc(var(--dy) - 50%)) scale(.45) rotate(360deg);opacity:0}}@keyframes cracker-caption{0%{opacity:0;transform:translate(-50%,-35%) scale(.8)}22%,68%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-65%) scale(1.08)}}
     .stage-column{position:relative;--bottom-control-size:70.2px;--bottom-control-gap:9px}.stage-column>.mana-hud{width:calc(100% - var(--bottom-control-size) - var(--bottom-control-gap));height:var(--bottom-control-size);min-height:var(--bottom-control-size);margin-left:calc(var(--bottom-control-size) + var(--bottom-control-gap))}.surrender-action{left:0;bottom:0;width:var(--bottom-control-size);height:var(--bottom-control-size);min-width:var(--bottom-control-size);min-height:var(--bottom-control-size);aspect-ratio:1;padding:0;border-radius:14.4px;font-size:12.6px;line-height:1;text-align:center;white-space:normal}.surrender-action.confirm{font-size:11.7px}@media(min-width:1101px){.stage-column{--bottom-control-size:63px}}@media(min-width:1101px) and (max-height:760px){.stage-column{--bottom-control-size:54px}.surrender-action{border-radius:11.7px;font-size:10.8px}}
     /* Wide desktop: use the page's outer-left gutter for controls; never take a column from the board itself. */
-    @media(min-width:1101px){ /* 2026-11-08: 세로 마나 기둥을 1850px 전용에서 데스크톱 기본으로 (docs/plan-hud-layout.md) */
+    @media(min-width:1850px){
       .stage-column{--field-control-w:61.2px;display:flex}
       .stage-column>.arena{width:100%;min-width:0;min-height:0}
       .stage-column>.mana-hud{position:absolute;z-index:7;left:calc((var(--field-control-w) + 9px) * -1);top:100.8px;bottom:auto;width:var(--field-control-w);height:clamp(432px,64.8vh,612px);max-height:calc(100% - 108px);min-height:0;margin:0;padding:13.5px 7.2px 11.7px;display:flex;flex-direction:column;justify-content:flex-start;gap:7.2px;overflow:hidden;border:1px solid #486575;border-radius:19.8px;background:linear-gradient(180deg,#162733f2,#0b141cee 56%,#090f16f2);box-shadow:0 12.6px 32.4px #0009,inset 0 .9px #dff7ff16}
@@ -598,7 +598,7 @@
       .stage-column>.mana-hud .blood-rate{order:4;z-index:1;width:100%;padding-top:7.2px;border-top:1px solid #ffffff12;color:#cf8295;font-size:7.2px;line-height:1.35;text-align:center;white-space:normal;word-break:keep-all}
       .stage-column>.mana-hud .mana-spend{left:calc(100% + 6.3px);top:50%;bottom:auto;animation-name:mana-spend-side}
     }
-
+    @media(min-width:1850px) and (max-height:760px){.stage-column>.mana-hud{top:82.8px;height:clamp(360px,61.2vh,468px)}}
     .field-action-dock{position:absolute;z-index:13;left:50%;bottom:10.8px;width:min(684px,calc(100% - 28.8px));height:52.2px;display:flex;align-items:center;justify-content:center;gap:9px;transform:translateX(-50%);pointer-events:none}
     .field-action-dock>button{position:static!important;left:auto!important;top:auto!important;bottom:auto!important;flex:0 1 216px;width:min(216px,31%)!important;min-width:0;min-height:52.2px!important;max-height:52.2px;height:52.2px!important;aspect-ratio:auto!important;transform:none!important;margin:0;padding:7.2px 12.6px;border-radius:11.7px;overflow:hidden;pointer-events:auto;animation:none}
     .field-action-dock>button:hover{transform:translateY(-1.8px)!important}
@@ -611,6 +611,15 @@
       .stage-column>.duel-hud>.player .avatar{width:48.6px;height:48.6px;flex:0 0 48.6px}
       .stage-column>.duel-hud>.player .hud-id{min-height:27px;margin-bottom:5.4px}
       .stage-column>.duel-hud>.player .health{height:34.2px;margin-top:7.2px;padding:4.5px;border-width:2.7px}
+      .stage-column>.mana-hud{position:relative;z-index:auto;left:auto;top:auto;bottom:auto;width:calc(100% - var(--bottom-control-size) - var(--bottom-control-gap));height:var(--bottom-control-size);min-height:var(--bottom-control-size);max-height:none;margin:9px 0 0 calc(var(--bottom-control-size) + var(--bottom-control-gap));padding:9px 21.6px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:21.6px;overflow:visible;border:2px solid #43bdb5;border-radius:14.4px;background:linear-gradient(90deg,#0b2025,#123b40 50%,#0b2025)}
+      .stage-column>.mana-hud::before{display:none}
+      .stage-column>.mana-hud .mana-label{order:1;min-width:48.6px;font-size:15.3px}
+      .stage-column>.mana-hud .mana-value{order:3;min-width:73.8px;font-size:30.6px;text-align:right}
+      .stage-column>.mana-hud .mana-pips{order:2;position:relative;flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8.1px;width:auto;height:auto;margin:0;padding:0;overflow:visible;border:0;border-radius:0;background:none;box-shadow:none}
+      .stage-column>.mana-hud .mana-pips::before,.stage-column>.mana-hud .mana-pips::after{display:none}
+      .stage-column>.mana-hud .mana-pip{display:block;flex:1 1 50.4px;width:auto;max-width:68.4px;min-width:21.6px;height:16.2px;min-height:16.2px;border-radius:5.4px}
+      .stage-column>.mana-hud .mana-pip.full{border-color:#8ff5e9;background:linear-gradient(180deg,#68dfd4,#25aaa3);box-shadow:0 0 8.1px #49e1d4,inset 0 .9px 1.8px #e6fffb}
+      .stage-column>.mana-hud .blood-rate{order:4;width:auto;padding:0;border:0;font-size:9px;white-space:nowrap}
       .stage-column>.surrender-action{z-index:15;left:0;right:auto;top:auto;bottom:0;width:var(--bottom-control-size);height:var(--bottom-control-size);min-width:var(--bottom-control-size);min-height:var(--bottom-control-size);aspect-ratio:1;padding:0;border-width:2px;border-radius:14.4px;font-size:12.6px}
     }
     .arena>.field-action-dock{position:absolute;z-index:13;left:50%;right:auto;top:50%;bottom:auto;width:min(828px,76%);max-width:none;height:45px;margin:0;display:flex;align-items:center;justify-content:center;gap:10.8px;overflow:visible;transform:translate(-50%,-50%);pointer-events:none}
@@ -2188,46 +2197,6 @@
     @keyframes gb-tally{0%{opacity:0;transform:translate(-50%,-50%) scale(1.7)}10%{opacity:1;transform:translate(-50%,-50%) scale(.94)}18%{transform:translate(-50%,-50%) scale(1)}72%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-90%) scale(.96)}}
     @keyframes gb-strike{to{transform:rotate(-14deg) scaleX(1)}}
     @media(prefers-reduced-motion:reduce){.guard-break .gb-half{animation:gb-flash .6s ease-out both}.guard-break .gb-ring{display:none}}
-
-    /* 전투 화면 배치 (2026-11-08, docs/plan-hud-layout.md): 위 상대 / 가운데 마나 기둥 + 전장 / 아래 기권 + 내 소환사 줄.
-       duel-hud 는 display:contents 로 풀어 상대·나를 각각 위·아래 줄에 둔다. 마나 기둥은 전장과 다른 칸이라 겹치지 않는다. */
-    @media(min-width:1101px){
-      .stage-column{--mana-col-w:68px;display:grid;grid-template-columns:var(--mana-col-w) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"enemy enemy" "mana arena" "surrender player";column-gap:9px;row-gap:9px}
-      .stage-column>.duel-hud{display:contents}
-      .stage-column>.duel-hud>.enemy{grid-area:enemy;min-width:0}
-      .stage-column>.duel-hud>.player{grid-area:player;min-width:0;align-self:center}
-      .stage-column>.arena{grid-area:arena;width:auto;min-width:0;min-height:0}
-      .stage-column>.mana-hud{grid-area:mana;position:relative;left:auto;top:auto;bottom:auto;width:auto;height:auto;max-height:none;min-height:0;margin:0}
-      .stage-column>.surrender-action{grid-area:surrender;position:relative;left:auto;bottom:auto;align-self:center;width:var(--mana-col-w);height:var(--mana-col-w);min-width:0;min-height:0}
-      .stage-column>.field-action-dock{grid-area:arena}
-    }
-
-    /* 소환사 줄 한 줄 정리 (2026-11-08, docs/plan-hud-layout.md 2): 상대·나 모두 [이름 → 문양 → 체력바 → 덱·손패] 한 줄.
-       두 줄을 같은 열(전장 폭)에 두고 이름·덱손패 칸 폭을 고정해 체력바 길이를 같게 맞춘다. 높이는 체력바 한 줄로 최소화. */
-    @media(min-width:1101px){
-      .stage-column{grid-template-areas:". enemy" "mana arena" "surrender player"}
-      .stage-column>.duel-hud>.enemy,.stage-column>.duel-hud>.player{--hud-name-w:192px;--hud-side-w:232px;--hud-row-h:40px;display:grid!important;grid-template-columns:var(--hud-name-w) var(--hud-row-h) minmax(0,1fr) var(--hud-side-w);align-items:center;column-gap:10.8px;min-height:var(--hud-row-h);text-align:left}
-      .stage-column>.duel-hud>.enemy>div:last-child,.stage-column>.duel-hud>.player>div:last-child,.stage-column>.duel-hud .hud-id{display:contents}
-      .stage-column>.duel-hud .hud-id .name{grid-column:1;grid-row:1;margin:0;white-space:nowrap;display:flex;align-items:center;gap:5.4px;min-width:0}
-      .stage-column>.duel-hud>.enemy>.avatar,.stage-column>.duel-hud>.player>.avatar{grid-column:2;grid-row:1;width:var(--hud-row-h);height:var(--hud-row-h);flex:none;margin:0}
-      .stage-column>.duel-hud>.enemy .health,.stage-column>.duel-hud>.player .health{grid-column:3;grid-row:1;width:100%;height:var(--hud-row-h);margin:0}
-      .stage-column>.duel-hud .enemy-piles,.stage-column>.duel-hud .hud-hand-info{grid-column:4;grid-row:1;justify-self:end;display:flex;align-items:center;gap:9px;margin:0;padding:0 0 0 10.8px;border-left:1px solid #ffffff1f;border-right:0;white-space:nowrap;min-height:0}
-      .stage-column>.duel-hud .enemy-piles .pile-back{width:25.2px;height:35.1px;border-radius:3.6px}
-      .stage-column>.duel-hud .enemy-piles .pile-hand .pile-back{margin-right:-13.5px}
-      .stage-column>.duel-hud .enemy-piles .pile-hand{padding-right:13.5px}
-      .stage-column>.duel-hud .enemy-piles .pile-count{font-size:11.7px}
-      .stage-column>.duel-hud .hud-hand-info{font-size:11.7px}
-    }
-    /* 이름을 문양 바로 왼쪽에 붙인다 (2026-11-08 PM 요청). 이름 칸 안에서 오른쪽 정렬하고, 난이도 표시는 이름 앞으로 보낸다.
-       '~의 아이' 표시는 문양과 같은 정보라 이 줄에서는 숨긴다. */
-    @media(min-width:1101px){
-      .stage-column>.duel-hud .hud-id .name{justify-content:flex-end;text-align:right}
-      .stage-column>.duel-hud .hud-id .name .enemy-difficulty{order:-1}
-      .stage-column>.duel-hud .hud-id .guardian-chip{display:none!important}
-    }
-    @media(min-width:1101px) and (max-width:1300px){.stage-column>.duel-hud>.enemy,.stage-column>.duel-hud>.player{--hud-name-w:176px;--hud-side-w:210px;column-gap:7.2px}.stage-column>.duel-hud .enemy-piles .pile-back{width:21.6px;height:30.6px}}
-
-
 /* 공명 복수 광역 피해 (2026-11-08): 주인 오라 색(--aura)의 섬광과 퍼지는 고리 */
 .aura-sweep-fx{position:fixed;z-index:60;pointer-events:none;transform:translate(-50%,-50%)}
 .aura-sweep-fx i,.aura-sweep-fx b{position:absolute;inset:0;border-radius:50%}
@@ -2241,6 +2210,9 @@
 .unit[data-effect="ultimate-avenger"][data-avenger-resonance="true"]{animation:avenger-resonance-pulse 1.6s ease-in-out infinite}
 @keyframes avenger-resonance-pulse{0%,100%{border-color:var(--aura);box-shadow:0 0 0 1.8px color-mix(in srgb,var(--aura) 45%,transparent),0 0 14px color-mix(in srgb,var(--aura) 55%,transparent)}50%{border-color:color-mix(in srgb,var(--aura) 55%,#fff);box-shadow:0 0 0 3.6px var(--aura),0 0 34px var(--aura),inset 0 0 18px color-mix(in srgb,var(--aura) 40%,transparent)}}
 @media(prefers-reduced-motion:reduce){.unit[data-effect="ultimate-avenger"][data-avenger-resonance="true"]{animation:none;border-color:var(--aura);box-shadow:0 0 0 2.7px var(--aura),0 0 24px var(--aura)}}
+
+/* 소환사 줄에서 '~의 아이' 표시는 문양과 같은 정보라 숨긴다 (2026-11-08 PM 요청) */
+.duel-hud .hud-id .guardian-chip{display:none!important}
 </style>
 </head>
 <body>
@@ -3804,7 +3776,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     
          /* 물 오라: 컴퓨터도 유저와 같다. 비용 2 이상 카드를 낼 때 확률로 마나를 회복하며, 회복은 이번 턴 최대 마나를 넘지 않는다 (2026-11-08) */
      enemyCardPlayedHook=function(cost){if(cost<2||resultPending||!guardianProc('enemy','cheongryong'))return;const gain=Math.max(0,Math.min(rollPoseidonMana('enemy'),enemyTurnMaxMana-enemyMana)),name=guardianAwakenActive('enemy')?guardianAuraConfig('enemy','cheongryong').name:GUARDIANS.cheongryong.name;enemyMana+=gain;showAwakeningProc('enemy','cheongryong',name,'마나 +'+gain,null);writeLog('<strong>상대 '+name+'</strong>이 상대 마나 '+gain+'을 회복시켰습니다.');};
-function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필요';if(guardianAwakenChoice)return '각성 지속 중';if(playerHp>GUARDIAN_AWAKEN_HP)return '체력 '+GUARDIAN_AWAKEN_HP+' 이하에서 각성';return '';}
+function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필요';if(guardianAwakenChoice)return '각성 지속 중';if(playerHp>GUARDIAN_AWAKEN_HP)return '체력 '+GUARDIAN_AWAKEN_HP+' 이하에서 각성';if(battlePhase!=='setup')return '내 세팅 턴에만 각성';return '';}
     function guardianAwakenSummary(){if(!playerGuardian)return '각성 능력';if(!guardianAwakenChoice)return '체력 '+GUARDIAN_AWAKEN_HP+' 이하에서 강화 선택';const option=GUARDIAN_AWAKEN_OPTIONS[playerGuardian][guardianAwakenChoice];return option.name+' · '+option.desc;}
     function chooseGuardianAwakening(choice){const options=GUARDIAN_AWAKEN_OPTIONS[playerGuardian];if(guardianAwakenChoice||!options?.[choice])return;guardianAwakenChoice=choice;awakenGateOpened.player=true;guardianAwakenUsed=true;returnAwakenAvatar();fxRelease();const summary=guardianAwakenSummary();playGuardianDescent(playerGuardian,summary);showSkillEffect('rush',document.querySelector('.duel-hud .player .avatar'),options[choice].name+' · 지속 각성');sfx('ultimate','neutral',7);writeLog('<strong>'+GUARDIANS[playerGuardian].name+' 각성:</strong> '+summary+' 효과가 배틀 종료까지 유지됩니다.');renderUltimate();}
     function chooseEnemyGuardianAwakening(){if(enemyGuardianAwakenChoice||!enemyGuardian||enemyHp>GUARDIAN_AWAKEN_HP)return;const ownCount=document.querySelectorAll('.arena .lane:first-child > .unit:not([data-destroyed="true"])').length,foeCount=document.querySelectorAll('.summon-zone > .unit:not([data-destroyed="true"])').length,tactical={jujak:foeCount>=3?'A':'B',cheongryong:enemyMana<=3?'A':'B',namu:ownCount>=3?'A':'B',baekho:foeCount>=3?'B':'A',hyeonmu:ownCount>=3?'A':'B'},choice=enemyDifficulty==='normal'?(engineAdapter.random()<.5?'A':'B'):tactical[enemyGuardian],option=GUARDIAN_AWAKEN_OPTIONS[enemyGuardian][choice];enemyGuardianAwakenChoice=choice;awakenGateOpened.enemy=true;showSkillEffect('rush',document.querySelector('.duel-hud .enemy .avatar'),option.name+' · 상대 지속 각성');writeLog('<strong>상대 '+GUARDIANS[enemyGuardian].name+' 각성:</strong> '+option.name+' · '+option.desc+(enemyDifficulty!=='normal'?' · 현재 전장에 맞춰 선택했습니다.':'')+' 효과가 배틀 종료까지 유지됩니다.');renderUltimate();}
@@ -3870,7 +3842,7 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
        몇 분 뒤로 밀려 영영 안 들린다 (실측으로 확인). 간격은 초로 적는다. */
     const AWAKEN_SIREN_GAP_S=.3;
     function playAwakenSiren(){for(let i=0;i<3;i++){const at=i*AWAKEN_SIREN_GAP_S;tone(620,.26,'sawtooth',.055,980,at);tone(310,.26,'square',.03,490,at);}}
-    function activateGuardianAwakening(){if(guardianAwakenChoice||playerHp>GUARDIAN_AWAKEN_HP||!playerGuardian||document.querySelector('.aura-awaken-choice'))return;guardianAwakenPrompted=true;playAwakenSiren();const g=GUARDIANS[playerGuardian],options=GUARDIAN_AWAKEN_OPTIONS[playerGuardian],overlay=document.createElement('div');overlay.className='aura-awaken-choice';overlay.style.setProperty('--awaken-color',g.color);overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label',g.name+' 각성 선택');overlay.innerHTML='<div class="aura-awaken-choice-panel">'+auraMark(playerGuardian)+'<small>HP '+GUARDIAN_AWAKEN_HP+' · AURA AWAKENING</small><h2>'+g.name+' 각성</h2><p>하나를 선택하면 이번 배틀이 끝날 때까지 유지됩니다.</p><div class="aura-awaken-options">'+['A','B'].map(key=>'<button class="aura-awaken-option" data-awaken="'+key+'"><b>'+options[key].name+'</b><span class="aura-awaken-desc">'+(options[key].ui||[options[key].desc]).map(line=>'<span>'+line+'</span>').join('')+'</span><em>'+key+' 선택</em></button>').join('')+'</div></div>';overlay.addEventListener('click',event=>{const button=event.target.closest('[data-awaken]');if(button)chooseGuardianAwakening(button.dataset.awaken);});fxPresent('aura-awaken-choice',()=>{
+    function activateGuardianAwakening(){if(battlePhase!=='setup'||guardianAwakenChoice||playerHp>GUARDIAN_AWAKEN_HP||!playerGuardian||document.querySelector('.aura-awaken-choice'))return;guardianAwakenPrompted=true;playAwakenSiren();const g=GUARDIANS[playerGuardian],options=GUARDIAN_AWAKEN_OPTIONS[playerGuardian],overlay=document.createElement('div');overlay.className='aura-awaken-choice';overlay.style.setProperty('--awaken-color',g.color);overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label',g.name+' 각성 선택');overlay.innerHTML='<div class="aura-awaken-choice-panel">'+auraMark(playerGuardian)+'<small>HP '+GUARDIAN_AWAKEN_HP+' · AURA AWAKENING</small><h2>'+g.name+' 각성</h2><p>하나를 선택하면 이번 배틀이 끝날 때까지 유지됩니다.</p><div class="aura-awaken-options">'+['A','B'].map(key=>'<button class="aura-awaken-option" data-awaken="'+key+'"><b>'+options[key].name+'</b><span class="aura-awaken-desc">'+(options[key].ui||[options[key].desc]).map(line=>'<span>'+line+'</span>').join('')+'</span><em>'+key+' 선택</em></button>').join('')+'</div></div>';overlay.addEventListener('click',event=>{const button=event.target.closest('[data-awaken]');if(button)chooseGuardianAwakening(button.dataset.awaken);});fxPresent('aura-awaken-choice',()=>{
       /* 프로필이 먼저 날아가고, 그것이 도착한 자리에서 선택 패널이 피어난다.
          비행 중에는 버튼을 누를 수 없게 둔다 — 연출을 끝까지 보여주고 받는다 (A안). */
       const flight=flyAwakenAvatar(g.color);
@@ -3890,7 +3862,12 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
        예전에는 여기서 바로 패널을 띄웠다. 각성은 배틀당 한 번뿐인 선택인데 자동으로 열리면
        '내가 쓴 것'이 아니라 '갑자기 일어난 일'로 읽혀, 중앙의 사용 버튼도 의미를 잃었다.
        상대(AI)는 누를 주체가 없으므로 종전대로 자동 발동한다 (2026-11-07 PM 요청) */
-    function checkGuardianAwakeningThreshold(){if(!guardianChosen||resultPending)return;if(playerGuardian&&!guardianAwakenChoice&&playerHp<=GUARDIAN_AWAKEN_HP)announceGuardianAwakenReady();if(enemyGuardian&&!enemyGuardianAwakenChoice&&enemyHp<=GUARDIAN_AWAKEN_HP)chooseEnemyGuardianAwakening();}
+    function checkGuardianAwakeningThreshold(){if(!guardianChosen||resultPending)return;if(playerGuardian&&!guardianAwakenChoice&&playerHp<=GUARDIAN_AWAKEN_HP)announceGuardianAwakenReady();}
+    /* 오라 각성은 세팅 턴에만 발동한다. 유저는 내 세팅 단계에서만 버튼이 눌리고, 컴퓨터도 같은 규칙으로 자기 턴의 세팅 시작에만 각성한다 (2026-11-08 PM 요청) */
+    const enemyTurnBeforeAwakenGate=enemyTurn;
+    const setBattlePhaseBeforeAwakenGate=setBattlePhase;
+    setBattlePhase=function(next){const result=setBattlePhaseBeforeAwakenGate(next);if(typeof renderFieldGuardianUltimateAction==='function')renderFieldGuardianUltimateAction();return result;};
+    enemyTurn=function(...args){if(!resultPending&&guardianChosen&&enemyGuardian&&!enemyGuardianAwakenChoice&&enemyHp<=GUARDIAN_AWAKEN_HP)chooseEnemyGuardianAwakening();return enemyTurnBeforeAwakenGate(...args);};
     /* 각성 준비는 한 번만 알린다 — 턴마다 다시 울리면 사이렌이 배경음이 된다. */
     let guardianAwakenReadyAnnounced=false;
     function announceGuardianAwakenReady(){if(guardianAwakenReadyAnnounced)return;guardianAwakenReadyAnnounced=true;renderUltimate();const button=document.querySelector('#field-guardian-ultimate');if(button){button.classList.remove('just-ready');void button.offsetWidth;button.classList.add('just-ready');}tone(760,.26,'triangle',.05,640,0);writeLog('<strong>'+GUARDIANS[playerGuardian].name+' 각성 준비:</strong> 체력이 '+GUARDIAN_AWAKEN_HP+' 이하가 되어 각성을 쓸 수 있습니다. 가운데 버튼을 눌러 발동하세요.');}
@@ -3911,7 +3888,7 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
     const enemyTurnBeforeAura=enemyTurn;
     enemyTurn=function(done){tickAuraBurnField('enemy');growMetalExperience('enemy');growNamuField('enemy');return enemyTurnBeforeAura(done);};
     function syncGuardianAwakenAura(){const arena=document.querySelector('.arena');if(!arena)return;const classes=['guardian-awakened','guardian-awakened-jujak','guardian-awakened-cheongryong','guardian-awakened-namu','guardian-awakened-hyeonmu','guardian-awakened-baekho'];arena.classList.remove(...classes);if(guardianAwakenActive('player')&&playerGuardian){arena.classList.add('guardian-awakened','guardian-awakened-'+playerGuardian);arena.setAttribute('aria-label',GUARDIANS[playerGuardian].name+' 각성 활성 중');}else arena.removeAttribute('aria-label');const syncLaneSigil=(side,id,zone)=>{let sigil=zone?.querySelector(':scope > .awaken-field-sigil');if(!zone||!guardianAwakenActive(side)||!id){sigil?.remove();return;}if(!sigil){sigil=document.createElement('div');sigil.className='awaken-field-sigil engraving';sigil.dataset.side=side;sigil.dataset.aura=id;sigil.style.setProperty('--sigil-aura',GUARDIANS[id].color);sigil.setAttribute('aria-hidden','true');sigil.innerHTML='<img src="'+GUARDIANS[id].sigil+'" alt="">';zone.prepend(sigil);setTimeout(()=>sigil?.classList.remove('engraving'),950);}else if(sigil.dataset.aura!==id){sigil.dataset.aura=id;sigil.style.setProperty('--sigil-aura',GUARDIANS[id].color);sigil.querySelector('img').src=GUARDIANS[id].sigil;}};syncLaneSigil('enemy',enemyGuardian,arena.querySelector('.lane:first-child'));syncLaneSigil('player',playerGuardian,arena.querySelector('.lane:nth-child(2)'));}
-    function renderFieldGuardianUltimateAction(){const button=document.querySelector('#field-guardian-ultimate');syncGuardianAwakenAura();if(!button)return;const visible=guardianChosen&&Boolean(playerGuardian),active=guardianAwakenActive('player'),reason=guardianAwakenLockReason(),summary=guardianAwakenSummary(),choosing=Boolean(document.querySelector('.aura-awaken-choice')),ready=!active&&!choosing&&playerHp<=GUARDIAN_AWAKEN_HP,markup=active?'<strong>오라 각성 지속</strong><small>'+summary+'</small>':'<strong>'+(ready?'오라 각성 선택':reason)+'</strong><small>'+(ready?'두 강화 중 하나 선택':summary)+'</small>';button.hidden=!visible;button.disabled=active||choosing||!ready;button.classList.toggle('active',active);button.classList.toggle('ready',ready);if(button.innerHTML!==markup)button.innerHTML=markup;button.setAttribute('aria-label',active?'오라 각성 지속, '+summary:ready?'오라 각성 선택':'오라 각성, '+reason);}
+    function renderFieldGuardianUltimateAction(){const button=document.querySelector('#field-guardian-ultimate');syncGuardianAwakenAura();if(!button)return;const visible=guardianChosen&&Boolean(playerGuardian),active=guardianAwakenActive('player'),reason=guardianAwakenLockReason(),summary=guardianAwakenSummary(),choosing=Boolean(document.querySelector('.aura-awaken-choice')),ready=!active&&!choosing&&playerHp<=GUARDIAN_AWAKEN_HP&&battlePhase==='setup',markup=active?'<strong>오라 각성 지속</strong><small>'+summary+'</small>':'<strong>'+(ready?'오라 각성 선택':reason)+'</strong><small>'+(ready?'두 강화 중 하나 선택':summary)+'</small>';button.hidden=!visible;button.disabled=active||choosing||!ready;button.classList.toggle('active',active);button.classList.toggle('ready',ready);if(button.innerHTML!==markup)button.innerHTML=markup;button.setAttribute('aria-label',active?'오라 각성 지속, '+summary:ready?'오라 각성 선택':'오라 각성, '+reason);}
     function renderAuraUltimateResonance(){if(!ultimateState||!auraUltimateMatch(ultimateState))return;const cost=ultimateManaCost(ultimateState),label=auraUltimateBoostLabel(ultimateState),copy=document.querySelector('#ultimate-panel .ultimate-slot p');if(copy){copy.innerHTML=copy.innerHTML.replace('마나 '+ultimateState.cost,'마나 '+cost).replace('<br><b>','<br><b>'+label+'</b><br><b>');}const button=document.querySelector('#field-ultimate-action');if(button&&!button.disabled){button.innerHTML='<strong class="ult-ready-label">오라 공명 · 영웅 강림</strong><small class="ult-ready-meta">마나 '+cost+' 소모 · '+ultimateState.title+'</small>';button.setAttribute('aria-label',ultimateState.title+' 오라 공명 영웅 강림, 마나 '+cost+' 소모');}}
     const renderUltimateBeforeGuardianAwaken=renderUltimate;
     renderUltimate=function(){renderUltimateBeforeGuardianAwaken();renderFieldGuardianUltimateAction();renderAuraUltimateResonance();};

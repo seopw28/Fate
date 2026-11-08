@@ -47,11 +47,11 @@ test('champion fields are capped and fit five cards without rail overflow', () =
   assert.ok(html.includes('grid-template-columns:repeat(5,minmax(0,1fr))'), 'Narrow fields must shrink all five tracks inside the stage');
 });
 
-test('5칸 전장은 카드 크기를 행 높이·칸 폭에서 계산해 간격을 넓게 쓰고 130% 카드가 독·마나 바를 덮지 않는다', () => {
+test('5칸 전장은 카드 크기를 행 높이·칸 폭에서 계산해 간격을 넓게 쓰고 크게 표시되는 소진자와 복수자가 독과 마나 바를 덮지 않는다', () => {
   assert.ok(html.includes('container-type:size;--field-gap:48.6px'), '독(50px)이 들어갈 행 사이 간격을 확보한다');
   assert.ok(html.includes('calc((100cqw - 32.4px) / 5 - 64.8px)'), '카드 폭은 칸 폭 − 72px 이하라 간격이 72px 아래로 줄지 않는다(모든 뷰포트)');
   assert.ok(html.includes('height:var(--row-h);align-self:start'), '반응형 구간에서도 행 높이를 고정해 전장이 마나 바로 넘치지 않는다');
-  assert.ok(html.includes('--card-h:calc((var(--row-h) - 3.6px) / 1.3)'), '130% 로 커져도 행 안에 들어가는 카드 높이');
+  assert.ok(html.includes('--card-h:calc((var(--row-h) - 3.6px) / 1.375)'), '복수자(110% × 125%)로 커져도 행 안에 들어가는 카드 높이');
   assert.ok(html.includes('.stage-column .arena .summon-zone > .unit{width:var(--card-w);max-width:none;height:auto;aspect-ratio:5/7;justify-self:center}'), '카드는 균등 5칸 트랙 가운데에 놓인다');
 });
 

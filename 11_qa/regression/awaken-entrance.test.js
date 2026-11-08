@@ -165,7 +165,9 @@ test('체력 80 이하가 되어도 패널을 자동으로 열지 않는다', ()
     '플레이어 쪽은 버튼을 눌러야 열린다 — 임계점에서 바로 열면 안 된다');
   assert.ok(playerBranch.includes('announceGuardianAwakenReady()'), '준비됐다는 알림만 해야 한다');
   /* 상대(AI)는 누를 주체가 없으므로 자동 발동이 유지돼야 한다. */
-  assert.ok(fn.includes('chooseEnemyGuardianAwakening()'), '상대는 종전대로 자동 발동한다');
+  assert.ok(!fn.includes('chooseEnemyGuardianAwakening()'), '상대도 체력 임계점에서 바로 각성하지 않는다');
+  assert.ok(html.includes("enemyTurn=function(...args){if(!resultPending&&guardianChosen&&enemyGuardian&&!enemyGuardianAwakenChoice&&enemyHp<=GUARDIAN_AWAKEN_HP)chooseEnemyGuardianAwakening();"), '상대는 자기 턴의 세팅 시작에만 각성한다 (2026-11-08)');
+  assert.ok(html.includes("if(battlePhase!=='setup')return '내 세팅 턴에만 각성'"), '유저는 내 세팅 턴에만 각성한다');
 });
 
 test('각성 버튼을 누르면 같은 소리가 3번 울려 사이렌으로 읽힌다', () => {
