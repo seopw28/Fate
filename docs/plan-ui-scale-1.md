@@ -79,8 +79,8 @@
 
 - [x] 5-1. 회귀 테스트 추가: CSS·HTML에 `zoom`·`--ui-scale`이 다시 들어오면 실패. 효과 위치 측정(1-3)을 `npm test`에 넣는다.
 - [x] 5-2. 문서 갱신: `docs/frontend-handoff.md`와 `02_game-design/game-rules/08-controls-and-dev.md`에 "화면은 1.0 기준으로 만든다, 축소 배율을 쓰지 않는다", `?scale=` 삭제 반영
-- [ ] 5-3. `npm test` 통과 → main 반영 → 배포(gh-pages 커밋 + Pages 워크플로) → 배포 사이트에서 `zoom` 없음 확인
-- [ ] 5-4. 이 계획 파일의 체크 상태를 마무리하고 PM에게 완료 보고, 다른 세션 수정 재개 알림
+- [x] 5-3. `npm test` 통과 → main 반영 → 배포(gh-pages 커밋 + Pages 워크플로) → 배포 사이트에서 `zoom` 없음 확인
+- [x] 5-4. 이 계획 파일의 체크 상태를 마무리하고 PM에게 완료 보고, 다른 세션 수정 재개 알림
 
 ## 진행 기록
 
@@ -109,3 +109,4 @@
 - 2026-11-08 5-2 완료: 08-controls-and-dev.md(배율 1.0 원칙, ?scale= 삭제, qa:overflow·qa:alignment 설명), frontend-handoff.md(7. 알려진 문제에 배율 변경과 unverified.md 안내)
 - 5-2 중 발견(이 작업 범위 밖, 고치지 않음): 08 문서 5절은 "버튼에 white-space:nowrap 금지"인데 11/8 줄바꿈 수정 때 #sound-toggle 버튼에 nowrap 을 넣었다. frontend-handoff.md 7절의 "컴퓨터 묘지 재사용은 턴 시작" 설명은 11/8 컴퓨터 비대칭 제거(카드 뽑기 때만 재사용)로 옛 내용이 됐다
 - 2026-11-08 5-3 앞부분 완료: 최종 npm test 통과(325개, 넘침·줄바꿈 OK, 효과 위치 OK). 브랜치는 origin/main 바로 위라 그대로 fast-forward 가능. **main 반영과 배포는 PM 확인 대기** (외출 중 진행 범위를 여기까지로 합의)
+- 2026-11-08 5-3·5-4 완료: PM 승인 후 main 반영(f947318..6b2c0db), gh-pages 2582753, Pages 배포 성공. 배포 사이트에서 zoom·--ui-scale 0건과 새 1.0 기준 높이 확인. 다른 세션 수정 재개 가능
