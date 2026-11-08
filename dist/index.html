@@ -1413,8 +1413,8 @@
     #synth-view .synth-arrow, #synth-view #synth-result { display:none; }
     #synth-view .synth-slots { gap:clamp(6px,.7vw,12px); }
     .synth-slots-head { grid-column:1/-1; display:flex; align-items:baseline; justify-content:space-between; gap:8px; padding:0 2px; }
-    .synth-slots-head b { color:#e8d3a6; font-size:clamp(13px,1vw,16px); }
-    .synth-slots-head small { color:#8993a7; font-size:clamp(10px,.8vw,13px); text-align:right; }
+    .synth-slots-head b { flex:none; white-space:nowrap; color:#e8d3a6; font-size:clamp(13px,1vw,16px); }
+    .synth-slots-head small { min-width:0; color:#8993a7; font-size:clamp(10px,.8vw,13px); text-align:right; text-wrap:balance; }
     #synth-view .synth-slot.filled b { display:none; }/* 칸이 작아 이름이 단어 중간에서 끊겨 그림을 덮는다 — 이름은 마우스를 올리면(title) */
     #synth-view .synth-slot.filled small { position:absolute; left:4px; bottom:4px; z-index:1; min-width:18px; padding:1px 5px; border-radius:99px; background:#000000b0; color:#e8edf4; font-size:clamp(10px,.75vw,12px); font-weight:800; text-align:center; }
     .synth-slot.vacant { border-style:dashed; border-color:#3a4455; background:#0e131a; justify-content:center; }
@@ -2035,6 +2035,12 @@
 .recycle-actions button { min-width:96px; padding:10px 16px; border-radius:10px; border:1px solid var(--line); font-weight:700; cursor:pointer; }
 .recycle-yes { background:linear-gradient(180deg,#d9b2ff,#9b5fe0); color:#1a0f26; border-color:#c98bff; }
 .recycle-no { background:#232a36; color:var(--text); }
+
+    /* 줄바꿈 기준 (2026-11-08): 한국어가 음절 단위로 끊겨 "있습니 / 다"처럼 보이지 않게 단어 단위로 줄을 바꾼다.
+       한 단어가 칸보다 길 때만 단어 안에서 끊는다. 짧은 라벨은 접히지 않게 한 줄로 고정한다.
+       검사: 12_tools/qa/check-text-overflow.py 의 '줄바꿈 이상' */
+    html { word-break:keep-all; overflow-wrap:anywhere; }
+    #sound-toggle, .util-toggle-label, .rule-key { white-space:nowrap; }
 </style>
 </head>
 <body><script data-ui-scale>/* ?scale=0.6~1.2 로 화면 배율 변경 (기본 .9, CSS --ui-scale) */(function(){var v=parseFloat(new URLSearchParams(location.search).get('scale'));if(v>=.6&&v<=1.2)document.documentElement.style.setProperty('--ui-scale',String(v));})();</script>

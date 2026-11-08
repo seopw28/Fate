@@ -63,6 +63,46 @@ JS = r"""
                  over: Math.round(over), clipped, textW: Math.round(t.width), boxW: Math.round(b.width) });
     }
   }
+  // 줄바꿈 이상 (2026-11-08): 넘치지는 않아도 보기 나쁜 줄바꿈을 잡는다.
+  //  - 단어 중간 끊김: 줄이 바뀌는 자리의 앞뒤 글자가 모두 공백이 아님 (예: "있습니" / "다", "튜토" / "리얼")
+  //    한국어는 word-break:keep-all 이 없으면 음절 단위로 끊긴다.
+  //  - 짧은 문구 접힘: 공백 제외 6자 이하의 짧은 라벨·숫자가 두 줄로 접힘 (예: "재료 0 /" / "9")
+  // 의도적으로 여러 줄을 허용하는 곳은 data-wrap-ok 속성(조상 포함)으로 제외한다.
+  const isWordChar = (ch) => /[0-9A-Za-z가-힣%]/.test(ch);
+  const walker2 = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let w;
+  while ((w = walker2.nextNode())) {
+    const text = w.textContent; const compact = text.replace(/\s+/g, '');
+    if (compact.length < 2) continue;
+    const el = w.parentElement;
+    if (!el || ['SCRIPT','STYLE'].includes(el.tagName) || el.closest('[data-wrap-ok]')) continue;
+    const cs = getComputedStyle(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) continue;
+    const r = document.createRange(); r.selectNodeContents(w);
+    const tb = r.getBoundingClientRect();
+    if (!tb.width || !tb.height || tb.bottom < 0 || tb.top > innerHeight || tb.right < 0 || tb.left > innerWidth) continue;
+    const rects = [...r.getClientRects()].filter(x => x.width >= 1 && x.height >= 1);
+    if (rects.length < 2 || Math.max(...rects.map(x => x.top)) - Math.min(...rects.map(x => x.top)) < rects[0].height * 0.5) continue;
+    // 글자마다 줄(top)을 구해 줄이 바뀌는 자리를 찾는다
+    let prevTop = null, prevCh = '', lines = 1, broken = null;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (/\s/.test(ch)) { prevCh = ch; continue; }
+      const cr = document.createRange(); cr.setStart(w, i); cr.setEnd(w, i + 1);
+      const rc = [...cr.getClientRects()].find(x => x.width >= 1);
+      if (!rc) continue;
+      if (prevTop !== null && rc.top - prevTop >= rc.height * 0.5) {
+        lines++;
+        if (!broken && isWordChar(prevCh) && isWordChar(ch)) broken = text.slice(Math.max(0, i - 4), i).trim() + ' / ' + text.slice(i, i + 4).trim();
+      }
+      prevTop = rc.top; prevCh = ch;
+    }
+    if (lines < 2) continue;
+    let kind = null;
+    if (el.textContent.replace(/\s+/g, '').length <= 6) kind = '짧은 문구 접힘';  // 텍스트 조각이 아니라 요소 전체 문구 기준
+    else if (broken) kind = '단어 중간 끊김 "' + broken + '"';
+    if (kind) out.push({ wrap: true, kind, text: compact.slice(0, 30), el: label(el), lines });
+  }
   // 문서 가로 스크롤
   if (document.documentElement.scrollWidth > innerWidth + 1) out.push({ text: '(page)', el: 'html', box: 'viewport', over: document.documentElement.scrollWidth - innerWidth, clipped: false });
   return out;
@@ -123,6 +163,7 @@ STATES = [
 
 def run(url):
     fails = 0
+    wraps = 0
     prep_fails = 0  # 상태 준비 실패도 실패로 센다 — 조용히 건너뛰면 그 상태는 검사되지 않은 채 'OK'가 나온다
     with sync_playwright() as p:
         br = p.chromium.launch()
@@ -147,17 +188,21 @@ def run(url):
                 pg.wait_for_timeout(150)
                 res = pg.evaluate(JS)
                 for r in res:
+                    if r.get('wrap'):
+                        wraps += 1
+                        print(f"[{w}x{h}] {name} 줄바꿈 이상: {r['kind']}  \"{r['text']}\"  ({r['el']}, {r['lines']}줄)")
+                        continue
                     fails += 1
                     print(f"[{w}x{h}] {name} 넘침 {r['over']}px  \"{r['text']}\"  ({r['el']} ⊄ {r['box']}, 글자 {r.get('textW')} / 상자 {r.get('boxW')})")
             if "--shots" in sys.argv:
                 pg.screenshot(path=f"/tmp/fate-overflow-{w}x{h}.png")
             pg.close()
         br.close()
-    if fails or prep_fails:
-        print(f"FAIL: 넘침 {fails}건, 상태 준비 실패 {prep_fails}건" + (" — STATES의 준비 코드가 지금 index.html과 맞는지 확인" if prep_fails else ""))
+    if fails or wraps or prep_fails:
+        print(f"FAIL: 넘침 {fails}건, 줄바꿈 이상 {wraps}건, 상태 준비 실패 {prep_fails}건" + (" — STATES의 준비 코드가 지금 index.html과 맞는지 확인" if prep_fails else ""))
     else:
-        print("OK: 넘침 없음")
-    sys.exit(1 if fails or prep_fails else 0)
+        print("OK: 넘침·줄바꿈 이상 없음")
+    sys.exit(1 if fails or wraps or prep_fails else 0)
 
 
 def main():
