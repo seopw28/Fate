@@ -2204,3 +2204,14 @@
 
 /* 소환사 줄에서 '~의 아이' 표시는 문양과 같은 정보라 숨긴다 (2026-11-08 PM 요청) */
 .duel-hud .hud-id .guardian-chip{display:none!important}
+
+/* 아래 마나 줄 높이를 60% 수준(63px → 38px)으로 줄이고 글씨도 줄인다 (2026-11-09 PM 요청). 1850px 이상의 세로 마나 기둥에는 적용하지 않는다 */
+@media(max-width:1849px){
+  .stage-column{--bottom-control-size:38px}
+  .stage-column>.mana-hud{height:38px!important;min-height:38px!important;padding:3.6px 16.2px!important;gap:12.6px!important}
+  .stage-column>.mana-hud .mana-label{min-width:0!important;font-size:10.8px!important}
+  .stage-column>.mana-hud .mana-value{min-width:46px!important;font-size:18px!important}
+  .stage-column>.mana-hud .mana-pip{height:9px!important;min-height:9px!important;border-radius:3.6px!important}
+  .stage-column>.mana-hud .blood-rate{font-size:7.2px!important}
+  .stage-column>.surrender-action{width:var(--bottom-control-size)!important;height:var(--bottom-control-size)!important;min-width:var(--bottom-control-size)!important;min-height:var(--bottom-control-size)!important;padding:0!important;font-size:10.8px!important}
+}
