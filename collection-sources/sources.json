@@ -33,6 +33,78 @@
         {"name": "세라피나", "url": "https://cogi7o.com/ASB/%EC%84%B8%EB%9D%BC%ED%94%BC%EB%82%98/9.png", "file": "heliotrope-seraphina.png"},
         {"name": "오필리아", "url": "https://cogi7o.com/ASB/%EC%98%A4%ED%95%84%EB%A6%AC%EC%95%84/9.png", "file": "heliotrope-ophelia.png"}
       ]
+    },
+    {
+      "page": "https://danbbb.uk/index.html#characters",
+      "collected_at": "2026-11-09",
+      "characters": [
+        {"name": "한서린", "url": "https://danbbb.uk/c/AA_01.png", "file": "baekyeon/char-aa.webp"},
+        {"name": "김하진", "url": "https://danbbb.uk/c/AB_01.png", "file": "baekyeon/char-ab.webp"},
+        {"name": "윤다빈", "url": "https://danbbb.uk/c/AC_01.png", "file": "baekyeon/char-ac.webp"},
+        {"name": "서나윤", "url": "https://danbbb.uk/c/BA_01.png", "file": "baekyeon/char-ba.webp"},
+        {"name": "정시은", "url": "https://danbbb.uk/c/BB_01.png", "file": "baekyeon/char-bb.webp"},
+        {"name": "강서율", "url": "https://danbbb.uk/c/BC_01.png", "file": "baekyeon/char-bc.webp"},
+        {"name": "이가은", "url": "https://danbbb.uk/c/CA_01.png", "file": "baekyeon/char-ca.webp"},
+        {"name": "백지수", "url": "https://danbbb.uk/c/CB_01.png", "file": "baekyeon/char-cb.webp"},
+        {"name": "최지안", "url": "https://danbbb.uk/c/CC_01.png", "file": "baekyeon/char-cc.webp"},
+        {"name": "차유현", "url": "https://danbbb.uk/c/DA_01.png", "file": "baekyeon/char-da.webp"},
+        {"name": "박세아", "url": "https://danbbb.uk/c/DB_01.png", "file": "baekyeon/char-db.webp"},
+        {"name": "권나리", "url": "https://danbbb.uk/c/DC_01.png", "file": "baekyeon/char-dc.webp"},
+        {"name": "오은솔", "url": "https://danbbb.uk/c/EA_01.png", "file": "baekyeon/char-ea.webp"},
+        {"name": "신시아", "url": "https://danbbb.uk/c/EB_01.png", "file": "baekyeon/char-eb.webp"},
+        {"name": "문하연", "url": "https://danbbb.uk/c/EC_01.png", "file": "baekyeon/char-ec.webp"},
+        {"name": "류해원", "url": "https://danbbb.uk/c/FA_01.png", "file": "baekyeon/char-fa.webp"},
+        {"name": "송채영", "url": "https://danbbb.uk/c/FB_01.png", "file": "baekyeon/char-fb.webp"},
+        {"name": "설유란", "url": "https://danbbb.uk/c/FC_01.png", "file": "baekyeon/char-fc.webp"},
+        {"name": "고세경", "url": "https://danbbb.uk/c/FD_01.png", "file": "baekyeon/char-fd.webp"},
+        {"name": "황주하", "url": "https://danbbb.uk/c/FE_01.png", "file": "baekyeon/char-fe.webp"}
+      ]
+    },
+    {
+      "page": "https://tfas.pages.dev/characters.html",
+      "collected_at": "2026-11-09",
+      "characters": [
+        {"name": "오혜경", "url": "https://tfas.pages.dev/assets/images/A/1.webp", "file": "gadam/char-a.webp"},
+        {"name": "오서경", "url": "https://tfas.pages.dev/assets/images/B/1.webp", "file": "gadam/char-b.webp"},
+        {"name": "오유란", "url": "https://tfas.pages.dev/assets/images/C/1.webp", "file": "gadam/char-c.webp"},
+        {"name": "서지안", "url": "https://tfas.pages.dev/assets/images/D/1.webp", "file": "gadam/char-d.webp"},
+        {"name": "서유경", "url": "https://tfas.pages.dev/assets/images/E/1.webp", "file": "gadam/char-e.webp"},
+        {"name": "서라경", "url": "https://tfas.pages.dev/assets/images/F/1.webp", "file": "gadam/char-f.webp"},
+        {"name": "서은채", "url": "https://tfas.pages.dev/assets/images/G/1.webp", "file": "gadam/char-g.webp"},
+        {"name": "백정화", "url": "https://tfas.pages.dev/assets/images/H/1.webp", "file": "gadam/char-h.webp"},
+        {"name": "백도연", "url": "https://tfas.pages.dev/assets/images/I/1.webp", "file": "gadam/char-i.webp"},
+        {"name": "백세진", "url": "https://tfas.pages.dev/assets/images/J/1.webp", "file": "gadam/char-j.webp"},
+        {"name": "백윤슬", "url": "https://tfas.pages.dev/assets/images/K/1.webp", "file": "gadam/char-k.webp"},
+        {"name": "민지현", "url": "https://tfas.pages.dev/assets/images/L/1.webp", "file": "gadam/char-l.webp"},
+        {"name": "민서아", "url": "https://tfas.pages.dev/assets/images/M/1.webp", "file": "gadam/char-m.webp"},
+        {"name": "민가현", "url": "https://tfas.pages.dev/assets/images/N/1.webp", "file": "gadam/char-n.webp"}
+      ]
+    },
+    {
+      "page": "https://y2d.uk/EUK/euk.html#characters",
+      "collected_at": "2026-11-09",
+      "characters": [
+        {"name": "마렌", "url": "https://y2d.uk/EUK/euk.html (페이지 내장 이미지)", "file": "inquisition/char-1.webp"},
+        {"name": "아우렐리아", "url": "https://y2d.uk/EUK/euk.html (페이지 내장 이미지)", "file": "inquisition/char-2.webp"},
+        {"name": "카산드라", "url": "https://y2d.uk/EUK/euk.html (페이지 내장 이미지)", "file": "inquisition/char-3.webp"},
+        {"name": "엘로이즈", "url": "https://y2d.uk/EUK/euk.html (페이지 내장 이미지)", "file": "inquisition/char-4.webp"}
+      ]
+    },
+    {
+      "page": "https://astrum.mangb.uk/#students",
+      "collected_at": "2026-11-09",
+      "characters": [
+        {"name": "이시은", "url": "https://dy.mangb.uk/asd/a/1.webp", "file": "astrum/char-a.webp"},
+        {"name": "문소라", "url": "https://dy.mangb.uk/asd/b/1.webp", "file": "astrum/char-b.webp"},
+        {"name": "한예린", "url": "https://dy.mangb.uk/asd/c/1.webp", "file": "astrum/char-c.webp"},
+        {"name": "마유리", "url": "https://dy.mangb.uk/asd/d/1.webp", "file": "astrum/char-d.webp"},
+        {"name": "채윤아", "url": "https://dy.mangb.uk/asd/e/1.webp", "file": "astrum/char-e.webp"},
+        {"name": "강하진", "url": "https://dy.mangb.uk/asd/f/1.webp", "file": "astrum/char-f.webp"},
+        {"name": "서도아", "url": "https://dy.mangb.uk/asd/g/1.webp", "file": "astrum/char-g.webp"},
+        {"name": "윤시아", "url": "https://dy.mangb.uk/asd/h/1.webp", "file": "astrum/char-h.webp"},
+        {"name": "차서율", "url": "https://dy.mangb.uk/asd/i/1.webp", "file": "astrum/char-i.webp"},
+        {"name": "백은비", "url": "https://dy.mangb.uk/asd/j/1.webp", "file": "astrum/char-j.webp"}
+      ]
     }
   ]
 }
