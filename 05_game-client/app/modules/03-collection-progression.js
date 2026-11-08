@@ -206,7 +206,7 @@
     /* 화염 피해 마법의 공통 후속 효과. 카드 고유 화상(아마테라스)은 별도로 처리해 중복시키지 않는다. */
     const FIRE_SPELL_BURN_EFFECTS=new Set(['lightning-strike','board-damage','comeback-flare','reversal-weight-toll']);
     const runtimeRulesTextBeforeFireSpellBurn=runtimeRulesText;
-    runtimeRulesText=function(effect,def){if(effect==='black-flame')return '공격력이 가장 높은 적 챔프 1명에게 3 피해를 주고, 99턴간 대상 턴 시작마다 피해 3을 주는 정화 불가 화상을 부여합니다.';const text=runtimeRulesTextBeforeFireSpellBurn(effect,def);return def?.cardType==='spell'&&def.auraKey==='fire'&&FIRE_SPELL_BURN_EFFECTS.has(effect)?text+' 피해를 받고 생존한 적 챔프에게 화상 1.':text;};
+    runtimeRulesText=function(effect,def){if(effect==='black-flame')return '공격력이 가장 높은 적 챔프 1명에게 3 피해를 주고, 대상이 쓰러질 때까지 턴 시작마다 피해 3을 주는 정화 불가 화상을 부여합니다.';const text=runtimeRulesTextBeforeFireSpellBurn(effect,def);return def?.cardType==='spell'&&def.auraKey==='fire'&&FIRE_SPELL_BURN_EFFECTS.has(effect)?text+' 피해를 받고 생존한 적 챔프에게 화상 1.':text;};
 
     /* ===== 덱 여러 개: 한 유저가 덱을 최대 MAX_DECKS개 저장하고, 그중 하나를 전투 덱으로 쓴다 =====
        collectionState.deck = 지금 전투에 쓰는 덱(카드 순번 배열, 기존 로직 그대로)

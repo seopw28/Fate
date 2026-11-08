@@ -1843,6 +1843,13 @@
     @keyframes aura-burn-flame{0%{transform:translateY(8px) scale(.86,.72);opacity:.62}100%{transform:translateY(-4px) scale(1.08,1.18);opacity:1}}
     @keyframes aura-burn-tick{0%{filter:brightness(1)}35%{filter:brightness(2.3) saturate(1.8);transform:translateY(-3px) scale(1.035)}100%{filter:brightness(1);transform:none}}
     @media(prefers-reduced-motion:reduce){.unit[data-aura-burn],.unit[data-burn],.aura-burn-vfx::before,.aura-burn-vfx::after,.unit.aura-burn-tick{animation:none}}
+    /* 아마테라스 검은 불꽃 (2026-11-08): 일반 붉은 화상(♨)과 구분한다. 피격·턴 시작 폭발과 카드에 남는 불꽃 모두 검붉은 색 */
+    .skill-fx.black-flame { background:radial-gradient(ellipse at 50% 85%,#0b0010 0 16%,#2a0306 30%,#8a0c14aa 52%,#1a002644 64%,transparent 72%); filter:drop-shadow(0 0 20px #b0101a) drop-shadow(0 0 6px #000); animation:burn-rise .9s ease-out forwards; }
+    .skill-fx.black-flame::before { content:''; position:absolute; left:50%; top:50%; width:64px; height:82px; margin:-41px 0 0 -32px; border-radius:50% 50% 45% 45% / 62% 62% 38% 38%; background:radial-gradient(ellipse at 50% 72%,#000 0 34%,#300408 52%,#c4161f 74%,transparent 78%); box-shadow:0 0 18px #c4161fcc; animation:burn-glyph .75s ease-out forwards; }
+    .unit[data-eternal-burn]{--burn-color:#2a0306;box-shadow:0 0 0 2px #c4161faa,0 0 22px #7a0a1288,inset 0 0 18px #0b001099;animation:aura-burn-card 1.35s ease-in-out infinite}
+    .unit[data-eternal-burn] > .aura-burn-vfx::before,.unit[data-eternal-burn] > .aura-burn-vfx::after{background:radial-gradient(ellipse at 50% 100%,#000 0 16%,var(--burn-color) 36%,#8a0c1499 58%,transparent 74%);filter:drop-shadow(0 0 7px #c4161f)}
+    @media(prefers-reduced-motion:reduce){.unit[data-eternal-burn]{animation:none}}
+
 
     /* 마법·함정 소유자 구분 (2026-11-07)
        - 상대 카드는 위에서 내려오고 붉은 테두리, 내 카드는 아래에서 올라오고 푸른 테두리.
