@@ -57,7 +57,7 @@ CHECKS = [
   "const champs=enemyOriginalDeck.filter(d=>!d.spell&&d.cost<=2).slice(0,8);enemyHand.length=0;enemyDeck.length=0;enemyDeck.push(...champs.map(d=>({...d})));"
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<200&&!finished;i++)await __q.wait(100);await __q.wait(200);"
   "const log=document.querySelector('.log').textContent;const units=__q.lane().querySelectorAll(':scope > .unit:not(.unit-dying)').length;const label=document.querySelector('#enemy-deck-label').textContent;"
-  "return {ok:finished&&log.includes('상대가 카드 뽑기')&&units>=1&&label==='손패 '+enemyHand.length+'장 · 덱 '+enemyDeck.length+'장',finished,drew:log.includes('상대가 카드 뽑기'),units,label};})()"),
+  "return {ok:finished&&log.includes('상대가 카드 뽑기')&&units>=1&&label==='덱 '+enemyDeck.length+'장 · 손패 '+enemyHand.length+'장',finished,drew:log.includes('상대가 카드 뽑기'),units,label};})()"),
  ("유저 자동 드로우도 손패 8장이면 뽑지 않는다(양쪽 동일)",
   "(()=>{const hand=document.querySelector('.hand');while(hand.querySelectorAll('.card').length<8)hand.appendChild(createRuntimeBattleCard(collectionCardDefs.find(d=>d.cardType==='champion').cardId));const d=deck.length;startPlayerTurn(document.querySelector('.turn-actions .end'));"
   "return {ok:deck.length===d&&hand.querySelectorAll('.card').length===8,deck:deck.length,d};})()"),

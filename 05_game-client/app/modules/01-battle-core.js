@@ -927,7 +927,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function decorateCardBack(node,persona,side='player'){return paintCardBack(node,persona,backSkinOf(side));}
     /* 적용 중인 스킨을 화면에 반영한다: 전장(.arena) 배경, 내 덱 더미, 상대 손패·덱 더미 */
     function applyEquippedSkins(){const arena=document.querySelector('.arena'),field=skinById(collectionState.skins.applied.field);if(arena){if(field&&field.aura)arena.dataset.fieldSkin=field.aura;else delete arena.dataset.fieldSkin;}document.querySelectorAll('[data-back-side]').forEach(node=>decorateCardBack(node,'',node.dataset.backSide));}
-    function renderEnemyPiles(){const box=document.querySelector('#enemy-piles');if(!box)return;const hand=Math.min(enemyHand.length,8);box.innerHTML='<span class="pile-hand" aria-hidden="true">'+'<i class="pile-back" data-back-side="enemy"></i>'.repeat(hand)+'</span><span class="pile-deck'+(enemyDeck.length?'':' empty')+'" aria-hidden="true"><i class="pile-back" data-back-side="enemy"></i></span>';box.querySelectorAll('[data-back-side]').forEach(node=>decorateCardBack(node,'',node.dataset.backSide));}
+    function renderEnemyPiles(){const box=document.querySelector('#enemy-piles');if(!box)return;const hand=Math.min(enemyHand.length,8);/* 덱을 앞에, 손패를 뒤에 두고 장수를 각 카드 그림 바로 앞에 붙인다 (2026-11-08) */box.innerHTML='<b class="pile-count">덱 '+enemyDeck.length+'장</b><span class="pile-deck'+(enemyDeck.length?'':' empty')+'" aria-hidden="true"><i class="pile-back" data-back-side="enemy"></i></span><b class="pile-count">손패 '+enemyHand.length+'장</b><span class="pile-hand" aria-hidden="true">'+'<i class="pile-back" data-back-side="enemy"></i>'.repeat(hand)+'</span>';box.querySelectorAll('[data-back-side]').forEach(node=>decorateCardBack(node,'',node.dataset.backSide));}
     function drawCardFlip(card,onDone,onLanded){const persona=card?.dataset?.persona||'';const ready=artReady(card),deck=document.querySelector('#deck-stack'),src=deck?deck.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0},from={left:src.left,top:src.top,width:src.width*.5,height:src.height};
       const reveal=()=>{card.style.visibility='';if(onDone)onDone();};if(matchMedia('(prefers-reduced-motion: reduce)').matches){reveal();return;}
       const tabOf=()=>document.querySelector('.hand-tab[data-filter="'+cardCategory(card)+'"]'),isHidden=()=>!card.getBoundingClientRect().width;
@@ -943,13 +943,19 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
    이긴다. 카드나 링의 z-index 를 조절해도 소용없다(컨텍스트가 다름). 그래서 링을 카드와 같은
    레인 안으로 넣고 카드보다 앞 형제로 둬 먼저 그려지게 한다 (2026-11-07) */
       const lane=unit.parentElement;
-      if(lane){const lr=lane.getBoundingClientRect(),ls=getComputedStyle(lane);
+      if(lane){const ls=getComputedStyle(lane);
         if(ls.position==='static')lane.style.position='relative';
         impactNode.style.position='absolute';
-        impactNode.style.left=(x-lr.left)+'px';
-        impactNode.style.top=(y-lr.top)+'px';
         impactNode.style.zIndex='0';
-        lane.insertBefore(impactNode,lane.firstChild);}
+        /* 전장은 화면 크기에 맞춰 조상에서 축소된다. 화면 좌표 차이를 그대로 left/top 에 넣으면 축소 배율만큼
+           어긋나 마법진이 카드 중심보다 왼쪽에 생긴다(오른쪽 칸일수록 더 크게). 링을 (0,0)과 (100,100)에 놓아
+           실제 화면 배율과 원점을 잰 뒤, 카드 아래 중심(x,y)에 정확히 오도록 되돌린다 (2026-11-08) */
+        impactNode.style.left='0px';impactNode.style.top='0px';
+        lane.insertBefore(impactNode,lane.firstChild);
+        const p0=impactNode.getBoundingClientRect();impactNode.style.left='100px';impactNode.style.top='100px';
+        const p1=impactNode.getBoundingClientRect(),kx=(p1.left-p0.left)/100||1,ky=(p1.top-p0.top)/100||1;
+        impactNode.style.left=((x-(p0.left+p0.width/2))/kx)+'px';
+        impactNode.style.top=((y-(p0.top+p0.height/2))/ky)+'px';}
       else document.body.appendChild(impactNode);
       setTimeout(()=>impactNode.remove(),1050);const stage=document.querySelector('.stage-column');if(stage&&!reduced)stage.animate([{translate:'0 0'},{translate:'0 '+(5*power)+'px',offset:.12},{translate:(-3*power)+'px '+(-2*power)+'px',offset:.28},{translate:(3*power)+'px '+(1*power)+'px',offset:.44},{translate:(-1*power)+'px 0',offset:.62},{translate:'0 0'}],{duration:430,easing:'ease-out'});if(!reduced)unit.animate([{translate:'0 -30px',scale:'1.08',filter:'brightness(1.8)'},{translate:'0 7px',scale:'.98',filter:'brightness(1.3)',offset:.42},{translate:'0 -3px',scale:'1.02',offset:.7},{translate:'0 0',scale:'1',filter:'brightness(1)'}],{duration:520,easing:'cubic-bezier(.16,.8,.24,1)'});playAudio('metal',Math.min(.68,.34+cost*.035),Math.max(.62,.92-cost*.025));noise(.24+.025*cost,.045+.004*cost,180);tone(54,.42,'sine',Math.min(.13,.065+cost*.007),34);setTimeout(()=>noise(.1,.025,950),35);}
     function summonCardFlip(fromRect,unit,onDone){const ready=artReady(unit);unit.style.visibility='hidden';if(matchMedia('(prefers-reduced-motion: reduce)').matches){unit.style.visibility='';summonLandingImpact(unit);if(onDone)onDone();return;}
@@ -1005,7 +1011,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     function enemyDraw(count=1){for(let i=0;i<count&&enemyHand.length<8;i++){if(!enemyDeck.length)break;enemyHand.push(gradeCardData(enemyDeck.splice(champDrawIndex(enemyDeck,enemyHand.filter(card=>!card.spell).length),1)[0],'enemy'));}}
     /* 컴퓨터의 자동 드로우: 유저와 같이 자기 첫 턴에는 뽑지 않는다 (2026-11-08) */
     function enemyAutoDraw(){if(enemyTurnsTaken++===0)return false;enemyDraw();return true;}
-    function updateEnemyDeckLabel(){const label=document.querySelector('#enemy-deck-label');if(label)label.textContent='손패 '+enemyHand.length+'장 · 덱 '+enemyDeck.length+'장';renderEnemyPiles();}
+    function updateEnemyDeckLabel(){const label=document.querySelector('#enemy-deck-label');if(label)label.textContent='덱 '+enemyDeck.length+'장 · 손패 '+enemyHand.length+'장';document.querySelector('#enemy-piles')?.setAttribute('aria-label','덱 '+enemyDeck.length+'장 · 손패 '+enemyHand.length+'장');renderEnemyPiles();}
     /* 컴퓨터 혈마나·카드 뽑기·필드 교체 (2026-11-08): 규칙과 비용은 유저와 같다 (bloodManaRate/bloodManaQuote/drawQuote/replaceHpCost 와 같은 공식).
        AI 판단 기준(언제 쓸지)만 아래 상수로 정한 임시값이다. */
     const ENEMY_BLOOD_MIN_HP_AFTER=40/* 혈마나·교체로 체력을 낸 뒤 이 이상 남을 때만 쓴다 */,ENEMY_BLOOD_MAX_SPEND=6/* 한 번의 행동에서 혈마나로 내는 체력 상한 */,ENEMY_REPLACE_MIN_GAIN=5/* 교체할 카드가 필드 카드보다 이만큼 이상 강할 때만 교체 */,ENEMY_DRAW_SMALL_HAND=3/* 손패가 이 이하로 적고 남는 마나로 낼 수 있으면 뽑는다 */;
