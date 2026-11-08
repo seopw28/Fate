@@ -12,7 +12,8 @@ from playwright.sync_api import sync_playwright
 
 spec = importlib.util.spec_from_file_location('overflow', os.path.join(HERE, 'check-text-overflow.py'))
 overflow = importlib.util.module_from_spec(spec); spec.loader.exec_module(overflow)
-STATES = overflow.STATES
+from extra_states import EXTRA_STATES
+STATES = overflow.STATES + EXTRA_STATES
 VIEWPORTS = [(1568, 900), (1366, 768), (1100, 800), (1000, 900)]
 OUT = next((a for a in sys.argv[1:] if not a.startswith('-')), '/tmp/fate-baseline')
 QUERY = '?skipIntro&guardian=baekho&difficulty=normal&seed=ui-scale-baseline'
@@ -31,7 +32,7 @@ def main():
             pg.evaluate('document.fonts.ready')
             for i, (name, setup) in enumerate(STATES):
                 try:
-                    pg.evaluate(setup)
+                    pg.evaluate('c=>{(new Function(c))();}', setup)
                 except Exception as e:
                     fails.append(f'{w}x{h} {name}: {str(e)[:80]}'); continue
                 pg.wait_for_timeout(250); pg.evaluate(FREEZE); pg.evaluate(STILL); pg.wait_for_timeout(30)

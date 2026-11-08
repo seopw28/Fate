@@ -74,28 +74,11 @@
 [코드에 없음] .rule-chip.active
 [코드에 없음] .battle-rules
 [미관찰: gacha-empty] .gacha-empty
-[미관찰: appeal-label] .appeal-label
-[미관찰: character-appeal, gacha-reveal, gacha-reveal-core] .gacha-reveal.character-appeal .gacha-reveal-core
-[미관찰: character-appeal, gacha-reveal] .gacha-reveal.character-appeal::after
 [미관찰: pull-appeal] .pull-appeal
 [미관찰: completion-chip] .completion-chip
 [미관찰: completion-chip, done] .completion-chip.done
-[미관찰: gacha-reveal] .gacha-reveal
-[미관찰: gacha-reveal] .gacha-reveal::before,.gacha-reveal::after
-[미관찰: gacha-reveal] .gacha-reveal::after
-[미관찰: gacha-reveal-core] .gacha-reveal-core
-[미관찰: gacha-card-back, gacha-card-front] .gacha-card-back,.gacha-card-front
-[미관찰: gacha-card-back] .gacha-card-back
-[미관찰: gacha-card-front] .gacha-card-front
-[미관찰: gacha-card-front] .gacha-card-front img
-[미관찰: gacha-card-front] .gacha-card-front h3
-[미관찰: gacha-card-front] .gacha-card-front small
 [미관찰: gacha-reveal] .gacha-reveal.rare
 [미관찰: gacha-card-front, gacha-reveal] .gacha-reveal.rare .gacha-card-front
-[미관찰: gacha-reveal] .gacha-reveal.legendary
-[미관찰: gacha-card-front, gacha-reveal] .gacha-reveal.legendary .gacha-card-front
-[미관찰: gacha-burst] .gacha-burst
-[미관찰: gacha-particle] .gacha-particle
 [미관찰: pull-card, pull-land] .pull-card.pull-land
 [미관찰: global-spell-card] .global-spell-card
 [미관찰: global-icon, global-spell-card] .global-spell-card .global-icon
@@ -213,36 +196,9 @@
 [미관찰: awaken-field-sigil, engraving] .awaken-field-sigil.engraving::before
 [미관찰: awaken-field-sigil, engraving] .awaken-field-sigil.engraving::after
 [미관찰: awaken-field-sigil] .awaken-field-sigil,.awaken-field-sigil::after
-[미관찰: tier-hero] .tier-hero
-[미관찰: tier-emblem] .tier-emblem
-[미관찰: tier-name] .tier-name
-[미관찰: tier-score] .tier-score
-[미관찰: tier-score] .tier-score small
-[미관찰: tier-score-value] .tier-score-value
 [미관찰: rolling, tier-score-value] .tier-score-value.rolling
-[미관찰: settled, tier-score-value] .tier-score-value.settled
-[미관찰: tier-delta] .tier-delta
 [미관찰: tier-delta, up] .tier-delta.up
 [미관찰: down, tier-delta] .tier-delta.down
-[미관찰: same, tier-delta] .tier-delta.same
-[미관찰: tier-actions] .tier-actions
-[미관찰: tier-actions] .tier-actions button
-[미관찰: tier-actions] .tier-actions button:last-child
-[미관찰: tier-actions] .tier-actions button:hover, .tier-actions button:focus-visible
-[미관찰: tier-progress] .tier-progress
-[미관찰: tier-progress] .tier-progress i
-[미관찰: tier-stats] .tier-stats
-[미관찰: tier-stat] .tier-stat
-[미관찰: tier-stat] .tier-stat strong
-[미관찰: leaderboard] .leaderboard
-[미관찰: leaderboard] .leaderboard caption
-[미관찰: leaderboard] .leaderboard th,.leaderboard td
-[미관찰: leaderboard] .leaderboard th
-[미관찰: leaderboard] .leaderboard td:nth-child(2)
-[미관찰: leaderboard, me] .leaderboard tr.me
-[미관찰: tier-hero] .tier-hero
-[미관찰: tier-score] .tier-score
-[미관찰: tier-stats] .tier-stats
 [미관찰: gdx-veil] .gdx-veil
 [미관찰: gdx-pillar] .gdx-pillar
 [미관찰: gdx-ring] .gdx-ring
@@ -267,8 +223,6 @@
 [미관찰: empty] .synth-slot.empty
 [미관찰: synth-pop] .synth-pop
 [코드에 없음] .synth-swirl
-[미관찰: blocked] .synth-section.blocked
-[미관찰: blocked] .synth-section.blocked b
 [코드에 없음] .synth-spare.lock
 [미관찰: deck] .synth-have .deck.on
 [미관찰: deck] .synth-have .deck.on b
@@ -286,8 +240,6 @@
 [미관찰: deck-row-pulse] .deck-row.deck-row-pulse
 [미관찰: count-bump] #build-count.count-bump
 [미관찰: add-denied] .owned-card.add-denied
-[미관찰: enh-short] #enhance-grid .synth-pick.enh-short
-[미관찰: enh-short] #enhance-grid .synth-pick.enh-short img
 [미관찰: enh-none] #enhance-grid .enh-none
 [미관찰: enh-equip-land] #enhance-result .synth-card.enh-equip-land
 [코드에 없음] #enhance-result .synth-card.enh-land
@@ -345,4 +297,3 @@
 [미관찰: secret-unlock-note] .secret-unlock-note strong
 [미관찰: secret-unlock-note] .secret-unlock-note span
 [미관찰: secret-unlock-note] .secret-unlock-note button
-[미관찰: back-emblem, gacha-card-back] .gacha-card-back[data-skin] .back-emblem

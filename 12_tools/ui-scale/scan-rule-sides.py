@@ -45,8 +45,9 @@ def main():
             for name, sel, anchor, code in a.CASES:
                 try: pg.evaluate("([s,c])=>{const t=document.querySelector(s);if(t)(new Function('t',c))(t)}", [sel, code]); pg.evaluate(SCAN)
                 except Exception: pass
-            for name, setup in o.STATES:
-                try: pg.evaluate(setup); pg.wait_for_timeout(60); pg.evaluate(SCAN)
+            from extra_states import EXTRA_STATES
+            for name, setup in o.STATES + EXTRA_STATES:
+                try: pg.evaluate('c=>{(new Function(c))();}', setup); pg.wait_for_timeout(60); pg.evaluate(SCAN)
                 except Exception as e: print('상태 실패', w, name)
             rules = pg.evaluate('window.__rules')
             pg.close()
