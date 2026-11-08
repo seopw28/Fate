@@ -88,7 +88,9 @@ def run_migration(br, base):
               now:JSON.stringify({deck:raw.deck,decks:raw.decks,owned:raw.owned})};}""")
     ok = (res["version"] == 11 and res["cookie"] == 61234 and res["crackers"] >= 4321 and res["names"] == ['내 커스텀 덱', '두번째'] and res["active"] == 1
           and res["skins"] == {"owned": ["back.default", "field.default"], "applied": {"back": "back.default", "field": "field.default"}}
-          and json.loads(res["now"])["decks"] == json.loads(snapshot)["decks"] and json.loads(res["now"])["owned"] == json.loads(snapshot)["owned"] and not errors)
+          and [{"name": d["name"], "ids": d["ids"]} for d in json.loads(res["now"])["decks"]] == [{"name": d["name"], "ids": d["ids"]} for d in json.loads(snapshot)["decks"]]
+          and len({d.get("aura") for d in json.loads(res["now"])["decks"]} - {None}) == len(json.loads(res["now"])["decks"])  # 2026-11-09: 덱마다 서로 다른 오라가 붙는다
+          and json.loads(res["now"])["owned"] == json.loads(snapshot)["owned"] and not errors)
     detail = {k: res[k] for k in ("version", "cookie", "crackers", "skins", "names", "active")}
     ctx.close()
     return ok, {**detail, "errors": errors[:2]}

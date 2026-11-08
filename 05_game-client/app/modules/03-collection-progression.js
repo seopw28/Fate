@@ -213,26 +213,36 @@
        collectionState.decks = [{name, ids:[cardId…]}] — 카드 목록이 바뀌어 순번이 밀려도 깨지지 않게 cardId로 저장
        collectionState.activeDeck = 전투 덱으로 쓰는 덱 번호
        덱 편집에서 고친 내용은 그 덱에 바로 저장되고, '이 덱으로 전투'(저장 버튼)를 눌러야 전투 덱이 바뀐다. */
-    var MAX_DECKS=MAX_DECKS||6,editingDeck=editingDeck||0;/* var: 이 줄보다 앞에서 실행되는 덱 불러오기(withSavedDecks)가 먼저 쓰므로 const 금지 */
+    var MAX_DECKS=5,editingDeck=editingDeck||0;/* 2026-11-09: 덱마다 오라 필수, 오라당 덱 1개 → 덱은 최대 5개 *//* var: 이 줄보다 앞에서 실행되는 덱 불러오기(withSavedDecks)가 먼저 쓰므로 const 금지 */
     function readSavedDecks(){try{const raw=JSON.parse(localStorage.getItem('primal-collection-v1'));return raw&&Array.isArray(raw.decks)?{decks:raw.decks,activeDeck:raw.activeDeck}:null;}catch(e){return null;}}
     function deckIdsOf(indexes){return (indexes||[]).map(i=>COLLECTION_CARD_IDS[i]).filter(Boolean);}
     function deckIndexesOf(ids){const at=new Map(COLLECTION_CARD_IDS.map((id,i)=>[id,i]));return (ids||[]).map(id=>at.get(id)).filter(i=>i!==undefined);}
     function draftOfDeck(i){return deckIndexesOf(collectionState.decks?.[i]?.ids);}
     function withSavedDecks(saved,state){
-      const decks=(collectionDeckReset?[]:(saved?.decks||[])).filter(d=>d&&Array.isArray(d.ids))/* v10 이전 저장은 덱 목록을 버리고 새 기본 덱 하나로 시작한다 */.slice(0,MAX_DECKS||6).map((d,i)=>({name:String(d.name||('덱 '+(i+1))).trim().slice(0,16)||('덱 '+(i+1)),ids:d.ids.filter(id=>typeof id==='string')}));
-      if(!decks.length&&(!saved||collectionDeckReset)&&AURA_DECKS.length){AURA_DECKS.forEach(deck=>decks.push({name:deck.name,ids:deckIdsOf(deck.indexes)}));state.deck=[...AURA_DECKS[0].indexes];}/* 새로 시작: 오라 기본 덱 5종이 덱 목록에 들어 있고 메인 덱은 불의 덱 (2026-11-09) */
+      const decks=(collectionDeckReset?[]:(saved?.decks||[])).filter(d=>d&&Array.isArray(d.ids))/* v10 이전 저장은 덱 목록을 버리고 새 기본 덱 하나로 시작한다 */.map((d,i)=>({name:String(d.name||('덱 '+(i+1))).trim().slice(0,16)||('덱 '+(i+1)),aura:deckAuraKeys().includes(d.aura)?d.aura:null,ids:d.ids.filter(id=>typeof id==='string')}));
+      if(!decks.length&&(!saved||collectionDeckReset)&&AURA_DECKS.length){AURA_DECKS.forEach(deck=>decks.push({name:deck.name,aura:deck.aura,ids:deckIdsOf(deck.indexes)}));state.deck=[...AURA_DECKS[0].indexes];}/* 새로 시작: 오라 기본 덱 5종이 덱 목록에 들어 있고 메인 덱은 불의 덱 (2026-11-09) */
       if(!decks.length)decks.push({name:'덱 1',ids:deckIdsOf(state.deck)});/* 기존 사용자: 지금 쓰던 덱을 '덱 1'로 옮긴다 */
-      const active=Number.isInteger(saved?.activeDeck)&&saved.activeDeck>=0&&saved.activeDeck<decks.length?saved.activeDeck:0;
+      const activeBefore=Number.isInteger(saved?.activeDeck)?decks[saved.activeDeck]:null,matched=assignDeckAuras(decks);/* 오라 없는 옛 덱에 오라를 붙이고, 오라를 못 받은 덱(6번째)은 뺀다 */
+      const active=Math.max(0,matched.indexOf(activeBefore));
+      decks.length=0;decks.push(...matched);
       state.decks=decks;state.activeDeck=active;editingDeck=active;
       try{localStorage.setItem('primal-collection-v1',JSON.stringify({...state,cardIds:COLLECTION_CARD_IDS}));}catch(e){}/* 불러오기가 덱 목록 없이 덮어쓴 저장을 바로 되돌린다 */
       return state;}
+    /* 덱 오라 (2026-11-09): 덱마다 오라 필수, 한 오라에는 덱 1개. 전투에서 성격 오라를 고르면 그 오라의 덱을 쓴다 */
+    function deckAuraKeys(){return ['fire','water','wood','metal','earth'];}
+    function dominantDeckAura(ids){const count={};deckIndexesOf(ids).forEach(i=>{const def=collectionCardDefs[i];if(def?.cardType==='champion')count[def.aura]=(count[def.aura]||0)+1;});return deckAuraKeys().slice().sort((a,b)=>(count[b]||0)-(count[a]||0))[0];}
+    function assignDeckAuras(decks){const used=new Set(),keys=deckAuraKeys();decks.forEach(d=>{if(d.aura&&!used.has(d.aura))used.add(d.aura);else d.aura=null;});
+      decks.forEach(d=>{if(d.aura)return;const byName=AURA_DECKS.find(deck=>deck.name===d.name)?.aura,dominant=dominantDeckAura(d.ids),pick=[byName,dominant,...keys].find(key=>key&&!used.has(key));if(pick){d.aura=pick;used.add(pick);}});
+      return decks.filter(d=>d.aura);}
+    function freeDeckAura(){const used=new Set((collectionState.decks||[]).map(d=>d.aura));return deckAuraKeys().find(key=>!used.has(key))||null;}
+    function setDeckAura(aura){const decks=collectionState.decks,current=decks?.[editingDeck];if(!current||!deckAuraKeys().includes(aura)||decks.some((d,i)=>i!==editingDeck&&d.aura===aura))return;current.aura=aura;persistCollection();renderDeckBuilder();}
     function deckEditorOpen(){return Boolean(document.querySelector('#collection-modal.show'))&&Boolean(collectionState.decks?.[editingDeck]);}
     function storeDraft(){if(!deckEditorOpen())return;collectionState.decks[editingDeck].ids=deckIdsOf(draftDeck);persistCollection();}
     function nextDeckName(){const used=new Set(collectionState.decks.map(d=>d.name));let n=collectionState.decks.length+1;while(used.has('덱 '+n))n++;return '덱 '+n;}
     function selectDeck(i){if(i===editingDeck||!collectionState.decks[i])return;storeDraft();editingDeck=i;draftDeck=draftOfDeck(i);renderDeckBuilder();}
-    function createDeck(){if(collectionState.decks.length>=MAX_DECKS)return;storeDraft();collectionState.decks.push({name:nextDeckName(),ids:[]});editingDeck=collectionState.decks.length-1;draftDeck=[];persistCollection();renderDeckBuilder();}
-    function duplicateDeck(){if(collectionState.decks.length>=MAX_DECKS)return;storeDraft();const src=collectionState.decks[editingDeck];collectionState.decks.push({name:(src.name+' 사본').slice(0,16),ids:[...src.ids]});editingDeck=collectionState.decks.length-1;draftDeck=draftOfDeck(editingDeck);persistCollection();renderDeckBuilder();}
-    function deleteDeck(){const decks=collectionState.decks;if(decks.length<=1||editingDeck===collectionState.activeDeck)return;if(!confirm('「'+decks[editingDeck].name+'」 덱을 삭제할까요? 되돌릴 수 없습니다.'))return;decks.splice(editingDeck,1);if(collectionState.activeDeck>editingDeck)collectionState.activeDeck--;editingDeck=collectionState.activeDeck;draftDeck=draftOfDeck(editingDeck);persistCollection();renderDeckBuilder();}
+    function createDeck(){const aura=freeDeckAura();if(collectionState.decks.length>=MAX_DECKS||!aura)return;storeDraft();collectionState.decks.push({name:nextDeckName(),aura,ids:[]});editingDeck=collectionState.decks.length-1;draftDeck=[];persistCollection();renderDeckBuilder();}
+    function duplicateDeck(){const aura=freeDeckAura();if(collectionState.decks.length>=MAX_DECKS||!aura)return;storeDraft();const src=collectionState.decks[editingDeck];collectionState.decks.push({name:(src.name+' 사본').slice(0,16),aura,ids:[...src.ids]});editingDeck=collectionState.decks.length-1;draftDeck=draftOfDeck(editingDeck);persistCollection();renderDeckBuilder();}
+    function deleteDeck(){const decks=collectionState.decks;if(decks.length<=1)return;if(!confirm('「'+decks[editingDeck].name+'」 덱을 삭제할까요? 되돌릴 수 없습니다. 이 오라를 고르면 오라 기본 덱으로 싸웁니다.'))return;decks.splice(editingDeck,1);if(collectionState.activeDeck>editingDeck||collectionState.activeDeck>=decks.length)collectionState.activeDeck=Math.max(0,collectionState.activeDeck-1);editingDeck=Math.min(editingDeck,decks.length-1);draftDeck=draftOfDeck(editingDeck);persistCollection();renderDeckBuilder();}
     function startDeckTabRename(i){if(!collectionState.decks?.[i])return;if(i!==editingDeck)selectDeck(i);const bar=document.querySelector('#deck-switcher'),tab=bar?.querySelector('.deck-tab[data-deck="'+i+'"]'),label=tab?.querySelector('b');if(!label)return;window.getSelection?.().removeAllRanges();
       const input=document.createElement('input');input.className='deck-tab-rename';input.maxLength=16;input.value=collectionState.decks[i].name;input.setAttribute('aria-label','덱 이름');label.replaceWith(input);input.focus();input.select();let done=false;
       const finish=save=>{if(done)return;done=true;if(save)renameDeck(input.value);renderDeckBar();};
@@ -242,15 +252,15 @@
     function sameDeckCards(a,b){if(!Array.isArray(a)||!Array.isArray(b)||a.length!==b.length)return false;const x=[...a].sort((p,q)=>p-q),y=[...b].sort((p,q)=>p-q);return x.every((v,i)=>v===y[i]);}
     function escapeDeckName(text){return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);}
     function renderDeckBar(){const bar=document.querySelector('#deck-switcher');if(!bar||!collectionState.decks)return;const decks=collectionState.decks,active=collectionState.activeDeck;
-      bar.innerHTML='<div class="deck-tabs" role="tablist" aria-label="내 덱 목록">'+decks.map((d,i)=>{const n=i===editingDeck?draftDeck.length:deckIndexesOf(d.ids).length;return '<button class="deck-tab'+(i===editingDeck?' editing':'')+(i===active?' active':'')+(n===60?' complete':'')+'" role="tab" aria-selected="'+(i===editingDeck)+'" data-deck="'+i+'" title="더블클릭해 이름 바꾸기" onclick="selectDeck('+i+')"><b>'+escapeDeckName(d.name)+'</b><small>'+(i===active?'<em>메인 덱</em> · ':'')+n+' / 60장</small></button>';}).join('')+(decks.length<MAX_DECKS?'<button class="deck-tab add" onclick="createDeck()" title="새 덱 만들기 (최대 '+MAX_DECKS+'개)">＋ 새 덱</button>':'')+'</div>'
-        +'<div class="deck-manage"><label>덱 이름 <input id="deck-name" maxlength="16" value="'+escapeDeckName(decks[editingDeck].name)+'"></label><button onclick="duplicateDeck()" '+(decks.length>=MAX_DECKS?'disabled':'')+'>복제</button><button onclick="deleteDeck()" '+(decks.length<=1||editingDeck===active?'disabled title="메인 덱은 삭제할 수 없습니다"':'')+'>삭제</button></div>';
+      bar.innerHTML='<div class="deck-tabs" role="tablist" aria-label="내 덱 목록">'+decks.map((d,i)=>{const n=i===editingDeck?draftDeck.length:deckIndexesOf(d.ids).length;return '<button class="deck-tab'+(i===editingDeck?' editing':'')+(i===active?' active':'')+(n===60?' complete':'')+'" role="tab" aria-selected="'+(i===editingDeck)+'" data-deck="'+i+'" title="더블클릭해 이름 바꾸기" onclick="selectDeck('+i+')"><b>'+escapeDeckName(d.name)+'</b><small><em class="deck-aura-chip" style="--ac:'+(ELEMENT_COLOR[d.aura]||'#cfd8e6')+'">'+elementLabel[d.aura]+' 오라</em> · '+n+' / 60장</small></button>';}).join('')+(decks.length<MAX_DECKS&&freeDeckAura()?'<button class="deck-tab add" onclick="createDeck()" title="새 덱 만들기 (오라마다 1개, 최대 '+MAX_DECKS+'개)">＋ 새 덱</button>':'')+'</div>'
+        +'<div class="deck-manage"><label>오라 <select id="deck-aura" aria-label="이 덱의 오라" onchange="setDeckAura(this.value)">'+deckAuraKeys().map(key=>{const owner=decks.findIndex(d=>d.aura===key);return '<option value="'+key+'"'+(key===decks[editingDeck].aura?' selected':'')+(owner>=0&&owner!==editingDeck?' disabled':'')+'>'+elementLabel[key]+(owner>=0&&owner!==editingDeck?' (사용 중)':'')+'</option>';}).join('')+'</select></label><label>덱 이름 <input id="deck-name" maxlength="16" value="'+escapeDeckName(decks[editingDeck].name)+'"></label><button onclick="duplicateDeck()" '+(decks.length>=MAX_DECKS||!freeDeckAura()?'disabled title="빈 오라가 없어 복제할 수 없습니다"':'')+'>복제</button><button onclick="deleteDeck()" '+(decks.length<=1?'disabled title="덱은 1개 이상 있어야 합니다"':'')+'>삭제</button></div>';
       const input=bar.querySelector('#deck-name');input.addEventListener('change',e=>renameDeck(e.target.value));input.addEventListener('keydown',e=>{if(e.key==='Enter')e.target.blur();e.stopPropagation();});
       /* 덱 탭 이름을 더블클릭하면 그 자리에서 고친다: Enter·바깥 클릭=저장, Esc=취소. 탭은 다시 그려지므로 막대(bar)에 한 번만 위임해 둔다 */
       if(!bar.dataset.renameBound){bar.dataset.renameBound='1';bar.addEventListener('dblclick',e=>{const tab=e.target.closest('.deck-tab[data-deck]');if(!tab||tab.querySelector('.deck-tab-rename'))return;e.preventDefault();startDeckTabRename(Number(tab.dataset.deck));});}
-      const title=document.querySelector('#deck-panel-title');if(title)title.textContent=decks[editingDeck].name+(editingDeck===active?' · 메인 덱':'');}
+      const title=document.querySelector('#deck-panel-title');if(title)title.textContent=decks[editingDeck].name+' · '+elementLabel[decks[editingDeck].aura]+' 오라';}
     (function(){
       const baseRender=renderDeckBuilder,baseSave=saveBattleDeck;
-      renderDeckBuilder=function(...args){const result=baseRender.apply(this,args);if(collectionState.decks){storeDraft();renderDeckBar();const save=document.querySelector('#deck-save');if(save&&draftDeck.length===60&&!deckAuraLimitExceeded(draftDeck)){const isMain=editingDeck===collectionState.activeDeck,applied=isMain&&sameDeckCards(draftDeck,collectionState.deck);save.textContent=isMain?(applied?'✓ 메인 덱':'메인 덱에 변경 반영'):'메인 덱으로 지정';save.disabled=applied;save.classList.toggle('is-main',applied);}}return result;};
+      renderDeckBuilder=function(...args){const result=baseRender.apply(this,args);if(collectionState.decks){storeDraft();renderDeckBar();const save=document.querySelector('#deck-save'),aura=collectionState.decks[editingDeck]?.aura;if(save&&aura){const ready=draftDeck.length===60&&!deckAuraLimitExceeded(draftDeck);/* 메인 덱 지정은 없다: 전투에서 이 오라를 고르면 이 덱을 쓴다 (2026-11-09) */save.textContent=ready?'✓ '+elementLabel[aura]+' 오라를 고르면 이 덱으로 싸웁니다':'60장을 채우기 전에는 '+elementLabel[aura]+' 오라 기본 덱으로 싸웁니다';save.disabled=true;save.classList.toggle('is-main',ready);}}return result;};
       saveBattleDeck=function(...args){if(collectionState.decks&&draftDeck.length===60&&!deckAuraLimitExceeded(draftDeck)){collectionState.decks[editingDeck].ids=deckIdsOf(draftDeck);collectionState.activeDeck=editingDeck;}return baseSave.apply(this,args);};
     })();
 
@@ -455,3 +465,19 @@
       if(typeof closeCollection==='function'){const baseClose=closeCollection;closeCollection=function(...a){const r=baseClose.apply(this,a);try{if(HASH[decodeURIComponent(location.hash.replace(/^#/,''))])history.replaceState(null,'',location.pathname+location.search);}catch(e){}syncNav('');return r;};}
       addEventListener('hashchange',fromHash);setTimeout(fromHash,0);
     })();
+
+    /* 성격 오라를 고르면 그 오라에 매칭된 덱으로 전투한다 (2026-11-09).
+       오라 고르기 전의 덱·시작 손패는 임시다. 고르는 순간 내 덱은 그 오라의 저장 덱(60장이 아니면 오라 기본 덱)으로,
+       컴퓨터 덱은 컴퓨터 오라의 기본 덱으로 다시 섞고 시작 손패를 다시 뽑는다. ?fixedStarter(QA 고정 손패)면 내 손패는 그대로 둔다. */
+    const GUARDIAN_DECK_AURA={jujak:'fire',cheongryong:'water',namu:'wood',baekho:'metal',hyeonmu:'earth'};
+    function matchedBattleDeck(aura){const at=(collectionState.decks||[]).findIndex(d=>d.aura===aura),saved=at>=0?deckIndexesOf(collectionState.decks[at].ids):[];
+      if(saved.length===60&&!deckAuraLimitExceeded(saved))return {indexes:saved,name:collectionState.decks[at].name,at,own:true};
+      const preset=AURA_DECKS.find(deck=>deck.aura===aura);return preset?{indexes:[...preset.indexes],name:preset.name,at,own:false}:null;}
+    function applyAuraMatchedDecks(){
+      const mine=matchedBattleDeck(GUARDIAN_DECK_AURA[playerGuardian]),theirs=AURA_DECKS.find(item=>item.aura===GUARDIAN_DECK_AURA[enemyGuardian]);
+      if(mine){collectionState.deck=[...mine.indexes];if(mine.at>=0)collectionState.activeDeck=mine.at;persistCollection();deck=shuffleBattleDeck(collectionState.deck).map(deckEntry);
+        if(!new URLSearchParams(location.search).has('fixedStarter')){const hand=document.querySelector('.hand');hand.replaceChildren(...takeOpeningHand().map(createRuntimeBattleCard));hand.querySelectorAll('.spell-card,.trap-card').forEach(applyMagicRole);hand.querySelectorAll('.card').forEach(card=>card.addEventListener('click',()=>playCard(card)));}}
+      if(theirs){enemyDeck=shuffleBattleDeck([...theirs.indexes]).map(deckEntry);enemyOriginalDeck.splice(0,enemyOriginalDeck.length,...enemyDeck);enemyHand=takeCards(enemyDeck,openingHandIndexes(enemyDeck)).map(gradeCardData);updateEnemyDeckLabel();}
+      if(typeof updateHandTabs==='function')updateHandTabs();updateMana();
+      if(mine)writeLog('<strong>덱 매칭:</strong> 「'+mine.name+'」'+(mine.own?'':'(60장 덱이 없어 오라 기본 덱)')+'으로 싸웁니다. 상대는 「'+(theirs?.name||'기본 덱')+'」입니다.');}
+    (function(){const base=pickGuardian;pickGuardian=function(...args){const before=guardianChosen,result=base.apply(this,args);if(!before&&guardianChosen)applyAuraMatchedDecks();return result;};})();

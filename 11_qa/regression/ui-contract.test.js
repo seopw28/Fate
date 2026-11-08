@@ -92,8 +92,9 @@ test('deck editing stays open during a battle but never changes the current batt
   assert.ok(html.includes('지금 고친 덱은 다음 판부터 적용됩니다'), 'Deck editor must tell the player when changes apply');
 });
 
-test('deck editor: a deck is designated as the main deck and the editor stays open', () => {
-  assert.ok(html.includes("save.textContent=isMain?(applied?'✓ 메인 덱':'메인 덱에 변경 반영'):'메인 덱으로 지정'"), 'Save button must designate the main deck');
+test('deck editor: each deck has an aura and the editor stays open (main deck designation removed 2026-11-09)', () => {
+  assert.ok(html.includes("save.textContent=ready?'✓ '+elementLabel[aura]+' 오라를 고르면 이 덱으로 싸웁니다'"), 'The save slot explains which aura picks this deck');
+  assert.ok(!html.includes("'메인 덱으로 지정'"), 'Main deck designation is replaced by aura matching');
   assert.ok(!html.includes("다음 판부터 이 덱으로 싸웁니다.');closeCollection();") && !html.includes("셔플했습니다.');closeCollection();"), 'Designating the main deck must not close the deck editor');
 });
 

@@ -53,8 +53,8 @@ test('클라이언트: 덱 편집에서 오라 기본 덱을 불러오고, 새�
   const runtime = readFileSync(resolve(__dirname, '../../dist/runtime/cards.js'), 'utf8');
   assert.ok(runtime.includes('globalThis.PrimalAuraDecks'), '런타임 카드 데이터에 오라 덱이 들어간다');
   assert.ok(html.includes('function loadAuraDeck(aura)'), '덱 편집 불러오기');
-  assert.ok(html.includes('class="aura-deck-pick"'), '덱 도구의 오라 기본 덱 선택');
-  assert.ok(html.includes('AURA_DECKS.forEach(deck=>decks.push({name:deck.name,ids:deckIdsOf(deck.indexes)}))'), '새로 시작하면 덱 목록에 5종');
+  assert.ok(html.includes('class="aura-deck-fill"'), '덱 도구의 오라 기본 덱으로 채우기');
+  assert.ok(html.includes('AURA_DECKS.forEach(deck=>decks.push({name:deck.name,aura:deck.aura,ids:deckIdsOf(deck.indexes)}))'), '새로 시작하면 덱 목록에 5종');
   assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(enemyAuraDeck?[...enemyAuraDeck.indexes]'), '컴퓨터 덱도 오라 기본 덱');
   assert.ok(html.includes('Math.max(AURA_DECK_OWNED_FLOOR[i]||0,'), '기본 덱 카드는 보유 보장');
   assert.ok(html.includes("wood:'#5fd38a',metal:'#cfd8e6'"), '덱 구성 막대에 나무·금속이 잡힌다');
@@ -63,4 +63,15 @@ test('클라이언트: 덱 편집에서 오라 기본 덱을 불러오고, 새�
 test('오라 덱마다 소환사 압박 하수인(소환사 직접 피해 효과)이 기존 기본 덱과 같은 12장 들어간다', () => {
   const pressure = new Set(['hero_splash', 'entry_hero_damage', 'time_bomb']);
   for (const deck of decks) assert.equal(champions(deck).filter(card => card.effects.some(effect => pressure.has(effect.effectId))).length, 12, deck.name);
+});
+
+test('덱마다 오라 필수 · 오라당 덱 1개 · 성격 오라를 고르면 매칭 덱으로 내 덱과 컴퓨터 덱을 다시 만든다 (2026-11-09)', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes('var MAX_DECKS=5,'), '오라 5종 → 덱 최대 5개');
+  assert.ok(html.includes('function assignDeckAuras(decks)'), '옛 저장 덱에 오라 배정');
+  assert.ok(html.includes('function createDeck(){const aura=freeDeckAura();if(collectionState.decks.length>=MAX_DECKS||!aura)return;'), '새 덱은 빈 오라가 있을 때만');
+  assert.ok(html.includes("decks.some((d,i)=>i!==editingDeck&&d.aura===aura))return;"), '다른 덱이 쓰는 오라는 고를 수 없다');
+  assert.ok(html.includes('const GUARDIAN_DECK_AURA={jujak:\'fire\',cheongryong:\'water\',namu:\'wood\',baekho:\'metal\',hyeonmu:\'earth\'};'));
+  assert.ok(html.includes('if(!before&&guardianChosen)applyAuraMatchedDecks();'), '오라를 고른 순간 매칭 덱 적용');
+  assert.ok(html.includes('enemyDeck=shuffleBattleDeck([...theirs.indexes]).map(deckEntry);'), '컴퓨터도 자기 오라의 덱');
 });
