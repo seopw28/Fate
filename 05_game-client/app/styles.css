@@ -2127,3 +2127,20 @@
 .secret-open:hover:not(:disabled){filter:brightness(1.15);box-shadow:0 0 14px #e0c36f66}
 .secret-open:disabled{border-color:#4b4320;background:#1d1a10;color:#8a8160;cursor:not-allowed}
 @media(max-width:780px){.shop-panel{flex-direction:column;overflow:auto}.skin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+    /* 시크릿 외전 (2026-11-08 PM): 한 시즌 대상이 5개 안팎이라 카드 하나를 크게 보여 준다. 한 화면에 2~3장. */
+    .secret-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; padding:4px 8px 8px 2px; }
+    .secret-block { border-radius:16px; }
+    .secret-art, .secret-chains, .secret-broken { aspect-ratio:16/9; }
+    .secret-art img { object-position:center 16%; }
+    .secret-body { gap:8px; padding:14px 18px 16px; }
+    .secret-body small { font-size:11px; }
+    .secret-body h4 { font-size:22px; }
+    .secret-mystery { height:58px; border-radius:12px; font-size:36px; }
+    .secret-hint, .secret-pair, .secret-teaser { font-size:14px; }
+    .secret-ready-badge { padding:4px 12px; font-size:13px; }
+    .secret-go, .secret-open { padding:12px 14px; border-radius:10px; font-size:15px; }
+    .secret-chains .chain { height:22px; margin-top:-11px; background-size:28px 22px; background-image:radial-gradient(ellipse 12px 8px at 14px 50%,transparent 5px,#8a8f9c 5.5px,#c9ced8 7.5px,#5b606b 10px,transparent 11px); }
+    .secret-lock { width:64px; height:64px; border-radius:16px; font-size:30px; }
+    @media(max-width:1100px){ .secret-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:620px){ .secret-grid { grid-template-columns:minmax(0,1fr); } }
