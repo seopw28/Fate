@@ -86,9 +86,9 @@ def run_migration(br, base):
     res = pg.evaluate("""()=>{const raw=JSON.parse(localStorage.getItem('primal-collection-v1'));
       return {version:raw.version,cookie:collectionState.cookieFragments,crackers:collectionState.crackers,skins:raw.skins,names:raw.decks.map(d=>d.name),active:raw.activeDeck,
               now:JSON.stringify({deck:raw.deck,decks:raw.decks,owned:raw.owned})};}""")
-    ok = (res["version"] == 11 and res["cookie"] == 61234 and res["crackers"] >= 4321 and res["names"] == ['내 커스텀 덱', '두번째'] and res["active"] == 1
+    ok = (res["version"] == 11 and res["cookie"] == 61234 and res["crackers"] >= 4321 and res["names"][:2] == ['내 커스텀 덱', '두번째'] and len(res["names"]) == 5  # 2026-11-09: 오라 5칸 고정, 빈 칸은 기본 덱 and res["active"] == 1
           and res["skins"] == {"owned": ["back.default", "field.default"], "applied": {"back": "back.default", "field": "field.default"}}
-          and [{"name": d["name"], "ids": d["ids"]} for d in json.loads(res["now"])["decks"]] == [{"name": d["name"], "ids": d["ids"]} for d in json.loads(snapshot)["decks"]]
+          and [{"name": d["name"], "ids": d["ids"]} for d in json.loads(res["now"])["decks"]][:2] == [{"name": d["name"], "ids": d["ids"]} for d in json.loads(snapshot)["decks"]][:2]
           and len({d.get("aura") for d in json.loads(res["now"])["decks"]} - {None}) == len(json.loads(res["now"])["decks"])  # 2026-11-09: 덱마다 서로 다른 오라가 붙는다
           and json.loads(res["now"])["owned"] == json.loads(snapshot)["owned"] and not errors)
     detail = {k: res[k] for k in ("version", "cookie", "crackers", "skins", "names", "active")}

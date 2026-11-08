@@ -2257,3 +2257,12 @@
     .deck-tab small .deck-aura-chip { font-style:normal; font-weight:800; color:var(--ac,#cfd8e6); }
     .deck-manage select { padding:6.3px 9px; border:1px solid #b68a4d; border-radius:7.2px; background:#1d1a14; color:#f3d9a8; font:inherit; font-size:clamp(10.8px,.85vw,13.5px); }
     .deck-tools .aura-deck-fill { border-color:#b68a4d; background:#1d1a14; color:#f3d9a8; }
+    /* 덱 편집 = 오라 5칸 (2026-11-09 PM): 탭 위에 오라 문양과 이름을 크게, 아래에 덱 이름·장수. 다섯 칸이 한 줄을 고르게 나눈다 */
+    .deck-tabs:has(.aura-slot) { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); flex:1 1 auto; }
+    .deck-tab.aura-slot { min-width:0; border-color:color-mix(in srgb,var(--ac) 35%,#3a4455); }
+    .deck-tab.aura-slot.editing { border-color:var(--ac); background:color-mix(in srgb,var(--ac) 14%,#141a23); box-shadow:0 0 0 1px var(--ac) inset; }
+    .deck-tab.aura-slot .deck-tab-head { display:flex; align-items:center; gap:7.2px; }
+    .deck-tab.aura-slot .deck-tab-head .aura-mark { width:clamp(22px,1.6vw,28px); height:clamp(22px,1.6vw,28px); margin:0; }
+    .deck-tab.aura-slot .deck-tab-head .aura-mark img { width:100%; height:100%; object-fit:contain; }
+    .deck-tab.aura-slot .deck-tab-head strong { color:var(--ac); font-size:clamp(12.6px,1vw,16.2px); font-weight:900; }
+    .deck-tab.aura-slot b { color:#d8dee8; font-weight:700; }

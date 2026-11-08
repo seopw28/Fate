@@ -168,7 +168,8 @@ CHECKS = [
   "const noTaunt=chooseEnemyAttackTarget(sp,mine)===null;const my=mine[0];my.dataset.ultimateAggro='true';const ignoresSpent=chooseEnemyAttackTarget(sp,mine)===null;const normalTaunted=chooseEnemyAttackTarget(enemySummonUnit(el,{name:'적일반0',art:proto.art,el:'water',atk:1,hp:3,cost:0}),mine)===my;delete my.dataset.ultimateAggro;"
   "const normal=enemySummonUnit(el,{name:'적일반',art:proto.art,el:'water',atk:2,hp:3,cost:0});const normalTarget=chooseEnemyAttackTarget(normal,mine)!==null;"
   "const p0=playerHp,hp0=mine.map(u=>__q.hp(u));enemyHand.length=0;enemyMana=0;[...el.querySelectorAll(':scope > .unit')].forEach(u=>{if(u!==sp)u.remove();});"
-  "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<150&&!finished;i++)await __q.wait(100);await __q.wait(200);"
+  "const keepDeck=enemyDeck.splice(0);/* 턴 시작 드로우로 덱의 등장 피해 하수인이 나오면 소환사 피해가 덱 구성에 따라 달라진다 (2026-11-09) */"
+  "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<150&&!finished;i++)await __q.wait(100);await __q.wait(200);enemyDeck.push(...keepDeck);"
   "const r={noTaunt,ignoresSpent,normalTaunted,normalTarget,heroDmg:p0-playerHp,minesUntouched:mine.every((u,i)=>__q.hp(u)===hp0[i])};"
   "return {ok:noTaunt&&ignoresSpent&&normalTaunted&&normalTarget&&r.heroDmg===6&&r.minesUntouched,...r};})()"),
  ("소진자가 쓰러지는 연출 순서(실제 enemyTurn·endTurn 경로): 적중 → 반격 → 죽음 컷씬 → 컷 종료 → 카드 제거. 다른 연출이 적중을 늦춰도 같은 순서",

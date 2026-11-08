@@ -76,3 +76,11 @@ test('덱마다 오라 필수 · 오라당 덱 1개 · 성격 오라를 고르�
   assert.ok(html.includes('if(!before&&guardianChosen)applyAuraMatchedDecks();'), '오라를 고른 순간 매칭 덱 적용');
   assert.ok(html.includes('enemyDeck=shuffleBattleDeck([...theirs.indexes]).map(deckEntry);'), '컴퓨터도 자기 오라의 덱');
 });
+
+test('덱 편집은 오라 5칸 고정: 빈 칸·0장 덱은 오라 기본 덱, 새 덱·복제·삭제·오라 바꾸기 없음 (2026-11-09 PM)', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes('return own&&own.ids.length?own:preset?{name:preset.name,aura:key,ids:deckIdsOf(preset.indexes)}'), '빈 칸은 기본 덱으로 채운다');
+  assert.ok(html.includes('<span class="deck-tab-head">'), '탭에 오라 문양과 이름');
+  assert.ok(!html.includes('onclick="createDeck()"') && !html.includes('onclick="duplicateDeck()"') && !html.includes('onclick="deleteDeck()"') && !html.includes('id="deck-aura"'), '오라 칸 관리 버튼 없음');
+  assert.ok(html.includes(" 기본 덱으로 되돌리기</button>"), '기본 덱으로 되돌리기');
+});
