@@ -18,7 +18,7 @@
       function heroPressureDamage(targetSide,amount,element,title,sourceName){
         if(resultPending||amount<=0)return false;
         const enemy=targetSide==='enemy',avatar=document.querySelector('.duel-hud .'+targetSide+' .avatar'),owner=enemy?'상대':'내';
-        if(enemy?enemyAbsoluteDefense:absoluteDefense){sfx('shield');writeLog('<strong>'+(enemy?'상대 ':'')+'절대방어</strong>가 '+sourceName+'의 '+title+' 피해를 막았습니다.');return false;}
+        if(enemy?enemyAbsoluteDefense:absoluteDefense){guardImpact(avatar,amount,'absolute');writeLog('<strong>'+(enemy?'상대 ':'')+'절대방어</strong>가 '+sourceName+'의 '+title+' 피해를 막았습니다.');return false;}
         impact(avatar,amount,element);
         if(enemy)enemyHp=Math.max(0,enemyHp-amount);else playerHp=Math.max(0,playerHp-amount);
         updateHeroHealth();

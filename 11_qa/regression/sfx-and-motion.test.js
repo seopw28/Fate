@@ -567,7 +567,13 @@ test('보호막 이미지: 유지 오라와 파괴 버스트가 실제 피해 �
   assert.ok(html.includes("attributeFilter:['data-shield']"), 'Shield aura must follow shield state changes');
   assert.ok(!html.includes("plating.className='shield-armor-vfx'"), 'Shielded cards must not receive horn-like armor on their top corners');
   assert.ok(html.includes("legacyArmor?.remove()"), 'Any stale horn-like shield armor must be removed');
-  assert.ok(html.includes("burst.src='assets/vfx/shield/shield-break-v1.webp'"), 'Shield break must use the generated burst asset');
+  assert.ok(html.includes("const GUARD_BREAK_ART='assets/vfx/shield/shield-break-v1.webp'"), 'Shield break must use the generated burst asset');
+  // 방어 파쇄 (2026-11-08): 막은 순간에도 방벽이 부서지는 연출과 파쇄음이 나야 한다 ('아무 일 없던 것처럼' 보이면 안 된다)
+  assert.ok(html.includes("function guardImpact(target,blocked=0,kind='shield')"), 'Blocked hits must play the guard-break presentation');
+  assert.ok(html.includes("if(kind==='guard-break'){"), 'Blocked hits must have their own break sound, not the barrier-cast hum');
+  for (const site of ["shieldBreakFx(target,damage);", "guardImpact(target,damage,'invulnerable')", "guardImpact(target,damage,'absolute');showAwakeningProc", "guardImpact(avatar,amount,'absolute')", "showGuardedHeroAttack(selected,hero,damage)"]) {
+    assert.ok(html.includes(site), `guard-break must be wired at ${site}`);
+  }
 });
 
 test('마법 시네마틱: 회복·아케인·보이드 계열은 전용 자산과 선택적 연결을 가진다', () => {
