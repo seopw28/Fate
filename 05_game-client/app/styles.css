@@ -2092,6 +2092,11 @@
 .enemy-piles .pile-hand .pile-back{margin-right:-12px;box-shadow:2px 0 4px #0009}
 .enemy-piles .pile-deck .pile-back{box-shadow:3px 2px 0 -1px #0009,5px 4px 0 -2px #0006}
 .enemy-piles .pile-deck.empty{opacity:.25}
+/* 장수는 그림 옆 라벨로 보여준다. 한 줄 텍스트 라벨은 숨기고 같은 문구를 그림 묶음의 aria-label 로 읽힌다 (2026-11-08) */
+#enemy-deck-label{display:none}
+.enemy-piles .pile-count{font-size:12px;font-weight:700;color:#c9d3e3;white-space:nowrap}
+.enemy-piles .pile-deck{margin-right:4px}
+.duel-hud .enemy .enemy-piles{padding-left:12px;border-left:1px solid #ffffff1f}
 /* 상점 하위 탭 */
 .gacha-view{flex-direction:column}
 .shop-subtabs{display:flex;gap:6px;flex:none}

@@ -39,7 +39,7 @@ test('컴퓨터 소환·교체·뽑기는 한 박자씩 보여 주고 손패·�
   assert.ok(loop.includes('combatMs(ENEMY_ACTION_BEAT_MS)') && loop.includes('combatMs(ENEMY_PLAY_GAP_MS)'));
   assert.ok(loop.includes('enemyPayCost(data.cost,data.name);enemySummonUnit(lane,data);enemyCardPlayedHook(data.cost);'));
   assert.ok(loop.includes('updateEnemyDeckLabel()'));
-  assert.ok(html.includes("label.textContent='손패 '+enemyHand.length+'장 · 덱 '+enemyDeck.length+'장'"));
+  assert.ok(html.includes("label.textContent='덱 '+enemyDeck.length+'장 · 손패 '+enemyHand.length+'장'"));
 });
 
 test('컴퓨터 필드 교체: 가득 찬 전장에서만, 비용은 유저와 같다(마나 + 영웅 체력 = 새 카드 비용), 원래 카드는 묘지로', () => {
