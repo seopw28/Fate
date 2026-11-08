@@ -5246,7 +5246,7 @@
           "effectId": "reversal_insight",
           "trigger": "next_round_start",
           "target": "self",
-          "amount": 10,
+          "amount": 3,
           "duration": "instant"
         }
       ],
