@@ -2218,3 +2218,24 @@
 
 /* 마나 줄의 혈마나 안내 문구(혈마나 1 = ♥ 1 · 첫 1회)는 뺀다 (2026-11-09 PM 요청) */
 .mana-hud .blood-rate{display:none!important}
+    /* 오라 각성 · 영웅 강림 사이 문양 슬롯 (2026-11-09 PM 요청)
+       두 버튼을 벌리고 가운데 원형 홈을 둔다. 각성 전에는 빈 홈(점선 고리 + 어두운 바닥),
+       각성 뒤에는 내 오라 문양이 홈에 맞게 들어앉고 오라 색으로 빛난다. */
+    .arena>.field-action-dock{--sigil-slot:56px}
+    .arena>.field-action-dock:has(>.aura-sigil-slot:not([hidden])){gap:0}
+    .arena>.field-action-dock>.aura-sigil-slot{order:2;position:relative;flex:none;width:var(--sigil-slot);height:var(--sigil-slot);margin:0 18px;display:grid;place-items:center;border-radius:50%;--slot-aura:#9aa3b5;background:radial-gradient(circle at 50% 38%,#1b202b,#07090e 72%);box-shadow:0 0 0 1px #3a4152,0 0 0 4px #0b0e15,0 0 0 5px color-mix(in srgb,var(--slot-aura) 22%,#2a3040),inset 0 3px 9px #000c,inset 0 -1px 0 #ffffff10;pointer-events:none;transition:box-shadow .4s}
+    .arena>.field-action-dock>.aura-sigil-slot[hidden]{display:none}
+    .arena>.field-action-dock>.aura-sigil-slot::before,.arena>.field-action-dock>.aura-sigil-slot::after{content:'';position:absolute;top:50%;width:18px;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--slot-aura) 45%,#3a4152));opacity:.7}
+    .arena>.field-action-dock>.aura-sigil-slot::before{right:calc(100% + 5px)}
+    .arena>.field-action-dock>.aura-sigil-slot::after{left:calc(100% + 5px);transform:scaleX(-1)}
+    .aura-sigil-slot .ass-ring{position:absolute;inset:7px;border:1px dashed color-mix(in srgb,var(--slot-aura) 35%,#4a5265);border-radius:50%;opacity:.75}
+    .aura-sigil-slot .ass-inner{inset:15px;border-style:solid;border-color:#ffffff0d;opacity:1}
+    .aura-sigil-slot img{position:relative;width:64%;height:64%;object-fit:contain;opacity:0;transform:scale(.6)}
+    .aura-sigil-slot img:not([src]){visibility:hidden}
+    .arena>.field-action-dock>.aura-sigil-slot.filled{background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--slot-aura) 30%,#141822),#07090e 74%);box-shadow:0 0 0 1px color-mix(in srgb,var(--slot-aura) 70%,#fff),0 0 0 4px #0b0e15,0 0 0 5px color-mix(in srgb,var(--slot-aura) 60%,transparent),0 0 18px color-mix(in srgb,var(--slot-aura) 55%,transparent),inset 0 2px 8px #000a}
+    .arena>.field-action-dock>.aura-sigil-slot.filled::before,.arena>.field-action-dock>.aura-sigil-slot.filled::after{opacity:1;background:linear-gradient(90deg,transparent,var(--slot-aura))}
+    .aura-sigil-slot.filled .ass-ring{border-color:color-mix(in srgb,var(--slot-aura) 75%,transparent);animation:awaken-sigil-spin 16s linear infinite}
+    .aura-sigil-slot.filled img{opacity:1;transform:none;filter:drop-shadow(0 0 6px var(--slot-aura));transition:opacity .3s,transform .3s}
+    .aura-sigil-slot.seating img{animation:aura-slot-seat .9s cubic-bezier(.2,.8,.2,1) both}
+    @keyframes aura-slot-seat{0%{opacity:0;transform:translateY(-36px) scale(2.2);filter:blur(6px) brightness(3) drop-shadow(0 0 20px var(--slot-aura))}65%{opacity:1;transform:translateY(0) scale(.92);filter:brightness(1.8) drop-shadow(0 0 14px var(--slot-aura))}100%{transform:none}}
+    @media(prefers-reduced-motion:reduce){.aura-sigil-slot.filled .ass-ring,.aura-sigil-slot.seating img{animation:none}}
