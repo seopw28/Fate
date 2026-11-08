@@ -2266,3 +2266,16 @@
     .deck-tab.aura-slot .deck-tab-head .aura-mark img { width:100%; height:100%; object-fit:contain; }
     .deck-tab.aura-slot .deck-tab-head strong { color:var(--ac); font-size:clamp(12.6px,1vw,16.2px); font-weight:900; }
     .deck-tab.aura-slot b { color:#d8dee8; font-weight:700; }
+    /* 각성 받침 (2026-11-09 PM): 버튼 사이 자리는 비워 두고(간격만 유지), 각성 동안에만 같은 자리 위층(.aura-slot-float)에 받침이 아래에서 올라온다.
+       각성 선택창(520)과 강하 연출(34)이 전장을 덮으므로 그보다 위에 띄운다. 강화를 고르면 오라 문양을 받쳐 든 채 강하 연출 동안 빛난 뒤 내려가 가운데가 빈다 */
+    .arena>.field-action-dock>.aura-sigil-slot{opacity:0;background:none;box-shadow:none}
+    .arena>.field-action-dock>.aura-sigil-slot::before,.arena>.field-action-dock>.aura-sigil-slot::after,.arena>.field-action-dock>.aura-sigil-slot>*{display:none}
+    .aura-slot-float{--slot-aura:#9aa3b5;position:fixed;z-index:530;display:grid;place-items:center;border-radius:50%;pointer-events:none;opacity:0;transform:translateY(60%) scale(.7);transition:opacity .45s ease,transform .6s cubic-bezier(.2,.9,.25,1.12),box-shadow .4s;background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--slot-aura) 24%,#141822),#07090e 74%);box-shadow:0 0 0 1px color-mix(in srgb,var(--slot-aura) 60%,#fff),0 0 0 4px #0b0e15,0 0 0 5px color-mix(in srgb,var(--slot-aura) 45%,transparent),0 0 16px color-mix(in srgb,var(--slot-aura) 45%,transparent),inset 0 2px 8px #000a}
+    .aura-slot-float::before,.aura-slot-float::after{content:'';position:absolute;top:50%;width:18px;height:1px;background:linear-gradient(90deg,transparent,var(--slot-aura))}
+    .aura-slot-float::before{right:calc(100% + 5px)}
+    .aura-slot-float::after{left:calc(100% + 5px);transform:scaleX(-1)}
+    .aura-slot-float.raised{opacity:1;transform:none}
+    .aura-slot-float .ass-ring{border-color:color-mix(in srgb,var(--slot-aura) 75%,transparent);animation:awaken-sigil-spin 16s linear infinite}
+    .aura-slot-float.holding{box-shadow:0 0 0 1px color-mix(in srgb,var(--slot-aura) 80%,#fff),0 0 0 4px #0b0e15,0 0 0 5px var(--slot-aura),0 0 26px color-mix(in srgb,var(--slot-aura) 70%,transparent),inset 0 2px 8px #000a}
+    .aura-slot-float.holding img{opacity:1;transform:none;filter:drop-shadow(0 0 7px var(--slot-aura));animation:aura-slot-seat .9s cubic-bezier(.2,.8,.2,1) both}
+    @media(prefers-reduced-motion:reduce){.aura-slot-float{transition:opacity .2s}.aura-slot-float .ass-ring,.aura-slot-float.holding img{animation:none}}
