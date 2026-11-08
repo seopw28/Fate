@@ -1,23 +1,39 @@
 """전투·경제 회귀 검사: 실제 브라우저로 게임을 띄워 과거에 고친 버그가 다시 생기지 않았는지 동작으로 확인한다.
 
 11_qa/regression의 테스트는 index.html 안의 코드 문자열만 확인하므로 이런 동작 버그를 잡지 못한다.
-개발 서버가 떠 있어야 한다: python3 12_tools/dev-server.py
+기본은 내 트리의 dist 를 직접 띄워 검사한다(URL 인자를 주면 그 주소를 검사).
 실행: npm run qa:battle  (또는 python3 -I 12_tools/qa/check-battle-regressions.py [URL])
 """
 import sys
 from playwright.sync_api import sync_playwright
+import atexit, contextlib, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from serve_own_tree import serve_own_tree
 
-URL = next((a for a in sys.argv[1:] if a.startswith("http")), "http://localhost:8765/index.html?skipIntro&guardian=baekho")
+_stack = contextlib.ExitStack()
+atexit.register(_stack.close)
+
+
+def default_base(arg_prefix="http"):
+    """명시 URL 인자가 있으면 그것을, 없으면 내 트리의 dist 를 직접 띄워 그 주소를 쓴다(8765 같은 남의 서버를 보지 않는다)."""
+    explicit = next((a for a in sys.argv[1:] if a.startswith(arg_prefix)), None)
+    return explicit.rstrip("/") if explicit else _stack.enter_context(serve_own_tree())
+
+
+QUERY = "/index.html?skipIntro&difficulty=normal&guardian=baekho"
+_explicit = next((a for a in sys.argv[1:] if a.startswith("http")), None)
+URL = _explicit or default_base() + QUERY
 WAIT = "await new Promise(r=>setTimeout(r,%d));"
 TRIM_HAND = "[...document.querySelectorAll('.hand .card')].slice(3).forEach(c=>c.remove());"  # 손패 8장 제한에 걸리지 않게
 ADD_ENEMY = "enemySummonUnit(document.querySelector('.arena .lane:first-child'),{el:'fire',name:'적',atk:3,hp:40,cost:3});"
 ULT_READY = ADD_ENEMY + ADD_ENEMY + "playerHp=60;updateHeroHealth();['fire','water','earth'].forEach(el=>summonBattleToken('아군',2,5,el));"  # 어떤 성격의 궁극기든 발동 조건(적 2명·체력 75% 이하·서로 다른 성격 3명 등)을 채운다
 
 CHECKS = [
-    ("혈마나로 세트한 마법을 취소하면 낸 체력을 그대로 돌려받는다 (60으로 잘리지 않음)",
-     "(async()=>{" + TRIM_HAND + "turnNumber=6;mana=0;playerHp=100;updateMana();const c=createRuntimeBattleCard('core.crimson-bolt');"
-     "document.querySelector('.hand').appendChild(c);playCard(c);playCard(c);" + WAIT % 2500 + "const paid=playerHp;cancelSetMagic(0);"
-     "return {ok:paid<100&&playerHp===100,paid,afterCancel:playerHp};})()"),
+    ("혈마나로 세트한 함정을 취소하면 낸 체력을 그대로 돌려받는다 (60으로 잘리지 않음)",
+     # 2026-11-07: 마법 슬롯이 없어졌다(마법은 더블클릭으로 즉시 발동, 혈마나 불가). 세팅 슬롯은 함정 1칸뿐이라 함정으로 같은 환불 경로를 검사한다.
+     "(async()=>{" + TRIM_HAND + "turnNumber=6;mana=0;playerHp=100;updateMana();const c=createRuntimeBattleCard('core.ambush-mine');"
+     "document.querySelector('.hand').appendChild(c);playCard(c);playCard(c);" + WAIT % 2500 + "const paid=playerHp,set=setMagicCards.length;cancelSetMagic(0);"
+     "return {ok:set===1&&paid<100&&playerHp===100&&setMagicCards.length===0,set,paid,afterCancel:playerHp};})()"),
     ("덱이 1장일 때 2장 뽑기 마법을 써도 빈 덱 패배가 나지 않는다",
      "(async()=>{" + TRIM_HAND + "deck.splice(1);const c=createRuntimeBattleCard('tower.arcane-insight');c.dataset.effect='draw';/* 드로우 마법 카드는 없앴지만(2026-11-08) 같은 드로우 경로를 계속 검사한다 */document.body.appendChild(c);castSpell(c);"
      + WAIT % 1500 + "const lost=document.querySelector('#result').classList.contains('show');return {ok:!lost&&deck.length===0,lost,deck:deck.length};})()"),
@@ -56,7 +72,7 @@ CHECKS = [
      "return {ok:shown&&label.includes('보호막')&&e.dataset.shield==='false',shown,label};})()"),
     ("상대 챔프는 쓰러져 사라지는 중인 내 유닛을 공격 대상으로 고르지 않는다",
      "(()=>{const src=[...document.scripts].map(s=>s.textContent).join('');"
-     "return {ok:src.includes(\".summon-zone .unit:not([data-destroyed=\\\"true\\\"])')];/* 쓰러져\")};})()"),
+     "return {ok:src.includes(\"playerUnits=()=>[...document.querySelectorAll('.summon-zone .unit:not([data-destroyed=\\\"true\\\"])')]\")};})()"),
     # 역전 마법 (상대 필드 공격력 합 12 = 6+4+2, 체력 합 24 = 10+8+6 기준)
     ("역전 마법 되돌리는 심판: 공격력 합의 절반(6)을 모든 적에게",
      "(async()=>{[...document.querySelectorAll('.hand .card')].slice(3).forEach(c=>c.remove());const lane=document.querySelector('.arena .lane:first-child');[[6,10],[4,8],[2,6]].forEach(([a,h],i)=>enemySummonUnit(lane,{el:'fire',name:'적'+i,atk:a,hp:h,cost:3}));window.__ally=summonBattleToken('내챔프',5,7,'water');playerHp=50;updateHeroHealth();const c=createRuntimeBattleCard('reversal.judgment');document.querySelector('.hand').appendChild(c);updateCardAffordability();const cost=c.querySelector('.cost').textContent;c.remove();castSpell(c);await new Promise(r=>setTimeout(r,1800));const hp=[...document.querySelectorAll('.arena .lane:first-child > .unit')].map(u=>Number(u.querySelector('.stats span:last-child').textContent.replace(/[^0-9]/g,'')));return {ok:JSON.stringify(hp)==='[4,2]',hp};})()"),

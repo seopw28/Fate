@@ -2,7 +2,7 @@
 """크래커 경제 흐름 검사 (실제 브라우저에서 화면 흐름을 돌려 확인).
 
 사용: python3 12_tools/qa/check-economy-flow.py
-전제: dist를 http.server로 띄운 상태 (기본 http://localhost:8765). 실패하면 exit 1.
+기본은 내 트리의 dist 를 직접 띄워 검사한다(URL 인자를 주면 그 주소). 실패하면 exit 1.
 
 검사 항목
   1. 성격 오라 선택·기권에 별도 재화 차감 없음
@@ -11,8 +11,21 @@
 """
 import sys
 from playwright.sync_api import sync_playwright
+import atexit, contextlib, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from serve_own_tree import serve_own_tree
 
-BASE = "http://localhost:8765"
+_stack = contextlib.ExitStack()
+atexit.register(_stack.close)
+
+
+def default_base(arg_prefix="http"):
+    """명시 URL 인자가 있으면 그것을, 없으면 내 트리의 dist 를 직접 띄워 그 주소를 쓴다(8765 같은 남의 서버를 보지 않는다)."""
+    explicit = next((a for a in sys.argv[1:] if a.startswith(arg_prefix)), None)
+    return explicit.rstrip("/") if explicit else _stack.enter_context(serve_own_tree())
+
+
+BASE = default_base()
 DEMO_CRACKER_FLOOR = 1_000_000
 fails = []
 

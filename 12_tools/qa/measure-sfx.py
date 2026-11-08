@@ -6,7 +6,7 @@
   python3 -I 12_tools/qa/measure-sfx.py --wav /tmp/sfx    # 위에 더해 조합별 WAV 파일 저장 (귀로 들어 볼 용도)
   python3 -I 12_tools/qa/measure-sfx.py --calibrate [3]   # 조합별 음량(TRIM)을 목표 RMS에 맞춰 sfx-variety.js 에 기록
   python3 -I 12_tools/qa/measure-sfx.py --burst           # 한 턴에 0.9초 간격으로 5번 연속 타격할 때 잔향이 얼마나 정리되는지 측정
-전제: dist를 http.server로 띄운 상태(기본 http://localhost:8765), numpy·playwright 설치.
+전제: 내 트리의 dist 를 직접 띄워 측정한다(8765 같은 남의 서버를 보지 않음). numpy·playwright 설치.
       보정 후에는 `npm run build:runtime` 으로 dist/runtime 에 반영한다.
 
 모든 피격은 피해량과 무관하게 같은 "강한 신호"로 울린다. 그래서 오라·조합이 달라도 비슷한 크기로 들리게 하는 것이 목표다.
@@ -26,12 +26,17 @@ import sys
 import wave
 from pathlib import Path
 
+import atexit, contextlib
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from serve_own_tree import serve_own_tree
 import numpy as np
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
 SRC = ROOT / "05_game-client/battle/sfx-variety.js"
-URL = "http://localhost:8765/index.html?skipIntro&guardian=baekho"
+URL = None  # main() 에서 정한다
+_stack = contextlib.ExitStack()
+atexit.register(_stack.close)
 SR = 44100
 TARGET_RMS = -21.5  # 버스 볼륨 0.35 기준, 첫 0.25초 평균 음량(dB)
 # 사람 귀는 3~5kHz에 민감해서(A-가중) 고음이 많은 소리는 같은 RMS여도 더 크게 들리고 피크도 높다 → 오라별로 목표를 낮춘다.
@@ -136,7 +141,7 @@ def main():
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
-        page.goto(URL)
+        page.goto(URL or (_stack.enter_context(serve_own_tree()) + "/index.html?skipIntro&difficulty=normal&guardian=baekho"))
         page.wait_for_timeout(800)
         page.evaluate(LOAD)
         counts = page.evaluate("Object.fromEntries(Object.entries(FateSfx.HIT_SETS).map(([e,v])=>[e,v.length]))")

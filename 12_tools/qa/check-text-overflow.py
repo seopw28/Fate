@@ -15,7 +15,7 @@ from serve_own_tree import serve_own_tree
 from playwright.sync_api import sync_playwright
 
 ARG_URL = next((a for a in sys.argv[1:] if a.startswith("http")), None)
-QUERY = "?skipIntro&guardian=baekho"
+QUERY = "?skipIntro&difficulty=normal&guardian=baekho"
 URL = ARG_URL or None
 VIEWPORTS = [(1568, 900), (1366, 768), (1100, 800), (1000, 900)]
 if "--mobile" in sys.argv:
