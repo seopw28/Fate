@@ -15,12 +15,13 @@ test('컴퓨터의 궁극기 장착은 전투 로그로, 발동은 카드로 플
   assert.ok(html.includes('ENEMY ULTIMATE · LIMIT BREAK'), '실제 발동은 카드로 공개한다');
 });
 
-test('컴퓨터 궁극기도 전장 제물과 소진자(기본 공격력 +10 / 체력 1) 및 전역 도발을 사용한다', () => {
+test('컴퓨터 궁극기도 전장 제물과 소진자(기본 공격력 +7 / 체력 1) 및 전역 도발을 사용한다', () => {
   assert.ok(html.includes('function sendEnemyUltimateToGraveyard(spec)'));
   assert.ok(html.includes("effect:'ultimate-spent'"));
   assert.ok(html.includes("unit.dataset.ultimateAggro='true'"));
-  assert.ok(html.includes('sendEnemyUltimateToGraveyard(spec);'));
-  assert.ok(html.includes("stats=ultimateSpentStats(spec,enemyAuraUltimateMatch(spec))"), '컴퓨터 소진자도 같은 공식(공명 포함)을 쓴다');
+  assert.ok(html.includes('const unit=sendEnemyUltimateToGraveyard(spec);'));
+  assert.ok(html.includes("stats=ultimateSpentStats(spec,false);"), '컴퓨터 소진자도 공명과 관계없이 기본 능력치로 먼저 내려온다');
+  assert.ok(html.includes("if(unit?.isConnected&&enemyAuraUltimateMatch(spec))return applyResonanceDescent('enemy',unit);"), '컴퓨터도 공명이면 같은 오라 강하 연출로 공격력 +5 · 체력 +3을 받는다');
   assert.ok(html.includes("unit.dataset.rush='true';unit.classList.remove('exhausted');registerUltimateSpent('enemy'"), '컴퓨터 소진자도 내려놓은 즉시 공격할 수 있다');
   assert.ok(html.includes('unit[data-ultimate-aggro="true"]'));
 });
