@@ -2248,6 +2248,14 @@
     .aura-sigil-slot.seating img{animation:aura-slot-seat .9s cubic-bezier(.2,.8,.2,1) both}
     @keyframes aura-slot-seat{0%{opacity:0;transform:translateY(-36px) scale(2.2);filter:blur(6px) brightness(3) drop-shadow(0 0 20px var(--slot-aura))}65%{opacity:1;transform:translateY(0) scale(.92);filter:brightness(1.8) drop-shadow(0 0 14px var(--slot-aura))}100%{transform:none}}
     @media(prefers-reduced-motion:reduce){.aura-sigil-slot.filled .ass-ring,.aura-sigil-slot.seating img{animation:none}}
+
+/* 마나 줄의 '마나' 글자는 빼고, 기권 버튼은 좌우로 넓힌다 (2026-11-09 PM 요청). 마나 줄은 넓어진 기권 버튼 폭만큼 오른쪽에서 시작한다 */
+@media(max-width:1849px){
+  .stage-column{--surrender-w:72px}
+  .stage-column>.mana-hud .mana-label{display:none!important}
+  .stage-column>.surrender-action{width:var(--surrender-w)!important;min-width:var(--surrender-w)!important}
+  .stage-column>.mana-hud{width:calc(100% - var(--surrender-w) - var(--bottom-control-gap))!important;margin-left:calc(var(--surrender-w) + var(--bottom-control-gap))!important}
+}
 </style>
 </head>
 <body>
