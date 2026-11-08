@@ -520,7 +520,7 @@ test('번개 마법: 카드 오라와 무관하게 연쇄번개는 전용 전기
 test('마법 의미 매핑: 불 공격과 심연 제어는 내부 공용 effectId 때문에 번개·빙결로 오인되지 않는다', () => {
   assert.ok(html.includes("if(effect==='lightning-strike')return cardElement==='neutral'||cardElement==='thunder'?'thunder':cardElement"), 'Fire spirit must retain fire presentation');
   assert.ok(html.includes("if(effect==='freeze-strongest')return cardElement==='water'||cardElement==='ice'?'ice':cardElement"), 'Only water/ice control may use frost presentation');
-  assert.ok(html.includes("else if(effect==='freeze-strongest')showCinematicSkillEffect('eclipse'"), 'Non-frost strongest-target control must use the dark cinematic');
+  assert.ok(html.includes("if(effect==='freeze-strongest')return skill('eclipse')"), 'Non-frost strongest-target control must use the dark cinematic');
   assert.ok(html.includes("{thunder:'lightning',fire:'fire',water:'lightning',wind:'gust',earth:'earth',ice:'frost'}"), 'Lightning-strike family must choose cinematic from semantic element');
 });
 
@@ -556,7 +556,7 @@ test('오라 시네마틱: 불·빙결·대지·암흑 기술은 전용 투명 �
   for (const label of ['이그니스 메테오', '니플헤임 노바', '가이아 브레이커', '페이트 이클립스']) {
     assert.ok(html.includes(label), `${label} must be connected to elemental combat`);
   }
-  assert.ok(html.includes("effect==='black-flame')showCinematicSkillEffect('eclipse'"), 'Black flame must open with the eclipse cinematic');
+  assert.ok(html.includes("if(effect==='black-flame')return skill('eclipse')"), 'Black flame must open with the eclipse cinematic');
   assert.ok(html.includes("effect==='frost-nova'||effect==='champion-control'||(effect==='freeze-strongest'&&semanticElement==='ice')"), 'Only actual frost control spells must open with the frost cinematic');
 });
 
@@ -576,9 +576,9 @@ test('마법 시네마틱: 회복·아케인·보이드 계열은 전용 자산�
     assert.ok(runtime.includes(`assets/vfx/cinematic/${file}`), `${file} must be registered`);
     assert.ok(fs.existsSync(path.join(root, 'dist/assets/vfx/cinematic', file)), `${file} must be shipped`);
   }
-  assert.ok(html.includes("['heal-lowest','cleanse'].includes(effect))showSpellCinematicEffect('life'"), 'Healing and cleansing spells must use life bloom');
-  assert.ok(html.includes("['mana-ramp','draw'].includes(effect))showSpellCinematicEffect('arcane'"), 'Mana and draw spells must use arcane revelation');
-  assert.ok(html.includes("['bounce','resurrect','global-destroy'].includes(effect))showSpellCinematicEffect('void'"), 'Recall, resurrection, and destruction spells must use the void gate');
+  assert.ok(html.includes("['heal-lowest','cleanse'].includes(effect))return spell('life')"), 'Healing and cleansing spells must use life bloom');
+  assert.ok(html.includes("['mana-ramp','draw'].includes(effect))return spell('arcane')"), 'Mana and draw spells must use arcane revelation');
+  assert.ok(html.includes("['bounce','resurrect','global-destroy'].includes(effect))return spell('void')"), 'Recall, resurrection, and destruction spells must use the void gate');
 });
 
 test('배경음악: 어느 쪽이든 복수자가 처음 등장하면 각성 BGM으로 크로스페이드한다', () => {

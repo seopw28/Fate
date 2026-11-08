@@ -4,7 +4,7 @@
 1. 마법은 손패에서 더블클릭하면 마나로만 즉시 발동한다. 세팅 슬롯은 함정 1칸이고 대재앙은 대기 턴 함정이다.
 2. 궁극기는 세팅한 턴에는 '다음 턴부터 발동'으로 잠기고, 내 다음 턴에 열린다. 컴퓨터도 같다.
 3. 오라 각성은 체력 85 이하에서 열린다.
-4. 광역 마법은 중앙 스킬 소개가 끝난 뒤 피해가 들어간다 (2026-11-08).
+4. 중앙 스킬 소개가 있는 마법은 소개가 끝난 뒤 피해와 효과가 들어간다 (2026-11-08).
 자기 트리의 dist 를 serve_own_tree 로 띄운다(남의 번들을 재지 않는다).
 """
 import os, sys
@@ -37,7 +37,7 @@ CHECKS = [
  ("대재앙: 함정 칸에 세팅하면 5턴을 세고, 대기 턴이 찬 내 턴 시작에 양쪽 챔프를 모두 파괴한다",
   """(async()=>{battlePhase='setup';maxMana=mana=10;updateMana();summonBattleToken('아군',2,5,'earth');const c=__card('storm.great-ruin');const isTrap=c.classList.contains('trap-card');setHandFilter('spell');playCard(c);if(!setMagicCards.length)playCard(c);await __wait(900);
   const m=setMagicCards[0],slotText=document.querySelector('#magic-slot-0')?.textContent||'';const early=triggerTrap('field_state');const stillSet=setMagicCards.length===1;
-  turnNumber=m.readyTurn;triggerTrap('field_state');await __wait(2500);const left=document.querySelectorAll('.summon-zone .unit:not([data-destroyed="true"])').length;
+  turnNumber=m.readyTurn;triggerTrap('field_state');await __wait(5000);/* 안내 2.3초 → 중앙 소개 1.7초 → 파괴 */const left=document.querySelectorAll('.summon-zone .unit:not([data-destroyed="true"])').length;
   return {ok:isTrap&&!!m&&m.kind==='reaction'&&/발동까지 5턴/.test(slotText)&&stillSet&&setMagicCards.length===0&&left===0,isTrap,slotText,stillSet,left};})()"""),
  ("궁극기: 세팅한 턴에는 '다음 턴부터 발동'으로 잠기고 발동 버튼도 막힌다. 내 다음 턴에는 열린다",
   """(async()=>{battlePhase='setup';playerHp=70;awakenGateOpened.player=true;maxMana=mana=10;updateMana();
@@ -57,14 +57,16 @@ CHECKS = [
   const n=await resolveEnemySetMagic();
   const s2=enemyOriginalDeck.filter(d=>d.spell&&!d.trap).slice(0,3);enemyHand.length=0;s2.forEach(d=>enemyHand.push({...d,cost:1}));enemyMana=10;setEnemyMagic();const queued=enemySetMagic.filter(x=>!x.trap).length;const n2=await resolveEnemySetMagic();
   return {ok:n===1&&queued===s2.length&&n2===s2.length&&enemySetMagic.length===0,n,queued,n2,left:enemySetMagic.length};})()"""),
- ("광역 마법: 중앙 스킬 소개가 한 번 나오고 내려간 뒤에 피해가 들어간다(7종 모두)",
-  """(async()=>{const ids=Object.keys(AOE_CINEMATIC),bad=[];for(const id of ids){const ev=[];const t0=performance.now(),T=()=>performance.now()-t0;
+ ("마법: 중앙 스킬 소개가 있는 모든 마법은 소개가 한 번 나오고 내려간 뒤에 피해와 효과가 들어간다",
+  """(async()=>{const ids=collectionCardDefs.filter(d=>d.cardType==='spell').map(d=>d.cardId).filter(id=>spellCinematicFor(createRuntimeBattleCard(id)));const bad=[];
+  const lane=document.querySelector('.arena .lane:first-child');
+  for(const id of ids){document.querySelectorAll('.arena .unit').forEach(u=>u.remove());summonBattleToken('아군',2,30,'earth');enemySummonUnit(lane,{el:'fire',name:'적',atk:3,hp:40,cost:3});enemySummonUnit(lane,{el:'fire',name:'적2',atk:2,hp:40,cost:3});
+  playerHp=enemyHp=80;updateHeroHealth();await __wait(300);const ev=[];const t0=performance.now(),T=()=>performance.now()-t0;
   const mo=new MutationObserver(ms=>ms.forEach(m=>{m.addedNodes.forEach(n=>{if(n.classList?.contains('cinematic-skill-fx'))ev.push(['in',T()]);});m.removedNodes.forEach(n=>{if(n.classList?.contains('cinematic-skill-fx'))ev.push(['out',T()]);});}));mo.observe(document.body,{childList:true});
-  const dU=damageUnit;damageUnit=function(){ev.push(['dmg',T()]);return dU.apply(this,arguments);};
-  battlePhase='setup';maxMana=mana=20;updateMana();document.querySelectorAll('.arena .unit').forEach(u=>u.remove());summonBattleToken('아군',2,30,'earth');
-  const c=__card(id);await castHandSpell(c);await __wait(800);mo.disconnect();damageUnit=dU;
-  const ins=ev.filter(e=>e[0]==='in'),out=ev.find(e=>e[0]==='out'),dmg=ev.find(e=>e[0]==='dmg');if(ins.length!==1||!out||(dmg&&dmg[1]<out[1]))bad.push({id,ev:ev.map(e=>e[0]+Math.round(e[1])).join(' ')});}
-  return {ok:ids.length===7&&bad.length===0,bad};})()"""),
+  const dU=damageUnit;damageUnit=function(){ev.push(['dmg',T()]);return dU.apply(this,arguments);};const hp0=[playerHp,enemyHp];const iv=setInterval(()=>{if(playerHp!==hp0[0]||enemyHp!==hp0[1]){ev.push(['hero',T()]);clearInterval(iv);}},20);
+  battlePhase='setup';maxMana=mana=20;updateMana();const c=__card(id);await castHandSpell(c);await __wait(800);mo.disconnect();damageUnit=dU;clearInterval(iv);
+  const ins=ev.filter(e=>e[0]==='in'),out=ev.find(e=>e[0]==='out'),hit=ev.find(e=>e[0]==='dmg'||e[0]==='hero');if(ins.length!==1||!out||(hit&&hit[1]<out[1]))bad.push({id,ev:ev.map(e=>e[0]+Math.round(e[1])).join(' ')});}
+  return {ok:ids.length>=20&&bad.length===0,count:ids.length,bad};})()"""),
  ("오라 각성: 체력 86에서는 잠기고 85에서 열린다",
   """(()=>{playerHp=86;const r86=guardianAwakenLockReason();playerHp=85;const r85=guardianAwakenLockReason();
   return {ok:GUARDIAN_AWAKEN_HP===85&&r86==='체력 85 이하에서 각성'&&r85==='',r86,r85};})()"""),

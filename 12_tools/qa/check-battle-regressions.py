@@ -36,7 +36,7 @@ CHECKS = [
      "return {ok:set===1&&paid<100&&playerHp===100&&setMagicCards.length===0,set,paid,afterCancel:playerHp};})()"),
     ("덱이 1장일 때 2장 뽑기 마법을 써도 빈 덱 패배가 나지 않는다",
      "(async()=>{" + TRIM_HAND + "deck.splice(1);const c=createRuntimeBattleCard('tower.arcane-insight');c.dataset.effect='draw';/* 드로우 마법 카드는 없앴지만(2026-11-08) 같은 드로우 경로를 계속 검사한다 */document.body.appendChild(c);castSpell(c);"
-     + WAIT % 1500 + "const lost=document.querySelector('#result').classList.contains('show');return {ok:!lost&&deck.length===0,lost,deck:deck.length};})()"),
+     + WAIT % 3500 + "const lost=document.querySelector('#result').classList.contains('show');return {ok:!lost&&deck.length===0,lost,deck:deck.length};})()"),
     ("궁극기 효과가 적용될 때까지 턴 종료가 잠기고, 적용 뒤 풀린다",
      "(async()=>{const c=createRuntimeBattleCard('core.seraphina');ultimateState=ultimateSpec(c);ultimateUsed=false;lastUltimateTurn=null;"
      "turnNumber=8;mana=10;updateMana();" + ULT_READY + "activateUltimate();const during=battlePhase;endTurn(document.querySelector('.turn-actions .end'));"
