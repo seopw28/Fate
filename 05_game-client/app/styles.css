@@ -175,6 +175,15 @@
       100%{opacity:0;transform:scale(.86) translateY(11px);filter:brightness(.4) grayscale(1)}
     }
     @media(prefers-reduced-motion:reduce){ .unit.unit-dying{animation-duration:.2s} }
+    /* 같은 칸 교체 (2026-11-08): 원래 카드는 복제본(.unit-swap-ghost)이 자기 칸 위에서 0.56초 동안 식으며 가라앉고, 새 카드는 같은 칸에서 떠오른다.
+       필드 안 카드는 처음부터 끝까지 5장이라 옆 카드는 움직이지 않는다. */
+    .unit.unit-swap-in{animation:unit-swap-in .5s .16s cubic-bezier(.16,.82,.2,1) backwards}
+    @keyframes unit-swap-in{
+      0%{opacity:0;transform:translateY(-14px) scale(.9);filter:brightness(1.9)}
+      70%{opacity:1;transform:translateY(2px) scale(1.02);filter:brightness(1.25)}
+      100%{opacity:1;transform:none;filter:none}
+    }
+    @media(prefers-reduced-motion:reduce){ .unit.unit-swap-in{animation-duration:.2s;animation-delay:0s} }
     .unit.hit-react,.avatar.hit-react { animation:target-hit .34s cubic-bezier(.2,.9,.25,1) both; transform-origin:center; }
     .unit.field-attacker{z-index:7;filter:brightness(1.16) saturate(1.18);will-change:transform}.unit.field-target,.avatar.field-target{z-index:6;box-shadow:0 0 0 3px var(--target-color,#efca78),0 0 30px color-mix(in srgb,var(--target-color,#efca78) 58%,transparent);will-change:transform}/* 평타 궤적: 전면 컷인을 걷어낸 자리를 메우는 주연출. --hit(0~1, 피해 비중)에 따라
    두께·발광·잔상이 함께 커져 '주고받는 수치'가 화면에서 읽히게 한다 (2026-11-07) */

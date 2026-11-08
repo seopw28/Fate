@@ -50,7 +50,7 @@ test('컴퓨터 필드 교체: 가득 찬 전장에서만, 비용은 유저와 �
   const swap = between('function replaceEnemyUnit(', 'function enemyWantsDraw');
   assert.ok(swap.includes('enemyMana-=data.cost;enemyHp-=hpCost;'));
   assert.ok(swap.includes('enemyGraveyard.push('));
-  assert.ok(swap.includes('enemySummonUnit(lane,data)'));
+  assert.ok(swap.includes('enemySummonUnit(lane,data,slot)'));
   assert.ok(html.includes('function replaceHpCost(card){return Number(card?.querySelector(\'.cost\')?.textContent)||0;}'), '유저 교체 비용 정의가 그대로다');
 });
 

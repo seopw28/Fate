@@ -294,7 +294,7 @@ test('궁극기: 전장이 가득 찼을 때만 맨 오른쪽 아군을 제물�
   assert.ok(html.includes("const spec=enemyUltimate;if(!spec||!enemyUltimateCondition(spec)||ultimateJustEquipped('enemy',spec))return false;"), '컴퓨터 발동 조건에 제물 필요가 없다');
   assert.ok(html.includes("ULTIMATE_SPENT_ATTACK_BONUS=10,ULTIMATE_SPENT_HP=1"));
   assert.ok(html.includes("attack:(Number(spec.baseAttack)||0)+ULTIMATE_SPENT_ATTACK_BONUS+bonus,hp:ULTIMATE_SPENT_HP+bonus"), '소진자 = 카드 기본 공격력 +10 / 체력 1 (공명 +2/+2)');
-  assert.ok(html.includes("summonBattleToken(spec.name,stats.attack,stats.hp,spec.element,'ultimate-spent')"));
+  assert.ok(html.includes("summonBattleToken(spec.name,stats.attack,stats.hp,spec.element,'ultimate-spent',slot)"));
   assert.ok(html.includes("unit.dataset.ultimateSpent='true'"));
   assert.ok(html.includes("unit.dataset.rush='true';unit.classList.remove('exhausted');unit.querySelector('.emoji').innerHTML"), '내려놓은 즉시 공격할 수 있다');
   assert.ok(html.includes('.unit[data-effect="ultimate-spent"]{scale:1.3'), '소진자는 130% 크기');
@@ -331,7 +331,7 @@ test('복수자: 궁극기마다 소진자 기본 능력치 +7/+15 로 강림하
   assert.ok(html.includes("collectionState.deck.map(deckEntry):enemyOriginalDeck"), '내 덱 구성 / 컴퓨터 원래 덱 리스트에서 고른다');
   assert.ok(html.includes('pool=source.filter(card=>!card.spell&&card.art)'), '오라 구분 없이 챔프 카드 한 장');
   assert.ok(html.includes("attack=rec.baseAttack+AVENGER_ATTACK_BONUS,hp=rec.baseHp+AVENGER_HP_BONUS"), '능력치는 소진자 원래(강화 전) 능력치 기준');
-  assert.ok(html.includes("summonBattleToken(partner.name,attack,hp,partner.el,'ultimate-avenger')"));
+  assert.ok(html.includes("summonBattleToken(partner.name,attack,hp,partner.el,'ultimate-avenger',slot)"));
   assert.ok(html.includes("if(units.length>=FIELD_CARD_LIMIT){const replace=units.at(-1);"), '전장이 가득 차면 기존 챔프 1장을 교체해 강림한다');
   assert.ok(html.includes('function showAvengerArrival(partner,source,unit)'));
   assert.ok(html.includes("source.name+'의 복수를 하고 말겠어!'"));
