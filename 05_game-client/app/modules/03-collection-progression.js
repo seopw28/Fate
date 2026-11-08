@@ -1,7 +1,7 @@
     /* ===== 컬렉션 3개 도메인: 덱 편집 / 도감 / 상점 ===== */
     /* -- 덱 편집: 내 덱을 오라·비용·희귀도별로 나눠 본다 -- */
     var deckInclude='all',deckGroupBy='element';
-    const ELEMENT_COLOR={fire:'#ff6a4a',water:'#4fb8ff',wind:'#5fd38a',neutral:'#cfd8e6',earth:'#d9a35b',ice:'#4fb8ff',thunder:'#cfd8e6'};/* 성격 오라 색과 같게 */
+    const ELEMENT_COLOR={fire:'#ff6a4a',water:'#4fb8ff',wood:'#5fd38a',metal:'#cfd8e6',earth:'#d9a35b',wind:'#5fd38a',neutral:'#cfd8e6',ice:'#4fb8ff',thunder:'#cfd8e6'};/* 성격 오라 색과 같게. 카드 데이터 오라 키(wood·metal)도 넣어야 덱 구성 막대에 나무·금속이 잡힌다 (2026-11-09) */
     const DECK_GROUPS={
       element:{label:'성격별',keys:['fire','water','wood','metal','earth'],of:i=>collectionCards[i][0],title:k=>elementLabel[k]},
       cost:{label:'비용별',keys:['low','mid','high','top'],of:i=>{const c=Number(collectionCards[i][3]);return c<=2?'low':c<=4?'mid':c<=6?'high':'top';},title:k=>({low:'비용 1~2',mid:'비용 3~4',high:'비용 5~6',top:'비용 7 이상'})[k]},
@@ -220,6 +220,7 @@
     function draftOfDeck(i){return deckIndexesOf(collectionState.decks?.[i]?.ids);}
     function withSavedDecks(saved,state){
       const decks=(collectionDeckReset?[]:(saved?.decks||[])).filter(d=>d&&Array.isArray(d.ids))/* v10 이전 저장은 덱 목록을 버리고 새 기본 덱 하나로 시작한다 */.slice(0,MAX_DECKS||6).map((d,i)=>({name:String(d.name||('덱 '+(i+1))).trim().slice(0,16)||('덱 '+(i+1)),ids:d.ids.filter(id=>typeof id==='string')}));
+      if(!decks.length&&(!saved||collectionDeckReset)&&AURA_DECKS.length){AURA_DECKS.forEach(deck=>decks.push({name:deck.name,ids:deckIdsOf(deck.indexes)}));state.deck=[...AURA_DECKS[0].indexes];}/* 새로 시작: 오라 기본 덱 5종이 덱 목록에 들어 있고 메인 덱은 불의 덱 (2026-11-09) */
       if(!decks.length)decks.push({name:'덱 1',ids:deckIdsOf(state.deck)});/* 기존 사용자: 지금 쓰던 덱을 '덱 1'로 옮긴다 */
       const active=Number.isInteger(saved?.activeDeck)&&saved.activeDeck>=0&&saved.activeDeck<decks.length?saved.activeDeck:0;
       state.decks=decks;state.activeDeck=active;editingDeck=active;

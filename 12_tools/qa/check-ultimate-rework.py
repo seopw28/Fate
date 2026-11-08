@@ -185,6 +185,7 @@ CHECKS = [
   "return {ok:out.enemyTurn===want&&out.enemyTurnBusyFx===want&&out.playerAttack===want&&out.noCounter==='cut'&&pend1===1,pend1,...out};})()"),
  ("컴퓨터 턴 흐름: 강림 시점의 enemyTurn 이 오류 없이 복수자를 내려놓고 공격 목록에 포함한다",
   "(async()=>{const proto=enemyDeck.find(d=>!d.spell);ultimateLedger.enemy.pending.push({rec:{name:proto.name,art:proto.art,element:proto.el,baseAttack:3,baseHp:4},due:ultimateLedger.enemy.turns+1});"
+  "enemyHand.length=0;enemyMana=0;document.querySelector('.summon-zone').innerHTML='';/* 덱 구성(무작위 손패·내 전장)에 따라 복수자가 반격을 맞아 체력이 바뀌지 않게 비우고 잰다 (2026-11-09) */"
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<120&&!finished;i++)await __q.wait(100);" + (WAIT % 100) + "const a=document.querySelector('.arena .lane:first-child .unit[data-effect=\"ultimate-avenger\"]');"
   "return {ok:!!a&&__q.atk(a)===10&&__q.hp(a)===19&&finished,finished,atk:a&&__q.atk(a),hp:a&&__q.hp(a)};})()"),
   ("소진자끼리 교전해 반격으로 둘 다 쓰러지면(교전 해결 경로, 내 쪽이 공격): 공격받은 적 소진자 컷 → 끝난 뒤 반격으로 쓰러진 내 소진자 컷. 컷이 겹치거나 중간에 지워지지 않고, 두 카드는 각자 컷 뒤에 제거된다 (2026-11-08)",

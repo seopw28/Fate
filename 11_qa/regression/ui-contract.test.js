@@ -83,7 +83,7 @@ test('basic deck and opening hand follow the PRD composition', () => {
   assert.ok(html.includes('guaranteed.length<2') && html.includes('!pile[i].spell&&pile[i].cost<=STARTING_MANA'), 'Opening hand must guarantee two low-cost champions');
   assert.ok(html.includes('card.spell&&!card.trap&&card.cost<=STARTING_MANA') && html.includes('if(cheapMagic>=0)guaranteed.push(cheapMagic)'), 'Opening hand must guarantee one low-cost non-trap magic card when available');
   assert.ok(html.includes('takeCards(deck,openingHandIndexes(deck))') && html.includes('takeCards(enemyDeck,openingHandIndexes(enemyDeck))'), 'Player and computer opening hands use the same guarantee (2026-11-08)');
-  assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(buildBasicDeck(starterOwnedCards())).map(deckEntry)'), 'Computer opponent must use the basic deck');
+  assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(enemyAuraDeck?[...enemyAuraDeck.indexes]:buildBasicDeck(starterOwnedCards())).map(deckEntry)'), 'Computer opponent must use one of the aura starter decks (same list as the player)');
 });
 
 test('deck editing stays open during a battle but never changes the current battle deck', () => {

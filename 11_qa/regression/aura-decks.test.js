@@ -47,3 +47,20 @@ test('새 캐릭터 48장은 그림 파일이 있고 남성 캐릭터가 없다'
   assert.equal(added.length, 48);
   for (const card of added) readFileSync(resolve(__dirname, '../../dist/assets', card.assetId));
 });
+
+test('클라이언트: 덱 편집에서 오라 기본 덱을 불러오고, 새로 시작하면 덱 목록에 5종이 있고, 컴퓨터도 5종 중 하나를 쓴다', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  const runtime = readFileSync(resolve(__dirname, '../../dist/runtime/cards.js'), 'utf8');
+  assert.ok(runtime.includes('globalThis.PrimalAuraDecks'), '런타임 카드 데이터에 오라 덱이 들어간다');
+  assert.ok(html.includes('function loadAuraDeck(aura)'), '덱 편집 불러오기');
+  assert.ok(html.includes('class="aura-deck-pick"'), '덱 도구의 오라 기본 덱 선택');
+  assert.ok(html.includes('AURA_DECKS.forEach(deck=>decks.push({name:deck.name,ids:deckIdsOf(deck.indexes)}))'), '새로 시작하면 덱 목록에 5종');
+  assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(enemyAuraDeck?[...enemyAuraDeck.indexes]'), '컴퓨터 덱도 오라 기본 덱');
+  assert.ok(html.includes('Math.max(AURA_DECK_OWNED_FLOOR[i]||0,'), '기본 덱 카드는 보유 보장');
+  assert.ok(html.includes("wood:'#5fd38a',metal:'#cfd8e6'"), '덱 구성 막대에 나무·금속이 잡힌다');
+});
+
+test('오라 덱마다 소환사 압박 하수인(소환사 직접 피해 효과)이 기존 기본 덱과 같은 12장 들어간다', () => {
+  const pressure = new Set(['hero_splash', 'entry_hero_damage', 'time_bomb']);
+  for (const deck of decks) assert.equal(champions(deck).filter(card => card.effects.some(effect => pressure.has(effect.effectId))).length, 12, deck.name);
+});

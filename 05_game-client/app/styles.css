@@ -2247,3 +2247,9 @@
   .stage-column>.surrender-action{width:var(--surrender-w)!important;min-width:var(--surrender-w)!important}
   .stage-column>.mana-hud{width:calc(100% - var(--surrender-w) - var(--bottom-control-gap))!important;margin-left:calc(var(--surrender-w) + var(--bottom-control-gap))!important}
 }
+    /* 오라 기본 덱 불러오기 (2026-11-09): 덱 도구 버튼과 같은 모양, 금색 테두리로 눈에 띄게 */
+    .deck-tools .aura-deck-pick { padding:clamp(5.4px,.45vw,9px) clamp(8.1px,.72vw,12.6px); border:1px solid #b68a4d; border-radius:6.3px; background:#1d1a14; color:#f3d9a8; font:inherit; font-size:clamp(9px,.77vw,12.6px); cursor:pointer; }
+    .deck-tools .aura-deck-pick:focus { outline:none; border-color:#f3bd68; }
+    /* 오라 기본 덱 선택이 들어가 도구줄이 길어졌다: 장수 표시는 줄지 않고, 필터 쪽이 줄어 다음 줄로 넘긴다 (2026-11-09) */
+    .deck-toolbar .deck-count { flex:none; }
+    .deck-toolbar .deck-filters { flex:1 1 auto; min-width:0; }

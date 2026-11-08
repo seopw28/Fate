@@ -40,7 +40,7 @@ test('소환사 압박 하수인은 오라가 한쪽에 몰리지 않고 이름�
 test('기본 덱은 소환사 압박 하수인 12장을 고정으로 넣고 컴퓨터도 같은 덱 빌더를 쓴다', () => {
   assert.ok(html.includes('HERO_PRESSURE_DECK_IDS=['));
   assert.ok(html.includes("!fill('champion',BASIC_CHAMPION_COUNT,HERO_PRESSURE_DECK_IDS,true)"));
-  assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(buildBasicDeck(starterOwnedCards())).map(deckEntry);'));
+  assert.ok(html.includes('let enemyDeck = shuffleBattleDeck(enemyAuraDeck?[...enemyAuraDeck.indexes]:buildBasicDeck(starterOwnedCards())).map(deckEntry);'), '컴퓨터는 오라 기본 덱(사람과 같은 5종), 데이터가 없을 때만 무작위 기본 덱 (2026-11-09)');
   const ids = html.match(/HERO_PRESSURE_DECK_IDS=\[([^\]]*)\]/)[1].match(/pressure\.[a-z-]+/g);
   assert.equal(ids.length, 12);
   assert.ok(new Set(ids).size === 9, '9종 모두 포함');
