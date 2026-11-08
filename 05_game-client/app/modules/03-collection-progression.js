@@ -172,7 +172,7 @@
       reversal_giant_hunt:{key:'reversal-giant-hunt',type:'역전 · 분배 피해',text:a=>'상대 필드 체력 합의 '+a+'%를 적 전체에 나눠 피해.'},
       reversal_weight_toll:{key:'reversal-weight-toll',type:'역전 · 광역 피해',text:a=>'모든 적에게 '+a+' 피해. 상대 필드 체력 '+REVERSAL_TOLL_STEP+'마다 비용 −1.'},
       reversal_life_siphon:{key:'reversal-life-siphon',type:'역전 · 강화',text:a=>'상대 필드 체력 합의 '+(a===50?'절반':a+'%')+'만큼 내 가장 강한 챔프 체력 증가.'},
-      reversal_insight:{key:'reversal-insight',type:'역전 · 드로우',text:a=>'상대 필드 체력 '+a+'마다 카드 1장 (최대 '+REVERSAL_INSIGHT_MAX+'장).'}
+      reversal_insight:{key:'reversal-insight',type:'역전 · 회수',text:a=>'상대 필드 챔프 수만큼 묘지의 챔프를 손패로 되돌림 (최대 '+a+'장, 소진자·복수자 제외).'}
     },REVERSAL_TOLL_STEP=20,REVERSAL_INSIGHT_MAX=4,REVERSAL_BY_KEY=Object.fromEntries(Object.entries(REVERSAL_SPELLS).map(([id,spec])=>[spec.key,{id,...spec}]));
     function reversalSpec(def){const effect=def?.effects?.find(e=>REVERSAL_SPELLS[e.effectId]);return effect?{...REVERSAL_SPELLS[effect.effectId],id:effect.effectId,amount:Number(effect.amount)||0}:null;}
     /* 상대 필드 합계: 쓰러져 사라지는 중인 유닛은 뺀다. 공격력은 '⚔ 4' 같은 표시의 첫 숫자 */
@@ -197,7 +197,7 @@
         if(spec.key==='reversal-giant-hunt'){const total=Math.floor(hp*amount/100);if(!units.length||total<=0){writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합이 '+hp+'이라 효과가 없었습니다.');return;}const base=Math.floor(total/units.length),extra=total%units.length;reversalDamageAll(units,i=>base+(i<extra?1:0),element);writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합 '+hp+'의 '+amount+'% = '+total+' 피해를 적 '+units.length+'장에 나눴습니다.');return;}
         if(spec.key==='reversal-weight-toll'){if(!units.length){writeLog('<strong>'+name+'</strong>이(가) 발동했지만 대상이 없었습니다.');return;}reversalDamageAll(units,()=>amount,element,element==='fire'?'화염 마법':'');writeLog('<strong>'+name+'</strong>이(가) 모든 적에게 '+amount+' 피해를 주고 생존한 챔프에 화상 1을 남깁니다.');return;}
         if(spec.key==='reversal-life-siphon'){const allies=[...document.querySelectorAll('.summon-zone .unit:not([data-destroyed="true"])')],atkOf=u=>Number((u.querySelector('.stats span:first-child')?.textContent.match(/\d+/)||[0])[0])||0,target=allies.sort((a,b)=>atkOf(b)-atkOf(a))[0],gain=Math.floor(hp*amount/100);if(!target||gain<=0){writeLog('<strong>'+name+'</strong>: '+(target?'상대 필드 체력 합이 '+hp+'이라':'강화할 내 챔프가 없어')+' 효과가 없었습니다.');return;}const hpNode=target.querySelector('.stats span:last-child'),now=Number((hpNode.textContent.match(/\d+/)||[0])[0])||0;hpNode.textContent='♥ '+(now+gain);target.dataset.maxHp=String((Number(target.dataset.maxHp)||now)+gain);showSkillEffect('heal',target,name+' · 체력 +'+gain);writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합 '+hp+' → <strong>'+target.querySelector('h4').textContent+'</strong>의 체력 +'+gain+'.');return;}
-        if(spec.key==='reversal-insight'){const count=Math.min(REVERSAL_INSIGHT_MAX,Math.floor(hp/Math.max(1,amount)));if(count<=0){writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합이 '+hp+'이라 뽑을 카드가 없었습니다.');return;}for(let i=0;i<count;i++)setTimeout(()=>{if(playerCanDraw()&&document.querySelectorAll('.hand .card').length<8)drawCard();},i*240);writeLog('<strong>'+name+'</strong>: 상대 필드 체력 합 '+hp+' → 카드 '+count+'장을 뽑습니다.');return;}
+        if(spec.key==='reversal-insight'){const want=Math.min(amount||3,units.length);if(want<=0){writeLog('<strong>'+name+'</strong>: 상대 필드에 챔프가 없어 되돌릴 카드가 없었습니다.');return;}const back=reclaimGraveyardChamps('player',want);if(!back.length){writeLog('<strong>'+name+'</strong>: 묘지에 되돌릴 챔프가 없었습니다.');return;}writeLog('<strong>'+name+'</strong>: 상대 필드 챔프 '+units.length+'장 → 묘지의 챔프 '+back.length+'장('+back.map(c=>c.name).join(', ')+')을 손패로 되돌립니다.');return;}
         return castSpellBeforeReversal(card);};
     }
     /* 화염 피해 마법의 공통 후속 효과. 카드 고유 화상(아마테라스)은 별도로 처리해 중복시키지 않는다. */
@@ -380,9 +380,36 @@
       renderEnhancement();
     })();
 
+    /* 시크릿 블록 (2026-11-07, PRD 3-11): 내 궁극기 소진자가 쓰러지고 그 복수자가 강림한 대전에서 승리하면
+       그 소진자 챔프의 시크릿 블록(캐릭터챗 스토리 블록)을 연다. 대상은 전설 등급 챔프. 컴퓨터 복수자로는 열리지 않는다.
+       해금 기록은 컬렉션 저장과 분리해 별도 키에 둔다. 캐릭터챗 이동 주소는 미정이라 버튼은 안내만 띄운다. */
+    (function(){
+      const KEY='fate-secret-blocks-v1',grid=()=>document.querySelector('#secret-grid');
+      const targets=()=>collectionCardDefs.map((def,index)=>({def,index})).filter(({def})=>def.cardType==='champion'&&def.rarity==='legendary');
+      function load(){try{const v=JSON.parse(localStorage.getItem(KEY));if(v&&typeof v.unlocked==='object')return v;}catch(e){}return {unlocked:{}};}
+      let state=load(),pending=[];
+      function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+      const byArt=art=>{const path=String(art||'').replace(/^.*?assets\//,'assets/');return targets().find(({def})=>'assets/'+def.assetId===path);};
+      const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      /* 복수자 강림 기록: 내 전장(.summon-zone)에 강림한 복수자만 센다 */
+      if(typeof showAvengerArrival==='function'){const base=showAvengerArrival;showAvengerArrival=function(partner,source,unit,...rest){try{if(unit?.closest?.('.summon-zone')&&source){const hit=byArt(source.art);if(hit&&!pending.some(p=>p.cardId===hit.def.cardId))pending.push({cardId:hit.def.cardId,name:hit.def.displayName,avenger:partner?.name||''});}}catch(e){}return base.call(this,partner,source,unit,...rest);};}
+      if(typeof finish==='function'){const baseFinish=finish;finish=function(win,...rest){const done=document.querySelector('#result')?.classList.contains('show');if(!done)document.querySelectorAll('.secret-unlock-note').forEach(n=>n.remove());const r=baseFinish.call(this,win,...rest);if(!done){const fresh=win?pending.filter(p=>!state.unlocked[p.cardId]):[];fresh.forEach(p=>{state.unlocked[p.cardId]={at:new Date().toISOString(),avenger:p.avenger};});if(fresh.length){save();announce(fresh);}pending=[];}return r;};}
+      function announce(list){document.querySelectorAll('.secret-unlock-note').forEach(n=>n.remove());const box=document.querySelector('#result .result-box'),anchor=box?.querySelector('.result-question');if(!box)return;const note=document.createElement('div');note.className='secret-unlock-note';note.innerHTML='<small>SECRET BLOCK UNLOCKED</small><strong>'+list.map(p=>esc(p.name)).join(', ')+'</strong><span>복수의 서사를 완성해 시크릿 블록의 사슬이 풀렸습니다.</span><button type="button">시크릿 블록 보기</button>';note.querySelector('button').onclick=()=>{document.querySelector('#result')?.classList.remove('show');openCollectionDirect('secret');};box.insertBefore(note,anchor||null);}
+      function chains(){return '<div class="secret-chains" aria-hidden="true"><i class="chain a"></i><i class="chain b"></i><span class="secret-lock">🔒</span></div>';}
+      window.renderSecretBlocks=function(){const root=grid();if(!root)return;const list=targets(),open=list.filter(({def})=>state.unlocked[def.cardId]).length;document.querySelector('#secret-progress').innerHTML='<b>'+open+'</b> / '+list.length+' 해금';
+        root.innerHTML=list.map(({def,index})=>{const rec=state.unlocked[def.cardId],owned=(collectionState.owned?.[index]||0)>0,art='assets/'+esc(def.assetId);
+          if(rec)return '<article class="secret-block unlocked aura-'+esc(def.aura)+'"><div class="secret-art"><img src="'+art+'" alt=""></div><div class="secret-body"><small>SECRET BLOCK</small><h4>'+esc(def.displayName)+'</h4><p class="secret-pair">복수자 · '+esc(rec.avenger||'알 수 없음')+'</p><p class="secret-teaser">원작에 없던 '+esc(def.displayName)+'의 이야기가 캐릭터챗에 열렸습니다.</p><button type="button" class="secret-go" data-card="'+esc(def.cardId)+'">캐릭터챗으로 가기</button></div><div class="secret-broken" aria-hidden="true"><i></i><i></i><i></i></div></article>';
+          return '<article class="secret-block locked'+(owned?' owned':'')+'"><div class="secret-art"><img src="'+art+'" alt=""></div><div class="secret-body"><small>SECRET BLOCK</small><h4>'+esc(def.displayName)+'</h4><div class="secret-mystery" aria-label="잠긴 시크릿 블록">?</div><p class="secret-hint">궁극기 → 복수자 강림 → 승리</p><button type="button" class="secret-go" disabled>잠김</button></div>'+chains()+'</article>';}).join('');
+        root.querySelectorAll('.secret-go[data-card]').forEach(b=>b.onclick=()=>{const def=collectionCardDefs.find(d=>d.cardId===b.dataset.card),t=document.querySelector('#secret-toast');if(!t)return;t.textContent='목업: '+(def?.displayName||'')+' 캐릭터챗의 시크릿 블록으로 이동합니다.';t.hidden=false;clearTimeout(t._h);t._h=setTimeout(()=>{t.hidden=true;},2600);});};
+      COLLECTION_SUBTITLE.secret='복수의 서사로 원작에 없던 캐릭터챗 이야기를 해금하세요.';
+      if(typeof switchCollectionView==='function'){const base=switchCollectionView;switchCollectionView=function(view,...a){const r=base.call(this,view,...a);if(view==='secret')renderSecretBlocks();return r;};}
+      /* 개발용 ?secretTest[=개수]: 전설 챔프 앞에서부터 N개(기본 3)를 해금 상태로 만든다. ?secretReset 은 해금 기록을 지운다 (localhost에서만) */
+      if(typeof DEV_MODE!=='undefined'&&DEV_MODE){const params=new URLSearchParams(location.search);if(params.has('secretReset')){state={unlocked:{}};save();params.delete('secretReset');}if(params.has('secretTest')){const n=Math.max(1,Math.min(53,Math.floor(Number(params.get('secretTest'))||3))),list=targets();list.slice(0,n).forEach(({def},k)=>{state.unlocked[def.cardId]=state.unlocked[def.cardId]||{at:new Date().toISOString(),avenger:list[(k+7)%list.length].def.displayName};});save();params.delete('secretTest');}history.replaceState(null,'',location.pathname+(params.toString()?'?'+params:'')+location.hash);}
+    })();
+
     /* 컬렉션 바로가기: 상단 개별 버튼과 주소 링크(#덱편집 #도감 #합성 #강화 #상점 또는 #deck #codex #synth #enhance #shop)로 해당 탭을 바로 연다 */
     (function(){
-      const HASH={'덱편집':'deck','deck':'deck','도감':'codex','codex':'codex','합성':'synth','synth':'synth','강화':'enhance','enhance':'enhance','상점':'gacha','shop':'gacha','gacha':'gacha'},NAME={deck:'덱편집',codex:'도감',synth:'합성',enhance:'강화',gacha:'상점'};
+      const HASH={'시크릿':'secret','시크릿블록':'secret','secret':'secret','덱편집':'deck','deck':'deck','도감':'codex','codex':'codex','합성':'synth','synth':'synth','강화':'enhance','enhance':'enhance','상점':'gacha','shop':'gacha','gacha':'gacha'},NAME={secret:'시크릿',deck:'덱편집',codex:'도감',synth:'합성',enhance:'강화',gacha:'상점'};
       window.openCollectionDirect=function(view){openCollection(view);try{history.replaceState(null,'','#'+NAME[view]);}catch(e){}syncNav(view);};
       function syncNav(view){document.querySelectorAll('.top-nav-btn').forEach(b=>b.classList.toggle('current',b.dataset.view===view));}
       function fromHash(){const key=decodeURIComponent(location.hash.replace(/^#/,''));const v=HASH[key];if(v){openCollection(v);syncNav(v);}}

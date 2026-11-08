@@ -175,6 +175,15 @@
       100%{opacity:0;transform:scale(.86) translateY(11px);filter:brightness(.4) grayscale(1)}
     }
     @media(prefers-reduced-motion:reduce){ .unit.unit-dying{animation-duration:.2s} }
+    /* 같은 칸 교체 (2026-11-08): 원래 카드는 복제본(.unit-swap-ghost)이 자기 칸 위에서 0.56초 동안 식으며 가라앉고, 새 카드는 같은 칸에서 떠오른다.
+       필드 안 카드는 처음부터 끝까지 5장이라 옆 카드는 움직이지 않는다. */
+    .unit.unit-swap-in{animation:unit-swap-in .5s .16s cubic-bezier(.16,.82,.2,1) backwards}
+    @keyframes unit-swap-in{
+      0%{opacity:0;transform:translateY(-14px) scale(.9);filter:brightness(1.9)}
+      70%{opacity:1;transform:translateY(2px) scale(1.02);filter:brightness(1.25)}
+      100%{opacity:1;transform:none;filter:none}
+    }
+    @media(prefers-reduced-motion:reduce){ .unit.unit-swap-in{animation-duration:.2s;animation-delay:0s} }
     .unit.hit-react,.avatar.hit-react { animation:target-hit .34s cubic-bezier(.2,.9,.25,1) both; transform-origin:center; }
     .unit.field-attacker{z-index:7;filter:brightness(1.16) saturate(1.18);will-change:transform}.unit.field-target,.avatar.field-target{z-index:6;box-shadow:0 0 0 3px var(--target-color,#efca78),0 0 30px color-mix(in srgb,var(--target-color,#efca78) 58%,transparent);will-change:transform}/* 평타 궤적: 전면 컷인을 걷어낸 자리를 메우는 주연출. --hit(0~1, 피해 비중)에 따라
    두께·발광·잔상이 함께 커져 '주고받는 수치'가 화면에서 읽히게 한다 (2026-11-07) */
@@ -648,7 +657,7 @@
        작게 띄우고, 화면을 가리지 않는다 (2026-11-07) */
     .awakening-proc-banner{--proc-color:#cfd8e6;position:fixed;z-index:34;left:var(--field-cx);top:calc(var(--field-top) + var(--field-height) * .46);min-width:min(360px,calc(var(--field-width) * .62));max-width:calc(var(--field-width) * .86);padding:10px 22px;border:1px solid color-mix(in srgb,var(--proc-color) 72%,white);border-radius:999px;background:linear-gradient(90deg,transparent,#0b1019f2 15% 85%,transparent);box-shadow:0 0 28px color-mix(in srgb,var(--proc-color) 52%,transparent),inset 0 0 20px color-mix(in srgb,var(--proc-color) 18%,transparent);color:#fff;text-align:center;pointer-events:none;transform:translate(-50%,-50%);animation:awakening-proc-in 1.35s ease-out both}.awakening-proc-banner b{display:block;color:var(--proc-color);font-size:15px;letter-spacing:.04em;text-shadow:0 0 12px var(--proc-color)}.awakening-proc-banner span{display:block;margin-top:3px;color:#f2f4fa;font-size:11px;font-weight:850}.shatter-resonance-fx{--metal:#dce8f5;position:fixed;z-index:33;left:var(--field-left);top:var(--field-top);width:var(--field-width);height:var(--field-height);overflow:hidden;pointer-events:none;background:radial-gradient(circle at var(--sx) var(--sy),#fff8 0 1%,#cfd8e655 2%,transparent 18%);animation:shatter-field-impact .9s ease-out both}.shatter-resonance-fx::before,.shatter-resonance-fx::after{content:'';position:absolute;left:var(--sx);top:var(--sy);width:min(220px,28%);aspect-ratio:1;border:3px solid var(--metal);clip-path:polygon(50% 0,88% 18%,100% 55%,72% 100%,25% 88%,0 48%,18% 15%);box-shadow:0 0 14px #fff,0 0 40px #a9c5e8;transform:translate(-50%,-50%);animation:shatter-ring .72s cubic-bezier(.12,.72,.2,1) both}.shatter-resonance-fx::after{animation-delay:.1s}.shatter-resonance-fx i{position:absolute;left:var(--sx);top:var(--sy);width:42%;height:3px;background:linear-gradient(90deg,transparent,#fff 22%,var(--metal) 52%,transparent);box-shadow:0 0 13px #dbeeff;transform-origin:left center;transform:rotate(var(--a));animation:shatter-ray .72s ease-out both}.shatter-resonance-fx strong{position:absolute;left:50%;top:42%;padding:8px 24px;border-top:1px solid #eaf4ff;border-bottom:1px solid #eaf4ff;background:#0a0f18dd;color:#fff;font-size:clamp(18px,2.1vw,30px);letter-spacing:.08em;text-shadow:0 0 16px #cfe7ff;transform:translate(-50%,-50%);white-space:nowrap;animation:shatter-title .9s ease-out both}@keyframes awakening-proc-in{0%{opacity:0;transform:translate(-50%,-50%) scale(.72);filter:brightness(2)}18%,72%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-68%) scale(1.04)}}@keyframes shatter-field-impact{0%{opacity:0}12%,62%{opacity:1}100%{opacity:0}}@keyframes shatter-ring{0%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-18deg)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(2.8) rotate(32deg)}}@keyframes shatter-ray{0%{opacity:0;width:4%}25%{opacity:1}100%{opacity:0;width:75%}}@keyframes shatter-title{0%{opacity:0;transform:translate(-50%,-50%) scale(.65)}28%,72%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-70%) scale(1.06)}}@media(prefers-reduced-motion:reduce){.awakening-proc-banner,.shatter-resonance-fx,.shatter-resonance-fx::before,.shatter-resonance-fx::after,.shatter-resonance-fx i,.shatter-resonance-fx strong{animation-duration:.35s!important}}
     .summon-zone.drop-ready{border-color:#f0c86f;background:radial-gradient(circle,#d99e3d2b,transparent 66%),#151b24;box-shadow:inset 0 0 28px #e5ae4b2b,0 0 24px #e5ae4b33}.summon-zone.drop-ready::after{content:'여기에 놓아 챔프 소환';position:absolute;padding:8px 13px;border:1px solid #e9bd67;border-radius:99px;background:#17130deb;color:#ffe09a;font-size:11px;font-weight:900;pointer-events:none}.magic-setting-panel.drop-ready{border-color:#c783ee;box-shadow:0 0 25px #b45de655,inset 0 0 22px #9d52ca22}.magic-setting-panel.drop-ready::after{content:'여기에 놓아 마법 세트';display:block;margin-top:7px;padding:6px;border:1px dashed #b875dc;border-radius:7px;color:#dfa8ff;text-align:center;font-size:9px;font-weight:900}.card[draggable="true"],.summon-zone .unit[draggable="true"]{cursor:grab}.card[draggable="true"]:active,.summon-zone .unit[draggable="true"]:active{cursor:grabbing}.summon-zone .unit.field-dragging{opacity:.38;transform:scale(.94)}.summon-zone.reordering{border-color:#e9bd67;box-shadow:inset 0 0 24px #e5ae4b22}.summon-zone.reordering::before{content:'왼쪽 카드가 먼저 공격받습니다';position:absolute;z-index:5;top:7px;left:50%;transform:translateX(-50%);padding:5px 10px;border-radius:99px;background:#2c2417ee;color:#ffe09a;font-size:9px;font-weight:900;pointer-events:none}
-    .summon-zone.field-full{border-color:#ef7676;box-shadow:inset 0 0 28px #ef555533,0 0 22px #ef555544;animation:field-full-shake .42s ease-out}.summon-zone.field-full::after{content:'전장 최대 6장';position:absolute;z-index:8;padding:8px 14px;border:1px solid #ef7676;border-radius:99px;background:#32171bea;color:#ffd1d1;font-size:11px;font-weight:950;pointer-events:none}@keyframes field-full-shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+    .summon-zone.field-full{border-color:#ef7676;box-shadow:inset 0 0 28px #ef555533,0 0 22px #ef555544;animation:field-full-shake .42s ease-out}.summon-zone.field-full::after{content:'전장 최대 5장';position:absolute;z-index:8;padding:8px 14px;border:1px solid #ef7676;border-radius:99px;background:#32171bea;color:#ffd1d1;font-size:11px;font-weight:950;pointer-events:none}@keyframes field-full-shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
     /* 챔프 소환 착지: 카드가 전장을 힘있게 내려치며 바닥 충격파·균열·먼지 파편을 만든다. */
     .summon-ground-impact{position:fixed;z-index:18;width:16px;height:16px;pointer-events:none;transform:translate(-50%,-50%);color:var(--summon-impact,#ffd477)}
     .summon-ground-impact::before,.summon-ground-impact::after{content:'';position:absolute;left:50%;top:50%;width:180px;height:58px;border:4px solid currentColor;border-radius:50%;transform:translate(-50%,-50%) scale(.08);filter:drop-shadow(0 0 9px currentColor);animation:summon-ground-ring .66s cubic-bezier(.12,.72,.18,1) forwards}
@@ -1953,6 +1962,59 @@
       .duel-hud .avatar.awaken-departing{opacity:1;transform:none}
       .aura-awaken-choice,.aura-awaken-choice-panel{animation:none}
       .aura-awaken-choice.arriving .aura-awaken-choice-panel{opacity:1;transform:none}}
+    /* === 시크릿 블록 탭 (2026-11-07, PRD 3-11) === */
+    .top-nav-btn.secret { color:#ffd6f0; background:linear-gradient(180deg,#3b1d3a,#221326); box-shadow:inset 0 0 0 1px #c66fb066,0 0 12px #e06bc233; }
+    .top-nav-btn.secret:hover { background:linear-gradient(180deg,#54284f,#2e1834); color:#fff; }
+    .top-nav-btn.secret.current { background:linear-gradient(180deg,#7a3570,#4d2049); color:#fff; box-shadow:inset 0 0 0 1px #f39be0,0 0 18px #e06bc277; }
+    .collection-tab.secret-tab.active { border-color:#c66fb0; background:#2e1830; color:#ffd6f0; }
+    .secret-view { flex-direction:column; min-height:0; padding:18px 22px 22px; gap:14px; position:relative; }
+    .secret-head { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 18px; border:1px solid #5b3556; border-radius:12px; background:radial-gradient(circle at 0 50%,#c66fb02e,transparent 45%),#16121c; }
+    .secret-intro { display:flex; flex-direction:column; gap:4px; min-width:0; }
+    .secret-intro b { color:#ffd6f0; font-size:14px; }
+    .secret-intro span { color:#b9a8c4; font-size:11px; line-height:1.5; }
+    .secret-progress { flex:none; color:#b9a8c4; font-size:12px; }
+    .secret-progress b { color:#ffd477; font-size:20px; }
+    .secret-grid { min-height:0; flex:1; overflow:auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(168px,1fr)); grid-auto-rows:max-content; align-content:start; gap:12px; padding:4px 6px 4px 2px; }
+    .secret-block { position:relative; display:flex; flex-direction:column; min-width:0; overflow:hidden; border:1px solid #3d3448; border-radius:12px; background:#15121b; }
+    .secret-art { position:relative; flex:none; aspect-ratio:4/3; overflow:hidden; background:#0b0a10; }
+    .secret-art img { width:100%; height:100%; object-fit:cover; object-position:center 18%; display:block; }
+    .secret-body { position:relative; display:flex; flex-direction:column; gap:5px; padding:9px 10px 10px; flex:1; }
+    .secret-body small { color:#9c86ad; font-size:8px; font-weight:900; letter-spacing:.14em; }
+    .secret-body h4 { margin:0; font-size:12px; color:#efe6f7; overflow-wrap:anywhere; }
+    .secret-go { margin-top:auto; padding:8px 10px; border:1px solid #c66fb0; border-radius:8px; background:linear-gradient(180deg,#6b2d63,#43183f); color:#fff; font-size:11px; font-weight:800; cursor:pointer; }
+    .secret-go:hover:not(:disabled) { filter:brightness(1.15); box-shadow:0 0 14px #e06bc266; }
+    .secret-go:disabled { border-color:#3d3448; background:#1d1924; color:#6f6580; cursor:not-allowed; }
+    /* 잠김: 그림을 어둡게 가리고 물음표 블록 위로 사슬 두 줄을 X자로 감는다 */
+    .secret-block.locked .secret-art img { filter:grayscale(1) brightness(.22) blur(2px); }
+    .secret-block.locked.owned .secret-art img { filter:grayscale(.85) brightness(.32) blur(1.5px); }
+    .secret-mystery { display:grid; place-items:center; height:44px; border:1px dashed #5b4a6b; border-radius:8px; background:repeating-linear-gradient(135deg,#1c1724 0 8px,#18141f 8px 16px); color:#8d78a3; font-size:26px; font-weight:900; text-shadow:0 0 12px #c66fb066; }
+    .secret-hint { margin:0; color:#7f7391; font-size:10px; line-height:1.4; }
+    .secret-chains { position:absolute; left:0; right:0; top:0; aspect-ratio:4/3; overflow:hidden; pointer-events:none; }
+    .secret-chains .chain { position:absolute; left:-20%; top:50%; width:140%; height:14px; margin-top:-7px; border-radius:7px;
+      background:radial-gradient(ellipse 8px 5px at 9px 50%,transparent 3px,#8a8f9c 3.5px,#c9ced8 5px,#5b606b 6.5px,transparent 7px) 0 0/18px 14px repeat-x;
+      filter:drop-shadow(0 2px 2px #000c); }
+    .secret-chains .chain.a { transform:rotate(36deg); }
+    .secret-chains .chain.b { transform:rotate(-36deg); }
+    .secret-lock { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:grid; place-items:center; width:38px; height:38px; border:2px solid #9aa0ac; border-radius:10px; background:linear-gradient(180deg,#3a3f4a,#1d2027); font-size:18px; box-shadow:0 4px 14px #000c,0 0 0 3px #15121b; }
+    /* 해금: 사슬이 끊겨 흩어진 조각만 남고, 오라 색 광휘가 돈다 */
+    .secret-block.unlocked { border-color:#e3a6d6; box-shadow:0 0 18px #e06bc244,inset 0 0 22px #c66fb022; }
+    .secret-block.unlocked .secret-art img { animation:secret-reveal .9s ease-out both; }
+    .secret-pair { margin:0; color:#ffd477; font-size:10px; font-weight:800; }
+    .secret-teaser { margin:0; color:#d9c8e6; font-size:10px; line-height:1.45; }
+    .secret-broken { position:absolute; left:0; right:0; top:0; aspect-ratio:4/3; pointer-events:none; }
+    .secret-broken i { position:absolute; width:26px; height:10px; border-radius:5px; background:radial-gradient(ellipse 8px 5px at 9px 50%,transparent 3px,#8a8f9c 3.5px,#c9ced8 5px,#5b606b 6.5px,transparent 7px) 0 0/18px 10px repeat-x; opacity:.75; filter:drop-shadow(0 2px 2px #000a); }
+    .secret-broken i:nth-child(1) { left:4px; top:8px; transform:rotate(38deg); }
+    .secret-broken i:nth-child(2) { right:6px; top:14px; transform:rotate(-52deg); }
+    .secret-broken i:nth-child(3) { left:8px; top:42%; transform:rotate(-20deg); width:18px; }
+    @keyframes secret-reveal { from { filter:grayscale(1) brightness(.25) blur(3px); } to { filter:none; } }
+    .secret-toast { position:absolute; left:50%; bottom:20px; transform:translateX(-50%); max-width:80%; margin:0; padding:10px 16px; border:1px solid #c66fb0; border-radius:10px; background:#24152a; color:#ffe6f6; font-size:12px; text-align:center; box-shadow:0 8px 24px #000c; }
+    .secret-unlock-note { display:flex; flex-direction:column; align-items:center; gap:4px; margin:10px 0; padding:12px 14px; border:1px solid #c66fb0; border-radius:12px; background:radial-gradient(circle at 50% 0,#e06bc233,transparent 60%),#1c1220; text-align:center; }
+    .secret-unlock-note small { color:#e3a6d6; font-size:9px; font-weight:900; letter-spacing:.16em; }
+    .secret-unlock-note strong { color:#ffd6f0; font-size:15px; overflow-wrap:anywhere; }
+    .secret-unlock-note span { color:#c9b6d6; font-size:11px; }
+    .secret-unlock-note button { margin-top:4px; padding:7px 14px; border:1px solid #c66fb0; border-radius:8px; background:#43183f; color:#fff; font-weight:800; }
+    @media(max-width:780px){ .secret-head { flex-direction:column; align-items:flex-start; } .secret-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+||||||| 7407075
 
 /* 묘지 재사용 확인 (2026-11-07): 덱에 챔프가 없을 때 카드 뽑기를 누르면 묻는다 */
 .recycle-modal { position:fixed; inset:0; z-index:380; display:none; place-items:center; padding:24px; background:#02050acc; backdrop-filter:blur(6px); }
