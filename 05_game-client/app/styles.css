@@ -2052,7 +2052,6 @@
     .secret-unlock-note span { color:#c9b6d6; font-size:11px; }
     .secret-unlock-note button { margin-top:4px; padding:7px 14px; border:1px solid #c66fb0; border-radius:8px; background:#43183f; color:#fff; font-weight:800; }
     @media(max-width:780px){ .secret-head { flex-direction:column; align-items:flex-start; } .secret-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-||||||| 7407075
 
 /* 묘지 재사용 확인 (2026-11-07): 덱에 챔프가 없을 때 카드 뽑기를 누르면 묻는다 */
 .recycle-modal { position:fixed; inset:0; z-index:380; display:none; place-items:center; padding:24px; background:#02050acc; backdrop-filter:blur(6px); }
