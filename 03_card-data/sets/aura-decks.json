@@ -55,11 +55,35 @@
           "count": 1
         },
         {
+          "cardId": "archio.estelle",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.baek-jisu",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.shin-sia",
+          "count": 1
+        },
+        {
           "cardId": "pressure.cheon-mua",
           "count": 1
         },
         {
           "cardId": "pressure.im-cheonga",
+          "count": 1
+        },
+        {
+          "cardId": "astrum.lee-sieun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.choi-jian",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.mun-hayeon",
           "count": 1
         },
         {
@@ -71,6 +95,18 @@
           "count": 1
         },
         {
+          "cardId": "baekyeon.jeong-sieun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.park-sea",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.oh-eunsol",
+          "count": 1
+        },
+        {
           "cardId": "pressure.yang-sogae",
           "count": 1
         },
@@ -79,8 +115,16 @@
           "count": 1
         },
         {
-          "cardId": "baekyeon.choi-jian",
-          "count": 2
+          "cardId": "junhy.dan-hwa",
+          "count": 1
+        },
+        {
+          "cardId": "archio.winifred",
+          "count": 1
+        },
+        {
+          "cardId": "gangho.cho-a",
+          "count": 1
         },
         {
           "cardId": "reversal.judgment",
@@ -108,15 +152,15 @@
         },
         {
           "cardId": "core.spring-of-restoration",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.crimson-bolt",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "tower.arcane-insight",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "storm.tremor",
@@ -127,36 +171,16 @@
           "count": 1
         },
         {
-          "cardId": "core.frozen-chain",
-          "count": 1
-        },
-        {
-          "cardId": "storm.firestorm",
-          "count": 1
-        },
-        {
-          "cardId": "volt.chain-lightning",
-          "count": 1
-        },
-        {
-          "cardId": "storm.tempest",
-          "count": 1
-        },
-        {
-          "cardId": "arcana.earth-rift",
-          "count": 1
-        },
-        {
           "cardId": "tower.mana-overflow",
           "count": 1
         },
         {
           "cardId": "core.ember-snare",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.steel-guard",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.ambush-mine",
@@ -238,11 +262,35 @@
           "count": 1
         },
         {
+          "cardId": "baekyeon.seo-nayun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.yun-dabin",
+          "count": 1
+        },
+        {
+          "cardId": "core.marie-waveblade",
+          "count": 1
+        },
+        {
           "cardId": "pressure.cheon-mua",
           "count": 1
         },
         {
           "cardId": "pressure.im-cheonga",
+          "count": 1
+        },
+        {
+          "cardId": "astrum.lee-sieun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.choi-jian",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.mun-hayeon",
           "count": 1
         },
         {
@@ -254,6 +302,18 @@
           "count": 1
         },
         {
+          "cardId": "baekyeon.jeong-sieun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.park-sea",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.oh-eunsol",
+          "count": 1
+        },
+        {
           "cardId": "pressure.yang-sogae",
           "count": 1
         },
@@ -262,8 +322,16 @@
           "count": 1
         },
         {
-          "cardId": "baekyeon.park-sea",
-          "count": 2
+          "cardId": "junhy.dan-hwa",
+          "count": 1
+        },
+        {
+          "cardId": "archio.winifred",
+          "count": 1
+        },
+        {
+          "cardId": "gangho.cho-a",
+          "count": 1
         },
         {
           "cardId": "reversal.judgment",
@@ -291,15 +359,15 @@
         },
         {
           "cardId": "core.spring-of-restoration",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.crimson-bolt",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "tower.arcane-insight",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "storm.tremor",
@@ -310,36 +378,16 @@
           "count": 1
         },
         {
-          "cardId": "core.frozen-chain",
-          "count": 1
-        },
-        {
-          "cardId": "storm.firestorm",
-          "count": 1
-        },
-        {
-          "cardId": "volt.chain-lightning",
-          "count": 1
-        },
-        {
-          "cardId": "storm.tempest",
-          "count": 1
-        },
-        {
-          "cardId": "arcana.earth-rift",
-          "count": 1
-        },
-        {
           "cardId": "tower.mana-overflow",
           "count": 1
         },
         {
           "cardId": "core.ember-snare",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.steel-guard",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.ambush-mine",
@@ -421,11 +469,35 @@
           "count": 1
         },
         {
+          "cardId": "baekyeon.seo-nayun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.yun-dabin",
+          "count": 1
+        },
+        {
+          "cardId": "core.marie-waveblade",
+          "count": 1
+        },
+        {
           "cardId": "pressure.han-sobing",
           "count": 1
         },
         {
           "cardId": "pressure.namgung-ahyeon",
+          "count": 1
+        },
+        {
+          "cardId": "archio.estelle",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.baek-jisu",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.shin-sia",
           "count": 1
         },
         {
@@ -437,6 +509,18 @@
           "count": 1
         },
         {
+          "cardId": "baekyeon.jeong-sieun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.park-sea",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.oh-eunsol",
+          "count": 1
+        },
+        {
           "cardId": "pressure.yang-sogae",
           "count": 1
         },
@@ -445,8 +529,16 @@
           "count": 1
         },
         {
-          "cardId": "baekyeon.baek-jisu",
-          "count": 2
+          "cardId": "junhy.dan-hwa",
+          "count": 1
+        },
+        {
+          "cardId": "archio.winifred",
+          "count": 1
+        },
+        {
+          "cardId": "gangho.cho-a",
+          "count": 1
         },
         {
           "cardId": "reversal.judgment",
@@ -474,15 +566,15 @@
         },
         {
           "cardId": "core.spring-of-restoration",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.crimson-bolt",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "tower.arcane-insight",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "storm.tremor",
@@ -493,36 +585,16 @@
           "count": 1
         },
         {
-          "cardId": "core.frozen-chain",
-          "count": 1
-        },
-        {
-          "cardId": "storm.firestorm",
-          "count": 1
-        },
-        {
-          "cardId": "volt.chain-lightning",
-          "count": 1
-        },
-        {
-          "cardId": "storm.tempest",
-          "count": 1
-        },
-        {
-          "cardId": "arcana.earth-rift",
-          "count": 1
-        },
-        {
           "cardId": "tower.mana-overflow",
           "count": 1
         },
         {
           "cardId": "core.ember-snare",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.steel-guard",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.ambush-mine",
@@ -604,11 +676,35 @@
           "count": 1
         },
         {
+          "cardId": "baekyeon.seo-nayun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.yun-dabin",
+          "count": 1
+        },
+        {
+          "cardId": "core.marie-waveblade",
+          "count": 1
+        },
+        {
           "cardId": "pressure.han-sobing",
           "count": 1
         },
         {
           "cardId": "pressure.namgung-ahyeon",
+          "count": 1
+        },
+        {
+          "cardId": "archio.estelle",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.baek-jisu",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.shin-sia",
           "count": 1
         },
         {
@@ -620,6 +716,18 @@
           "count": 1
         },
         {
+          "cardId": "astrum.lee-sieun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.choi-jian",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.mun-hayeon",
+          "count": 1
+        },
+        {
           "cardId": "pressure.yang-sogae",
           "count": 1
         },
@@ -628,8 +736,16 @@
           "count": 1
         },
         {
+          "cardId": "junhy.dan-hwa",
+          "count": 1
+        },
+        {
           "cardId": "archio.winifred",
-          "count": 2
+          "count": 1
+        },
+        {
+          "cardId": "gangho.cho-a",
+          "count": 1
         },
         {
           "cardId": "reversal.judgment",
@@ -657,15 +773,15 @@
         },
         {
           "cardId": "core.spring-of-restoration",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.crimson-bolt",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "tower.arcane-insight",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "storm.tremor",
@@ -676,36 +792,16 @@
           "count": 1
         },
         {
-          "cardId": "core.frozen-chain",
-          "count": 1
-        },
-        {
-          "cardId": "storm.firestorm",
-          "count": 1
-        },
-        {
-          "cardId": "volt.chain-lightning",
-          "count": 1
-        },
-        {
-          "cardId": "storm.tempest",
-          "count": 1
-        },
-        {
-          "cardId": "arcana.earth-rift",
-          "count": 1
-        },
-        {
           "cardId": "tower.mana-overflow",
           "count": 1
         },
         {
           "cardId": "core.ember-snare",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.steel-guard",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.ambush-mine",
@@ -787,11 +883,35 @@
           "count": 1
         },
         {
+          "cardId": "baekyeon.seo-nayun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.yun-dabin",
+          "count": 1
+        },
+        {
+          "cardId": "core.marie-waveblade",
+          "count": 1
+        },
+        {
           "cardId": "pressure.han-sobing",
           "count": 1
         },
         {
           "cardId": "pressure.namgung-ahyeon",
+          "count": 1
+        },
+        {
+          "cardId": "archio.estelle",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.baek-jisu",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.shin-sia",
           "count": 1
         },
         {
@@ -803,6 +923,18 @@
           "count": 1
         },
         {
+          "cardId": "astrum.lee-sieun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.choi-jian",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.mun-hayeon",
+          "count": 1
+        },
+        {
           "cardId": "pressure.yu-soha",
           "count": 1
         },
@@ -811,8 +943,16 @@
           "count": 1
         },
         {
-          "cardId": "baekyeon.yun-dabin",
-          "count": 2
+          "cardId": "baekyeon.jeong-sieun",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.park-sea",
+          "count": 1
+        },
+        {
+          "cardId": "baekyeon.oh-eunsol",
+          "count": 1
         },
         {
           "cardId": "reversal.judgment",
@@ -840,15 +980,15 @@
         },
         {
           "cardId": "core.spring-of-restoration",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.crimson-bolt",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "tower.arcane-insight",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "storm.tremor",
@@ -859,36 +999,16 @@
           "count": 1
         },
         {
-          "cardId": "core.frozen-chain",
-          "count": 1
-        },
-        {
-          "cardId": "storm.firestorm",
-          "count": 1
-        },
-        {
-          "cardId": "volt.chain-lightning",
-          "count": 1
-        },
-        {
-          "cardId": "storm.tempest",
-          "count": 1
-        },
-        {
-          "cardId": "arcana.earth-rift",
-          "count": 1
-        },
-        {
           "cardId": "tower.mana-overflow",
           "count": 1
         },
         {
           "cardId": "core.ember-snare",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.steel-guard",
-          "count": 2
+          "count": 1
         },
         {
           "cardId": "core.ambush-mine",

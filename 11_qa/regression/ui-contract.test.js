@@ -195,13 +195,14 @@ test('freshly drawn cards obey the same global hand sorting', () => {
   assert.ok(!html.includes('freshDrawOrder(a,b)||'), 'Fresh cards must not form an unsorted priority block');
 });
 
-test('덱은 같은 성격 오라 카드를 최대 30장까지만 허용한다', () => {
-  assert.ok(html.includes('AURA_DECK_LIMIT=30'), 'Aura deck limit must be thirty');
+test('덱은 같은 오라 하수인을 최대 20장까지만 허용한다 (2026-11-09 PM, 마법·함정은 세지 않음)', () => {
+  assert.ok(html.includes('AURA_DECK_LIMIT=20'), 'Aura deck limit must be twenty champions');
+  assert.ok(html.includes('count+(!collectionIsSpell[index]&&auraPersonalityOfIndex(index)===personality?1:0)'), 'Only champions count toward the aura limit');
   assert.ok(html.includes('auraCountInDeck(cards,personality)>AURA_DECK_LIMIT'), 'Deck validation must detect an aura over the limit');
   assert.ok(html.includes('canAddAuraToDeck(draftDeck,index)'), 'Button and drag additions must share the aura limit guard');
   assert.ok(html.includes('deckAuraLimitExceeded(validDeck)'), 'Loaded legacy decks over the aura limit must be repaired');
   assert.ok(html.includes('deckAuraLimitExceeded(draftDeck)'), 'Deck saving must reject an over-limit draft');
-  assert.ok(html.includes('같은 성격 오라는 최대 30장입니다.'), 'Deck editor must disclose the aura limit');
+  assert.ok(html.includes('같은 오라 하수인은 최대 20장입니다.'), 'Deck editor must disclose the aura limit');
 });
 
 test('덱 편집은 큰 수량 버튼과 양방향 드래그를 제공한다', () => {

@@ -1,6 +1,6 @@
 """오라 기본 덱 5종(03_card-data/sets/aura-decks.json)을 만든다. 2026-11-09
-하수인 30 = 덱 오라 20(10종 x2, 다섯 덱이 같은 비용 틀) + 다른 오라 10(다른 오라 압박 하수인 8 + 상생 오라 3비용 카드 2)
-마법 20·함정 10은 다섯 덱 공통. --score 로 덱별 점수만 출력한다."""
+2026-11-09 개정(PM): 하수인 40 = 덱 오라 20(10종 x2, 다섯 덱이 같은 비용 틀) + 다른 오라 4종 각 5장(그 오라 덱 앞 5종 1장씩)
+마법 12·함정 8은 다섯 덱 공통. 같은 오라 하수인은 한 덱 최대 20장. --score 로 덱별 점수만 출력한다."""
 import json, os, sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 OUT = os.path.join(ROOT, '03_card-data/sets/aura-decks.json')
@@ -17,13 +17,10 @@ CORE = {
   'earth': ['pressure.yang-sogae', 'baekyeon.kim-hajin', 'junhy.dan-hwa', 'archio.winifred', 'gangho.cho-a',
             'archio.tanya', 'astra.pierre', 'archio.seraphina', 'inquisition.aurelia', 'bellarion.adelin-orwell'],
 }
-# 오행 상생: 나무→불→대지→금속→물→나무. 내 오라를 낳는 오라의 3비용 첫 카드(CORE[3]) 2장을 빌린다
-MOTHER = {'fire': 'wood', 'earth': 'fire', 'metal': 'earth', 'water': 'metal', 'wood': 'water'}
 SPELLS = [('reversal.judgment', 1), ('reversal.bulwark', 1), ('reversal.giant-hunt', 1), ('reversal.weight-toll', 1),
-          ('reversal.life-siphon', 1), ('reversal.insight', 1), ('core.spring-of-restoration', 2), ('core.crimson-bolt', 2),
-          ('tower.arcane-insight', 2), ('storm.tremor', 1), ('arcana.prism-revelation', 1), ('core.frozen-chain', 1),
-          ('storm.firestorm', 1), ('volt.chain-lightning', 1), ('storm.tempest', 1), ('arcana.earth-rift', 1), ('tower.mana-overflow', 1)]
-TRAPS = [('core.ember-snare', 2), ('core.steel-guard', 2), ('core.ambush-mine', 1), ('core.counter-current', 1),
+          ('reversal.life-siphon', 1), ('reversal.insight', 1), ('core.spring-of-restoration', 1), ('core.crimson-bolt', 1),
+          ('tower.arcane-insight', 1), ('storm.tremor', 1), ('arcana.prism-revelation', 1), ('tower.mana-overflow', 1)]
+TRAPS = [('core.ember-snare', 1), ('core.steel-guard', 1), ('core.ambush-mine', 1), ('core.counter-current', 1),
          ('core.last-stand', 1), ('core.swamp-bind', 1), ('core.rally-cry', 1), ('tower.summon-nullifier', 1)]
 NAMES = {'fire': '불의 덱', 'water': '물의 덱', 'wood': '나무의 덱', 'metal': '금속의 덱', 'earth': '대지의 덱'}
 ORDER = ['fire', 'water', 'wood', 'metal', 'earth']
@@ -38,8 +35,7 @@ def build():
     decks = []
     for aura in ORDER:
         champs = [(cid, 2) for cid in CORE[aura]]
-        champs += [(CORE[a][i], 1) for a in ORDER if a != aura for i in (0, 1)]
-        champs += [(CORE[MOTHER[aura]][3], 2)]
+        champs += [(CORE[a][i], 1) for a in ORDER if a != aura for i in range(5)]
         decks.append({'deckId': 'aura.' + aura, 'aura': aura, 'name': NAMES[aura],
                       'cards': [{'cardId': c, 'count': n} for c, n in champs + SPELLS + TRAPS]})
     return {'schemaVersion': 1, 'decks': decks}

@@ -8,20 +8,21 @@ const cards = new Map([...read('core-set.json').cards, ...read('character-expans
 const { decks } = read('aura-decks.json');
 const champions = deck => deck.cards.flatMap(({ cardId, count }) => Array(count).fill(cards.get(cardId))).filter(card => card.cardType === 'champion');
 
-test('오라 기본 덱은 오라마다 하나, 60장 = 하수인 30(덱 오라 20 + 다른 오라 10) + 마법 20 + 함정 10 (2026-11-09)', () => {
+test('오라 기본 덱은 오라마다 하나, 60장 = 하수인 40(덱 오라 20 + 다른 오라 4종 각 5) + 마법 12 + 함정 8 (2026-11-09 PM 개정)', () => {
   assert.deepEqual(decks.map(deck => deck.aura).sort(), ['earth', 'fire', 'metal', 'water', 'wood']);
   for (const deck of decks) {
     const all = deck.cards.flatMap(({ cardId, count }) => Array(count).fill(cards.get(cardId)));
     const same = champions(deck).filter(card => card.aura === deck.aura).length;
     assert.equal(all.length, 60, deck.name);
-    assert.equal(champions(deck).length, 30, deck.name);
+    assert.equal(champions(deck).length, 40, deck.name);
+    for (const aura of ['fire', 'water', 'wood', 'metal', 'earth'].filter(a => a !== deck.aura)) assert.equal(champions(deck).filter(card => card.aura === aura).length, 5, deck.name + ' ' + aura);
     assert.equal(same, 20, deck.name + ' 같은 오라 하수인');
-    assert.equal(all.filter(card => card.cardType === 'spell').length, 20, deck.name);
-    assert.equal(all.filter(card => card.cardType === 'trap').length, 10, deck.name);
+    assert.equal(all.filter(card => card.cardType === 'spell').length, 12, deck.name);
+    assert.equal(all.filter(card => card.cardType === 'trap').length, 8, deck.name);
   }
 });
 
-test('다섯 덱의 마법 20·함정 10 구성은 같다', () => {
+test('다섯 덱의 마법 12·함정 8 구성은 같다', () => {
   const rest = deck => JSON.stringify(deck.cards.filter(({ cardId }) => cards.get(cardId).cardType !== 'champion'));
   for (const deck of decks) assert.equal(rest(deck), rest(decks[0]), deck.name);
 });
@@ -32,8 +33,8 @@ const PER_AMOUNT = new Set(['draw', 'arcane_arrow', 'entry_hero_damage', 'mass_h
 const value = card => card.stats.attack + card.stats.health - (2 * card.cost + 2) + card.effects.reduce((sum, effect) => sum + (EFFECT_VALUE[effect.effectId] ?? 2) * (PER_AMOUNT.has(effect.effectId) ? effect.amount : 1), 0);
 const spread = list => Math.max(...list) - Math.min(...list);
 
-test('다섯 덱의 하수인 세기가 비슷하다: 평균 비용 차 0.2 이하, 덱 오라 20장 점수 차 2 이하, 30장 점수 차 4.5 이하', () => {
-  const avgCost = decks.map(deck => champions(deck).reduce((sum, card) => sum + card.cost, 0) / 30);
+test('다섯 덱의 하수인 세기가 비슷하다: 평균 비용 차 0.2 이하, 덱 오라 20장 점수 차 2 이하, 40장 점수 차 4.5 이하', () => {
+  const avgCost = decks.map(deck => champions(deck).reduce((sum, card) => sum + card.cost, 0) / 40);
   const same = decks.map(deck => champions(deck).filter(card => card.aura === deck.aura).reduce((sum, card) => sum + value(card), 0));
   const all = decks.map(deck => champions(deck).reduce((sum, card) => sum + value(card), 0));
   assert.ok(spread(avgCost) <= 0.2, JSON.stringify(avgCost));
