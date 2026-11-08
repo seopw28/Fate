@@ -8,8 +8,8 @@
 {
 "i": 1,
 "sel": "*",
-"in": 1051176,
-"out": 21871
+"in": 1011136,
+"out": 21842
 },
 {
 "i": 2,
@@ -20,7 +20,7 @@
 {
 "i": 3,
 "sel": "button",
-"in": 150182,
+"in": 146930,
 "out": 712
 },
 {
@@ -483,25 +483,25 @@
 "i": 80,
 "sel": ".defense-shield-fx",
 "in": 0,
-"out": 83
+"out": 82
 },
 {
 "i": 81,
 "sel": ".defense-shield-fx::before",
 "in": 0,
-"out": 83
+"out": 82
 },
 {
 "i": 82,
 "sel": ".defense-shield-fx::after",
 "in": 0,
-"out": 83
+"out": 82
 },
 {
 "i": 83,
 "sel": ".defense-shield-fx strong",
 "in": 0,
-"out": 83
+"out": 82
 },
 {
 "i": 84,
@@ -1221,7 +1221,7 @@
 "i": 203,
 "sel": ".attack-trail",
 "in": 0,
-"out": 96
+"out": 95
 },
 {
 "i": 204,
@@ -1376,13 +1376,13 @@
 {
 "i": 229,
 "sel": ".log p",
-"in": 1831,
+"in": 1832,
 "out": 0
 },
 {
 "i": 230,
 "sel": ".log p strong",
-"in": 2207,
+"in": 2208,
 "out": 0
 },
 {
@@ -1707,13 +1707,13 @@
 "i": 284,
 "sel": ".shockwave",
 "in": 0,
-"out": 282
+"out": 280
 },
 {
 "i": 285,
 "sel": ".shockwave.secondary",
 "in": 0,
-"out": 147
+"out": 146
 },
 {
 "i": 286,
@@ -1731,7 +1731,7 @@
 "i": 288,
 "sel": ".element-wisp",
 "in": 0,
-"out": 1169
+"out": 1162
 },
 {
 "i": 289,
@@ -1766,7 +1766,7 @@
 {
 "i": 294,
 "sel": ".unit.hit-react, .avatar.hit-react",
-"in": 87,
+"in": 86,
 "out": 0
 },
 {
@@ -1977,19 +1977,19 @@
 "i": 329,
 "sel": ".impact-ray, .particle.shard, .element-wisp, .asset-fx, .attack-trail",
 "in": 0,
-"out": 5370
+"out": 5362
 },
 {
 "i": 330,
 "sel": ".arena.impact, .unit.hit-react, .avatar.hit-react",
-"in": 363,
+"in": 362,
 "out": 0
 },
 {
 "i": 331,
 "sel": ".shockwave",
 "in": 0,
-"out": 282
+"out": 280
 },
 {
 "i": 332,
@@ -2720,19 +2720,19 @@
 {
 "i": 453,
 "sel": ".command-rail .card.unaffordable",
-"in": 50,
+"in": 52,
 "out": 0
 },
 {
 "i": 454,
 "sel": ".command-rail .card.unaffordable:hover",
-"in": 50,
+"in": 52,
 "out": 0
 },
 {
 "i": 455,
 "sel": ".command-rail .card.unaffordable .cost",
-"in": 50,
+"in": 52,
 "out": 0
 },
 {
@@ -2756,19 +2756,19 @@
 {
 "i": 459,
 "sel": ".command-rail .card.blood-option",
-"in": 50,
+"in": 52,
 "out": 0
 },
 {
 "i": 460,
 "sel": ".command-rail .card.blood-option::after",
-"in": 50,
+"in": 52,
 "out": 0
 },
 {
 "i": 461,
 "sel": ".command-rail .card.blood-option .cost",
-"in": 50,
+"in": 52,
 "out": 0
 },
 {
@@ -3056,31 +3056,31 @@
 {
 "i": 509,
 "sel": ".pull-card, .owned-card",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 510,
 "sel": ".pull-card img, .owned-card img",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 511,
 "sel": ".pull-card h4, .owned-card h4",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 512,
 "sel": ".pull-card small, .owned-card small",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 513,
 "sel": ".pull-card.rare, .owned-card.rare",
-"in": 4340,
+"in": 4344,
 "out": 0
 },
 {
@@ -3152,13 +3152,13 @@
 {
 "i": 525,
 "sel": ".owned-card",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 526,
 "sel": ".owned-card:hover",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
@@ -3170,7 +3170,7 @@
 {
 "i": 528,
 "sel": ".owned-card .owned-count",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
@@ -3452,13 +3452,13 @@
 {
 "i": 575,
 "sel": ".gacha-reveal.rare",
-"in": 0,
+"in": 4,
 "out": 0
 },
 {
 "i": 576,
 "sel": ".gacha-reveal.rare .gacha-card-front",
-"in": 0,
+"in": 4,
 "out": 0
 },
 {
@@ -3728,25 +3728,25 @@
 {
 "i": 621,
 "sel": ".owned-card",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 622,
 "sel": ".owned-card img",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 623,
 "sel": ".owned-card h4",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 624,
 "sel": ".owned-card small",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
@@ -3758,25 +3758,25 @@
 {
 "i": 626,
 "sel": ".owned-count",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 627,
 "sel": ".deck-card-controls",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 628,
 "sel": ".deck-card-controls button",
-"in": 25420,
+"in": 25428,
 "out": 0
 },
 {
 "i": 629,
 "sel": ".deck-card-controls b",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
@@ -4713,103 +4713,103 @@
 "i": 785,
 "sel": ".ultimate-spent-death",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 786,
 "sel": ".ultimate-spent-death::before",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 787,
 "sel": ".ultimate-spent-death::after",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 788,
 "sel": ".spent-death-core",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 789,
 "sel": ".spent-death-half",
 "in": 0,
-"out": 226
+"out": 224
 },
 {
 "i": 790,
 "sel": ".spent-death-half img",
 "in": 0,
-"out": 226
+"out": 224
 },
 {
 "i": 791,
 "sel": ".spent-death-half.left",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 792,
 "sel": ".spent-death-half.right",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 793,
 "sel": ".spent-death-copy",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 794,
 "sel": ".spent-death-copy small",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 795,
 "sel": ".spent-death-copy strong",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 796,
 "sel": ".spent-death-copy b",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 797,
 "sel": ".spent-death-copy span",
 "in": 0,
-"out": 113
+"out": 112
 },
 {
 "i": 798,
 "sel": ".spent-death-shard",
 "in": 0,
-"out": 2486
+"out": 2464
 },
 {
 "i": 799,
 "sel": ".ultimate-spent-death, .spent-death-core, .spent-death-half, .spent-death-copy, .spent-death-shard, .ultimate-spent-death::before",
 "in": 0,
-"out": 3051
+"out": 3024
 },
 {
 "i": 800,
 "sel": ".spent-death-shard",
 "in": 0,
-"out": 2486
+"out": 2464
 },
 {
 "i": 801,
 "sel": ".ultimate-spent-death, .ultimate-spent-death::before, .ultimate-spent-death::after, .spent-death-core, .spent-death-half.left, .spent-death-half.right, .spent-death-copy",
 "in": 0,
-"out": 565
+"out": 560
 },
 {
 "i": 802,
@@ -4893,97 +4893,97 @@
 "i": 815,
 "sel": ".avenger-arrival",
 "in": 0,
-"out": 65
+"out": 67
 },
 {
 "i": 816,
 "sel": ".avenger-arrival::before",
 "in": 0,
-"out": 65
+"out": 67
 },
 {
 "i": 817,
 "sel": ".avenger-portrait",
 "in": 0,
-"out": 65
+"out": 67
 },
 {
 "i": 818,
 "sel": ".avenger-aura",
 "in": 0,
-"out": 65
+"out": 67
 },
 {
 "i": 819,
 "sel": ".avenger-copy",
 "in": 0,
-"out": 65
+"out": 67
 },
 {
 "i": 820,
 "sel": ".avenger-copy small",
 "in": 0,
-"out": 65
+"out": 67
 },
 {
 "i": 821,
 "sel": ".avenger-copy strong",
 "in": 0,
-"out": 65
+"out": 67
 },
 {
 "i": 822,
 "sel": ".avenger-copy q",
 "in": 0,
-"out": 65
+"out": 67
 },
 {
 "i": 823,
 "sel": ".avenger-copy span",
 "in": 0,
-"out": 65
+"out": 67
 },
 {
 "i": 824,
 "sel": ".avenger-arrival, .avenger-portrait, .avenger-aura, .avenger-copy",
 "in": 0,
-"out": 260
+"out": 268
 },
 {
 "i": 825,
 "sel": ".avenger-arrival::before",
 "in": 0,
-"out": 65
+"out": 67
 },
 {
 "i": 826,
 "sel": ".avenger-landing-impact",
 "in": 0,
-"out": 82
+"out": 81
 },
 {
 "i": 827,
 "sel": ".avenger-landing-impact::before, .avenger-landing-impact::after",
 "in": 0,
-"out": 82
+"out": 81
 },
 {
 "i": 828,
 "sel": ".avenger-landing-impact::after",
 "in": 0,
-"out": 82
+"out": 81
 },
 {
 "i": 829,
 "sel": ".avenger-landing-flash",
 "in": 0,
-"out": 82
+"out": 81
 },
 {
 "i": 830,
 "sel": ".avenger-landing-impact, .avenger-landing-impact::before, .avenger-landing-impact::after, .avenger-landing-flash",
 "in": 0,
-"out": 164
+"out": 162
 },
 {
 "i": 831,
@@ -5630,7 +5630,7 @@
 {
 "i": 938,
 "sel": "button",
-"in": 150182,
+"in": 146930,
 "out": 712
 },
 {
@@ -7352,13 +7352,13 @@
 {
 "i": 1225,
 "sel": ".field-guardian-ultimate.just-ready",
-"in": 227,
+"in": 228,
 "out": 0
 },
 {
 "i": 1226,
 "sel": ".field-guardian-ultimate.just-ready",
-"in": 227,
+"in": 228,
 "out": 0
 },
 {
@@ -7934,7 +7934,7 @@
 {
 "i": 1322,
 "sel": ".tier-score-value",
-"in": 23,
+"in": 24,
 "out": 0
 },
 {
@@ -7946,13 +7946,13 @@
 {
 "i": 1324,
 "sel": ".tier-score-value.settled",
-"in": 23,
+"in": 24,
 "out": 0
 },
 {
 "i": 1325,
 "sel": ".tier-delta",
-"in": 23,
+"in": 24,
 "out": 0
 },
 {
@@ -7970,7 +7970,7 @@
 {
 "i": 1328,
 "sel": ".tier-delta.same",
-"in": 23,
+"in": 24,
 "out": 0
 },
 {
@@ -9710,13 +9710,13 @@
 {
 "i": 1618,
 "sel": ".codex-own",
-"in": 12882,
+"in": 12886,
 "out": 0
 },
 {
 "i": 1619,
 "sel": ".codex-card.rarity-rare.got",
-"in": 4340,
+"in": 4344,
 "out": 0
 },
 {
@@ -9734,19 +9734,19 @@
 {
 "i": 1622,
 "sel": ".codex-card.missing",
-"in": 17078,
+"in": 17074,
 "out": 0
 },
 {
 "i": 1623,
 "sel": ".codex-card.missing .codex-art img, .codex-detail-art.missing img",
-"in": 17078,
+"in": 17074,
 "out": 0
 },
 {
 "i": 1624,
 "sel": ".codex-card.missing .codex-art",
-"in": 17078,
+"in": 17074,
 "out": 0
 },
 {
@@ -9758,25 +9758,25 @@
 {
 "i": 1626,
 "sel": ".codex-card.missing .codex-name",
-"in": 17078,
+"in": 17074,
 "out": 0
 },
 {
 "i": 1627,
 "sel": ".codex-card.missing .codex-no, .codex-card.missing small",
-"in": 34156,
+"in": 34148,
 "out": 0
 },
 {
 "i": 1628,
 "sel": ".codex-card.missing .codex-type",
-"in": 17078,
+"in": 17074,
 "out": 0
 },
 {
 "i": 1629,
 "sel": ".codex-lock",
-"in": 17078,
+"in": 17074,
 "out": 0
 },
 {
@@ -10250,7 +10250,7 @@
 {
 "i": 1708,
 "sel": ".synth-pick",
-"in": 22378,
+"in": 22382,
 "out": 0
 },
 {
@@ -10262,7 +10262,7 @@
 {
 "i": 1710,
 "sel": ".synth-pick.rare",
-"in": 4340,
+"in": 4344,
 "out": 0
 },
 {
@@ -10274,31 +10274,31 @@
 {
 "i": 1712,
 "sel": ".synth-pick img",
-"in": 22378,
+"in": 22382,
 "out": 0
 },
 {
 "i": 1713,
 "sel": ".synth-pick b",
-"in": 90116,
+"in": 90124,
 "out": 0
 },
 {
 "i": 1714,
 "sel": ".synth-pick small",
-"in": 22378,
+"in": 22382,
 "out": 0
 },
 {
 "i": 1715,
 "sel": ".synth-spare",
-"in": 22378,
+"in": 22382,
 "out": 0
 },
 {
 "i": 1716,
 "sel": ".synth-pick.locked, .synth-pick:disabled",
-"in": 2,
+"in": 6,
 "out": 0
 },
 {
@@ -10358,31 +10358,31 @@
 {
 "i": 1726,
 "sel": ".synth-section",
-"in": 426,
+"in": 430,
 "out": 0
 },
 {
 "i": 1727,
 "sel": ".synth-section b",
-"in": 426,
+"in": 430,
 "out": 0
 },
 {
 "i": 1728,
 "sel": ".synth-section.blocked",
-"in": 2,
+"in": 6,
 "out": 0
 },
 {
 "i": 1729,
 "sel": ".synth-section.blocked b",
-"in": 2,
+"in": 6,
 "out": 0
 },
 {
 "i": 1730,
 "sel": ".synth-pick",
-"in": 22378,
+"in": 22382,
 "out": 0
 },
 {
@@ -10412,7 +10412,7 @@
 {
 "i": 1735,
 "sel": ".synth-spare",
-"in": 22378,
+"in": 22382,
 "out": 0
 },
 {
@@ -10514,7 +10514,7 @@
 {
 "i": 1752,
 "sel": ".synth-pick:hover:not(.locked)",
-"in": 22378,
+"in": 22382,
 "out": 0
 },
 {
@@ -10784,7 +10784,7 @@
 {
 "i": 1797,
 "sel": ".codex-own",
-"in": 12882,
+"in": 12886,
 "out": 0
 },
 {
@@ -10796,7 +10796,7 @@
 {
 "i": 1799,
 "sel": ".codex-lock",
-"in": 17078,
+"in": 17074,
 "out": 0
 },
 {
@@ -10940,49 +10940,49 @@
 {
 "i": 1823,
 "sel": ".owned-card",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 1824,
 "sel": ".owned-card h4",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 1825,
 "sel": ".owned-card small",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 1826,
 "sel": ".owned-count",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 1827,
 "sel": ".deck-card-controls",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 1828,
 "sel": ".deck-card-controls button",
-"in": 25420,
+"in": 25428,
 "out": 0
 },
 {
 "i": 1829,
 "sel": ".deck-card-controls button:hover:not(:disabled)",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
 "i": 1830,
 "sel": ".deck-card-controls b",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
@@ -11192,19 +11192,19 @@
 {
 "i": 1865,
 "sel": ".synth-pick",
-"in": 22378,
+"in": 22382,
 "out": 0
 },
 {
 "i": 1866,
 "sel": ".synth-pick b",
-"in": 90116,
+"in": 90124,
 "out": 0
 },
 {
 "i": 1867,
 "sel": ".synth-pick small",
-"in": 22378,
+"in": 22382,
 "out": 0
 },
 {
@@ -11234,7 +11234,7 @@
 {
 "i": 1872,
 "sel": ".synth-section",
-"in": 426,
+"in": 430,
 "out": 0
 },
 {
@@ -11774,7 +11774,7 @@
 {
 "i": 1962,
 "sel": ".owned-card",
-"in": 12710,
+"in": 12714,
 "out": 0
 },
 {
@@ -11816,13 +11816,13 @@
 {
 "i": 1969,
 "sel": "#enhance-grid .synth-pick.enh-short",
-"in": 2,
+"in": 6,
 "out": 0
 },
 {
 "i": 1970,
 "sel": "#enhance-grid .synth-pick.enh-short img",
-"in": 2,
+"in": 6,
 "out": 0
 },
 {
@@ -12002,13 +12002,13 @@
 {
 "i": 2000,
 "sel": ".synth-pick, .owned-card, .codex-card, .synth-card, .stage-card",
-"in": 65472,
+"in": 65480,
 "out": 4
 },
 {
 "i": 2001,
 "sel": ".enh-tier",
-"in": 44062,
+"in": 44074,
 "out": 0
 },
 {
@@ -12056,7 +12056,7 @@
 {
 "i": 2009,
 "sel": "#enhance-grid .synth-pick .synth-spare",
-"in": 11038,
+"in": 11042,
 "out": 0
 },
 {
@@ -12152,19 +12152,19 @@
 {
 "i": 2025,
 "sel": ".enh-tier",
-"in": 44062,
+"in": 44074,
 "out": 0
 },
 {
 "i": 2026,
 "sel": ".enh-tier > *",
-"in": 44062,
+"in": 44074,
 "out": 0
 },
 {
 "i": 2027,
 "sel": ".enh-roman",
-"in": 44062,
+"in": 44074,
 "out": 0
 },
 {
@@ -12194,7 +12194,7 @@
 {
 "i": 2032,
 "sel": ".codex-card .enh-tier",
-"in": 6022,
+"in": 6026,
 "out": 0
 },
 {
@@ -12230,7 +12230,7 @@
 {
 "i": 2038,
 "sel": ".codex-card .enh-tier, .owned-card .enh-tier, .synth-pick .enh-tier",
-"in": 41110,
+"in": 41122,
 "out": 0
 },
 {
@@ -12266,31 +12266,31 @@
 {
 "i": 2044,
 "sel": ".codex-card .tier-pick",
-"in": 6022,
+"in": 6026,
 "out": 0
 },
 {
 "i": 2045,
 "sel": ".codex-card .tier-pick b",
-"in": 30110,
+"in": 30130,
 "out": 0
 },
 {
 "i": 2046,
 "sel": ".codex-card .tier-pick b.on",
-"in": 6334,
+"in": 6338,
 "out": 0
 },
 {
 "i": 2047,
 "sel": ".codex-card .tier-pick b.on:hover",
-"in": 6334,
+"in": 6338,
 "out": 0
 },
 {
 "i": 2048,
 "sel": ".codex-card .tier-pick b.sel",
-"in": 6022,
+"in": 6026,
 "out": 0
 },
 {
@@ -12745,265 +12745,265 @@
 },
 {
 "i": 2124,
-"sel": ".global-spell.owner-enemy .global-spell-card",
+"sel": ".skill-fx.black-flame",
 "in": 0,
 "out": 0
 },
 {
 "i": 2125,
-"sel": ".global-spell.owner-player .global-spell-card",
+"sel": ".skill-fx.black-flame::before",
 "in": 0,
 "out": 0
 },
 {
 "i": 2126,
-"sel": ".global-spell .owner-tag",
+"sel": ".unit[data-eternal-burn]",
 "in": 0,
 "out": 0
 },
 {
 "i": 2127,
-"sel": ".global-spell.owner-enemy .owner-tag",
+"sel": ".unit[data-eternal-burn] > .aura-burn-vfx::before, .unit[data-eternal-burn] > .aura-burn-vfx::after",
 "in": 0,
 "out": 0
 },
 {
 "i": 2128,
-"sel": ".global-spell.owner-player .owner-tag",
+"sel": ".unit[data-eternal-burn]",
 "in": 0,
 "out": 0
 },
 {
 "i": 2129,
-"sel": ".global-spell.owner-enemy .global-spell-card::before, .global-spell.owner-player .global-spell-card::before",
+"sel": ".global-spell.owner-enemy .global-spell-card",
 "in": 0,
 "out": 0
 },
 {
 "i": 2130,
-"sel": ".global-spell .global-spell-card",
+"sel": ".global-spell.owner-player .global-spell-card",
 "in": 0,
 "out": 0
 },
 {
 "i": 2131,
-"sel": ".global-spell.owner-enemy .global-spell-card::before",
+"sel": ".global-spell .owner-tag",
 "in": 0,
 "out": 0
 },
 {
 "i": 2132,
-"sel": ".global-spell.owner-player .global-spell-card::before",
+"sel": ".global-spell.owner-enemy .owner-tag",
 "in": 0,
 "out": 0
 },
 {
 "i": 2133,
-"sel": ".global-spell.owner-enemy .global-spell-card, .global-spell.owner-player .global-spell-card",
+"sel": ".global-spell.owner-player .owner-tag",
 "in": 0,
 "out": 0
 },
 {
 "i": 2134,
-"sel": ".spell-target-ring",
+"sel": ".global-spell.owner-enemy .global-spell-card::before, .global-spell.owner-player .global-spell-card::before",
 "in": 0,
-"out": 44
+"out": 0
 },
 {
 "i": 2135,
-"sel": ".spell-target-ring::after",
+"sel": ".global-spell .global-spell-card",
 "in": 0,
-"out": 44
+"out": 0
 },
 {
 "i": 2136,
-"sel": ".spell-target-ring",
+"sel": ".global-spell.owner-enemy .global-spell-card::before",
 "in": 0,
-"out": 44
+"out": 0
 },
 {
 "i": 2137,
-"sel": ".effect-narration.ultimate",
+"sel": ".global-spell.owner-player .global-spell-card::before",
 "in": 0,
 "out": 0
 },
 {
 "i": 2138,
-"sel": ".effect-narration.ultimate small",
+"sel": ".global-spell.owner-enemy .global-spell-card, .global-spell.owner-player .global-spell-card",
 "in": 0,
 "out": 0
 },
 {
 "i": 2139,
-"sel": ".effect-narration.ultimate strong",
+"sel": ".spell-target-ring",
 "in": 0,
-"out": 0
+"out": 44
 },
 {
 "i": 2140,
-"sel": ".spell-target-ring.ult",
+"sel": ".spell-target-ring::after",
 "in": 0,
-"out": 0
+"out": 44
 },
 {
 "i": 2141,
-"sel": ".unit.ult-affected, .avatar.ult-affected",
+"sel": ".spell-target-ring",
 "in": 0,
-"out": 0
+"out": 44
 },
 {
 "i": 2142,
-"sel": ".unit.ult-affected, .avatar.ult-affected",
+"sel": ".effect-narration.ultimate",
 "in": 0,
 "out": 0
 },
 {
 "i": 2143,
-"sel": ".spell-target-ring.ult::after",
+"sel": ".effect-narration.ultimate small",
 "in": 0,
 "out": 0
 },
 {
 "i": 2144,
-"sel": ".card-depart",
+"sel": ".effect-narration.ultimate strong",
 "in": 0,
 "out": 0
 },
 {
 "i": 2145,
-"sel": ".card-depart img",
+"sel": ".spell-target-ring.ult",
 "in": 0,
 "out": 0
 },
 {
 "i": 2146,
-"sel": ".card-depart .cd-art",
+"sel": ".unit.ult-affected, .avatar.ult-affected",
 "in": 0,
 "out": 0
 },
 {
 "i": 2147,
-"sel": ".card-depart-dest",
+"sel": ".unit.ult-affected, .avatar.ult-affected",
 "in": 0,
 "out": 0
 },
 {
 "i": 2148,
-"sel": ".card-depart-dest b",
+"sel": ".spell-target-ring.ult::after",
 "in": 0,
 "out": 0
 },
 {
 "i": 2149,
-"sel": ".card-depart-dest small",
+"sel": ".card-depart",
 "in": 0,
 "out": 0
 },
 {
 "i": 2150,
-"sel": ".card-depart-dest",
+"sel": ".card-depart img",
 "in": 0,
 "out": 0
 },
 {
 "i": 2151,
-"sel": ".awaken-flight",
+"sel": ".card-depart .cd-art",
 "in": 0,
 "out": 0
 },
 {
 "i": 2152,
-"sel": ".awaken-flight .awaken-face",
+"sel": ".card-depart-dest",
 "in": 0,
 "out": 0
 },
 {
 "i": 2153,
-"sel": ".awaken-flight .awaken-face.has-mark",
+"sel": ".card-depart-dest b",
 "in": 0,
 "out": 0
 },
 {
 "i": 2154,
-"sel": ".awaken-flight .awaken-face .aura-mark",
+"sel": ".card-depart-dest small",
 "in": 0,
 "out": 0
 },
 {
 "i": 2155,
-"sel": ".awaken-flight .awaken-glow",
+"sel": ".card-depart-dest",
 "in": 0,
 "out": 0
 },
 {
 "i": 2156,
-"sel": ".awaken-flight.returning",
+"sel": ".awaken-flight",
 "in": 0,
 "out": 0
 },
 {
 "i": 2157,
-"sel": ".awaken-flare",
+"sel": ".awaken-flight .awaken-face",
 "in": 0,
 "out": 0
 },
 {
 "i": 2158,
-"sel": ".awaken-flare::after",
+"sel": ".awaken-flight .awaken-face.has-mark",
 "in": 0,
 "out": 0
 },
 {
 "i": 2159,
-"sel": ".duel-hud .avatar.awaken-departing",
+"sel": ".awaken-flight .awaken-face .aura-mark",
 "in": 0,
 "out": 0
 },
 {
 "i": 2160,
-"sel": ".duel-hud .avatar.awaken-departing.hit-react",
+"sel": ".awaken-flight .awaken-glow",
 "in": 0,
 "out": 0
 },
 {
 "i": 2161,
-"sel": ".aura-awaken-choice",
+"sel": ".awaken-flight.returning",
 "in": 0,
 "out": 0
 },
 {
 "i": 2162,
-"sel": ".aura-awaken-choice.arriving",
+"sel": ".awaken-flare",
 "in": 0,
 "out": 0
 },
 {
 "i": 2163,
-"sel": ".aura-awaken-choice.arriving .aura-awaken-choice-panel",
+"sel": ".awaken-flare::after",
 "in": 0,
 "out": 0
 },
 {
 "i": 2164,
-"sel": ".aura-awaken-choice-panel",
-"in": 0,
-"out": 0
-},
-{
-"i": 2165,
-"sel": ".awaken-flight, .awaken-flare",
-"in": 0,
-"out": 0
-},
-{
-"i": 2166,
 "sel": ".duel-hud .avatar.awaken-departing",
 "in": 0,
 "out": 0
 },
 {
+"i": 2165,
+"sel": ".duel-hud .avatar.awaken-departing.hit-react",
+"in": 0,
+"out": 0
+},
+{
+"i": 2166,
+"sel": ".aura-awaken-choice",
+"in": 0,
+"out": 0
+},
+{
 "i": 2167,
-"sel": ".aura-awaken-choice, .aura-awaken-choice-panel",
+"sel": ".aura-awaken-choice.arriving",
 "in": 0,
 "out": 0
 },
@@ -13015,788 +13015,1040 @@
 },
 {
 "i": 2169,
-"sel": ".resonance-orb",
+"sel": ".aura-awaken-choice-panel",
 "in": 0,
 "out": 0
 },
 {
 "i": 2170,
-"sel": ".resonance-orb i",
+"sel": ".awaken-flight, .awaken-flare",
 "in": 0,
 "out": 0
 },
 {
 "i": 2171,
-"sel": ".resonance-orb b",
+"sel": ".duel-hud .avatar.awaken-departing",
 "in": 0,
 "out": 0
 },
 {
 "i": 2172,
-"sel": ".resonance-orb b:has(.aura-mark)",
+"sel": ".aura-awaken-choice, .aura-awaken-choice-panel",
 "in": 0,
 "out": 0
 },
 {
 "i": 2173,
-"sel": ".resonance-orb .aura-mark",
+"sel": ".aura-awaken-choice.arriving .aura-awaken-choice-panel",
 "in": 0,
 "out": 0
 },
 {
 "i": 2174,
-"sel": ".resonance-caption",
+"sel": ".resonance-orb",
 "in": 0,
 "out": 0
 },
 {
 "i": 2175,
-"sel": ".resonance-caption small",
+"sel": ".resonance-orb i",
 "in": 0,
 "out": 0
 },
 {
 "i": 2176,
-"sel": ".resonance-caption strong",
+"sel": ".resonance-orb b",
 "in": 0,
 "out": 0
 },
 {
 "i": 2177,
-"sel": ".resonance-beam",
+"sel": ".resonance-orb b:has(.aura-mark)",
 "in": 0,
 "out": 0
 },
 {
 "i": 2178,
-"sel": ".unit.resonance-lit",
+"sel": ".resonance-orb .aura-mark",
 "in": 0,
 "out": 0
 },
 {
 "i": 2179,
-"sel": ".resonance-gain",
+"sel": ".resonance-caption",
 "in": 0,
 "out": 0
 },
 {
 "i": 2180,
-"sel": ".resonance-gain b",
+"sel": ".resonance-caption small",
 "in": 0,
 "out": 0
 },
 {
 "i": 2181,
-"sel": ".unit .stats span.resonance-pop",
+"sel": ".resonance-caption strong",
 "in": 0,
 "out": 0
 },
 {
 "i": 2182,
-"sel": ".duel-hud .avatar.resonance-departing",
+"sel": ".resonance-beam",
 "in": 0,
 "out": 0
 },
 {
 "i": 2183,
-"sel": ".resonance-orb, .resonance-beam",
+"sel": ".unit.resonance-lit",
 "in": 0,
 "out": 0
 },
 {
 "i": 2184,
-"sel": ".duel-hud .avatar.resonance-departing",
+"sel": ".resonance-gain",
 "in": 0,
 "out": 0
 },
 {
 "i": 2185,
+"sel": ".resonance-gain b",
+"in": 0,
+"out": 0
+},
+{
+"i": 2186,
+"sel": ".unit .stats span.resonance-pop",
+"in": 0,
+"out": 0
+},
+{
+"i": 2187,
+"sel": ".duel-hud .avatar.resonance-departing",
+"in": 0,
+"out": 0
+},
+{
+"i": 2188,
+"sel": ".resonance-orb, .resonance-beam",
+"in": 0,
+"out": 0
+},
+{
+"i": 2189,
+"sel": ".duel-hud .avatar.resonance-departing",
+"in": 0,
+"out": 0
+},
+{
+"i": 2190,
 "sel": ".top-nav-btn.secret",
 "in": 284,
 "out": 0
 },
 {
-"i": 2186,
+"i": 2191,
 "sel": ".top-nav-btn.secret:hover",
 "in": 284,
 "out": 0
 },
 {
-"i": 2187,
+"i": 2192,
 "sel": ".top-nav-btn.secret.current",
 "in": 60,
 "out": 0
 },
 {
-"i": 2188,
+"i": 2193,
 "sel": ".collection-tab.secret-tab.active",
 "in": 60,
 "out": 0
 },
 {
-"i": 2189,
+"i": 2194,
 "sel": ".secret-view",
 "in": 284,
 "out": 0
 },
 {
-"i": 2190,
+"i": 2195,
 "sel": ".secret-head",
 "in": 284,
 "out": 0
 },
 {
-"i": 2191,
+"i": 2196,
 "sel": ".secret-intro",
 "in": 284,
 "out": 0
 },
 {
-"i": 2192,
+"i": 2197,
 "sel": ".secret-intro b",
 "in": 284,
 "out": 0
 },
 {
-"i": 2193,
+"i": 2198,
 "sel": ".secret-intro span",
 "in": 284,
 "out": 0
 },
 {
-"i": 2194,
+"i": 2199,
 "sel": ".secret-progress",
 "in": 284,
 "out": 0
 },
 {
-"i": 2195,
+"i": 2200,
 "sel": ".secret-progress b",
 "in": 136,
 "out": 0
 },
 {
-"i": 2196,
+"i": 2201,
 "sel": ".secret-grid",
 "in": 284,
 "out": 0
 },
 {
-"i": 2197,
-"sel": ".secret-block",
-"in": 3604,
-"out": 0
-},
-{
-"i": 2198,
-"sel": ".secret-art",
-"in": 3604,
-"out": 0
-},
-{
-"i": 2199,
-"sel": ".secret-art img",
-"in": 3604,
-"out": 0
-},
-{
-"i": 2200,
-"sel": ".secret-body",
-"in": 3604,
-"out": 0
-},
-{
-"i": 2201,
-"sel": ".secret-body small",
-"in": 3604,
-"out": 0
-},
-{
 "i": 2202,
-"sel": ".secret-body h4",
-"in": 3604,
+"sel": ".secret-block",
+"in": 340,
 "out": 0
 },
 {
 "i": 2203,
-"sel": ".secret-go",
-"in": 3332,
+"sel": ".secret-art",
+"in": 340,
 "out": 0
 },
 {
 "i": 2204,
+"sel": ".secret-art img",
+"in": 340,
+"out": 0
+},
+{
+"i": 2205,
+"sel": ".secret-body",
+"in": 340,
+"out": 0
+},
+{
+"i": 2206,
+"sel": ".secret-body small",
+"in": 340,
+"out": 0
+},
+{
+"i": 2207,
+"sel": ".secret-body h4",
+"in": 340,
+"out": 0
+},
+{
+"i": 2208,
+"sel": ".secret-go",
+"in": 68,
+"out": 0
+},
+{
+"i": 2209,
 "sel": ".secret-go:hover:not(:disabled)",
 "in": 0,
 "out": 0
 },
 {
-"i": 2205,
+"i": 2210,
 "sel": ".secret-go:disabled",
-"in": 3332,
+"in": 68,
 "out": 0
 },
 {
-"i": 2206,
+"i": 2211,
 "sel": ".secret-block.locked .secret-art img",
-"in": 3604,
+"in": 340,
 "out": 0
 },
 {
-"i": 2207,
+"i": 2212,
 "sel": ".secret-block.locked.owned .secret-art img",
 "in": 0,
 "out": 0
 },
 {
-"i": 2208,
-"sel": ".secret-mystery",
-"in": 3332,
-"out": 0
-},
-{
-"i": 2209,
-"sel": ".secret-hint",
-"in": 3604,
-"out": 0
-},
-{
-"i": 2210,
-"sel": ".secret-chains",
-"in": 3604,
-"out": 0
-},
-{
-"i": 2211,
-"sel": ".secret-chains .chain",
-"in": 7208,
-"out": 0
-},
-{
-"i": 2212,
-"sel": ".secret-chains .chain.a",
-"in": 3604,
-"out": 0
-},
-{
 "i": 2213,
-"sel": ".secret-chains .chain.b",
-"in": 3604,
+"sel": ".secret-mystery",
+"in": 68,
 "out": 0
 },
 {
 "i": 2214,
-"sel": ".secret-lock",
-"in": 3604,
+"sel": ".secret-hint",
+"in": 340,
 "out": 0
 },
 {
 "i": 2215,
+"sel": ".secret-chains",
+"in": 340,
+"out": 0
+},
+{
+"i": 2216,
+"sel": ".secret-chains .chain",
+"in": 680,
+"out": 0
+},
+{
+"i": 2217,
+"sel": ".secret-chains .chain.a",
+"in": 340,
+"out": 0
+},
+{
+"i": 2218,
+"sel": ".secret-chains .chain.b",
+"in": 340,
+"out": 0
+},
+{
+"i": 2219,
+"sel": ".secret-lock",
+"in": 340,
+"out": 0
+},
+{
+"i": 2220,
 "sel": ".secret-block.unlocked",
 "in": 0,
 "out": 0
 },
 {
-"i": 2216,
+"i": 2221,
 "sel": ".secret-block.unlocked .secret-art img",
 "in": 0,
 "out": 0
 },
 {
-"i": 2217,
+"i": 2222,
 "sel": ".secret-pair",
 "in": 272,
 "out": 0
 },
 {
-"i": 2218,
+"i": 2223,
 "sel": ".secret-teaser",
 "in": 0,
 "out": 0
 },
 {
-"i": 2219,
+"i": 2224,
 "sel": ".secret-broken",
 "in": 0,
 "out": 0
 },
 {
-"i": 2220,
+"i": 2225,
 "sel": ".secret-broken i",
 "in": 0,
 "out": 0
 },
 {
-"i": 2221,
+"i": 2226,
 "sel": ".secret-broken i:nth-child(1)",
 "in": 0,
 "out": 0
 },
 {
-"i": 2222,
+"i": 2227,
 "sel": ".secret-broken i:nth-child(2)",
 "in": 0,
 "out": 0
 },
 {
-"i": 2223,
+"i": 2228,
 "sel": ".secret-broken i:nth-child(3)",
 "in": 0,
 "out": 0
 },
 {
-"i": 2224,
+"i": 2229,
 "sel": ".secret-toast",
 "in": 284,
 "out": 0
 },
 {
-"i": 2225,
+"i": 2230,
 "sel": ".secret-unlock-note",
 "in": 0,
 "out": 0
 },
 {
-"i": 2226,
+"i": 2231,
 "sel": ".secret-unlock-note small",
 "in": 0,
 "out": 0
 },
 {
-"i": 2227,
+"i": 2232,
 "sel": ".secret-unlock-note strong",
 "in": 0,
 "out": 0
 },
 {
-"i": 2228,
+"i": 2233,
 "sel": ".secret-unlock-note span",
 "in": 0,
 "out": 0
 },
 {
-"i": 2229,
+"i": 2234,
 "sel": ".secret-unlock-note button",
 "in": 0,
 "out": 0
 },
 {
-"i": 2230,
+"i": 2235,
 "sel": ".secret-head",
 "in": 284,
 "out": 0
 },
 {
-"i": 2231,
+"i": 2236,
 "sel": ".secret-grid",
 "in": 284,
 "out": 0
 },
 {
-"i": 2232,
+"i": 2237,
 "sel": ".recycle-modal",
 "in": 0,
 "out": 284
 },
 {
-"i": 2233,
+"i": 2238,
 "sel": ".recycle-modal.show",
 "in": 0,
 "out": 0
 },
 {
-"i": 2234,
+"i": 2239,
 "sel": ".recycle-panel",
 "in": 0,
 "out": 284
 },
 {
-"i": 2235,
+"i": 2240,
 "sel": ".recycle-panel h2",
 "in": 0,
 "out": 284
 },
 {
-"i": 2236,
+"i": 2241,
 "sel": ".recycle-panel p",
 "in": 0,
 "out": 284
 },
 {
-"i": 2237,
+"i": 2242,
 "sel": ".recycle-actions",
 "in": 0,
 "out": 284
 },
 {
-"i": 2238,
+"i": 2243,
 "sel": ".recycle-actions button",
 "in": 0,
 "out": 568
 },
 {
-"i": 2239,
+"i": 2244,
 "sel": ".recycle-yes",
 "in": 0,
 "out": 284
 },
 {
-"i": 2240,
+"i": 2245,
 "sel": ".recycle-no",
 "in": 0,
 "out": 284
 },
 {
-"i": 2241,
+"i": 2246,
 "sel": "html",
 "in": 0,
 "out": 284
 },
 {
-"i": 2242,
+"i": 2247,
 "sel": "#sound-toggle, .util-toggle-label, .rule-key",
 "in": 2156,
 "out": 0
 },
 {
-"i": 2243,
+"i": 2248,
 "sel": "[data-skin=\"fire\"], [data-field-skin=\"fire\"]",
 "in": 88,
 "out": 0
 },
 {
-"i": 2244,
+"i": 2249,
 "sel": "[data-skin=\"water\"], [data-field-skin=\"water\"]",
 "in": 514,
 "out": 0
 },
 {
-"i": 2245,
+"i": 2250,
 "sel": "[data-skin=\"wood\"], [data-field-skin=\"wood\"]",
-"in": 88,
-"out": 0
-},
-{
-"i": 2246,
-"sel": "[data-skin=\"metal\"], [data-field-skin=\"metal\"]",
 "in": 940,
 "out": 0
 },
 {
-"i": 2247,
+"i": 2251,
+"sel": "[data-skin=\"metal\"], [data-field-skin=\"metal\"]",
+"in": 88,
+"out": 0
+},
+{
+"i": 2252,
 "sel": "[data-skin=\"earth\"], [data-field-skin=\"earth\"]",
 "in": 606,
 "out": 0
 },
 {
-"i": 2248,
+"i": 2253,
 "sel": ".card-back-design[data-skin], .gacha-card-back[data-skin]",
 "in": 2216,
 "out": 0
 },
 {
-"i": 2249,
+"i": 2254,
 "sel": ".card-back-design[data-skin]::before",
 "in": 2208,
 "out": 0
 },
 {
-"i": 2250,
+"i": 2255,
 "sel": ".card-back-design[data-skin] .back-emblem",
 "in": 2208,
 "out": 0
 },
 {
-"i": 2251,
+"i": 2256,
 "sel": ".gacha-card-back[data-skin] .back-emblem",
 "in": 8,
 "out": 0
 },
 {
-"i": 2252,
+"i": 2257,
 "sel": ".arena[data-field-skin], .skin-field-preview[data-field-skin]",
 "in": 20,
 "out": 0
 },
 {
-"i": 2253,
+"i": 2258,
 "sel": ".arena[data-field-skin], .skin-field-preview[data-field-skin]",
 "in": 20,
 "out": 0
 },
 {
-"i": 2254,
+"i": 2259,
 "sel": ".pile-back",
 "in": 1988,
 "out": 0
 },
 {
-"i": 2255,
+"i": 2260,
 "sel": ".pile-back.card-back-design",
 "in": 1988,
 "out": 0
 },
 {
-"i": 2256,
+"i": 2261,
 "sel": ".pile-back.card-back-design[data-skin]",
 "in": 1788,
 "out": 0
 },
 {
-"i": 2257,
+"i": 2262,
 "sel": ".pile-back.card-back-design::before",
 "in": 1988,
 "out": 0
 },
 {
-"i": 2258,
+"i": 2263,
 "sel": ".pile-back .back-emblem",
 "in": 1788,
 "out": 0
 },
 {
-"i": 2259,
+"i": 2264,
 "sel": ".deck-stack::before, .deck-stack::after, .duel-hud .sub .deck-stack::before, .duel-hud .sub .deck-stack::after",
 "in": 284,
 "out": 0
 },
 {
-"i": 2260,
+"i": 2265,
 "sel": ".duel-hud .sub .deck-stack, .deck-stack, .command-rail .deck-stack",
 "in": 284,
 "out": 0
 },
 {
-"i": 2261,
+"i": 2266,
 "sel": ".deck-stack .pile-back",
 "in": 284,
 "out": 0
 },
 {
-"i": 2262,
+"i": 2267,
 "sel": ".enemy-piles",
 "in": 284,
 "out": 0
 },
 {
-"i": 2263,
+"i": 2268,
 "sel": ".enemy-piles .pile-hand",
 "in": 284,
 "out": 0
 },
 {
-"i": 2264,
+"i": 2269,
 "sel": ".enemy-piles .pile-hand .pile-back",
 "in": 1420,
 "out": 0
 },
 {
-"i": 2265,
+"i": 2270,
 "sel": ".enemy-piles .pile-deck .pile-back",
 "in": 284,
 "out": 0
 },
 {
-"i": 2266,
+"i": 2271,
 "sel": ".enemy-piles .pile-deck.empty",
 "in": 0,
 "out": 0
 },
 {
-"i": 2267,
-"sel": ".gacha-view",
-"in": 284,
-"out": 0
-},
-{
-"i": 2268,
-"sel": ".shop-subtabs",
-"in": 284,
-"out": 0
-},
-{
-"i": 2269,
-"sel": ".shop-subtab",
-"in": 568,
-"out": 0
-},
-{
-"i": 2270,
-"sel": ".shop-subtab.active",
-"in": 284,
-"out": 0
-},
-{
-"i": 2271,
-"sel": ".shop-panel",
-"in": 568,
-"out": 0
-},
-{
 "i": 2272,
-"sel": ".shop-panel[hidden]",
+"sel": "#enemy-deck-label",
 "in": 284,
 "out": 0
 },
 {
 "i": 2273,
-"sel": ".shop-panel.shop-cosmetic",
-"in": 284,
+"sel": ".enemy-piles .pile-count",
+"in": 568,
 "out": 0
 },
 {
 "i": 2274,
-"sel": ".cosmetic-head",
+"sel": ".enemy-piles .pile-deck",
 "in": 284,
 "out": 0
 },
 {
 "i": 2275,
-"sel": ".cosmetic-help",
+"sel": ".duel-hud .enemy .enemy-piles",
 "in": 284,
 "out": 0
 },
 {
 "i": 2276,
-"sel": ".skin-grid",
+"sel": ".gacha-view",
 "in": 284,
 "out": 0
 },
 {
 "i": 2277,
-"sel": ".skin-card",
-"in": 528,
-"out": 0
-},
-{
-"i": 2278,
-"sel": ".skin-card.applied",
-"in": 88,
-"out": 0
-},
-{
-"i": 2279,
-"sel": ".skin-card h4",
-"in": 528,
-"out": 0
-},
-{
-"i": 2280,
-"sel": ".skin-card small",
-"in": 528,
-"out": 0
-},
-{
-"i": 2281,
-"sel": ".skin-preview",
-"in": 528,
-"out": 0
-},
-{
-"i": 2282,
-"sel": ".skin-preview .card-back-design",
-"in": 504,
-"out": 0
-},
-{
-"i": 2283,
-"sel": ".skin-preview.field",
-"in": 24,
-"out": 0
-},
-{
-"i": 2284,
-"sel": ".skin-field-preview",
-"in": 24,
-"out": 0
-},
-{
-"i": 2285,
-"sel": ".skin-field-preview i",
-"in": 48,
-"out": 0
-},
-{
-"i": 2286,
-"sel": ".skin-btn",
-"in": 528,
-"out": 0
-},
-{
-"i": 2287,
-"sel": ".skin-btn.apply",
-"in": 168,
-"out": 0
-},
-{
-"i": 2288,
-"sel": ".skin-btn:disabled",
-"in": 108,
-"out": 0
-},
-{
-"i": 2289,
-"sel": ".skin-notice",
+"sel": ".shop-subtabs",
 "in": 284,
 "out": 0
 },
 {
-"i": 2290,
-"sel": ".skin-notice[hidden]",
-"in": 196,
-"out": 0
-},
-{
-"i": 2291,
-"sel": ".cookie-cost",
+"i": 2278,
+"sel": ".shop-subtab",
 "in": 568,
 "out": 0
 },
 {
-"i": 2292,
-"sel": ".cookie-cost.short",
-"in": 152,
+"i": 2279,
+"sel": ".shop-subtab.active",
+"in": 284,
 "out": 0
 },
 {
-"i": 2293,
-"sel": ".secret-ready-badge",
-"in": 272,
-"out": 0
-},
-{
-"i": 2294,
-"sel": ".secret-block.ready",
-"in": 272,
-"out": 0
-},
-{
-"i": 2295,
-"sel": ".secret-open",
-"in": 272,
-"out": 0
-},
-{
-"i": 2296,
-"sel": ".secret-open:hover:not(:disabled)",
-"in": 0,
-"out": 0
-},
-{
-"i": 2297,
-"sel": ".secret-open:disabled",
-"in": 272,
-"out": 0
-},
-{
-"i": 2298,
+"i": 2280,
 "sel": ".shop-panel",
 "in": 568,
 "out": 0
 },
 {
-"i": 2299,
+"i": 2281,
+"sel": ".shop-panel[hidden]",
+"in": 284,
+"out": 0
+},
+{
+"i": 2282,
+"sel": ".shop-panel.shop-cosmetic",
+"in": 284,
+"out": 0
+},
+{
+"i": 2283,
+"sel": ".cosmetic-head",
+"in": 284,
+"out": 0
+},
+{
+"i": 2284,
+"sel": ".cosmetic-help",
+"in": 284,
+"out": 0
+},
+{
+"i": 2285,
 "sel": ".skin-grid",
 "in": 284,
+"out": 0
+},
+{
+"i": 2286,
+"sel": ".skin-card",
+"in": 528,
+"out": 0
+},
+{
+"i": 2287,
+"sel": ".skin-card.applied",
+"in": 88,
+"out": 0
+},
+{
+"i": 2288,
+"sel": ".skin-card h4",
+"in": 528,
+"out": 0
+},
+{
+"i": 2289,
+"sel": ".skin-card small",
+"in": 528,
+"out": 0
+},
+{
+"i": 2290,
+"sel": ".skin-preview",
+"in": 528,
+"out": 0
+},
+{
+"i": 2291,
+"sel": ".skin-preview .card-back-design",
+"in": 504,
+"out": 0
+},
+{
+"i": 2292,
+"sel": ".skin-preview.field",
+"in": 24,
+"out": 0
+},
+{
+"i": 2293,
+"sel": ".skin-field-preview",
+"in": 24,
+"out": 0
+},
+{
+"i": 2294,
+"sel": ".skin-field-preview i",
+"in": 48,
+"out": 0
+},
+{
+"i": 2295,
+"sel": ".skin-btn",
+"in": 528,
+"out": 0
+},
+{
+"i": 2296,
+"sel": ".skin-btn.apply",
+"in": 168,
+"out": 0
+},
+{
+"i": 2297,
+"sel": ".skin-btn:disabled",
+"in": 108,
+"out": 0
+},
+{
+"i": 2298,
+"sel": ".skin-notice",
+"in": 284,
+"out": 0
+},
+{
+"i": 2299,
+"sel": ".skin-notice[hidden]",
+"in": 196,
+"out": 0
+},
+{
+"i": 2300,
+"sel": ".cookie-cost",
+"in": 568,
+"out": 0
+},
+{
+"i": 2301,
+"sel": ".cookie-cost.short",
+"in": 152,
+"out": 0
+},
+{
+"i": 2302,
+"sel": ".secret-ready-badge",
+"in": 272,
+"out": 0
+},
+{
+"i": 2303,
+"sel": ".secret-block.ready",
+"in": 272,
+"out": 0
+},
+{
+"i": 2304,
+"sel": ".secret-open",
+"in": 272,
+"out": 0
+},
+{
+"i": 2305,
+"sel": ".secret-open:hover:not(:disabled)",
+"in": 0,
+"out": 0
+},
+{
+"i": 2306,
+"sel": ".secret-open:disabled",
+"in": 272,
+"out": 0
+},
+{
+"i": 2307,
+"sel": ".shop-panel",
+"in": 568,
+"out": 0
+},
+{
+"i": 2308,
+"sel": ".skin-grid",
+"in": 284,
+"out": 0
+},
+{
+"i": 2309,
+"sel": ".secret-grid",
+"in": 284,
+"out": 0
+},
+{
+"i": 2310,
+"sel": ".secret-block",
+"in": 340,
+"out": 0
+},
+{
+"i": 2311,
+"sel": ".secret-art, .secret-chains, .secret-broken",
+"in": 680,
+"out": 0
+},
+{
+"i": 2312,
+"sel": ".secret-art img",
+"in": 340,
+"out": 0
+},
+{
+"i": 2313,
+"sel": ".secret-body",
+"in": 340,
+"out": 0
+},
+{
+"i": 2314,
+"sel": ".secret-body small",
+"in": 340,
+"out": 0
+},
+{
+"i": 2315,
+"sel": ".secret-body h4",
+"in": 340,
+"out": 0
+},
+{
+"i": 2316,
+"sel": ".secret-mystery",
+"in": 68,
+"out": 0
+},
+{
+"i": 2317,
+"sel": ".secret-hint, .secret-pair, .secret-teaser",
+"in": 612,
+"out": 0
+},
+{
+"i": 2318,
+"sel": ".secret-ready-badge",
+"in": 272,
+"out": 0
+},
+{
+"i": 2319,
+"sel": ".secret-go, .secret-open",
+"in": 340,
+"out": 0
+},
+{
+"i": 2320,
+"sel": ".secret-chains .chain",
+"in": 680,
+"out": 0
+},
+{
+"i": 2321,
+"sel": ".secret-lock",
+"in": 340,
+"out": 0
+},
+{
+"i": 2322,
+"sel": ".secret-grid",
+"in": 284,
+"out": 0
+},
+{
+"i": 2323,
+"sel": ".secret-grid",
+"in": 284,
+"out": 0
+},
+{
+"i": 2324,
+"sel": ".guard-break",
+"in": 0,
+"out": 0
+},
+{
+"i": 2325,
+"sel": ".guard-break .gb-flash",
+"in": 0,
+"out": 0
+},
+{
+"i": 2326,
+"sel": ".guard-break .gb-ring",
+"in": 0,
+"out": 0
+},
+{
+"i": 2327,
+"sel": ".guard-break .gb-half",
+"in": 0,
+"out": 0
+},
+{
+"i": 2328,
+"sel": ".guard-break .gb-half.right",
+"in": 0,
+"out": 0
+},
+{
+"i": 2329,
+"sel": ".guard-break .gb-half img",
+"in": 0,
+"out": 0
+},
+{
+"i": 2330,
+"sel": ".guard-break .gb-half.left",
+"in": 0,
+"out": 0
+},
+{
+"i": 2331,
+"sel": ".guard-break .gb-half.right",
+"in": 0,
+"out": 0
+},
+{
+"i": 2332,
+"sel": ".guard-break .gb-shard",
+"in": 0,
+"out": 0
+},
+{
+"i": 2333,
+"sel": ".guard-break .gb-tally",
+"in": 0,
+"out": 0
+},
+{
+"i": 2334,
+"sel": ".guard-break .gb-tally b",
+"in": 0,
+"out": 0
+},
+{
+"i": 2335,
+"sel": ".guard-break .gb-tally b::after",
+"in": 0,
+"out": 0
+},
+{
+"i": 2336,
+"sel": ".guard-break .gb-tally em",
+"in": 0,
+"out": 0
+},
+{
+"i": 2337,
+"sel": ".guard-break.invulnerable .gb-half img",
+"in": 0,
+"out": 0
+},
+{
+"i": 2338,
+"sel": ".guard-break.absolute .gb-half img",
+"in": 0,
+"out": 0
+},
+{
+"i": 2339,
+"sel": ".guard-break.hero .gb-tally",
+"in": 0,
+"out": 0
+},
+{
+"i": 2340,
+"sel": ".guard-break .gb-half",
+"in": 0,
+"out": 0
+},
+{
+"i": 2341,
+"sel": ".guard-break .gb-ring",
+"in": 0,
 "out": 0
 }
 ]

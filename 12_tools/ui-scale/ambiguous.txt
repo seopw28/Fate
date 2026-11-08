@@ -77,8 +77,6 @@
 [미관찰: pull-appeal] .pull-appeal
 [미관찰: completion-chip] .completion-chip
 [미관찰: completion-chip, done] .completion-chip.done
-[미관찰: gacha-reveal] .gacha-reveal.rare
-[미관찰: gacha-card-front, gacha-reveal] .gacha-reveal.rare .gacha-card-front
 [미관찰: pull-card, pull-land] .pull-card.pull-land
 [미관찰: global-spell-card] .global-spell-card
 [미관찰: global-icon, global-spell-card] .global-spell-card .global-icon
@@ -297,3 +295,18 @@
 [미관찰: secret-unlock-note] .secret-unlock-note strong
 [미관찰: secret-unlock-note] .secret-unlock-note span
 [미관찰: secret-unlock-note] .secret-unlock-note button
+[미관찰: guard-break] .guard-break
+[미관찰: gb-flash, guard-break] .guard-break .gb-flash
+[미관찰: gb-ring, guard-break] .guard-break .gb-ring
+[미관찰: gb-half, guard-break] .guard-break .gb-half
+[미관찰: gb-half, guard-break] .guard-break .gb-half img
+[미관찰: gb-shard, guard-break] .guard-break .gb-shard
+[미관찰: gb-tally, guard-break] .guard-break .gb-tally
+[미관찰: gb-tally, guard-break] .guard-break .gb-tally b
+[미관찰: gb-tally, guard-break] .guard-break .gb-tally b::after
+[미관찰: gb-tally, guard-break] .guard-break .gb-tally em
+[미관찰: gb-half, guard-break, invulnerable] .guard-break.invulnerable .gb-half img
+[미관찰: absolute, gb-half, guard-break] .guard-break.absolute .gb-half img
+[미관찰: gb-tally, guard-break, hero] .guard-break.hero .gb-tally
+[미관찰: gb-half, guard-break] .guard-break .gb-half
+[미관찰: gb-ring, guard-break] .guard-break .gb-ring
