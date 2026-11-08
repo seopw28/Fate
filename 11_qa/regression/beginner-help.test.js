@@ -33,14 +33,14 @@ test('튜토리얼을 켜면 설명이 나오고 상대 AI가 약해진다', () 
 
 test('보조 장치는 작게, 결제로 이어지는 상점 요소는 도드라지게 전시한다', () => {
   assert.ok(html.includes('.util-toggle { display:inline-flex'));
-  assert.ok(html.includes('.util-group #sound-toggle { padding:5px 9px !important; font-size:11px'));
+  assert.ok(html.includes('.util-group #sound-toggle { padding:4.5px 8.1px !important; font-size:9.9px'));
   assert.ok(html.includes('.top-nav-btn.shop { color:#ffdf9b'));
   assert.ok(html.includes('class="top-nav-btn main shop" href="#강화"'));
   assert.ok(html.includes('class="top-nav-btn main shop" href="#상점"'));
 });
 
 test('조작부에 붙는 짧은 맥락 설명은 그대로 남긴다', () => {
-  assert.ok(html.includes('font-size:max(14px,.88rem)'));
+  assert.ok(html.includes('font-size:max(12.6px,.79rem)'));
   assert.ok(html.includes('.beginner-focus::after{display:block;animation:beginner-coach-in'));
   assert.ok(html.includes('function showBeginnerCoach'));
   assert.ok(html.includes('function startBeginnerGuideSequence'));

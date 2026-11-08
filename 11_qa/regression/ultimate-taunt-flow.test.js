@@ -19,8 +19,8 @@ test('전역 도발로 대상이 강제되면 화면과 전투 로그에 원인�
 
 test('전역 도발은 화상과 구분되는 두꺼운 짙은 회색 장갑 테두리로 표시한다', () => {
   assert.ok(html.includes('.unit[data-ultimate-aggro="true"]{border-color:#3f4854!important'));
-  assert.ok(html.includes('0 0 0 7px #59636f'));
-  assert.ok(html.includes('inset 0 0 0 2px #8d96a1'));
+  assert.ok(html.includes('0 0 0 6.3px #59636f'));
+  assert.ok(html.includes('inset 0 0 0 1.8px #8d96a1'));
   assert.ok(!html.includes('.unit[data-ultimate-aggro="true"]{box-shadow:0 0 0 3px #ff315f'));
 });
 

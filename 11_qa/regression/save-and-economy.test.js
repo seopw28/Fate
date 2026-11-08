@@ -340,7 +340,7 @@ test('복수자: 궁극기마다 소진자 기본 능력치 +7/+15 로 강림하
   assert.ok(html.includes('showAvengerLandingImpact(unit,colors[partner.el]||colors.neutral)'));
   assert.ok(html.includes('.unit[data-effect="ultimate-avenger"]'), '복수자 카드만 전용 테두리와 오라를 사용해야 한다');
   assert.ok(html.includes('.arena .unit[data-effect="ultimate-avenger"]>h4'), '복수자도 기존 카드 이름 영역을 유지해야 한다');
-  assert.ok(html.includes('z-index:6;scale:1.3;border:3px solid var(--avenger-accent)'), '복수자는 전장에서 30% 확대하고 오라색 굵은 테두리를 사용해야 한다');
+  assert.ok(html.includes('z-index:6;scale:1.3;border:2.7px solid var(--avenger-accent)'), '복수자는 전장에서 30% 확대하고 오라색 굵은 테두리를 사용해야 한다');
   assert.equal(html.includes('avenger-crown-vfx'), false, '복수자 카드에 왕관 장식을 다시 붙이면 안 된다');
   assert.equal(html.includes('decorateAvengerUnit'), false, '왕관 장식용 DOM 로직을 다시 사용하면 안 된다');
   assert.equal(html.includes('crown-body'), false, 'CSS 도형 왕관을 다시 사용하면 안 된다');
