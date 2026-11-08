@@ -2279,3 +2279,8 @@
     .aura-slot-float.holding{box-shadow:0 0 0 1px color-mix(in srgb,var(--slot-aura) 80%,#fff),0 0 0 4px #0b0e15,0 0 0 5px var(--slot-aura),0 0 26px color-mix(in srgb,var(--slot-aura) 70%,transparent),inset 0 2px 8px #000a}
     .aura-slot-float.holding img{opacity:1;transform:none;filter:drop-shadow(0 0 7px var(--slot-aura));animation:aura-slot-seat .9s cubic-bezier(.2,.8,.2,1) both}
     @media(prefers-reduced-motion:reduce){.aura-slot-float{transition:opacity .2s}.aura-slot-float .ass-ring,.aura-slot-float.holding img{animation:none}}
+
+    /* 오라 각성·영웅 강림 버튼은 누를 수 있게 되면 또렷하게 깜빡인다 (2026-11-09 PM 요청). 기존 은은한 숨쉬기 대신 밝음과 어두움이 확실히 갈린다. */
+    .arena>.field-action-dock>.field-ultimate-action:not(.locked):not(:disabled),.arena>.field-action-dock>.field-guardian-ultimate.ready{animation:action-ready-blink 1.1s ease-in-out infinite}
+    @keyframes action-ready-blink{0%,42%{opacity:1;filter:saturate(1.4) brightness(1.4)}58%,100%{opacity:.4;filter:saturate(.8) brightness(.8)}}
+    @media(prefers-reduced-motion:reduce){.arena>.field-action-dock>.field-ultimate-action:not(.locked):not(:disabled),.arena>.field-action-dock>.field-guardian-ultimate.ready{animation:action-ready-blink 2.4s ease-in-out infinite}}
