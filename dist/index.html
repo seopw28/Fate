@@ -2202,20 +2202,23 @@
       .stage-column>.field-action-dock{grid-area:arena}
     }
 
-    /* 상대 손패·덱 표시를 체력바 영역(이름 줄 + 체력바) 높이로 키워 체력바 오른쪽에 둔다 (2026-11-08, docs/plan-hud-layout.md 2).
-       이름 줄(hud-id)은 display:contents 로 풀어 이름·손패 묶음을 각각 격자 칸에 놓는다. */
+    /* 영웅 줄 한 줄 정리 (2026-11-08, docs/plan-hud-layout.md 2): 상대·나 모두 [이름 → 문양 → 체력바 → 덱·손패] 한 줄.
+       두 줄을 같은 열(전장 폭)에 두고 이름·덱손패 칸 폭을 고정해 체력바 길이를 같게 맞춘다. 높이는 체력바 한 줄로 최소화. */
     @media(min-width:1101px){
-      .stage-column>.duel-hud>.enemy>div:last-child{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:16.2px;align-items:center}
-      .stage-column>.duel-hud>.enemy .hud-id{display:contents}
-      .stage-column>.duel-hud>.enemy .hud-id .name{grid-column:1;grid-row:1;align-self:end;margin-bottom:5.4px}
-      .stage-column>.duel-hud>.enemy .health{grid-column:1;grid-row:2;margin-top:0}
-      .stage-column>.duel-hud>.enemy .enemy-piles{grid-column:2;grid-row:1 / span 2;align-self:stretch;margin:0;padding:4.5px 0 4.5px 16.2px;gap:10.8px}
-      .stage-column>.duel-hud>.enemy .enemy-piles .pile-back{width:40px;height:56px;border-radius:5.4px}
-      .stage-column>.duel-hud>.enemy .enemy-piles .pile-hand .pile-back{margin-right:-22px}
-      .stage-column>.duel-hud>.enemy .enemy-piles .pile-hand{padding-right:22px}
-      .stage-column>.duel-hud>.enemy .enemy-piles .pile-count{font-size:12.6px}
-      .stage-column>.duel-hud>.enemy .enemy-piles .pile-back.card-back-design::before{font-size:18px}
+      .stage-column{grid-template-areas:". enemy" "mana arena" "surrender player"}
+      .stage-column>.duel-hud>.enemy,.stage-column>.duel-hud>.player{--hud-name-w:192px;--hud-side-w:232px;--hud-row-h:40px;display:grid!important;grid-template-columns:var(--hud-name-w) var(--hud-row-h) minmax(0,1fr) var(--hud-side-w);align-items:center;column-gap:10.8px;min-height:var(--hud-row-h);text-align:left}
+      .stage-column>.duel-hud>.enemy>div:last-child,.stage-column>.duel-hud>.player>div:last-child,.stage-column>.duel-hud .hud-id{display:contents}
+      .stage-column>.duel-hud .hud-id .name{grid-column:1;grid-row:1;margin:0;white-space:nowrap;display:flex;align-items:center;gap:5.4px;min-width:0}
+      .stage-column>.duel-hud>.enemy>.avatar,.stage-column>.duel-hud>.player>.avatar{grid-column:2;grid-row:1;width:var(--hud-row-h);height:var(--hud-row-h);flex:none;margin:0}
+      .stage-column>.duel-hud>.enemy .health,.stage-column>.duel-hud>.player .health{grid-column:3;grid-row:1;width:100%;height:var(--hud-row-h);margin:0}
+      .stage-column>.duel-hud .enemy-piles,.stage-column>.duel-hud .hud-hand-info{grid-column:4;grid-row:1;justify-self:end;display:flex;align-items:center;gap:9px;margin:0;padding:0 0 0 10.8px;border-left:1px solid #ffffff1f;border-right:0;white-space:nowrap;min-height:0}
+      .stage-column>.duel-hud .enemy-piles .pile-back{width:25.2px;height:35.1px;border-radius:3.6px}
+      .stage-column>.duel-hud .enemy-piles .pile-hand .pile-back{margin-right:-13.5px}
+      .stage-column>.duel-hud .enemy-piles .pile-hand{padding-right:13.5px}
+      .stage-column>.duel-hud .enemy-piles .pile-count{font-size:11.7px}
+      .stage-column>.duel-hud .hud-hand-info{font-size:11.7px}
     }
+    @media(min-width:1101px) and (max-width:1300px){.stage-column>.duel-hud>.enemy,.stage-column>.duel-hud>.player{--hud-name-w:176px;--hud-side-w:210px;column-gap:7.2px}.stage-column>.duel-hud .enemy-piles .pile-back{width:21.6px;height:30.6px}}
 
 </style>
 </head>
