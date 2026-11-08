@@ -891,13 +891,19 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
    이긴다. 카드나 링의 z-index 를 조절해도 소용없다(컨텍스트가 다름). 그래서 링을 카드와 같은
    레인 안으로 넣고 카드보다 앞 형제로 둬 먼저 그려지게 한다 (2026-11-07) */
       const lane=unit.parentElement;
-      if(lane){const lr=lane.getBoundingClientRect(),ls=getComputedStyle(lane);
+      if(lane){const ls=getComputedStyle(lane);
         if(ls.position==='static')lane.style.position='relative';
         impactNode.style.position='absolute';
-        impactNode.style.left=(x-lr.left)+'px';
-        impactNode.style.top=(y-lr.top)+'px';
         impactNode.style.zIndex='0';
-        lane.insertBefore(impactNode,lane.firstChild);}
+        /* 전장은 화면 크기에 맞춰 조상에서 축소된다. 화면 좌표 차이를 그대로 left/top 에 넣으면 축소 배율만큼
+           어긋나 마법진이 카드 중심보다 왼쪽에 생긴다(오른쪽 칸일수록 더 크게). 링을 (0,0)과 (100,100)에 놓아
+           실제 화면 배율과 원점을 잰 뒤, 카드 아래 중심(x,y)에 정확히 오도록 되돌린다 (2026-11-08) */
+        impactNode.style.left='0px';impactNode.style.top='0px';
+        lane.insertBefore(impactNode,lane.firstChild);
+        const p0=impactNode.getBoundingClientRect();impactNode.style.left='100px';impactNode.style.top='100px';
+        const p1=impactNode.getBoundingClientRect(),kx=(p1.left-p0.left)/100||1,ky=(p1.top-p0.top)/100||1;
+        impactNode.style.left=((x-(p0.left+p0.width/2))/kx)+'px';
+        impactNode.style.top=((y-(p0.top+p0.height/2))/ky)+'px';}
       else document.body.appendChild(impactNode);
       setTimeout(()=>impactNode.remove(),1050);const stage=document.querySelector('.stage-column');if(stage&&!reduced)stage.animate([{translate:'0 0'},{translate:'0 '+(5*power)+'px',offset:.12},{translate:(-3*power)+'px '+(-2*power)+'px',offset:.28},{translate:(3*power)+'px '+(1*power)+'px',offset:.44},{translate:(-1*power)+'px 0',offset:.62},{translate:'0 0'}],{duration:430,easing:'ease-out'});if(!reduced)unit.animate([{translate:'0 -30px',scale:'1.08',filter:'brightness(1.8)'},{translate:'0 7px',scale:'.98',filter:'brightness(1.3)',offset:.42},{translate:'0 -3px',scale:'1.02',offset:.7},{translate:'0 0',scale:'1',filter:'brightness(1)'}],{duration:520,easing:'cubic-bezier(.16,.8,.24,1)'});playAudio('metal',Math.min(.68,.34+cost*.035),Math.max(.62,.92-cost*.025));noise(.24+.025*cost,.045+.004*cost,180);tone(54,.42,'sine',Math.min(.13,.065+cost*.007),34);setTimeout(()=>noise(.1,.025,950),35);}
     function summonCardFlip(fromRect,unit,onDone){const ready=artReady(unit);unit.style.visibility='hidden';if(matchMedia('(prefers-reduced-motion: reduce)').matches){unit.style.visibility='';summonLandingImpact(unit);if(onDone)onDone();return;}
