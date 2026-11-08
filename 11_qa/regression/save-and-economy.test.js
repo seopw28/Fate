@@ -81,8 +81,8 @@ test('오라 선택: 성격의 오라 5종을 오각형 꼭짓점에 배치하�
   assert.ok(html.includes("<img src=\"'+aura.sigil+'\" alt=\"'+aura.name+' 문양\">"), 'Aura marks must use images instead of letter glyphs');
 });
 
-test('금속의 오라: 맨 왼쪽 챔프가 생존 경험으로 공격력을 한 번 성장시킨다', () => {
-  assert.ok(html.includes("survivalStep:.26,maxChance:.90,attackGain:4,short:'생존 경험'"));
+test('금속의 오라: 맨 왼쪽 챔프가 전투 경험으로 공격력을 한 번 성장시킨다', () => {
+  assert.ok(html.includes("survivalStep:.26,maxChance:.90,attackGain:4,short:'전투 경험'"));
   assert.ok(html.includes("unit.dataset.metalSurvivalTurns=String((Number(unit.dataset.metalSurvivalTurns)||0)+1)"));
   assert.ok(html.includes("front.dataset.metalExperienced='true'"), 'Metal attack growth must be limited to once per champion');
   /* 배지 글자를 어느 노드에 넣는지(badge 직접 / 안쪽 span)는 레이아웃 사정으로 바뀐다.
@@ -149,7 +149,7 @@ test('오라 각성: 체력 85 이하에서 양자택일하고 배틀 종료까�
   assert.ok(html.includes("unit.dataset[eternal?'eternalBurnTurns':'auraBurnTurns']=String(remaining)"), 'Burn duration must count down once per owner turn, including eternal black flame');
   assert.ok(html.includes("showAwakeningProc('player','cheongryong',name,'마나 +'+gain"), 'Water awakening must visibly announce recovered mana');
   assert.ok(html.includes("showAwakeningProc(side,'namu',config.name||'나무의 오라'"), 'Wood awakening must visibly announce health growth');
-  assert.ok(html.includes("showAwakeningProc(side,'baekho',config.name||'생존 경험'"), 'Metal awakening must announce attack growth');
+  assert.ok(html.includes("showAwakeningProc(side,'baekho',config.name||'전투 경험'"), 'Metal awakening must announce attack growth');
   assert.ok(html.includes("showAwakeningProc(side,'hyeonmu','암반 피부'"), 'Rock Skin must visibly announce damage reduction');
   assert.ok(html.includes("showAwakeningProc(side,'hyeonmu','절대방어'"), 'Absolute Defense must visibly announce damage nullification');
 });
