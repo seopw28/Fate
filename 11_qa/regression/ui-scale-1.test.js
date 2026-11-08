@@ -23,3 +23,9 @@ test('예전 축소 보정 대신 1.0 기준 높이를 쓴다', () => {
   assert.ok(css.includes('.command-rail, .stage-column { height:calc(100vh - 142.2px); }'));
   assert.ok(css.includes('.collection-shell { width:calc(100vw - 28.8px); height:calc(100vh - 28.8px); }'));
 });
+
+// 2026-11-08: 내 영웅 줄이 화면 하단으로 내려오며, 체력바 아래에서 시작하던 영웅 피해 숫자가 화면 밖으로 나갔다.
+test('영웅 피해 숫자는 아래 공간이 모자라면 체력바 위에서 떠오른다', () => {
+  assert.ok(html.includes("below=br.bottom+size*1.1"));
+  assert.ok(html.includes("pop.style.top=(below<=innerHeight-6?below:br.top-6)+'px'"));
+});
