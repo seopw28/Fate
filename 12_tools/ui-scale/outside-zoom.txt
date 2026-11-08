@@ -1,0 +1,44 @@
+# 0.9 축소(zoom) 밖에 그려지는 것 (2026-11-08, scan-zoom-classes.py)
+
+축소는 main.app, #result, #tier-modal, #collection-modal 4곳에만 걸린다. 아래는 그 밖(body 바로 아래)에 붙어 지금도 1.0으로 그려지는 것이다.
+CSS 변환(2-2) 때 이 요소에만 적용되는 규칙은 0.9배로 바꾸지 않는다.
+
+## body 바로 아래, 축소 밖 요소 (스캔 중 관찰)
+
+- `div#recycle-modal.recycle-modal`
+- `div.impact-vignette`
+- `div.fx screen-flash`
+- `i.impact-core`
+- `i.shockwave`
+- `i.impact-ray`
+- `i.particle shard`
+- `i.element-wisp`
+- `div.attack-trail`
+- `img.asset-fx`
+- `div.hero-edge-flash player-side`
+- `div.hp-damage-pop`
+- `div.skill-fx heal`
+- `div.defense-shield-fx`
+- `b.field-impact-label exchange-damage-numbe`
+- `div.spell-target-ring`
+- `div.medium-skill-fx unit-fx flame-pillar`
+- `div.avenger-landing-impact`
+- `div.avenger-landing-flash`
+- `div.border-impact`
+- `div.synth-stage revealed common`
+- `div.effect-narration summon`
+- `div.guardian-select gs-aura`
+
+## 축소 밖에서만 나온 클래스 (80개)
+
+`arcane-circle`, `asset-fx`, `attack-trail`, `aura-cheongryong`, `aura-hyeonmu`, `aura-namu`, `aura-pentagon-core`, `avenger-arrival`, `avenger-aura`, `avenger-copy`, `avenger-landing-flash`, `avenger-landing-impact`, `avenger-portrait`, `border-impact`, `burn`, `damage-fx`, `defense-shield-fx`, `draw-flight`, `effect-narration`, `element-wisp`, `exchange-damage-number`, `field-impact-label`, `flame-pillar`, `fx`, `fx-line`, `fx-title`, `gd-emblem`, `gs-aura`, `gs-baekho`, `gs-board`, `gs-card`, `gs-cheongryong`, `gs-desc`, `gs-heading`, `gs-hyeonmu`, `gs-jujak`, `gs-namu`, `gs-note`, `gs-power`, `guardian-select`, `heal`, `hero-edge-flash`, `hit-fx`, `hp-damage-pop`, `impact-core`, `impact-ray`, `impact-vignette`, `left`, `medium-skill-fx`, `motion-caption`, `particle`, `player-side`, `recycle-actions`, `recycle-modal`, `recycle-no`, `recycle-panel`, `recycle-yes`, `revealed`, `right`, `screen-flash`, `secondary`, `selected`, `shard`, `shockwave`, `skill-fx`, `spell-target-ring`, `spent-death-copy`, `spent-death-core`, `spent-death-half`, `spent-death-shard`, `stage-caption`, `stage-card`, `stage-circle`, `stage-close`, `stage-flash`, `stage-result`, `summon`, `synth-stage`, `ultimate-spent-death`, `unit-fx`
+
+## 안·밖 양쪽에서 나온 클래스 (142개, 2-2에서 규칙 단위로 판정)
+
+`enh-tier`(안 16637/밖 2889), `enh-roman`(안 16637/밖 2889), `on`(안 9606/밖 1556), `free`(안 6966/밖 1458), `synth-pick`(안 6422/밖 1251), `synth-spare`(안 6422/밖 1251), `common`(안 7356/밖 1139), `synth-pick-main`(안 3483/밖 729), `synth-have`(안 3483/밖 729), `synth-stepper`(안 3483/밖 729), `max`(안 3483/밖 729), `rare`(안 2728/밖 374), `off`(안 9702/밖 344), `owned-card`(안 3962/밖 276), `owned-count`(안 3962/밖 276), `deck-card-controls`(안 3962/밖 276), `codex-card`(안 9202/밖 214), `codex-no`(안 9202/밖 214), `codex-type`(안 9202/밖 214), `codex-art`(안 9202/밖 214), `codex-name`(안 9202/밖 214), `type-champion`(안 7181/밖 167), `in-deck`(안 2366/밖 165), `deck-row`(안 2420/밖 165), `deck-row-actions`(안 2420/밖 165), `owned-rule`(안 2156/밖 147), `missing`(안 5246/밖 122), `codex-lock`(안 5246/밖 122), `rarity-rare`(안 4343/밖 101), `got`(안 4042/밖 94), `codex-own`(안 3956/밖 92), `tier-pick`(안 2451/밖 86), `sel`(안 2451/밖 86), `synth-slot`(안 387/밖 81), `vacant`(안 294/밖 75), `rarity-legendary`(안 2795/밖 65), `rarity-common`(안 2236/밖 52), `skin-card`(안 108/밖 48), `skin-preview`(안 108/밖 48), `skin-btn`(안 108/밖 48), `active`(안 684/밖 45), `type-spell`(안 1763/밖 41), `buy`(안 58/밖 38), `deck-filter`(안 528/밖 36), `legendary`(안 484/밖 33), `synth-card`(안 112/밖 30), `field`(안 12/밖 30), `skin-field-preview`(안 12/밖 30), `rule-key`(안 509/밖 27), `unknown`(안 83/밖 26), `disabled`(안 352/밖 24), `card-back-design`(안 482/밖 19), `slot-empty`(안 67/밖 19), `fire`(안 317/밖 18), `enh-outcome`(안 138/밖 18), `synth-section`(안 112/밖 18), `back`(안 96/밖 18), `deck-group`(안 220/밖 15), `deck-group-head`(안 220/밖 15), `ult-block`(안 926/밖 12), `ult-label`(안 926/밖 12), `picked`(안 68/밖 12), `aura-mark`(안 110/밖 10), `ult-title`(안 178/밖 10), `ult-reason`(안 178/밖 10), `type-trap`(안 430/밖 10), `owned`(안 50/밖 10), `ok`(안 69/밖 9), `ng`(안 69/밖 9), `synth-slots-head`(안 43/밖 9), `synth-odds-hint`(안 43/밖 9), `synth-dup`(안 43/밖 9), `applied`(안 18/밖 8), `codex-stat`(안 301/밖 7), `new-badge`(안 29/밖 7), `setting-title`(안 127/밖 6), `ult-preview`(안 463/밖 6), `ult-body`(안 463/밖 6), `ult-name`(안 463/밖 6), `ult-effect`(안 463/밖 6), `ult-cond`(안 463/밖 6), `ult-meta`(안 463/밖 6), `deck-tab`(안 88/밖 6), `deck-sep`(안 88/밖 6), `filled`(안 93/밖 6), `ultimate-slot-empty`(안 54/밖 5), `ultimate-cta`(안 54/밖 5), `cta-main`(안 54/밖 5), `ult-ready-label`(안 98/밖 4), `ult-ready-meta`(안 98/밖 4), `synth-odd`(안 62/밖 4), `synth-picked`(안 31/밖 4), `enh-slot`(안 29/밖 4), `enh-mats`(안 29/밖 4), `enh-chance`(안 29/밖 4), `eg-main`(안 29/밖 4), `eg-sub`(안 29/밖 4), `mana-pip`(안 248/밖 3), `full`(안 248/밖 3), `creature-art`(안 752/밖 3), `rule-trigger`(안 507/밖 3), `deck-tabs`(안 44/밖 3), `editing`(안 44/밖 3), `complete`(안 44/밖 3), `add`(안 44/밖 3), `deck-manage`(안 44/밖 3), `deck-tools`(안 44/밖 3), `deck-summary`(안 44/밖 3), `deck-comp`(안 44/밖 3), `deck-bar`(안 44/밖 3), `deck-legend`(안 44/밖 3), `deck-curve-label`(안 44/밖 3), `deck-curve`(안 44/밖 3), `deck-group-toggle`(안 44/밖 3), `aura-jujak`(안 55/밖 2), `aura-baekho`(안 55/밖 2), `card`(안 709/밖 2), `summon-card`(안 586/밖 2), `grade-b`(안 73/밖 2), `cost`(안 709/밖 2), `type`(안 709/밖 2), `rarity-stars`(안 586/밖 2), `art`(안 709/밖 2), `card-stats`(안 709/밖 2), `grade-bonus`(안 198/밖 2), `power-grade`(안 586/밖 2), `cancel-hint`(안 22/밖 2), `armed`(안 32/밖 2), `apply`(안 32/밖 2), `mana-label`(안 57/밖 1), `mana-value`(안 57/밖 1), `mana-pips`(안 57/밖 1), `blood-rate`(안 57/밖 1), `ultimate-slot`(안 18/밖 1), `codex-total`(안 43/밖 1), `codex-total-num`(안 43/밖 1), `codex-progress`(안 43/밖 1), `codex-detail-art`(안 43/밖 1), `codex-detail-meta`(안 43/밖 1), `codex-detail-stats`(안 43/밖 1), `codex-detail-state`(안 43/밖 1), `codex-completion`(안 43/밖 1)
+
+## 코드에서 body에 붙이는데 스캔 중 안 나온 클래스 (정적 검색)
+
+`arriving`, `awaken-flare`, `awaken-flight`, `awakening-proc-banner`, `battle-intro`, `blood-mana-fx`, `card-depart`, `card-depart-dest`, `card-flight`, `cinematic-skill-fx`, `cracker-transfer`, `cracker-transfer-caption`, `deck-fly`, `enhance-equip-fly`, `field-impact-burst`, `global-spell`, `guardian-descent`, `lethal`, `resolved`, `resonance-beam`, `resonance-caption`, `resonance-gain`, `resonance-orb`, `shatter-resonance-fx`, `shield-break-vfx`, `spell-absorb-card`, `spell-vortex`, `ultimate-cutscene`, `ultimate-overlay`, `unit-retiring`
+
+참고: `summon-ground-impact`는 body가 아니라 전장 레인 안에 붙는다(축소 안). 정적 검색은 body 대체 경로까지 잡아서 목록에 섞였다.

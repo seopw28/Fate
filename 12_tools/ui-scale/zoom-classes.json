@@ -1,0 +1,1960 @@
+{
+"classes": {
+"app": {
+"in": 55,
+"out": 0
+},
+"brand": {
+"in": 55,
+"out": 0
+},
+"brand-mark": {
+"in": 55,
+"out": 0
+},
+"hand-guide": {
+"in": 55,
+"out": 0
+},
+"top-actions": {
+"in": 55,
+"out": 0
+},
+"ghost": {
+"in": 661,
+"out": 0
+},
+"cracker-wallet": {
+"in": 55,
+"out": 0
+},
+"top-nav": {
+"in": 55,
+"out": 0
+},
+"top-nav-btn": {
+"in": 330,
+"out": 0
+},
+"main": {
+"in": 165,
+"out": 0
+},
+"shop": {
+"in": 110,
+"out": 0
+},
+"secret": {
+"in": 55,
+"out": 0
+},
+"util-group": {
+"in": 55,
+"out": 0
+},
+"sound-wrap": {
+"in": 56,
+"out": 0
+},
+"sound-panel": {
+"in": 56,
+"out": 0
+},
+"sound-mute": {
+"in": 56,
+"out": 0
+},
+"util-toggle": {
+"in": 55,
+"out": 0
+},
+"toggle-track": {
+"in": 55,
+"out": 0
+},
+"util-toggle-label": {
+"in": 55,
+"out": 0
+},
+"layout": {
+"in": 55,
+"out": 0
+},
+"battle": {
+"in": 55,
+"out": 0
+},
+"status": {
+"in": 55,
+"out": 0
+},
+"battle-shell": {
+"in": 55,
+"out": 0
+},
+"stage-column": {
+"in": 55,
+"out": 0
+},
+"duel-hud": {
+"in": 55,
+"out": 0
+},
+"enemy": {
+"in": 55,
+"out": 0
+},
+"avatar": {
+"in": 110,
+"out": 0
+},
+"gd-avatar": {
+"in": 110,
+"out": 0
+},
+"gd-jujak": {
+"in": 55,
+"out": 0
+},
+"aura-mark": {
+"in": 110,
+"out": 10
+},
+"aura-jujak": {
+"in": 55,
+"out": 2
+},
+"hud-id": {
+"in": 110,
+"out": 0
+},
+"name": {
+"in": 110,
+"out": 0
+},
+"enemy-difficulty": {
+"in": 55,
+"out": 0
+},
+"guardian-chip": {
+"in": 110,
+"out": 0
+},
+"sub": {
+"in": 110,
+"out": 0
+},
+"enemy-piles": {
+"in": 55,
+"out": 0
+},
+"pile-hand": {
+"in": 55,
+"out": 0
+},
+"pile-back": {
+"in": 385,
+"out": 0
+},
+"card-back-design": {
+"in": 482,
+"out": 19
+},
+"pile-deck": {
+"in": 55,
+"out": 0
+},
+"health": {
+"in": 110,
+"out": 0
+},
+"health-value": {
+"in": 110,
+"out": 0
+},
+"player": {
+"in": 55,
+"out": 0
+},
+"gd-baekho": {
+"in": 55,
+"out": 0
+},
+"aura-baekho": {
+"in": 55,
+"out": 2
+},
+"hud-hand-info": {
+"in": 55,
+"out": 0
+},
+"deck-stack": {
+"in": 55,
+"out": 0
+},
+"arena": {
+"in": 55,
+"out": 0
+},
+"lane": {
+"in": 110,
+"out": 0
+},
+"field-empty": {
+"in": 45,
+"out": 0
+},
+"summon-zone": {
+"in": 55,
+"out": 0
+},
+"field-action-dock": {
+"in": 55,
+"out": 0
+},
+"field-ultimate-action": {
+"in": 55,
+"out": 0
+},
+"locked": {
+"in": 680,
+"out": 0
+},
+"ult-title": {
+"in": 178,
+"out": 10
+},
+"ult-reason": {
+"in": 178,
+"out": 10
+},
+"field-guardian-ultimate": {
+"in": 55,
+"out": 0
+},
+"mana-hud": {
+"in": 55,
+"out": 0
+},
+"mana-label": {
+"in": 57,
+"out": 1
+},
+"mana-value": {
+"in": 57,
+"out": 1
+},
+"mana-pips": {
+"in": 57,
+"out": 1
+},
+"mana-pip": {
+"in": 248,
+"out": 3
+},
+"full": {
+"in": 248,
+"out": 3
+},
+"blood-rate": {
+"in": 57,
+"out": 1
+},
+"surrender-action": {
+"in": 55,
+"out": 0
+},
+"command-rail": {
+"in": 55,
+"out": 0
+},
+"turn": {
+"in": 55,
+"out": 0
+},
+"hand-wrap": {
+"in": 55,
+"out": 0
+},
+"hand-title": {
+"in": 55,
+"out": 0
+},
+"hand-tabs": {
+"in": 55,
+"out": 0
+},
+"hand-tab": {
+"in": 110,
+"out": 0
+},
+"active": {
+"in": 684,
+"out": 45
+},
+"ultimate-panel": {
+"in": 55,
+"out": 0
+},
+"setting-title": {
+"in": 127,
+"out": 6
+},
+"ultimate-slot-empty": {
+"in": 54,
+"out": 5
+},
+"ultimate-cta": {
+"in": 54,
+"out": 5
+},
+"cta-main": {
+"in": 54,
+"out": 5
+},
+"magic-setting-panel": {
+"in": 55,
+"out": 0
+},
+"set-zones": {
+"in": 55,
+"out": 0
+},
+"set-slot": {
+"in": 55,
+"out": 0
+},
+"trap-slot": {
+"in": 55,
+"out": 0
+},
+"slot-empty": {
+"in": 67,
+"out": 19
+},
+"hand": {
+"in": 55,
+"out": 0
+},
+"card": {
+"in": 709,
+"out": 2
+},
+"summon-card": {
+"in": 586,
+"out": 2
+},
+"fire": {
+"in": 317,
+"out": 18
+},
+"grade-b": {
+"in": 73,
+"out": 2
+},
+"cost": {
+"in": 709,
+"out": 2
+},
+"type": {
+"in": 709,
+"out": 2
+},
+"rarity-stars": {
+"in": 586,
+"out": 2
+},
+"art": {
+"in": 709,
+"out": 2
+},
+"creature-art": {
+"in": 752,
+"out": 3
+},
+"rule-trigger": {
+"in": 507,
+"out": 3
+},
+"card-stats": {
+"in": 709,
+"out": 2
+},
+"grade-bonus": {
+"in": 198,
+"out": 2
+},
+"power-grade": {
+"in": 586,
+"out": 2
+},
+"enh-tier": {
+"in": 16637,
+"out": 2889
+},
+"enh-roman": {
+"in": 16637,
+"out": 2889
+},
+"water": {
+"in": 174,
+"out": 0
+},
+"spell-card": {
+"in": 114,
+"out": 0
+},
+"neutral": {
+"in": 194,
+"out": 0
+},
+"illustrated-magic": {
+"in": 123,
+"out": 0
+},
+"magic-buff": {
+"in": 39,
+"out": 0
+},
+"hand-filtered": {
+"in": 84,
+"out": 0
+},
+"magic-art-image": {
+"in": 123,
+"out": 0
+},
+"grade-c": {
+"in": 388,
+"out": 0
+},
+"blood-option": {
+"in": 62,
+"out": 0
+},
+"wind": {
+"in": 131,
+"out": 0
+},
+"magic-offense": {
+"in": 39,
+"out": 0
+},
+"unaffordable": {
+"in": 21,
+"out": 0
+},
+"turn-actions": {
+"in": 55,
+"out": 0
+},
+"draw-action": {
+"in": 55,
+"out": 0
+},
+"end": {
+"in": 55,
+"out": 0
+},
+"log": {
+"in": 55,
+"out": 0
+},
+"system-log": {
+"in": 55,
+"out": 0
+},
+"result": {
+"in": 55,
+"out": 0
+},
+"result-box": {
+"in": 55,
+"out": 0
+},
+"result-kicker": {
+"in": 55,
+"out": 0
+},
+"result-emblem": {
+"in": 55,
+"out": 0
+},
+"result-rank": {
+"in": 55,
+"out": 0
+},
+"rank-before": {
+"in": 57,
+"out": 0
+},
+"rank-delta": {
+"in": 57,
+"out": 0
+},
+"rank-after": {
+"in": 57,
+"out": 0
+},
+"result-rank-note": {
+"in": 55,
+"out": 0
+},
+"result-question": {
+"in": 55,
+"out": 0
+},
+"result-actions": {
+"in": 55,
+"out": 0
+},
+"recycle-modal": {
+"in": 0,
+"out": 55
+},
+"recycle-panel": {
+"in": 0,
+"out": 55
+},
+"recycle-actions": {
+"in": 0,
+"out": 55
+},
+"recycle-yes": {
+"in": 0,
+"out": 55
+},
+"recycle-no": {
+"in": 0,
+"out": 55
+},
+"tier-modal": {
+"in": 55,
+"out": 0
+},
+"tier-panel": {
+"in": 55,
+"out": 0
+},
+"tier-head": {
+"in": 55,
+"out": 0
+},
+"modal-close": {
+"in": 110,
+"out": 0
+},
+"collection-modal": {
+"in": 55,
+"out": 0
+},
+"collection-shell": {
+"in": 55,
+"out": 0
+},
+"collection-head": {
+"in": 55,
+"out": 0
+},
+"collection-wallets": {
+"in": 55,
+"out": 0
+},
+"currency": {
+"in": 110,
+"out": 0
+},
+"cookie": {
+"in": 55,
+"out": 0
+},
+"collection-tabs": {
+"in": 55,
+"out": 0
+},
+"collection-tab": {
+"in": 330,
+"out": 0
+},
+"secret-tab": {
+"in": 55,
+"out": 0
+},
+"collection-view": {
+"in": 330,
+"out": 0
+},
+"gacha-view": {
+"in": 55,
+"out": 0
+},
+"shop-subtabs": {
+"in": 55,
+"out": 0
+},
+"shop-subtab": {
+"in": 110,
+"out": 0
+},
+"shop-panel": {
+"in": 110,
+"out": 0
+},
+"gacha-banner": {
+"in": 55,
+"out": 0
+},
+"shop-tag": {
+"in": 55,
+"out": 0
+},
+"gacha-orb": {
+"in": 55,
+"out": 0
+},
+"gacha-actions": {
+"in": 55,
+"out": 0
+},
+"gacha-choice": {
+"in": 55,
+"out": 0
+},
+"primary": {
+"in": 55,
+"out": 0
+},
+"gacha-choice-label": {
+"in": 55,
+"out": 0
+},
+"cookie-exchange": {
+"in": 55,
+"out": 0
+},
+"gacha-results": {
+"in": 55,
+"out": 0
+},
+"gacha-placeholder": {
+"in": 55,
+"out": 0
+},
+"ghosts": {
+"in": 55,
+"out": 0
+},
+"shop-cosmetic": {
+"in": 55,
+"out": 0
+},
+"cosmetic-head": {
+"in": 55,
+"out": 0
+},
+"codex-seg": {
+"in": 385,
+"out": 0
+},
+"cosmetic-help": {
+"in": 55,
+"out": 0
+},
+"skin-grid": {
+"in": 55,
+"out": 0
+},
+"skin-notice": {
+"in": 55,
+"out": 0
+},
+"synth-view": {
+"in": 110,
+"out": 0
+},
+"synth-altar": {
+"in": 110,
+"out": 0
+},
+"synth-slots": {
+"in": 55,
+"out": 0
+},
+"synth-arrow": {
+"in": 55,
+"out": 0
+},
+"synth-result": {
+"in": 110,
+"out": 0
+},
+"synth-odds": {
+"in": 110,
+"out": 0
+},
+"synth-go": {
+"in": 110,
+"out": 0
+},
+"cookie-cost": {
+"in": 110,
+"out": 0
+},
+"synth-help": {
+"in": 110,
+"out": 0
+},
+"synth-pool": {
+"in": 110,
+"out": 0
+},
+"synth-pool-head": {
+"in": 110,
+"out": 0
+},
+"synth-auto": {
+"in": 55,
+"out": 0
+},
+"synth-count": {
+"in": 110,
+"out": 0
+},
+"synth-grid": {
+"in": 110,
+"out": 0
+},
+"synth-card": {
+"in": 112,
+"out": 30
+},
+"unknown": {
+"in": 83,
+"out": 26
+},
+"enh-outcome": {
+"in": 138,
+"out": 18
+},
+"ok": {
+"in": 69,
+"out": 9
+},
+"ng": {
+"in": 69,
+"out": 9
+},
+"enhance-acquire": {
+"in": 55,
+"out": 0
+},
+"enhance-gate": {
+"in": 55,
+"out": 0
+},
+"synth-section": {
+"in": 112,
+"out": 18
+},
+"synth-pick": {
+"in": 6422,
+"out": 1251
+},
+"common": {
+"in": 7356,
+"out": 1139
+},
+"synth-spare": {
+"in": 6422,
+"out": 1251
+},
+"secret-view": {
+"in": 55,
+"out": 0
+},
+"secret-head": {
+"in": 55,
+"out": 0
+},
+"secret-intro": {
+"in": 55,
+"out": 0
+},
+"secret-progress": {
+"in": 55,
+"out": 0
+},
+"secret-grid": {
+"in": 55,
+"out": 0
+},
+"secret-toast": {
+"in": 55,
+"out": 0
+},
+"codex-view": {
+"in": 55,
+"out": 0
+},
+"codex-summary": {
+"in": 55,
+"out": 0
+},
+"codex-toolbar": {
+"in": 55,
+"out": 0
+},
+"codex-body": {
+"in": 55,
+"out": 0
+},
+"codex-grid": {
+"in": 55,
+"out": 0
+},
+"codex-detail": {
+"in": 55,
+"out": 0
+},
+"deck-view": {
+"in": 55,
+"out": 0
+},
+"deck-switcher": {
+"in": 55,
+"out": 0
+},
+"deck-toolbar": {
+"in": 55,
+"out": 0
+},
+"deck-filters": {
+"in": 55,
+"out": 0
+},
+"deck-count": {
+"in": 55,
+"out": 0
+},
+"deck-content": {
+"in": 55,
+"out": 0
+},
+"owned-grid": {
+"in": 55,
+"out": 0
+},
+"deck-list": {
+"in": 55,
+"out": 0
+},
+"deck-rows": {
+"in": 55,
+"out": 0
+},
+"deck-help": {
+"in": 55,
+"out": 0
+},
+"deck-save": {
+"in": 55,
+"out": 0
+},
+"impact": {
+"in": 54,
+"out": 0
+},
+"summon-ground-impact": {
+"in": 7,
+"out": 0
+},
+"ground-crack": {
+"in": 56,
+"out": 0
+},
+"ground-debris": {
+"in": 98,
+"out": 0
+},
+"unit": {
+"in": 242,
+"out": 0
+},
+"exhausted": {
+"in": 55,
+"out": 0
+},
+"emoji": {
+"in": 242,
+"out": 0
+},
+"stats": {
+"in": 242,
+"out": 0
+},
+"impact-vignette": {
+"in": 0,
+"out": 4
+},
+"fx": {
+"in": 0,
+"out": 34
+},
+"screen-flash": {
+"in": 0,
+"out": 2
+},
+"impact-core": {
+"in": 0,
+"out": 4
+},
+"shockwave": {
+"in": 0,
+"out": 18
+},
+"secondary": {
+"in": 0,
+"out": 10
+},
+"impact-ray": {
+"in": 0,
+"out": 52
+},
+"particle": {
+"in": 0,
+"out": 240
+},
+"shard": {
+"in": 0,
+"out": 240
+},
+"element-wisp": {
+"in": 0,
+"out": 98
+},
+"attack-trail": {
+"in": 0,
+"out": 4
+},
+"asset-fx": {
+"in": 0,
+"out": 16
+},
+"hit-fx": {
+"in": 0,
+"out": 16
+},
+"damage-fx": {
+"in": 0,
+"out": 16
+},
+"hero-edge-flash": {
+"in": 0,
+"out": 8
+},
+"player-side": {
+"in": 0,
+"out": 8
+},
+"hp-damage-pop": {
+"in": 0,
+"out": 8
+},
+"skill-fx": {
+"in": 0,
+"out": 8
+},
+"heal": {
+"in": 0,
+"out": 7
+},
+"fx-title": {
+"in": 0,
+"out": 8
+},
+"defense-shield-fx": {
+"in": 0,
+"out": 8
+},
+"field-impact-label": {
+"in": 0,
+"out": 5
+},
+"exchange-damage-number": {
+"in": 0,
+"out": 5
+},
+"spell-target-ring": {
+"in": 0,
+"out": 3
+},
+"medium-skill-fx": {
+"in": 0,
+"out": 17
+},
+"unit-fx": {
+"in": 0,
+"out": 8
+},
+"flame-pillar": {
+"in": 0,
+"out": 8
+},
+"avenger-landing-impact": {
+"in": 0,
+"out": 16
+},
+"avenger-landing-flash": {
+"in": 0,
+"out": 16
+},
+"arcane-circle": {
+"in": 0,
+"out": 9
+},
+"ready": {
+"in": 52,
+"out": 0
+},
+"just-ready": {
+"in": 51,
+"out": 0
+},
+"ult-ready-label": {
+"in": 98,
+"out": 4
+},
+"ult-ready-meta": {
+"in": 98,
+"out": 4
+},
+"ultimate-ready": {
+"in": 12,
+"out": 0
+},
+"ultimate-slot": {
+"in": 18,
+"out": 1
+},
+"cancel-hint": {
+"in": 22,
+"out": 2
+},
+"border-impact": {
+"in": 0,
+"out": 7
+},
+"armed": {
+"in": 32,
+"out": 2
+},
+"ultimate-arming": {
+"in": 27,
+"out": 0
+},
+"aura-candidate-mode": {
+"in": 27,
+"out": 0
+},
+"aura-ultimate-match": {
+"in": 98,
+"out": 0
+},
+"ult-preview": {
+"in": 463,
+"out": 6
+},
+"ult-body": {
+"in": 463,
+"out": 6
+},
+"ult-name": {
+"in": 463,
+"out": 6
+},
+"ult-block": {
+"in": 926,
+"out": 12
+},
+"ult-effect": {
+"in": 463,
+"out": 6
+},
+"ult-label": {
+"in": 926,
+"out": 12
+},
+"ult-cond": {
+"in": 463,
+"out": 6
+},
+"ult-meta": {
+"in": 463,
+"out": 6
+},
+"aura-ultimate-mismatch": {
+"in": 329,
+"out": 0
+},
+"initiative-guide": {
+"in": 1,
+"out": 0
+},
+"trap-card": {
+"in": 9,
+"out": 0
+},
+"rule-key": {
+"in": 509,
+"out": 27
+},
+"grade-a": {
+"in": 125,
+"out": 0
+},
+"earth": {
+"in": 67,
+"out": 0
+},
+"metal": {
+"in": 68,
+"out": 0
+},
+"bomb-badge": {
+"in": 72,
+"out": 0
+},
+"show": {
+"in": 31,
+"out": 0
+},
+"synth-slots-head": {
+"in": 43,
+"out": 9
+},
+"synth-slot": {
+"in": 387,
+"out": 81
+},
+"vacant": {
+"in": 294,
+"out": 75
+},
+"synth-odds-hint": {
+"in": 43,
+"out": 9
+},
+"synth-dup": {
+"in": 43,
+"out": 9
+},
+"synth-pick-main": {
+"in": 3483,
+"out": 729
+},
+"synth-have": {
+"in": 3483,
+"out": 729
+},
+"free": {
+"in": 6966,
+"out": 1458
+},
+"on": {
+"in": 9606,
+"out": 1556
+},
+"synth-stepper": {
+"in": 3483,
+"out": 729
+},
+"max": {
+"in": 3483,
+"out": 729
+},
+"rare": {
+"in": 2728,
+"out": 374
+},
+"codex-total": {
+"in": 43,
+"out": 1
+},
+"codex-total-num": {
+"in": 43,
+"out": 1
+},
+"codex-progress": {
+"in": 43,
+"out": 1
+},
+"codex-stat": {
+"in": 301,
+"out": 7
+},
+"type-champion": {
+"in": 7181,
+"out": 167
+},
+"type-spell": {
+"in": 1763,
+"out": 41
+},
+"type-trap": {
+"in": 430,
+"out": 10
+},
+"rarity-legendary": {
+"in": 2795,
+"out": 65
+},
+"rarity-rare": {
+"in": 4343,
+"out": 101
+},
+"rarity-common": {
+"in": 2236,
+"out": 52
+},
+"codex-card": {
+"in": 9202,
+"out": 214
+},
+"got": {
+"in": 4042,
+"out": 94
+},
+"codex-no": {
+"in": 9202,
+"out": 214
+},
+"codex-type": {
+"in": 9202,
+"out": 214
+},
+"codex-art": {
+"in": 9202,
+"out": 214
+},
+"codex-name": {
+"in": 9202,
+"out": 214
+},
+"codex-own": {
+"in": 3956,
+"out": 92
+},
+"tier-pick": {
+"in": 2451,
+"out": 86
+},
+"sel": {
+"in": 2451,
+"out": 86
+},
+"off": {
+"in": 9702,
+"out": 344
+},
+"missing": {
+"in": 5246,
+"out": 122
+},
+"codex-lock": {
+"in": 5246,
+"out": 122
+},
+"codex-detail-art": {
+"in": 43,
+"out": 1
+},
+"codex-detail-meta": {
+"in": 43,
+"out": 1
+},
+"codex-detail-stats": {
+"in": 43,
+"out": 1
+},
+"codex-detail-state": {
+"in": 43,
+"out": 1
+},
+"codex-completion": {
+"in": 43,
+"out": 1
+},
+"deck-battle-note": {
+"in": 30,
+"out": 0
+},
+"deck-tabs": {
+"in": 44,
+"out": 3
+},
+"deck-tab": {
+"in": 88,
+"out": 6
+},
+"editing": {
+"in": 44,
+"out": 3
+},
+"complete": {
+"in": 44,
+"out": 3
+},
+"add": {
+"in": 44,
+"out": 3
+},
+"deck-manage": {
+"in": 44,
+"out": 3
+},
+"deck-filter": {
+"in": 528,
+"out": 36
+},
+"deck-sep": {
+"in": 88,
+"out": 6
+},
+"deck-tools": {
+"in": 44,
+"out": 3
+},
+"owned-card": {
+"in": 3962,
+"out": 276
+},
+"owned-count": {
+"in": 3962,
+"out": 276
+},
+"deck-card-controls": {
+"in": 3962,
+"out": 276
+},
+"in-deck": {
+"in": 2366,
+"out": 165
+},
+"owned-rule": {
+"in": 2156,
+"out": 147
+},
+"legendary": {
+"in": 484,
+"out": 33
+},
+"disabled": {
+"in": 352,
+"out": 24
+},
+"deck-summary": {
+"in": 44,
+"out": 3
+},
+"deck-comp": {
+"in": 44,
+"out": 3
+},
+"deck-bar": {
+"in": 44,
+"out": 3
+},
+"deck-legend": {
+"in": 44,
+"out": 3
+},
+"deck-curve-label": {
+"in": 44,
+"out": 3
+},
+"deck-curve": {
+"in": 44,
+"out": 3
+},
+"deck-group-toggle": {
+"in": 44,
+"out": 3
+},
+"deck-group": {
+"in": 220,
+"out": 15
+},
+"deck-group-head": {
+"in": 220,
+"out": 15
+},
+"deck-row": {
+"in": 2420,
+"out": 165
+},
+"deck-row-actions": {
+"in": 2420,
+"out": 165
+},
+"is-main": {
+"in": 29,
+"out": 0
+},
+"current": {
+"in": 27,
+"out": 0
+},
+"filled": {
+"in": 93,
+"out": 6
+},
+"synth-odd": {
+"in": 62,
+"out": 4
+},
+"picked": {
+"in": 68,
+"out": 12
+},
+"synth-picked": {
+"in": 31,
+"out": 4
+},
+"enh-slot": {
+"in": 29,
+"out": 4
+},
+"new-badge": {
+"in": 29,
+"out": 7
+},
+"enh-mats": {
+"in": 29,
+"out": 4
+},
+"enh-chance": {
+"in": 29,
+"out": 4
+},
+"eg-main": {
+"in": 29,
+"out": 4
+},
+"eg-sub": {
+"in": 29,
+"out": 4
+},
+"synth-stage": {
+"in": 0,
+"out": 2
+},
+"revealed": {
+"in": 0,
+"out": 2
+},
+"stage-circle": {
+"in": 0,
+"out": 2
+},
+"stage-flash": {
+"in": 0,
+"out": 2
+},
+"stage-result": {
+"in": 0,
+"out": 2
+},
+"stage-card": {
+"in": 0,
+"out": 3
+},
+"stage-close": {
+"in": 0,
+"out": 3
+},
+"stage-caption": {
+"in": 0,
+"out": 2
+},
+"skin-card": {
+"in": 108,
+"out": 48
+},
+"applied": {
+"in": 18,
+"out": 8
+},
+"owned": {
+"in": 50,
+"out": 10
+},
+"skin-preview": {
+"in": 108,
+"out": 48
+},
+"field": {
+"in": 12,
+"out": 30
+},
+"skin-field-preview": {
+"in": 12,
+"out": 30
+},
+"skin-btn": {
+"in": 108,
+"out": 48
+},
+"buy": {
+"in": 58,
+"out": 38
+},
+"back": {
+"in": 96,
+"out": 18
+},
+"apply": {
+"in": 32,
+"out": 2
+},
+"short": {
+"in": 26,
+"out": 0
+},
+"secret-block": {
+"in": 636,
+"out": 0
+},
+"secret-art": {
+"in": 636,
+"out": 0
+},
+"secret-body": {
+"in": 636,
+"out": 0
+},
+"secret-ready-badge": {
+"in": 48,
+"out": 0
+},
+"secret-pair": {
+"in": 48,
+"out": 0
+},
+"secret-hint": {
+"in": 636,
+"out": 0
+},
+"secret-open": {
+"in": 48,
+"out": 0
+},
+"secret-chains": {
+"in": 636,
+"out": 0
+},
+"chain": {
+"in": 1272,
+"out": 0
+},
+"a": {
+"in": 636,
+"out": 0
+},
+"b": {
+"in": 636,
+"out": 0
+},
+"secret-lock": {
+"in": 636,
+"out": 0
+},
+"secret-mystery": {
+"in": 588,
+"out": 0
+},
+"secret-go": {
+"in": 588,
+"out": 0
+},
+"lose": {
+"in": 1,
+"out": 0
+},
+"effect-narration": {
+"in": 0,
+"out": 3
+},
+"summon": {
+"in": 0,
+"out": 3
+},
+"reversal-spell": {
+"in": 36,
+"out": 0
+},
+"phase-locked": {
+"in": 1,
+"out": 0
+},
+"guardian-select": {
+"in": 0,
+"out": 2
+},
+"gs-aura": {
+"in": 0,
+"out": 2
+},
+"gs-heading": {
+"in": 0,
+"out": 2
+},
+"gs-board": {
+"in": 0,
+"out": 2
+},
+"gs-card": {
+"in": 0,
+"out": 10
+},
+"gs-jujak": {
+"in": 0,
+"out": 2
+},
+"gd-emblem": {
+"in": 0,
+"out": 10
+},
+"gs-power": {
+"in": 0,
+"out": 10
+},
+"gs-desc": {
+"in": 0,
+"out": 10
+},
+"gs-cheongryong": {
+"in": 0,
+"out": 2
+},
+"aura-cheongryong": {
+"in": 0,
+"out": 2
+},
+"gs-namu": {
+"in": 0,
+"out": 2
+},
+"aura-namu": {
+"in": 0,
+"out": 2
+},
+"gs-baekho": {
+"in": 0,
+"out": 2
+},
+"gs-hyeonmu": {
+"in": 0,
+"out": 2
+},
+"aura-hyeonmu": {
+"in": 0,
+"out": 2
+},
+"gs-note": {
+"in": 0,
+"out": 2
+},
+"aura-pentagon-core": {
+"in": 0,
+"out": 2
+},
+"selected": {
+"in": 0,
+"out": 2
+},
+"mana-spend": {
+"in": 2,
+"out": 0
+},
+"draw-flight": {
+"in": 0,
+"out": 1
+},
+"burn": {
+"in": 0,
+"out": 1
+},
+"fx-line": {
+"in": 0,
+"out": 1
+},
+"card-back-face": {
+"in": 1,
+"out": 0
+},
+"draw-sheen": {
+"in": 1,
+"out": 0
+},
+"motion-caption": {
+"in": 0,
+"out": 1
+},
+"ultimate-spent-death": {
+"in": 0,
+"out": 1
+},
+"spent-death-core": {
+"in": 0,
+"out": 1
+},
+"spent-death-half": {
+"in": 0,
+"out": 2
+},
+"left": {
+"in": 0,
+"out": 1
+},
+"right": {
+"in": 0,
+"out": 1
+},
+"spent-death-copy": {
+"in": 0,
+"out": 1
+},
+"spent-death-shard": {
+"in": 0,
+"out": 22
+},
+"avenger-arrival": {
+"in": 0,
+"out": 1
+},
+"avenger-aura": {
+"in": 0,
+"out": 1
+},
+"avenger-portrait": {
+"in": 0,
+"out": 1
+},
+"avenger-copy": {
+"in": 0,
+"out": 1
+}
+},
+"top": [
+[
+"script",
+"",
+"",
+"1"
+],
+[
+"main",
+"",
+"app",
+"0.9"
+],
+[
+"div",
+"result",
+"result",
+"0.9"
+],
+[
+"div",
+"recycle-modal",
+"recycle-modal",
+"1"
+],
+[
+"div",
+"tier-modal",
+"tier-modal",
+"0.9"
+],
+[
+"div",
+"collection-modal",
+"collection-modal",
+"0.9"
+],
+[
+"div",
+"",
+"impact-vignette",
+"1"
+],
+[
+"div",
+"",
+"fx screen-flash",
+"1"
+],
+[
+"i",
+"",
+"impact-core",
+"1"
+],
+[
+"i",
+"",
+"shockwave",
+"1"
+],
+[
+"i",
+"",
+"shockwave secondary",
+"1"
+],
+[
+"i",
+"",
+"impact-ray",
+"1"
+],
+[
+"i",
+"",
+"particle shard",
+"1"
+],
+[
+"i",
+"",
+"element-wisp",
+"1"
+],
+[
+"div",
+"",
+"attack-trail",
+"1"
+],
+[
+"img",
+"",
+"asset-fx",
+"1"
+],
+[
+"div",
+"",
+"fx hit-fx fire",
+"1"
+],
+[
+"div",
+"",
+"fx damage-fx",
+"1"
+],
+[
+"div",
+"",
+"hero-edge-flash player-side",
+"1"
+],
+[
+"div",
+"",
+"hp-damage-pop",
+"1"
+],
+[
+"div",
+"",
+"skill-fx heal",
+"1"
+],
+[
+"div",
+"",
+"defense-shield-fx",
+"1"
+],
+[
+"b",
+"",
+"field-impact-label exchange-damage-numbe",
+"1"
+],
+[
+"div",
+"",
+"spell-target-ring",
+"1"
+],
+[
+"div",
+"",
+"medium-skill-fx unit-fx flame-pillar",
+"1"
+],
+[
+"div",
+"",
+"avenger-landing-impact",
+"1"
+],
+[
+"div",
+"",
+"avenger-landing-flash",
+"1"
+],
+[
+"div",
+"",
+"medium-skill-fx arcane-circle",
+"1"
+],
+[
+"div",
+"",
+"border-impact",
+"1"
+],
+[
+"div",
+"collection-modal",
+"collection-modal show",
+"0.9"
+],
+[
+"div",
+"",
+"synth-stage revealed common",
+"1"
+],
+[
+"div",
+"result",
+"result show",
+"0.9"
+],
+[
+"div",
+"result",
+"result show lose",
+"0.9"
+],
+[
+"div",
+"",
+"effect-narration summon",
+"1"
+],
+[
+"div",
+"",
+"guardian-select gs-aura",
+"1"
+]
+]
+}
