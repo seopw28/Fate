@@ -79,6 +79,8 @@
 - 프로토타입 카드 5종의 그림이 없다(404): `characters/prototype/bloodbound-heroine`, `bloodbound-heroine-awakened`, `time-warden`, `time-warden-awakened`, `spells/prototype/prophecy-of-ruin`. `assetId`에 확장자가 없고 파일도 없다.
 - 컴퓨터 상대의 묘지 재사용 판단은 임시 구현이다(턴 시작에 조건이 맞으면 항상 사용).
 
+- 화면 배율 (2026-11-08): 목업은 CSS `zoom` 0.9 축소를 없애고 모든 크기를 1.0 기준 값으로 바꿨다. 재구현 때도 화면 전체 축소를 쓰지 말고 이 값을 그대로 쓴다. 자동 판정을 못 한 연출용 CSS 규칙(궁극기 컷씬·선공 배너·함정 발동 등)은 값을 그대로 둬 예전보다 약 10% 크게 보일 수 있다 → `12_tools/ui-scale/unverified.md`.
+
 ## 8. 인수 게이트
 
 - `npm run build` 성공, `npm test` 성공

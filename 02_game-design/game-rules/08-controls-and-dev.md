@@ -61,7 +61,8 @@ npm run ngrok
 | `npm run ngrok` | 게임 정적 서버(8080)와 ngrok 고정 도메인 터널을 함께 실행 |
 | `npm run validate:cards` | 카드 데이터 검증 (허용되지 않은 효과 ID, 스타터 8장 등) |
 | `npm test` | 카드 검증 + 효과 검증 + 엔진 + 플랫폼 + UI 계약 테스트 |
-| `npm run qa:overflow` | **UI 글자 넘침 검사** (서버 8765 기동 필요). `OK: 넘침 없음`이어야 통과 |
+| `npm run qa:overflow` | **UI 글자 넘침·줄바꿈 이상 검사**. 내 `dist`를 직접 띄워 검사한다. `OK: 넘침·줄바꿈 이상 없음`이어야 통과. `npm test`에 포함 |
+| `npm run qa:alignment` | **효과 위치 검사**. 소환 마법진·타격·라벨 등이 대상 카드 중심에서 벗어나지 않는지 잰다. `npm test`에 포함 (2026-11-08) |
 | `node 09_balance-lab/match-simulator/guardian-balance.mjs --games 20000` | 성격 오라 밸런스 시뮬레이션 |
 
 ## 5. 개발 규칙 (루트 `CLAUDE.md` 요약)
@@ -71,6 +72,7 @@ npm run ngrok
   - 버튼에 `white-space:nowrap` 금지, 고정 폭 상자는 가장 긴 문구 상태로 확인.
   - 동적으로 바뀌는 문구는 `12_tools/qa/check-text-overflow.py`의 `STATES`에 상태를 추가.
   - `dist/index.html`의 "지마켓산스 넘침 방지" CSS 블록은 삭제 금지.
+- **화면 배율은 1.0 기준 (2026-11-08)**: 예전에는 게임 화면 전체를 CSS `zoom` 0.9로 줄여 보였는데, 효과 위치가 배율만큼 어긋나는 문제가 반복돼 없앴다. 지금 값이 곧 화면 크기다. `zoom`·`transform: scale`로 화면 전체를 줄이거나 `--ui-scale` 같은 배율 변수를 다시 넣지 않는다(`11_qa/regression/ui-scale-1.test.js`가 막는다). 예전 `?scale=` 주소 옵션도 없어졌다. 경위는 `docs/plan-ui-scale-1.md`.
 - **필드 기준 연출**: 스킬/마법/궁극기 연출은 화면 전체가 아니라 `.arena`(필드) 중앙에 표시합니다 (`--field-*` 변수, 뷰포트 단위 vw/vh 사용 금지).
 - 규칙 변경 시 `11_qa/regression/ui-contract.test.js`의 계약 테스트도 함께 갱신합니다 (문구·구조를 문자열로 확인하는 테스트가 많음).
 
