@@ -208,7 +208,7 @@ test('체력 40% 기준 장치(최후의 저항·역전 돌진·영웅 회복 �
    소진자 사망 통지가 damageUnit 의 defeated 분기에만 있어서, 피해 없이 전장에서
    치워지는 경로(전체 파괴·소환 무효화·다음 궁극기 제물)에서는 방아쇠가 당겨지지 않았다. */
 test('소진자가 피해 없이 치워져도 쓰러진 것으로 본다', () => {
-  const fn = html.slice(html.indexOf('function retireFieldUnit(unit)'));
+  const fn = html.slice(html.indexOf('function retireFieldUnit(unit'));
   assert.ok(fn.slice(0, 220).includes("unit.dataset.ultimateSpent==='true'"), '전장에서 치울 때도 소진자인지 봐야 한다');
   assert.ok(fn.slice(0, 220).includes('showUltimateSpentDeath(unit)'), '소진자 사망을 알려야 복수자가 온다');
   /* 중복 호출은 ultimateDeathFx 플래그가 막는다 — 그 가드가 사라지면 복수자 교체 때 재진입한다. */
