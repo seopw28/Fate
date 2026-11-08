@@ -2193,3 +2193,18 @@
       .stage-column>.field-action-dock{grid-area:arena}
     }
 
+    /* 상대 손패·덱 표시를 체력바 영역(이름 줄 + 체력바) 높이로 키워 체력바 오른쪽에 둔다 (2026-11-08, docs/plan-hud-layout.md 2).
+       이름 줄(hud-id)은 display:contents 로 풀어 이름·손패 묶음을 각각 격자 칸에 놓는다. */
+    @media(min-width:1101px){
+      .stage-column>.duel-hud>.enemy>div:last-child{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:16.2px;align-items:center}
+      .stage-column>.duel-hud>.enemy .hud-id{display:contents}
+      .stage-column>.duel-hud>.enemy .hud-id .name{grid-column:1;grid-row:1;align-self:end;margin-bottom:5.4px}
+      .stage-column>.duel-hud>.enemy .health{grid-column:1;grid-row:2;margin-top:0}
+      .stage-column>.duel-hud>.enemy .enemy-piles{grid-column:2;grid-row:1 / span 2;align-self:stretch;margin:0;padding:4.5px 0 4.5px 16.2px;gap:10.8px}
+      .stage-column>.duel-hud>.enemy .enemy-piles .pile-back{width:40px;height:56px;border-radius:5.4px}
+      .stage-column>.duel-hud>.enemy .enemy-piles .pile-hand .pile-back{margin-right:-22px}
+      .stage-column>.duel-hud>.enemy .enemy-piles .pile-hand{padding-right:22px}
+      .stage-column>.duel-hud>.enemy .enemy-piles .pile-count{font-size:12.6px}
+      .stage-column>.duel-hud>.enemy .enemy-piles .pile-back.card-back-design::before{font-size:18px}
+    }
+
