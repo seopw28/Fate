@@ -9,7 +9,7 @@ test('내 세트 마법은 발동 카드를 먼저 보여준 뒤 효과를 적�
   assert.ok(html.includes("global.className='global-spell owner-player'"), '내 마법은 소유자가 나임을 클래스로 드러내야 한다');
   assert.ok(html.includes("fxPresent('magic:'+magic.name"), '마법 공개는 연출 큐를 거쳐야 한다');
   assert.ok(html.includes('hold:MAGIC_REVEAL_MS'), '공개 시간은 MAGIC_REVEAL_MS 동안 점유한다');
-  assert.ok(html.includes('.then(()=>{castSpell(card);'), '공개가 끝난 뒤에 효과를 적용해야 한다');
+  assert.ok(html.includes('.then(()=>castSpell(card)).then(()=>{'), '공개가 끝난 뒤에 효과를 적용해야 한다');
   assert.ok(!html.includes('castSpell(card);global.classList.add(\'resolved\')'));
 });
 
@@ -41,8 +41,14 @@ test('동시에 준비된 내 마법은 각 카드의 최소 노출시간이 끝
   assert.ok(!html.includes("due.forEach((magic,order)=>setTimeout(()=>{const index=setMagicCards.indexOf(magic);if(index>=0)activateSetMagic(index,true);},order*COMBAT_TIMING.spellGap)"));
 });
 
+test('광역 마법은 중앙 스킬 소개가 내려간 뒤에 피해를 적용한다 (2026-11-08)', () => {
+  assert.ok(html.includes('function playAoeCinematic(card)'), '광역 마법 소개 연출은 한 곳에서 띄운다');
+  assert.ok(html.includes("cut.then(reason=>reason==='cleared'?undefined:castSpellAfterCut(card))"), '소개 연출 Promise 가 끝난 뒤 효과를 적용한다');
+  assert.ok(html.includes('if(AOE_CINEMATIC[card.dataset.cardId]){'), '원소별 컷인이 광역 소개를 덮어쓰지 않는다');
+  assert.ok(html.includes('if(AOE_CINEMATIC[card?.dataset?.cardId]){'), '공허 컷인이 광역 소개를 덮어쓰지 않는다');
+});
 test('마법 공개 레이어가 사라지고 효과 정산이 끝날 때까지 다른 진행을 멈춘다', () => {
-  assert.ok(html.includes('.then(()=>{castSpell(card);'));
+  assert.ok(html.includes('.then(()=>castSpell(card)).then(()=>{'));
   assert.ok(html.includes('setTimeout(()=>resolve(true),MAGIC_EFFECT_SETTLE_MS)'));
   assert.ok(html.includes('enemyTurn=function(done)'));
   assert.ok(html.includes('(async()=>{'));

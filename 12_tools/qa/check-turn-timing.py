@@ -4,6 +4,7 @@
 1. 마법은 손패에서 더블클릭하면 마나로만 즉시 발동한다. 세팅 슬롯은 함정 1칸이고 대재앙은 대기 턴 함정이다.
 2. 궁극기는 세팅한 턴에는 '다음 턴부터 발동'으로 잠기고, 내 다음 턴에 열린다. 컴퓨터도 같다.
 3. 오라 각성은 체력 85 이하에서 열린다.
+4. 광역 마법은 중앙 스킬 소개가 끝난 뒤 피해가 들어간다 (2026-11-08).
 자기 트리의 dist 를 serve_own_tree 로 띄운다(남의 번들을 재지 않는다).
 """
 import os, sys
@@ -56,6 +57,14 @@ CHECKS = [
   const n=await resolveEnemySetMagic();
   const s2=enemyOriginalDeck.filter(d=>d.spell&&!d.trap).slice(0,3);enemyHand.length=0;s2.forEach(d=>enemyHand.push({...d,cost:1}));enemyMana=10;setEnemyMagic();const queued=enemySetMagic.filter(x=>!x.trap).length;const n2=await resolveEnemySetMagic();
   return {ok:n===1&&queued===s2.length&&n2===s2.length&&enemySetMagic.length===0,n,queued,n2,left:enemySetMagic.length};})()"""),
+ ("광역 마법: 중앙 스킬 소개가 한 번 나오고 내려간 뒤에 피해가 들어간다(7종 모두)",
+  """(async()=>{const ids=Object.keys(AOE_CINEMATIC),bad=[];for(const id of ids){const ev=[];const t0=performance.now(),T=()=>performance.now()-t0;
+  const mo=new MutationObserver(ms=>ms.forEach(m=>{m.addedNodes.forEach(n=>{if(n.classList?.contains('cinematic-skill-fx'))ev.push(['in',T()]);});m.removedNodes.forEach(n=>{if(n.classList?.contains('cinematic-skill-fx'))ev.push(['out',T()]);});}));mo.observe(document.body,{childList:true});
+  const dU=damageUnit;damageUnit=function(){ev.push(['dmg',T()]);return dU.apply(this,arguments);};
+  battlePhase='setup';maxMana=mana=20;updateMana();document.querySelectorAll('.arena .unit').forEach(u=>u.remove());summonBattleToken('아군',2,30,'earth');
+  const c=__card(id);await castHandSpell(c);await __wait(800);mo.disconnect();damageUnit=dU;
+  const ins=ev.filter(e=>e[0]==='in'),out=ev.find(e=>e[0]==='out'),dmg=ev.find(e=>e[0]==='dmg');if(ins.length!==1||!out||(dmg&&dmg[1]<out[1]))bad.push({id,ev:ev.map(e=>e[0]+Math.round(e[1])).join(' ')});}
+  return {ok:ids.length===7&&bad.length===0,bad};})()"""),
  ("오라 각성: 체력 86에서는 잠기고 85에서 열린다",
   """(()=>{playerHp=86;const r86=guardianAwakenLockReason();playerHp=85;const r85=guardianAwakenLockReason();
   return {ok:GUARDIAN_AWAKEN_HP===85&&r86==='체력 85 이하에서 각성'&&r85==='',r86,r85};})()"""),
