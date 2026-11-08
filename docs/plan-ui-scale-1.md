@@ -39,7 +39,7 @@
 
 - [x] 1-1. 브랜치 `refactor/ui-scale-1` 만들고 이 계획 파일 커밋
   - 확인: `git log -1`
-- [ ] 1-2. 기준 사진 스크립트 `12_tools/qa/capture-baseline.py` 작성. `check-text-overflow.py`의 화면 상태 목록(STATES)을 그대로 써서 화면 크기 4종(1568·1366·1100·1000)으로 찍는다. 결과는 `/tmp/fate-baseline/`(저장소 밖).
+- [x] 1-2. 기준 사진 스크립트 `12_tools/qa/capture-baseline.py` 작성. `check-text-overflow.py`의 화면 상태 목록(STATES)을 그대로 써서 화면 크기 4종(1568·1366·1100·1000)으로 찍는다. 결과는 `/tmp/fate-baseline/`(저장소 밖).
   - 확인: 사진 수 = 화면 크기 4 × 상태 수, 걸린 시간 2분 이내
 - [ ] 1-3. 효과 위치 측정 스크립트 `12_tools/qa/check-effect-alignment.py` 작성. 소환 마법진·공격 조준선·피해 숫자·보호막 표시가 대상 카드 중심에 오는지 px 차이로 잰다. 지금 값을 `/tmp/fate-baseline/alignment.json`에 저장.
   - 확인: 소환 마법진 차이 1px 이내(이미 고침). 나머지는 지금 값 기록(어긋난 곳은 목록으로 남김)
@@ -85,3 +85,4 @@
 ## 진행 기록
 
 - 2026-11-08 계획 작성
+- 2026-11-08 1-2 완료: 사진 216장(화면 4종 × 상태 54개), 108초, 준비 실패 0. 시드 `ui-scale-baseline` 고정, 애니메이션 끔. `check-text-overflow.py`는 다른 스크립트가 STATES를 가져다 쓸 수 있게 실행부만 `__main__`으로 감쌈

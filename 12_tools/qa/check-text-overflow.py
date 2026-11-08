@@ -223,4 +223,5 @@ def main():
         run(base + "/index.html" + QUERY)
 
 
-main()
+if __name__ == '__main__':  # capture-baseline.py 가 STATES 를 가져다 쓴다
+    main()
