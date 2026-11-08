@@ -544,10 +544,10 @@ test('바람 연출(실피드 템페스트): 칼바람 소리가 3번 연달아 
 
 test('오라 시네마틱: 불·빙결·대지·암흑 기술은 전용 투명 자산과 발동 연결을 가진다', () => {
   const assets = {
-    fire: 'fire-meteor-v1.png',
-    frost: 'frost-nova-v1.png',
-    earth: 'earth-rupture-v1.png',
-    eclipse: 'black-eclipse-v1.png'
+    fire: 'fire-meteor-v1.webp',
+    frost: 'frost-nova-v1.webp',
+    earth: 'earth-rupture-v1.webp',
+    eclipse: 'black-eclipse-v1.webp'
   };
   for (const [kind, file] of Object.entries(assets)) {
     assert.ok(html.includes(`assets/vfx/cinematic/${file}`), `${kind} cinematic must reference its approved asset`);
@@ -561,18 +561,18 @@ test('오라 시네마틱: 불·빙결·대지·암흑 기술은 전용 투명 �
 });
 
 test('보호막 이미지: 유지 오라와 파괴 버스트가 실제 피해 처리에 연결된다', () => {
-  for (const file of ['shield-aura-v1.png', 'shield-break-v1.png']) {
+  for (const file of ['shield-aura-v1.webp', 'shield-break-v1.webp']) {
     assert.ok(fs.existsSync(path.join(root, 'dist/assets/vfx/shield', file)), `${file} must be shipped`);
   }
   assert.ok(html.includes("attributeFilter:['data-shield']"), 'Shield aura must follow shield state changes');
   assert.ok(!html.includes("plating.className='shield-armor-vfx'"), 'Shielded cards must not receive horn-like armor on their top corners');
   assert.ok(html.includes("legacyArmor?.remove()"), 'Any stale horn-like shield armor must be removed');
-  assert.ok(html.includes("burst.src='assets/vfx/shield/shield-break-v1.png'"), 'Shield break must use the generated burst asset');
+  assert.ok(html.includes("burst.src='assets/vfx/shield/shield-break-v1.webp'"), 'Shield break must use the generated burst asset');
 });
 
 test('마법 시네마틱: 회복·아케인·보이드 계열은 전용 자산과 선택적 연결을 가진다', () => {
   const runtime = fs.readFileSync(path.join(root, 'dist/runtime/spell-cinematics.js'), 'utf8');
-  for (const file of ['life-bloom-v1.png', 'arcane-revelation-v1.png', 'void-gate-v1.png']) {
+  for (const file of ['life-bloom-v1.webp', 'arcane-revelation-v1.webp', 'void-gate-v1.webp']) {
     assert.ok(runtime.includes(`assets/vfx/cinematic/${file}`), `${file} must be registered`);
     assert.ok(fs.existsSync(path.join(root, 'dist/assets/vfx/cinematic', file)), `${file} must be shipped`);
   }
