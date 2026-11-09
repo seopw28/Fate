@@ -147,6 +147,8 @@ STATES = [
     ("튜토리얼 닫힘", "tutorialGuideOverlay()?.remove()"),
     ("사운드 패널", "toggleSoundPanel(true)"),
     ("덱 편집 화면", "openCollection('deck')"),
+    ("덱 편집 오라 덱 편집 (2단계)", "openCollection('deck');pickAuraDeck(0)"),
+    ("덱 편집 오라 덱 편집 마법 필터", "openCollection('deck');pickAuraDeck(3);setDeckTypeFilter('spell')"),
     ("덱 편집 마법 필터", "openCollection('deck');setDeckTypeFilter('spell')"),
     ("덱 편집 필터 복귀", "setDeckTypeFilter('all')"),
     ("도감 화면", "openCollection('codex')"),

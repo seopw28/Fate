@@ -2537,3 +2537,76 @@
     .tg-next { flex-shrink:0; min-width:max-content; padding:.45em 1.1em; border:1px solid #ffd477aa; border-radius:8px; background:#2a2414; color:#ffdf9b; font-size:var(--tg-fs); font-weight:800; cursor:pointer; }
     .tg-next:hover { background:#3a3118; color:#fff; }
     .tg-next[hidden] { display:none; }
+    /* 덱 편집 2단계 (2026-11-09 PM): 오라 고르기(pick) → 고른 오라 덱 편집(edit) */
+    #deck-view.aura-pick-mode .deck-toolbar,#deck-view.aura-pick-mode .deck-content{display:none!important}
+    #deck-view.aura-pick-mode .deck-switcher{flex:1;display:block;border:0;padding:0;margin:0}
+    .aura-pick{display:flex;flex-direction:column;gap:18px;padding:9px 0 18px}
+    .aura-pick-head h3{margin:0 0 5.4px;color:#f2e6cf;font-size:clamp(16.2px,1.3vw,21.6px)}
+    .aura-pick-head p{margin:0;color:#8f9aab;font-size:clamp(10.8px,.85vw,13.5px)}
+    .aura-pick-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14.4px}
+    .aura-pick-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:7.2px;min-width:0;padding:21.6px 12.6px 16.2px;border:1px solid color-mix(in srgb,var(--ac) 45%,#2c3442);border-radius:16.2px;background:radial-gradient(circle at 50% 22%,color-mix(in srgb,var(--ac) 22%,#141a23),#10151c 70%);color:#d8dee8;text-align:center;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s}
+    .aura-pick-card:hover,.aura-pick-card:focus-visible{transform:translateY(-4px);border-color:var(--ac);box-shadow:0 0 0 1px var(--ac),0 14px 30px #0009,0 0 26px color-mix(in srgb,var(--ac) 35%,transparent);outline:none}
+    .aura-pick-card .apc-sigil .aura-mark{width:clamp(54px,4.6vw,78px);height:clamp(54px,4.6vw,78px);margin:0 0 3.6px}
+    .aura-pick-card .apc-sigil .aura-mark img{width:100%;height:100%;object-fit:contain}
+    .aura-pick-card .apc-aura{color:var(--ac);font-size:clamp(16.2px,1.35vw,22.5px);font-weight:900}
+    .aura-pick-card .apc-name{color:#f2f5fa;font-size:clamp(11.7px,.95vw,14.4px)}
+    .aura-pick-card .apc-count{color:#ffd477;font-size:clamp(12.6px,1.05vw,16.2px);font-weight:800}
+    .aura-pick-card .apc-mix{color:#8f9aab;font-size:clamp(9.9px,.75vw,11.7px)}
+    .aura-pick-card .apc-state{color:#8f9aab;font-style:normal;font-size:clamp(9.9px,.75vw,11.7px)}
+    .aura-pick-card.ready .apc-state{color:#9be3b0}
+    .aura-pick-card .apc-go{margin-top:5.4px;padding:6.3px 16.2px;border:1px solid var(--ac);border-radius:999px;color:var(--ac);font-size:clamp(10.8px,.85vw,13.5px);font-weight:800}
+    .deck-aura-head{display:flex;align-items:center;gap:14.4px;margin:0 0 10.8px}
+    .deck-aura-back{padding:7.2px 14.4px;border:1px solid #465365;border-radius:9px;background:#171e28;color:#d8dee8;font-size:clamp(11.7px,.9vw,13.5px);cursor:pointer}
+    .deck-aura-back:hover{border-color:#b68a4d;color:#ffd477}
+    .deck-aura-title{display:flex;align-items:center;gap:9px}
+    .deck-aura-title .aura-mark{width:clamp(28px,2.2vw,36px);height:clamp(28px,2.2vw,36px);margin:0}
+    .deck-aura-title .aura-mark img{width:100%;height:100%;object-fit:contain}
+    .deck-aura-title strong{color:var(--ac);font-size:clamp(15.3px,1.2vw,19.8px);font-weight:900}
+    .deck-aura-count{color:#ffd477;font-weight:800;font-size:clamp(12.6px,1vw,15.3px)}
+    #deck-view.aura-edit-mode .deck-switcher{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:9px}
+    @media(max-width:1100px){.aura-pick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    /* 덱 편집 UX 개선 (2026-11-09 PM): 덱 목록은 넓고 얇은 한 줄 목록, 보유 카드는 그림을 띠로 줄인 촘촘한 타일.
+       하스스톤·레전드 오브 룬테라·MTG 아레나의 덱 편집처럼 덱 60장을 스크롤 몇 번에 훑고, 보유 카드는 한 화면에 많이 보이게 한다 */
+    #deck-view.aura-edit-mode .deck-content{grid-template-columns:minmax(0,1fr) minmax(340px,40%)!important;gap:16.2px!important}
+    #deck-view.aura-edit-mode .owned-grid{grid-template-columns:repeat(auto-fill,minmax(148px,1fr))!important;gap:9px!important;align-content:start}
+    #deck-view.aura-edit-mode .owned-card{padding:7.2px!important;border-radius:9px!important}
+    #deck-view.aura-edit-mode .owned-card img{aspect-ratio:auto!important;height:64px!important;width:100%;object-fit:cover;object-position:center 22%;border-radius:6.3px}
+    #deck-view.aura-edit-mode .owned-card h4{margin:6.3px 0 2.7px!important;font-size:12.6px!important;line-height:1.25;white-space:normal}
+    #deck-view.aura-edit-mode .owned-card small{font-size:10.4px!important;line-height:1.4}
+    #deck-view.aura-edit-mode .owned-card .owned-rule{display:block;font-size:10px;line-height:1.4}/* 설명은 자르지 않는다(넘침 검사 규칙) */
+    #deck-view.aura-edit-mode .owned-card .owned-count{top:10.8px!important;left:10.8px!important;font-size:9.4px!important}
+    #deck-view.aura-edit-mode .deck-card-controls{grid-template-columns:30px 1fr 30px!important;gap:5.4px!important;margin-top:6.3px!important}
+    #deck-view.aura-edit-mode .deck-card-controls button{height:28px!important}
+    #deck-view.aura-edit-mode .deck-list{padding:10.8px!important}
+    #deck-view.aura-edit-mode .deck-summary{margin-bottom:6.3px!important;padding:6.3px 9px!important;font-size:11.7px!important}
+    #deck-view.aura-edit-mode .deck-comp{padding:7.2px 9px!important;margin-bottom:6.3px!important}
+    #deck-view.aura-edit-mode .deck-curve{height:40px!important}
+    #deck-view.aura-edit-mode .deck-group-toggle{margin:0 0 6.3px!important}
+    #deck-view.aura-edit-mode .deck-group-toggle button{padding:5.4px 0!important;font-size:11.7px!important}
+    #deck-view.aura-edit-mode .deck-group-head{margin:7.2px 2px 3.6px!important;font-size:11.7px!important}
+    #deck-view.aura-edit-mode .deck-help{margin:5.4px 0!important;font-size:10.4px!important}
+    .deck-row.slim{display:grid!important;grid-template-columns:26px 44px minmax(0,1fr) auto auto!important;align-items:center;gap:8.1px!important;min-height:0!important;height:38px;margin:0 0 3.6px!important;padding:0 6.3px 0 0!important;border:1px solid #2d3643;border-left:3px solid var(--ac);border-radius:7.2px;background:linear-gradient(90deg,color-mix(in srgb,var(--ac) 14%,#171e28),#171e28 60%);overflow:hidden}
+    .deck-row.slim .dr-cost{display:grid;place-items:center;width:26px;height:100%;background:#0e1219;color:#ffd477;font-size:13.5px;font-weight:900}
+    .deck-row.slim img{width:44px!important;height:36px!important;object-fit:cover;object-position:center 22%;border-radius:0!important;-webkit-mask-image:linear-gradient(90deg,#000 60%,transparent)}
+    .deck-row.slim .dr-name{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#e8edf4;font-size:12.6px;font-weight:700}
+    .deck-row.slim .dr-count{color:#ffd477;font-size:12.6px;font-weight:900}
+    .deck-row.slim .deck-row-actions{display:flex;gap:3.6px}
+    .deck-row.slim .deck-row-actions button{width:26px!important;height:26px!important;min-width:0!important;padding:0!important;border-radius:6.3px!important;font-size:14.4px!important;line-height:1}
+    /* 덱 목록 위 요약 압축: 카드 종류 줄은 오라 범례와 겹치므로 숨기고, 오라 막대·범례(왼쪽)와 비용 곡선(오른쪽)을 한 줄에 둔다 */
+    #deck-view.aura-edit-mode .deck-summary{display:none!important}
+    #deck-view.aura-edit-mode .deck-comp{display:grid!important;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"bar curve" "legend curve";column-gap:12.6px;row-gap:4.5px;align-items:center}
+    #deck-view.aura-edit-mode .deck-bar{grid-area:bar;height:7.2px!important}
+    #deck-view.aura-edit-mode .deck-legend{grid-area:legend;margin:0!important;font-size:10.4px!important;gap:2.7px 8.1px!important}
+    #deck-view.aura-edit-mode .deck-curve-label{display:none!important}
+    #deck-view.aura-edit-mode .deck-curve{grid-area:curve;height:34px!important;gap:2.7px!important}
+    #deck-view.aura-edit-mode .deck-curve div b{font-size:8.6px!important}
+    #deck-view.aura-edit-mode .deck-curve div small{font-size:8.1px!important}
+    #deck-view.aura-edit-mode .deck-group-toggle button{padding:4.5px 0!important}
+    /* 컬렉션 머리 1행 (2026-11-09 PM): 제목 · 탭 · 재화·사운드·닫기를 한 줄에 두어 모든 탭의 본문 공간을 넓힌다. 설명 문구는 숨긴다 */
+    #collection-modal .collection-head{flex-wrap:wrap;gap:9px 16.2px;padding:10.8px clamp(16.2px,1.4vw,28.8px)!important}
+    #collection-modal .collection-titleblock{flex:none}
+    #collection-modal .collection-head h2{font-size:clamp(15.3px,1.15vw,18px);white-space:nowrap}
+    #collection-modal #collection-sub{display:none}
+    #collection-modal .collection-head .collection-tabs{flex:1 1 auto;flex-wrap:wrap;align-items:center;margin:0;padding:0!important;border:0}
+    #collection-modal .collection-head .collection-wallets{flex:none;margin-left:auto}
+    @media(max-width:1080px){#collection-modal .collection-head .collection-tabs{order:3;flex-basis:100%}}

@@ -84,3 +84,32 @@ test('덱 편집은 오라 5칸 고정: 빈 칸·0장 덱은 오라 기본 덱, 
   assert.ok(!html.includes('onclick="createDeck()"') && !html.includes('onclick="duplicateDeck()"') && !html.includes('onclick="deleteDeck()"') && !html.includes('id="deck-aura"'), '오라 칸 관리 버튼 없음');
   assert.ok(html.includes(" 기본 덱으로 되돌리기</button>"), '기본 덱으로 되돌리기');
 });
+
+test('덱 편집 2단계: 들어가면 오라 5개 중 편집할 덱을 먼저 고르고, 고른 오라 덱 안에서 넣고 뺀다 (2026-11-09 PM)', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes("openCollection=function(view='deck',...rest){if(view==='deck')deckAuraStep='pick';"), '덱 편집을 열면 오라 고르기부터');
+  assert.ok(html.includes('<h3>어떤 오라의 덱을 편집할까요?</h3>'), '오라 고르기 화면');
+  assert.ok(html.includes('function pickAuraDeck(i)') && html.includes('function backToAuraPick()'), '고르기와 되돌아가기');
+  assert.ok(html.includes('#deck-view.aura-pick-mode .deck-toolbar,#deck-view.aura-pick-mode .deck-content{display:none!important}'), '고르기 화면에서는 편집 도구를 숨긴다');
+});
+
+test('덱 편집과 컬렉션에서 마법카드는 오라 대신 마법으로 묶어, 오라 숫자에는 하수인만 센다 (2026-11-09 PM)', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes("const deckAuraKey=i=>collectionIsSpell[i]?'magic':collectionCards[i][0]"), '구성 막대');
+  assert.ok(html.includes("keys:['fire','water','wood','metal','earth','magic'],of:i=>collectionIsSpell[i]?'magic':collectionCards[i][0]"), '성격별 묶음');
+  assert.ok(html.includes("collectionFilter==='magic'?collectionIsSpell[index]:!collectionIsSpell[index]&&card[0]===collectionFilter"), '오라 필터는 하수인만, 마법 필터 추가');
+  assert.ok(html.includes("(collectionIsSpell[index]?'마법':elementLabel[card[0]])+' · 비용 '"), '보유 카드 설명');
+});
+
+test('덱 편집 UX: 넓은 한 줄 덱 목록(비용·그림 띠·이름·장수·−/＋)과 그림을 띠로 줄인 보유 카드 타일 (2026-11-09 PM)', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes('<div class="deck-row slim"'), '한 줄 덱 목록');
+  assert.ok(html.includes('#deck-view.aura-edit-mode .deck-content{grid-template-columns:minmax(0,1fr) minmax(340px,40%)!important;'), '덱 목록 폭을 넓힌다');
+  assert.ok(html.includes('#deck-view.aura-edit-mode .owned-card img{aspect-ratio:auto!important;height:64px!important;'), '보유 카드 그림은 띠로');
+});
+
+test('컬렉션 머리 1행: 제목, 탭, 재화와 닫기를 한 줄에 둔다 (2026-11-09 PM)', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(/<div class="collection-head"><div class="collection-titleblock">.*?<\/div><div class="collection-tabs">/s.test(html), '탭이 머리 줄 안에 있다');
+  assert.ok(html.includes('#collection-modal #collection-sub{display:none}'), '설명 문구는 숨긴다');
+});
