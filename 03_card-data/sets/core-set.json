@@ -346,15 +346,15 @@
       "cardId": "core.ambush-mine",
       "nameKey": "card.ambush_mine",
       "displayName": "매복 지뢰",
-      "cardType": "trap",
+      "cardType": "spell",
       "cost": 2,
       "rarity": "rare",
       "stats": null,
       "effects": [
         {
           "effectId": "damage",
-          "trigger": "on_enemy_summon",
-          "target": "enemy",
+          "trigger": "on_play",
+          "target": "strongest_enemy",
           "amount": 4,
           "duration": "instant"
         }
@@ -375,7 +375,7 @@
       "cardId": "core.counter-current",
       "nameKey": "card.counter_current",
       "displayName": "역류 장벽",
-      "cardType": "trap",
+      "cardType": "spell",
       "cost": 2,
       "rarity": "rare",
       "stats": null,
@@ -410,21 +410,16 @@
       "cardId": "core.last-stand",
       "nameKey": "card.last_stand",
       "displayName": "배수의 진",
-      "cardType": "trap",
+      "cardType": "spell",
       "cost": 2,
       "rarity": "rare",
       "stats": null,
       "effects": [
         {
           "effectId": "buff",
-          "trigger": "on_field_disadvantage",
-          "target": "lone_ally",
+          "trigger": "on_play",
+          "target": "weakest_ally",
           "amount": 5,
-          "condition": {
-            "kind": "field_count",
-            "allyEquals": 1,
-            "enemyAtLeast": 3
-          },
           "duration": "match"
         }
       ],
@@ -445,15 +440,15 @@
       "cardId": "core.ember-snare",
       "nameKey": "card.ember_snare",
       "displayName": "불씨 덫",
-      "cardType": "trap",
+      "cardType": "spell",
       "cost": 1,
       "rarity": "common",
       "stats": null,
       "effects": [
         {
           "effectId": "ember_snare",
-          "trigger": "on_enemy_summon",
-          "target": "enemy",
+          "trigger": "on_play",
+          "target": "strongest_enemy",
           "amount": 2,
           "duration": "instant"
         }
@@ -475,7 +470,7 @@
       "cardId": "core.steel-guard",
       "nameKey": "card.steel_guard",
       "displayName": "강철 방패",
-      "cardType": "trap",
+      "cardType": "spell",
       "cost": 2,
       "rarity": "common",
       "stats": null,
@@ -504,17 +499,17 @@
       "cardId": "core.swamp-bind",
       "nameKey": "card.swamp_bind",
       "displayName": "늪의 속박",
-      "cardType": "trap",
+      "cardType": "spell",
       "cost": 2,
       "rarity": "rare",
       "stats": null,
       "effects": [
         {
           "effectId": "swamp_bind",
-          "trigger": "on_enemy_summon",
-          "target": "enemy",
+          "trigger": "on_play",
+          "target": "strongest_enemy",
           "amount": 1,
-          "duration": "instant"
+          "duration": "round"
         }
       ],
       "assetId": "traps/generated/summon-nullifier.webp",
@@ -534,20 +529,16 @@
       "cardId": "core.rally-cry",
       "nameKey": "card.rally_cry",
       "displayName": "결속의 함성",
-      "cardType": "trap",
+      "cardType": "spell",
       "cost": 3,
       "rarity": "rare",
       "stats": null,
       "effects": [
         {
           "effectId": "rally_cry",
-          "trigger": "on_field_disadvantage",
+          "trigger": "on_play",
           "target": "all_allies",
           "amount": 2,
-          "condition": {
-            "kind": "field_count",
-            "enemyLeadAtLeast": 3
-          },
           "duration": "match"
         }
       ],
@@ -792,17 +783,17 @@
       "cardId": "tower.summon-nullifier",
       "displayName": "서먼 널리파이어",
       "nameKey": "card.tower_summon_nullifier",
-      "cardType": "trap",
+      "cardType": "spell",
       "cost": 4,
       "rarity": "legendary",
       "stats": null,
       "effects": [
         {
           "effectId": "negate_summon",
-          "trigger": "on_enemy_summon",
-          "target": "enemy",
-          "amount": 1,
-          "duration": "instant"
+          "trigger": "on_play",
+          "target": "strongest_enemy",
+          "amount": 2,
+          "duration": "match"
         }
       ],
       "assetId": "traps/generated/summon-nullifier.webp",
