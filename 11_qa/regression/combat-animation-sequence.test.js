@@ -6,7 +6,7 @@ const path = require('node:path');
 const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), 'utf8');
 
 test('공격·반격·추가 효과·다음 교전은 공통 타임라인 순서로 실행된다', () => {
-  assert.ok(html.includes('counterDelay:1000,guardianReaction:2100,followUpDelay:2900,postCombatPause:278,cardImpactTail:900,heroImpactTail:500,phaseTransition:250,initiativeLeadIn:278'));
+  assert.ok(html.includes('counterDelay:500/* 2026-11-09: 반격은 없다. 돌진이 적중할 때까지 다음 단계로 넘어가지 않게 붙잡는 시간 */,guardianReaction:2100,followUpDelay:2900,postCombatPause:278,cardImpactTail:900,heroImpactTail:500,phaseTransition:250,initiativeLeadIn:278'));
   assert.ok(html.includes('const COMBAT_TIME_SCALE = 1.08'));
   assert.ok(!html.includes('},COMBAT_TIMING.counterDelay);'), '교환 피해는 지연 없이 적중 순간에 적용한다 (2026-11-09)');
   assert.ok(html.includes('},COMBAT_TIMING.followUpDelay);'));
@@ -61,7 +61,7 @@ test('첫 타격이 치명적이어도 교전 시작 시 확정된 방어 카드
   assert.ok(html.includes('const defenderAttack=Number(defender.querySelector'));
   assert.ok(html.includes("if(!attacker.isConnected||!defender.isConnected)return;if(returnDamage<=0)"));
   assert.ok(!html.includes("if(!attacker.isConnected||!defender.isConnected||defender.dataset.destroyed==='true')return;if(returnDamage<=0)"));
-  assert.ok(html.includes('combatMs(COMBAT_TIMING.counterDelay+1100)'));
+  assert.ok(html.includes('combatMs(600/* 회색 사망 연출 0.6초, 적중 시점 기준 */)'));
 });
 
 test('여러 세트 마법은 한 연출이 끝난 뒤 다음 마법을 시작한다', () => {
