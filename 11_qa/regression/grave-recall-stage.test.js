@@ -6,7 +6,7 @@ const html = readFileSync(require('node:path').resolve(__dirname, '../../dist/in
 
 test('묘지 회수 무대: 누르면 내 진영 가운데에 손패 마법이 떠오르고, 고른 카드가 부서진 뒤 묘지에서 하수인이 솟아 손패로 온다 (2026-11-09 PM)', () => {
   assert.ok(html.includes("if(typeof openGraveRecallStage==='function')openGraveRecallStage();"), '묘지 회수를 누르면 무대를 연다');
-  assert.ok(html.includes("const zone=document.querySelector('.summon-zone')"), '무대는 내 진영 위에 연다');
+  assert.ok(html.includes("const zone=document.querySelector('.arena')||document.querySelector('.summon-zone')"), '무대는 상대 진영까지 전장 전체를 쓴다');
   assert.ok(html.includes('animation:grs-float'), '마법카드가 떠 있다');
   assert.ok(html.includes('function shatterGraveRecallCard(ghost)'), '고른 카드가 부서진다');
   assert.ok(html.includes("performGraveRecall('player',card,{shattered:true,onEntry:(entry,pick)=>riseFromGraveyard(stage,entry,pick)})"), '비용과 판정은 기존 묘지 회수를 그대로 쓴다');
@@ -19,4 +19,11 @@ test('마법카드 탭에서는 오라 마법을 숨기고, 묘지 회수는 누
   assert.ok(html.includes('const base=setHandFilter;setHandFilter=function(...args){const result=base.apply(this,args);renderAuraMagic();return result;};'), '탭을 바꾸면 다시 그린다');
   assert.ok(html.includes(".magic-setting-panel .setting-title{display:none}"), '묘지 회수 패널 제목을 없앤다');
   assert.ok(html.includes("button.innerHTML='<strong>묘지 회수</strong><span class=\"grave-recall-cost\">"), '버튼에는 이름과 비용만');
+});
+
+test('묘지에서 돌아온 하수인은 캐릭터 카드 탭으로 바꾼 뒤 오른쪽 손패 자리로 포물선을 그리며 날아간다 (2026-11-09 PM)', () => {
+  assert.ok(html.includes("if(typeof handFilter!=='undefined'&&handFilter!=='champion')setHandFilter('champion');"), '돌아온 하수인이 보이는 탭으로 바꾼다');
+  assert.ok(html.includes("to=cardRect.width?cardRect:(document.querySelector('.hand')||card).getBoundingClientRect()"), '손패 자리를 목적지로 쓴다');
+  assert.ok(html.includes('.grave-recall-stage .grs-card{aspect-ratio:5/7;'), '선택 화면 카드는 세로 카드 비율');
+  assert.ok(html.includes("ghost.removeAttribute('title');"), '손패용 말풍선을 복사하지 않는다');
 });

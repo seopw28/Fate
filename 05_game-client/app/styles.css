@@ -2334,7 +2334,7 @@
     .grs-head b{font-size:15.3px;color:#c9a8ff;letter-spacing:.04em}
     .grs-head .grs-cancel{padding:4.5px 10.8px;border:1px solid #6d5a91;border-radius:7.2px;background:#1a1426;color:#cdbfe6;font-size:11.7px;cursor:pointer}
     .grs-cards{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14.4px;max-width:100%}
-    .grs-card{width:clamp(92px,7.6vw,128px)!important;min-width:0!important;height:auto!important;margin:0!important;transform-origin:50% 60%;animation:grs-float 2.6s ease-in-out calc(var(--i,0) * -.37s) infinite;cursor:pointer;box-shadow:0 0 0 1px #b996ff66,0 10px 24px #000a,0 0 18px #8a5cff44;transition:box-shadow .2s,filter .2s}
+    .grs-card{width:clamp(128px,10.5vw,176px)!important;min-width:0!important;height:auto!important;margin:0!important;transform-origin:50% 60%;animation:grs-float 2.6s ease-in-out calc(var(--i,0) * -.37s) infinite;cursor:pointer;box-shadow:0 0 0 1px #b996ff66,0 10px 24px #000a,0 0 18px #8a5cff44;transition:box-shadow .2s,filter .2s}
     .grs-card:hover,.grs-card:focus-visible{box-shadow:0 0 0 2px #e3cdff,0 12px 28px #000c,0 0 26px #b07cffaa;filter:brightness(1.12)}
     @keyframes grs-float{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-10px) rotate(1.2deg)}}
     .grave-recall-stage.resolving .grs-card:not(.chosen){opacity:.08;filter:grayscale(.8);pointer-events:none;transition:opacity .3s}
@@ -2365,3 +2365,11 @@
     .command-rail .magic-setting-panel .set-slot.grave-recall[aria-disabled="true"]{border-color:#4a3d5e;background:#1a1622;box-shadow:none;cursor:not-allowed}
     .command-rail .magic-setting-panel .set-slot.grave-recall[aria-disabled="true"] strong{color:#a99bbd}
     .command-rail .magic-setting-panel .set-slot.grave-recall.picking{border-color:#e3cdff;box-shadow:0 0 22px #b07cff88}
+    .grave-recall-stage{gap:18px;padding:21.6px}
+    .grave-recall-stage .grs-cards{gap:21.6px}
+    .grave-recall-stage .grs-head{font-size:14.4px}.grave-recall-stage .grs-head b{font-size:18px}
+    /* 묘지 회수 무대의 마법카드는 실제 카드처럼 세로로 길게 (2026-11-09 PM) */
+    .grave-recall-stage .grs-card{aspect-ratio:5/7;display:flex!important;flex-direction:column}
+    .grave-recall-stage .grs-card .art{flex:1 1 auto;min-height:0}
+    .grave-recall-stage .grs-card .art img{height:100%;object-fit:cover}
+    .grs-fly{box-shadow:0 0 0 1px #e3cdff,0 0 28px #a874ffcc,0 18px 36px #000a}
