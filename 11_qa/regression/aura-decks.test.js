@@ -92,3 +92,11 @@ test('덱 편집 2단계: 들어가면 오라 5개 중 편집할 덱을 먼저 �
   assert.ok(html.includes('function pickAuraDeck(i)') && html.includes('function backToAuraPick()'), '고르기와 되돌아가기');
   assert.ok(html.includes('#deck-view.aura-pick-mode .deck-toolbar,#deck-view.aura-pick-mode .deck-content{display:none!important}'), '고르기 화면에서는 편집 도구를 숨긴다');
 });
+
+test('덱 편집과 컬렉션에서 마법카드는 오라 대신 마법으로 묶어, 오라 숫자에는 하수인만 센다 (2026-11-09 PM)', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes("const deckAuraKey=i=>collectionIsSpell[i]?'magic':collectionCards[i][0]"), '구성 막대');
+  assert.ok(html.includes("keys:['fire','water','wood','metal','earth','magic'],of:i=>collectionIsSpell[i]?'magic':collectionCards[i][0]"), '성격별 묶음');
+  assert.ok(html.includes("collectionFilter==='magic'?collectionIsSpell[index]:!collectionIsSpell[index]&&card[0]===collectionFilter"), '오라 필터는 하수인만, 마법 필터 추가');
+  assert.ok(html.includes("(collectionIsSpell[index]?'마법':elementLabel[card[0]])+' · 비용 '"), '보유 카드 설명');
+});

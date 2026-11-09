@@ -1,9 +1,9 @@
     /* ===== 컬렉션 3개 도메인: 덱 편집 / 도감 / 상점 ===== */
     /* -- 덱 편집: 내 덱을 오라·비용·희귀도별로 나눠 본다 -- */
     var deckInclude='all',deckGroupBy='element';
-    const ELEMENT_COLOR={fire:'#ff6a4a',water:'#4fb8ff',wood:'#5fd38a',metal:'#cfd8e6',earth:'#d9a35b',wind:'#5fd38a',neutral:'#cfd8e6',ice:'#4fb8ff',thunder:'#cfd8e6'};/* 성격 오라 색과 같게. 카드 데이터 오라 키(wood·metal)도 넣어야 덱 구성 막대에 나무·금속이 잡힌다 (2026-11-09) */
+    const ELEMENT_COLOR={fire:'#ff6a4a',water:'#4fb8ff',wood:'#5fd38a',metal:'#cfd8e6',earth:'#d9a35b',magic:'#b07cff',wind:'#5fd38a',neutral:'#cfd8e6',ice:'#4fb8ff',thunder:'#cfd8e6'};/* 성격 오라 색과 같게. 카드 데이터 오라 키(wood·metal)도 넣어야 덱 구성 막대에 나무·금속이 잡힌다 (2026-11-09) */
     const DECK_GROUPS={
-      element:{label:'성격별',keys:['fire','water','wood','metal','earth'],of:i=>collectionCards[i][0],title:k=>elementLabel[k]},
+      element:{label:'성격별',keys:['fire','water','wood','metal','earth','magic'],of:i=>collectionIsSpell[i]?'magic':collectionCards[i][0],title:k=>elementLabel[k]},
       cost:{label:'비용별',keys:['low','mid','high','top'],of:i=>{const c=Number(collectionCards[i][3]);return c<=2?'low':c<=4?'mid':c<=6?'high':'top';},title:k=>({low:'비용 1~2',mid:'비용 3~4',high:'비용 5~6',top:'비용 7 이상'})[k]},
       rarity:{label:'희귀도별',keys:['legendary','rare','common'],of:i=>rarityByCard[i],title:k=>rarityLabel[k]}
     };
@@ -11,7 +11,7 @@
     function setDeckGroup(key){deckGroupBy=key;renderDeckBuilder();}
     function deckPanelMarkup(){
       const kinds=[...new Set(draftDeck)],total=draftDeck.length,group=DECK_GROUPS[deckGroupBy];
-      const elementCounts=Object.keys(ELEMENT_COLOR).map(el=>({el,n:draftDeck.filter(i=>collectionCards[i][0]===el).length}));
+      const deckAuraKey=i=>collectionIsSpell[i]?'magic':collectionCards[i][0],elementCounts=Object.keys(ELEMENT_COLOR).map(el=>({el,n:draftDeck.filter(i=>deckAuraKey(i)===el).length}));/* 마법카드는 오라가 아니라 '마법'으로 센다 (2026-11-09 PM) */
       const curve=[1,2,3,4,5,6,7,8].map(c=>draftDeck.filter(i=>{const cost=Number(collectionCards[i][3]);return c===8?cost>=8:cost===c;}).length),curveMax=Math.max(1,...curve);
       const bar=total?elementCounts.filter(e=>e.n).map(e=>'<i style="flex:'+e.n+';background:'+ELEMENT_COLOR[e.el]+'" title="'+elementLabel[e.el]+' '+e.n+'장"></i>').join(''):'';
       const legend=elementCounts.filter(e=>e.n).map(e=>'<span><i style="background:'+ELEMENT_COLOR[e.el]+'"></i>'+elementLabel[e.el]+' <b>'+e.n+'</b></span>').join('');
@@ -19,7 +19,7 @@
       const toggle='<div class="deck-group-toggle">'+Object.entries(DECK_GROUPS).map(([key,g])=>'<button class="'+(deckGroupBy===key?'active':'')+'" onclick="setDeckGroup(\''+key+'\')">'+g.label+'</button>').join('')+'</div>';
       const rowHtml=index=>{const card=collectionCards[index],count=countInDraft(index),maxCopies=Math.min(DECK_COPY_LIMIT,collectionState.owned[index]),canAdd=count<maxCopies&&total<60&&canAddAuraToDeck(draftDeck,index)&&(!collectionIsSpell[index]||spellCountIn(draftDeck)<SPELL_DECK_LIMIT);return '<div class="deck-row" data-index="'+index+'" draggable="true" title="보유 카드 영역으로 드래그해 제거"><img src="'+card[1]+'" alt=""><span>'+card[2]+'<small>'+elementLabel[card[0]]+' · 비용 '+card[3]+' · '+count+'장</small></span><div class="deck-row-actions"><button type="button" onclick="removeFromDraft('+index+')" aria-label="'+card[2]+' 덱에서 1장 제거">−</button><button type="button" onclick="addToDraft('+index+')" aria-label="'+card[2]+' 덱에 1장 추가" '+(canAdd?'':'disabled')+'>＋</button></div></div>';};
       const sections=group.keys.map(key=>{const list=kinds.filter(i=>group.of(i)===key).sort((a,b)=>Number(collectionCards[a][3])-Number(collectionCards[b][3])||collectionCards[a][2].localeCompare(collectionCards[b][2],'ko'));if(!list.length)return '';const copies=list.reduce((sum,i)=>sum+countInDraft(i),0);return '<div class="deck-group"><div class="deck-group-head"><span>'+group.title(key)+'</span><b>'+copies+'장</b></div>'+list.map(rowHtml).join('')+'</div>';}).join('');
-      return '<div class="deck-summary"><span>카드 종류 <b>'+kinds.length+'</b></span><span>마법·함정 <b>'+spellCountIn(draftDeck)+' / '+SPELL_DECK_LIMIT+'</b></span><span>성격 <b>'+elementCounts.filter(e=>e.n).length+'</b></span></div>'+(total?'<div class="deck-comp"><div class="deck-bar">'+bar+'</div><div class="deck-legend">'+legend+'</div><div class="deck-curve-label">비용 곡선</div><div class="deck-curve">'+curveHtml+'</div></div>':'')+toggle+(sections||'<div class="gacha-empty">왼쪽 카드의 ＋ 버튼을 누르거나 이곳으로 드래그하세요.</div>');
+      return '<div class="deck-summary"><span>카드 종류 <b>'+kinds.length+'</b></span><span>마법 <b>'+spellCountIn(draftDeck)+' / '+SPELL_DECK_LIMIT+'</b></span><span>성격 <b>'+elementCounts.filter(e=>e.n&&e.el!=='magic').length+'</b></span></div>'+(total?'<div class="deck-comp"><div class="deck-bar">'+bar+'</div><div class="deck-legend">'+legend+'</div><div class="deck-curve-label">비용 곡선</div><div class="deck-curve">'+curveHtml+'</div></div>':'')+toggle+(sections||'<div class="gacha-empty">왼쪽 카드의 ＋ 버튼을 누르거나 이곳으로 드래그하세요.</div>');
     }
 
     /* -- 도감: 전체 카드 수집 현황 (캐릭터는 보유, 마법/함정은 전투에서 발견하면 등록) -- */
