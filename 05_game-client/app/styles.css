@@ -2456,3 +2456,11 @@
     #deck-view.aura-edit-mode .deck-curve div b{font-size:8.6px!important}
     #deck-view.aura-edit-mode .deck-curve div small{font-size:8.1px!important}
     #deck-view.aura-edit-mode .deck-group-toggle button{padding:4.5px 0!important}
+    /* 컬렉션 머리 1행 (2026-11-09 PM): 제목 · 탭 · 재화·사운드·닫기를 한 줄에 두어 모든 탭의 본문 공간을 넓힌다. 설명 문구는 숨긴다 */
+    #collection-modal .collection-head{flex-wrap:wrap;gap:9px 16.2px;padding:10.8px clamp(16.2px,1.4vw,28.8px)!important}
+    #collection-modal .collection-titleblock{flex:none}
+    #collection-modal .collection-head h2{font-size:clamp(15.3px,1.15vw,18px);white-space:nowrap}
+    #collection-modal #collection-sub{display:none}
+    #collection-modal .collection-head .collection-tabs{flex:1 1 auto;flex-wrap:wrap;align-items:center;margin:0;padding:0!important;border:0}
+    #collection-modal .collection-head .collection-wallets{flex:none;margin-left:auto}
+    @media(max-width:1080px){#collection-modal .collection-head .collection-tabs{order:3;flex-basis:100%}}

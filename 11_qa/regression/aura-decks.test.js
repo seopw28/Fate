@@ -107,3 +107,9 @@ test('덱 편집 UX: 넓은 한 줄 덱 목록(비용·그림 띠·이름·장�
   assert.ok(html.includes('#deck-view.aura-edit-mode .deck-content{grid-template-columns:minmax(0,1fr) minmax(340px,40%)!important;'), '덱 목록 폭을 넓힌다');
   assert.ok(html.includes('#deck-view.aura-edit-mode .owned-card img{aspect-ratio:auto!important;height:64px!important;'), '보유 카드 그림은 띠로');
 });
+
+test('컬렉션 머리 1행: 제목, 탭, 재화와 닫기를 한 줄에 둔다 (2026-11-09 PM)', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(/<div class="collection-head"><div class="collection-titleblock">.*?<\/div><div class="collection-tabs">/s.test(html), '탭이 머리 줄 안에 있다');
+  assert.ok(html.includes('#collection-modal #collection-sub{display:none}'), '설명 문구는 숨긴다');
+});
