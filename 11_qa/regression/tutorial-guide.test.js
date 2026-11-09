@@ -29,8 +29,9 @@ test('기능 6개를 전투 흐름 순서로 시연한다', () => {
   }
 });
 
-test('완료 보상은 최초 1회 100크래커, 건너뛰면 지급하지 않는다', () => {
-  assert.ok(html.includes("const TUTORIAL_GUIDE_REWARD=100,TUTORIAL_GUIDE_REWARD_KEY='fate.tutorialGuide.rewarded';"));
+test('완료 보상은 최초 1회 쿠키조각 200개, 건너뛰면 지급하지 않는다', () => {
+  assert.ok(html.includes("const TUTORIAL_GUIDE_REWARD=200,TUTORIAL_GUIDE_REWARD_KEY='fate.tutorialGuide.rewarded';"));
+  assert.ok(html.includes("return grantCookieFragments(TUTORIAL_GUIDE_REWARD,'tutorial','first-complete');"), '크래커가 아니라 쿠키조각으로 지급한다');
   assert.ok(html.includes("data-tg-skip]').addEventListener('click',()=>closeTutorialGuide(false))"), '건너뛰기는 보상 없이 닫는다');
   assert.ok(html.includes('const reward=grantTutorialGuideReward();'), '보상은 완료 화면에서만 지급한다');
 });
