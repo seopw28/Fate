@@ -1190,6 +1190,8 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
         break;
       }
       updateEnemyDeckLabel();
+      /* 오라 마법 (2026-11-09): 소환을 마친 뒤 남은 마나로 쓴다 */
+      if(typeof castEnemyAuraMagic==='function'&&castEnemyAuraMagic())await new Promise(resolve=>setTimeout(resolve,combatMs(ENEMY_ACTION_BEAT_MS*2)));if(resultPending){done?.();return;}
       /* 재배치가 실제로 일어났으면 그 이동이 끝난 뒤에 교전을 시작한다.
          바로 이어서 때리면 맞는 카드가 미끄러지는 도중에 맞아 조준이 빗나가 보인다. */
       const laneSettle=arrangeEnemyLane(lane);

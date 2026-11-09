@@ -2310,3 +2310,19 @@
     @keyframes hero-pick-float{0%,100%{transform:translateY(0)}50%{transform:translateY(var(--float))}}
     @keyframes hero-pick-glow{50%{filter:brightness(1.18)}}
     @media(prefers-reduced-motion:reduce){.hero-pick,.hero-pick-option,.hero-pick-option.resonance>.card{animation:none}}
+
+    /* 오라 마법 칸 (2026-11-09 PM 요청): 없앤 궁극기 세팅 칸 자리. 쓸 수 있을 때 오라 색으로 빛난다 */
+    .aura-magic-panel{--am-color:#d9c06b;margin:0 0 7.2px;padding:8.1px;border:1px solid color-mix(in srgb,var(--am-color) 35%,#2a3040);border-radius:9px;background:linear-gradient(135deg,color-mix(in srgb,var(--am-color) 10%,#141822),#0e1219)}
+    .aura-magic-panel[hidden]{display:none}
+    .aura-magic-panel .setting-title{display:flex;justify-content:space-between;align-items:center;margin:0 0 6px;font-size:10.8px}
+    .aura-magic-panel .setting-title strong{color:#f1f3f7}.aura-magic-panel .setting-title span{color:#9aa3b5;font-size:9.9px}
+    .aura-magic-cast{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:1px solid color-mix(in srgb,var(--am-color) 40%,#3a4152);border-radius:10px;background:#0b0f17cc;color:#dfe5ee;text-align:left;cursor:pointer;font:inherit}
+    .aura-magic-cast img{width:38px;height:38px;flex:none;object-fit:contain;filter:drop-shadow(0 0 6px var(--am-color))}
+    .aura-magic-cast .am-copy{display:flex;flex-direction:column;gap:2px;min-width:0}
+    .aura-magic-cast b{color:#fff;font-size:12.6px}.aura-magic-cast small{color:#b9c1ce;font-size:10.4px;line-height:1.3;word-break:keep-all}
+    .aura-magic-cast em{font-style:normal;color:color-mix(in srgb,var(--am-color) 55%,#fff);font-size:10.4px;font-weight:800;word-break:keep-all}
+    .aura-magic-cast:disabled{cursor:not-allowed;opacity:.6;filter:saturate(.5)}.aura-magic-cast:disabled img{filter:grayscale(.6)}.aura-magic-cast:disabled em{color:#9aa3b5}
+    .aura-magic-panel.ready .aura-magic-cast{border-color:var(--am-color);box-shadow:0 0 14px color-mix(in srgb,var(--am-color) 45%,transparent),inset 0 0 12px color-mix(in srgb,var(--am-color) 18%,transparent);animation:aura-magic-ready 1.4s ease-in-out infinite}
+    .aura-magic-panel.ready .aura-magic-cast:hover{filter:brightness(1.15)}
+    @keyframes aura-magic-ready{50%{box-shadow:0 0 24px color-mix(in srgb,var(--am-color) 70%,transparent),inset 0 0 16px color-mix(in srgb,var(--am-color) 28%,transparent)}}
+    @media(prefers-reduced-motion:reduce){.aura-magic-panel.ready .aura-magic-cast{animation:none}}

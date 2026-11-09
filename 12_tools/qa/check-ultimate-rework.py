@@ -32,6 +32,15 @@ window.__q={
 """
 
 CHECKS = [
+ ("오라 마법(2026-11-09): 남은 마나를 모두 쓰고 성격마다 효과가 다르며(열정 m/반동 ceil(m/2), 냉철 ceil(m/2), 무던 맨 왼쪽 체력 +m), 내 턴 3번 뒤 다시 쓸 수 있다",
+  "(async()=>{const g0=playerGuardian,res={};const run=async(g)=>{playerGuardian=g;auraMagicUsedAt.player=null;playerHp=90;enemyHp=90;absoluteDefense=false;enemyAbsoluteDefense=false;mana=5;updateMana();const ok=castAuraMagic('player');await __q.wait(600);return {ok,e:90-enemyHp,p:90-playerHp,m:mana,lock:auraMagicLockReason()};};"
+  "res.jujak=await run('jujak');res.baekho=await run('baekho');document.querySelector('.summon-zone').innerHTML='';summonBattleToken('왼쪽',2,5,'earth');summonBattleToken('오른쪽',2,5,'earth');const left=document.querySelector('.summon-zone > .unit');res.hyeonmu=await run('hyeonmu');res.leftHp=__q.hp(left);"
+  "const t=ultimateLedger.player.turns;ultimateLedger.player.turns=t+2;mana=5;const wait=auraMagicLockReason();ultimateLedger.player.turns=t+3;const open=auraMagicLockReason();ultimateLedger.player.turns=t;playerGuardian=g0;"
+  "return {ok:res.jujak.ok&&res.jujak.e===5&&res.jujak.p===3&&res.jujak.m===0&&res.baekho.e===3&&res.hyeonmu.ok&&res.leftHp===10&&res.jujak.lock==='다음 사용까지 3턴'&&wait==='다음 사용까지 1턴'&&open==='',res,wait,open};})()"),
+ ("오라 마법: 컴퓨터도 같은 규칙으로 쓰고(남은 마나 모두 사용, 3턴 쿨다운), 열정은 반동 뒤 체력 20 미만이면 쓰지 않는다",
+  "(()=>{const g0=enemyGuardian;enemyGuardian='baekho';auraMagicUsedAt.enemy=null;enemyAbsoluteDefense=false;absoluteDefense=false;playerHp=90;enemyMana=6;const ok=castEnemyAuraMagic();const dmg=90-playerHp,left=enemyMana,lock=auraMagicLockReason('enemy');"
+  "enemyGuardian='jujak';auraMagicUsedAt.enemy=null;enemyHp=21;enemyMana=6;const risky=castEnemyAuraMagic();enemyHp=90;enemyGuardian=g0;auraMagicUsedAt.enemy=null;"
+  "return {ok:ok&&dmg===3&&left===0&&lock==='다음 사용까지 3턴'&&!risky,ok1:ok,dmg,left,lock,risky};})()"),
  ("영웅 강림(슬롯 없음): 궁극기 세팅 패널은 보이지 않고, 버튼을 누르면 손패 하수인이 떠오르며 같은 오라 카드는 공명 표시, 고르면 그 자리에서 소진자가 내려온다 (2026-11-09)",
   "(async()=>{__q.ready();document.querySelector('.summon-zone').innerHTML='';const fire=__q.card(__q.fireId);__q.card(__q.notFireId);mana=maxMana;updateMana();const panelHidden=getComputedStyle(document.querySelector('#ultimate-panel')).display==='none';const btn=document.querySelector('#field-ultimate-action');const ready=!btn.disabled&&heroPickLockReason()==='';"
   "btn.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,button:0}));await __q.wait(50);const opts=[...document.querySelectorAll('.hero-pick-option')];const res=opts.filter(o=>o.classList.contains('resonance')).length,champs=[...document.querySelectorAll('.hand .card')].filter(c=>cardCategory(c)==='champion').length;"
