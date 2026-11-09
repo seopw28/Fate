@@ -325,7 +325,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
       const draw=document.querySelector('#draw-action');if(draw)draw.disabled=locked||draw.disabled;
       updateFieldReorderState();
       if(locked)document.querySelectorAll('.card,.unit').forEach(node=>node.classList.remove('selected'));
-      const prompt=document.querySelector('#hand-guide');if(prompt&&locked)prompt.textContent=next==='ended'?'전투 종료':next==='player-combat'?'내 하수인 전투 처리 중':next==='magic-resolving'?'세트된 마법을 순서대로 해석 중':'상대 전투 처리 중';
+      const prompt=document.querySelector('#hand-guide');if(prompt&&locked)prompt.textContent=next==='ended'?'전투 종료':next==='player-combat'?'내 하수인 전투 처리 중':next==='magic-resolving'?'세트된 마법을 순서대로 해석 중':next==='awakening'?'오라 각성 진행 중':next==='ultimate-resolving'?'영웅 강림 진행 중':'상대 전투 처리 중';
       renderUltimate();
     }
     function bloodManaQuote(cost){const shortage=Math.max(0,cost-mana),rate=bloodManaRate(),healthCost=shortage*rate,unlocked=turnNumber>=BLOOD_MANA_UNLOCK_TURN;return {shortage,rate,healthCost,unlocked,affordable:shortage===0||(unlocked&&playerHp>healthCost)};}
