@@ -14,7 +14,7 @@ const between = (from, to) => html.slice(html.indexOf(from), html.indexOf(to, ht
 
 test('컴퓨터 카드 뽑기: 유저와 같은 비용(2×2^(n-1))·손패 8장 상한·별도 카운터', () => {
   assert.ok(html.includes('let enemyDrawActionsUsed = 0, enemyBloodManaUses = 0, enemyBloodManaBattleUses = 0, enemyTurnsTaken = 0;'));
-  assert.ok(html.includes('function enemyDrawQuote(){const cost=DRAW_BASE_COST*2**enemyDrawActionsUsed,quote=enemyBloodManaQuote(cost);'));
+  assert.ok(html.includes('function enemyDrawQuote(){const cost=DRAW_BASE_COST*2**enemyDrawActionsUsed,base=enemyBloodManaQuote(cost),'), '혈마나 카드 뽑기 누적(2026-11-09)을 더한 견적');
   const act = between('function performEnemyDrawAction()', 'function summonEnemyPriorityChampion');
   assert.ok(act.includes('if(enemyHand.length>=8)return false;'));
   assert.ok(act.includes('enemyDrawActionsUsed++;enemyDraw();'));
@@ -92,8 +92,9 @@ test('브라우저 검사: 컴퓨터 시작 손패·자동 드로우·카드 뽑
   assert.match(run.stdout, /OK: 컴퓨터 규칙 동일화 확인/);
 });
 
-test('컴퓨터도 함정은 혈마나로 세팅할 수 있고 마법은 혈마나를 쓰지 않는다', () => {
+test('컴퓨터는 쓸모없는 즉발 마법(대상 없음)을 쓰지 않고, 마법에는 혈마나를 쓰지 않는다 (2026-11-09)', () => {
   assert.ok(html.includes('function enemyTrapBloodOk(cost)'));
-  assert.ok(html.includes("x.card.spell&&(x.card.cost<=enemyMana||(x.card.trap&&enemyTrapBloodOk(x.card.cost)))"));
+  assert.ok(html.includes("x.card.spell&&enemySpellScore(x.card)>-50&&(x.card.cost<=enemyMana||(x.card.trap&&enemyTrapBloodOk(x.card.cost)))"));
+  assert.ok(html.includes('function trapSpellScore(card)'));
   assert.ok(html.includes("else enemyPayCost(card.cost,'함정 세팅')"));
 });

@@ -84,7 +84,7 @@ for (const deck of auraDecks.decks ?? []) {
     if (card.cardType === 'champion' && card.aura === deck.aura) tally.sameAura += count;
     else if (card.cardType === 'champion') others[card.aura] = (others[card.aura] ?? 0) + count;
   }
-  if (tally.total !== 60 || tally.champion !== 40 || tally.spell !== 12 || tally.trap !== 8 || tally.sameAura !== 20) errors.push(`${at}: must be 60 = champion 40 (same aura 20) + spell 12 + trap 8, got ${JSON.stringify(tally)}`);
+  if (tally.total !== 60 || tally.champion !== 40 || tally.spell !== 20 || tally.trap !== 0 || tally.sameAura !== 20) errors.push(`${at}: must be 60 = champion 40 (same aura 20) + spell 20 (함정은 2026-11-09 즉발 마법으로 통합), got ${JSON.stringify(tally)}`);
   if (Object.keys(others).length !== 4 || Object.values(others).some(n => n !== 5)) errors.push(`${at}: other auras must be 4 kinds x 5, got ${JSON.stringify(others)}`);
 }
 if (deckAuras.size !== 5) errors.push('aura-decks: one deck per aura (5) required');

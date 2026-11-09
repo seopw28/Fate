@@ -18,3 +18,11 @@ test('배틀 첫 혈마나 사용 횟수는 턴이 바뀌어도 초기화하지 
   assert.ok(!html.includes('bloodManaBattleUses=0'));
   assert.ok(html.includes('bloodManaBattleUses = Math.max(0, bloodManaBattleUses - (refund.battleBlood||0));'));
 });
+
+test('카드 뽑기를 혈마나로 낼 때마다 배틀 안에서 횟수가 쌓여, 다음 혈마나 카드 뽑기는 체력을 횟수 x 2 더 낸다 (2026-11-09 PM, 컴퓨터 동일)', () => {
+  assert.ok(html.includes('const BLOOD_DRAW_STEP=2;let bloodDrawUses=0,enemyBloodDrawUses=0;'));
+  assert.ok(html.includes('surcharge=base.shortage?bloodDrawUses*BLOOD_DRAW_STEP:0,healthCost=base.healthCost+surcharge'), '유저 카드 뽑기 견적');
+  assert.ok(html.includes('surcharge=base.shortage?enemyBloodDrawUses*BLOOD_DRAW_STEP:0,healthCost=base.healthCost+surcharge'), '컴퓨터 카드 뽑기 견적');
+  assert.ok(html.includes('recordBloodManaUse();bloodDrawUses++;'), '유저 혈마나 카드 뽑기마다 누적');
+  assert.ok(html.includes('recordEnemyBloodManaUse();enemyBloodDrawUses++;'), '컴퓨터 혈마나 카드 뽑기마다 누적');
+});

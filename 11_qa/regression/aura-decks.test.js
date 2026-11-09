@@ -8,7 +8,7 @@ const cards = new Map([...read('core-set.json').cards, ...read('character-expans
 const { decks } = read('aura-decks.json');
 const champions = deck => deck.cards.flatMap(({ cardId, count }) => Array(count).fill(cards.get(cardId))).filter(card => card.cardType === 'champion');
 
-test('오라 기본 덱은 오라마다 하나, 60장 = 하수인 40(덱 오라 20 + 다른 오라 4종 각 5) + 마법 12 + 함정 8 (2026-11-09 PM 개정)', () => {
+test('오라 기본 덱은 오라마다 하나, 60장 = 하수인 40(덱 오라 20 + 다른 오라 4종 각 5) + 마법 20 (2026-11-09 함정은 즉발 마법으로 통합)', () => {
   assert.deepEqual(decks.map(deck => deck.aura).sort(), ['earth', 'fire', 'metal', 'water', 'wood']);
   for (const deck of decks) {
     const all = deck.cards.flatMap(({ cardId, count }) => Array(count).fill(cards.get(cardId)));
@@ -17,12 +17,12 @@ test('오라 기본 덱은 오라마다 하나, 60장 = 하수인 40(덱 오라 
     assert.equal(champions(deck).length, 40, deck.name);
     for (const aura of ['fire', 'water', 'wood', 'metal', 'earth'].filter(a => a !== deck.aura)) assert.equal(champions(deck).filter(card => card.aura === aura).length, 5, deck.name + ' ' + aura);
     assert.equal(same, 20, deck.name + ' 같은 오라 하수인');
-    assert.equal(all.filter(card => card.cardType === 'spell').length, 12, deck.name);
-    assert.equal(all.filter(card => card.cardType === 'trap').length, 8, deck.name);
+    assert.equal(all.filter(card => card.cardType === 'spell').length, 20, deck.name);
+    assert.equal(all.filter(card => card.cardType === 'trap').length, 0, deck.name);
   }
 });
 
-test('다섯 덱의 마법 12·함정 8 구성은 같다', () => {
+test('다섯 덱의 마법 20장 구성은 같다', () => {
   const rest = deck => JSON.stringify(deck.cards.filter(({ cardId }) => cards.get(cardId).cardType !== 'champion'));
   for (const deck of decks) assert.equal(rest(deck), rest(decks[0]), deck.name);
 });

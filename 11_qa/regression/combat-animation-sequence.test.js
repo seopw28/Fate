@@ -8,7 +8,7 @@ const html = fs.readFileSync(path.resolve(__dirname, '../../dist/index.html'), '
 test('공격·반격·추가 효과·다음 교전은 공통 타임라인 순서로 실행된다', () => {
   assert.ok(html.includes('counterDelay:1000,guardianReaction:2100,followUpDelay:2900,postCombatPause:278,cardImpactTail:900,heroImpactTail:500,phaseTransition:250,initiativeLeadIn:278'));
   assert.ok(html.includes('const COMBAT_TIME_SCALE = 1.08'));
-  assert.ok(html.includes('},COMBAT_TIMING.counterDelay);'));
+  assert.ok(!html.includes('},COMBAT_TIMING.counterDelay);'), '교환 피해는 지연 없이 적중 순간에 적용한다 (2026-11-09)');
   assert.ok(html.includes('},COMBAT_TIMING.followUpDelay);'));
   assert.ok(html.includes('},COMBAT_TIMING.guardianReaction);'));
   assert.ok(html.includes('function runCombatQueue(units,perform,done)'));

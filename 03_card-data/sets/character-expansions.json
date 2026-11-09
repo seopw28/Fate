@@ -2320,7 +2320,7 @@
       "cardId": "storm.great-ruin",
       "nameKey": "card.storm_great_ruin",
       "displayName": "대재앙",
-      "cardType": "trap",
+      "cardType": "spell",
       "cost": 3,
       "rarity": "legendary",
       "stats": null,
