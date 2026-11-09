@@ -313,7 +313,7 @@
     .command-rail .hand-wrap { min-height:0; flex:1; display:flex; flex-direction:column; margin:0; }
     .command-rail .hand-title { flex-wrap:wrap; gap:6.3px; margin-bottom:8.1px; }
     /* 손패 안내 문구: 상단 헤더의 빈 가운데 공간에 작게 둔다(브랜드와 상단 버튼 사이). 길면 줄바꿈 */
-    .hand-guide { flex:1 1 auto; min-width:0; margin:0 18px; color:var(--gold); font-size:10.8px; font-weight:800; letter-spacing:.04em; line-height:1.35; text-align:center; word-break:keep-all; overflow-wrap:anywhere; }
+    .hand-guide { flex:1 1 240px; min-width:0; margin:0 18px; max-height:calc(1.35em * 2); overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; color:var(--gold); font-size:10.8px; font-weight:800; letter-spacing:.04em; line-height:1.35; text-align:center; word-break:keep-all; overflow-wrap:anywhere; }
     .hand-guide:empty { visibility:hidden; }
     .command-rail .deck-stack { margin-left:5.4px; }
     .command-rail .hand { min-height:0; flex:1; display:flex; flex-direction:column; justify-content:flex-start; gap:6.3px; padding:1.8px 4.5px 3.6px 1.8px; overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; }
