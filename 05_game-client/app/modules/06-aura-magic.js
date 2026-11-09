@@ -4,9 +4,9 @@
        컴퓨터도 같은 규칙으로 소환을 마친 뒤 남은 마나로 쓴다. 세부 수치는 docs/plan-aura-magic.md 의 임시 결정을 따른다. */
     const AURA_MAGIC_COOLDOWN=3;
     const AURA_MAGIC={
-      jujak:{persona:'열정',name:'열정의 불꽃',element:'fire',desc:'남은 마나만큼 상대 소환사에게 피해, 나도 그 절반만큼 피해'},
+      jujak:{persona:'열정',name:'열정의 불꽃',element:'fire',desc:'남은 마나만큼 상대 소환사 피해, 나도 절반 피해'},
       cheongryong:{persona:'포용',name:'포용의 물결',element:'water',desc:'상대 소환사에게 1~남은 마나 무작위 피해'},
-      namu:{persona:'성장',name:'성장의 숨결',element:'wind',desc:'상대 소환사에게 1 피해, 내 소환사 체력 1~남은 마나 무작위 회복'},
+      namu:{persona:'성장',name:'성장의 숨결',element:'wind',desc:'상대 소환사 1 피해, 내 체력 1~남은 마나 회복'},
       baekho:{persona:'냉철',name:'냉철한 칼날',element:'ice',desc:'상대 소환사에게 남은 마나의 절반만큼 고정 피해'},
       hyeonmu:{persona:'무던',name:'지진',element:'earth',desc:'적 하수인마다 남은 마나×10% 확률로 1 피해'}/* 2026-11-09 PM: 맨 왼쪽 아군 체력 +M → 지진 */,
     };
@@ -30,14 +30,19 @@
       else{const chance=quakeChance(m),targets=auraMagicUnits(foe),hit=targets.filter(()=>engineAdapter.random()<chance);if(side==='player'){hit.forEach(unit=>{const o=damageUnit(unit,1,el);showSkillEffect('burn',unit,'지진 · 1 피해');if(o&&!o.blocked&&o.hp<=0){unit.dataset.destroyed='true';triggerDeathrattle(unit);setTimeout(()=>removeFieldUnit(unit),650);}});}else if(hit.length)enemyDamageUnits(hit,1,el);targets.filter(unit=>!hit.includes(unit)).forEach(unit=>showSkillEffect('shield',unit,'지진 · 빗나감'));log='적 하수인 '+targets.length+'장 중 '+hit.length+'장에 1 피해(장마다 '+Math.round(chance*100)+'%)';}
       writeLog('<strong>'+who+'오라 마법 · '+magic.name+':</strong> 남은 마나 '+m+'을(를) 모두 써서 '+log+'.');sfx('summon',el,4);checkAuraMagicResult();renderAuraMagic();return true;}
     function checkAuraMagicResult(){if(resultPending)return;if(enemyHp<=0)finish(true,'오라 마법으로 상대 소환사를 쓰러뜨렸습니다.');else if(playerHp<=0)finish(false,'오라 마법의 반동으로 본체 체력이 0이 되었습니다.');}
-    function renderAuraMagic(){let panel=document.querySelector('#aura-magic-panel');const anchor=document.querySelector('.hand-tabs');if(!panel&&anchor){panel=document.createElement('div');panel.id='aura-magic-panel';panel.className='aura-magic-panel';anchor.after(panel);}if(!panel)return;const id=playerGuardian,magic=AURA_MAGIC[id];panel.hidden=!(guardianChosen&&magic)||handFilter==='spell';/* 마법카드 탭에서는 오라 마법을 보이지 않는다 (2026-11-09 PM) */if(panel.hidden)return;const g=GUARDIANS[id],reason=auraMagicLockReason('player'),ready=!reason;panel.style.setProperty('--am-color',g.color);panel.classList.toggle('ready',ready);const markup='<div class="setting-title"><strong>오라 마법</strong><span>'+AURA_MAGIC_COOLDOWN+'턴에 1번</span></div><button type="button" class="aura-magic-cast" '+(ready?'':'disabled')+' aria-label="'+magic.name+(ready?' 발동':', '+reason)+'"><img src="'+g.sigil+'" alt=""><span class="am-copy"><b>'+magic.name+'</b><small>'+magic.desc+'</small><em>'+(ready?'지금 쓰면: '+auraMagicPreview('player')+' · 남은 마나 '+mana+' 모두 사용':reason)+'</em></span></button>';if(panel.innerHTML!==markup){panel.innerHTML=markup;panel.querySelector('.aura-magic-cast').addEventListener('click',()=>castAuraMagic('player'));}}
+    function renderAuraMagic(){let panel=document.querySelector('#aura-magic-panel');const anchor=document.querySelector('.hand-tabs');if(!panel&&anchor){panel=document.createElement('div');panel.id='aura-magic-panel';panel.className='aura-magic-panel';anchor.after(panel);}if(!panel)return;const id=playerGuardian,magic=AURA_MAGIC[id];panel.hidden=!(guardianChosen&&magic)||handFilter==='spell';/* 마법카드 탭에서는 오라 마법을 보이지 않는다 (2026-11-09 PM) */if(panel.hidden)return;const g=GUARDIANS[id],reason=auraMagicLockReason('player'),ready=!reason;panel.style.setProperty('--am-color',g.color);panel.classList.toggle('ready',ready);const markup='<div class="setting-title"><strong>오라 마법</strong><span>'+AURA_MAGIC_COOLDOWN+'턴에 1번</span></div><button type="button" class="aura-magic-cast" '+(ready?'':'disabled')+' aria-label="'+magic.name+(ready?' 발동':', '+reason)+'"><img src="'+g.sigil+'" alt=""><span class="am-copy"><b>'+magic.name+'</b><small>'+magic.desc+'</small><em>'+(ready?'마나 '+mana+' 모두 → '+auraMagicPreview('player'):reason)+'</em></span></button>';if(panel.innerHTML!==markup){panel.innerHTML=markup;panel.querySelector('.aura-magic-cast').addEventListener('click',()=>castAuraMagic('player'));}}
     window.castAuraMagic=castAuraMagic;window.auraMagicLockReason=auraMagicLockReason;window.renderAuraMagic=renderAuraMagic;window.auraMagicUsedAt=auraMagicUsedAt;
     (()=>{
       const updateManaBeforeAuraMagic=updateMana;
       updateMana=function(...args){const result=updateManaBeforeAuraMagic(...args);renderAuraMagic();return result;};
+      /* 진입 경로와 상관없이 칸이 뜨도록 단계가 바뀔 때마다 다시 그린다 */
+      const setBattlePhaseBeforeAuraMagic=setBattlePhase;
+      setBattlePhase=function(...args){const result=setBattlePhaseBeforeAuraMagic(...args);renderAuraMagic();return result;};
       const renderUltimateBeforeAuraMagic=renderUltimate;
       renderUltimate=function(...args){const result=renderUltimateBeforeAuraMagic(...args);renderAuraMagic();return result;};
     })();
+    /* 이 모듈이 실린 시점에 이미 준비 단계면(바로 시작 경로) 다시 그릴 계기가 없어 칸이 안 보였다. 실릴 때 한 번 그리고, 0.5초마다 상태를 맞춘다(바뀐 게 없으면 DOM을 건드리지 않는다) */
+    renderAuraMagic();setInterval(renderAuraMagic,500);
     /* 컴퓨터: 소환을 마친 뒤 남은 마나로 쓴다. 열정은 반동을 맞고도 체력 20 이상 남을 때만 쓴다 */
     function castEnemyAuraMagic(){if(auraMagicLockReason('enemy'))return false;if(enemyGuardian==='jujak'&&enemyHp-Math.ceil(enemyMana/2)<20)return false;return castAuraMagic('enemy');}
     /* 손패 탭을 바꾸면 오라 마법 패널을 다시 그린다: 마법카드 탭에서는 숨긴다 (2026-11-09 PM) */

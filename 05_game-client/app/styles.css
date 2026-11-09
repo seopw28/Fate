@@ -2687,3 +2687,12 @@
     .tg-bottom>.tg-replay{order:1}
     .tg-bottom>.tg-prompt{order:2;flex:1 1 auto;min-width:0}
     .tg-bottom>.tg-next{order:3;margin-left:auto}
+
+    /* 오라 마법 칸 크기를 약 80%로 줄인다 (2026-11-09 PM): 여백, 문양, 글자를 한 단계씩 줄인다 */
+    .aura-magic-panel{margin:0 0 5.8px;padding:6.5px}
+    .aura-magic-panel .setting-title{margin:0 0 4.5px;font-size:9.9px}.aura-magic-panel .setting-title span{font-size:9px}
+    .aura-magic-cast{gap:8px;padding:6px 8px;border-radius:8px}
+    .aura-magic-cast img{width:30px;height:30px}
+    .aura-magic-cast .am-copy{gap:1px}
+    .aura-magic-cast b{font-size:11.2px;line-height:1.2}
+    .aura-magic-cast small,.aura-magic-cast em{font-size:9.6px;line-height:1.25}
