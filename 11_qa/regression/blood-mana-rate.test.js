@@ -10,7 +10,7 @@ test('배틀 첫 혈마나 1번은 마나 1당 체력 1, 이후는 2에서 시�
   assert.ok(html.includes('function recordBloodManaUse(){if(bloodManaBattleUses++===0)return;bloodManaUses++;}'), '배틀 첫 사용은 턴 사용 횟수에 넣지 않는다');
   assert.ok(!html.includes('rate=4+bloodManaUses'), '예전 비용 4가 남아 있으면 안 된다');
   assert.equal((html.match(/rate=bloodManaRate\(\)/g) || []).length, 2, '비용 계산과 마나 HUD 표시가 같은 값을 써야 한다');
-  assert.equal((html.match(/recordBloodManaUse\(\);/g) || []).length, 2, '카드 사용과 카드 뽑기 모두 같은 기록 함수를 쓴다');
+  assert.equal((html.match(/recordBloodManaUse\(\);/g) || []).length, 1, '카드 사용만 이 기록 함수를 쓴다. 카드 뽑기 혈마나는 따로 센다 (2026-11-09)');
 });
 
 test('배틀 첫 혈마나 사용 횟수는 턴이 바뀌어도 초기화하지 않고 세팅 취소 시에만 되돌린다', () => {
@@ -19,10 +19,11 @@ test('배틀 첫 혈마나 사용 횟수는 턴이 바뀌어도 초기화하지 
   assert.ok(html.includes('bloodManaBattleUses = Math.max(0, bloodManaBattleUses - (refund.battleBlood||0));'));
 });
 
-test('카드 뽑기를 혈마나로 낼 때마다 배틀 안에서 횟수가 쌓여, 다음 혈마나 카드 뽑기는 체력을 횟수 x 2 더 낸다 (2026-11-09 PM, 컴퓨터 동일)', () => {
-  assert.ok(html.includes('const BLOOD_DRAW_STEP=2;let bloodDrawUses=0,enemyBloodDrawUses=0;'));
-  assert.ok(html.includes('surcharge=base.shortage?bloodDrawUses*BLOOD_DRAW_STEP:0,healthCost=base.healthCost+surcharge'), '유저 카드 뽑기 견적');
-  assert.ok(html.includes('surcharge=base.shortage?enemyBloodDrawUses*BLOOD_DRAW_STEP:0,healthCost=base.healthCost+surcharge'), '컴퓨터 카드 뽑기 견적');
-  assert.ok(html.includes('recordBloodManaUse();bloodDrawUses++;'), '유저 혈마나 카드 뽑기마다 누적');
-  assert.ok(html.includes('recordEnemyBloodManaUse();enemyBloodDrawUses++;'), '컴퓨터 혈마나 카드 뽑기마다 누적');
+test('카드 뽑기 혈마나는 따로 센다: 배틀에서 n번째 혈마나 카드 뽑기는 모자란 마나 1당 체력 n, 배틀 동안 누적 (2026-11-09 PM 개정, 컴퓨터 동일)', () => {
+  assert.ok(html.includes('const BLOOD_DRAW_RATE_START=1,BLOOD_DRAW_RATE_STEP=1;let bloodDrawUses=0,enemyBloodDrawUses=0;'));
+  assert.ok(html.includes('rate=bloodDrawRate(bloodDrawUses),healthCost=base.shortage*rate'), '유저 카드 뽑기 견적');
+  assert.ok(html.includes('rate=bloodDrawRate(enemyBloodDrawUses),healthCost=base.shortage*rate'), '컴퓨터 카드 뽑기 견적');
+  assert.ok(html.includes('if(healthCost){playerHp-=healthCost;bloodDrawUses++;'), '유저 혈마나 뽑기는 카드 사용 혈마나 횟수에 넣지 않는다');
+  assert.ok(html.includes('if(healthCost){enemyHp-=healthCost;enemyBloodDrawUses++;'), '컴퓨터도 같다');
+  assert.ok(!html.includes('BLOOD_DRAW_STEP=2'), '이전 x2 누적은 없다');
 });
