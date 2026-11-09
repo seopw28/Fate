@@ -84,3 +84,11 @@ test('덱 편집은 오라 5칸 고정: 빈 칸·0장 덱은 오라 기본 덱, 
   assert.ok(!html.includes('onclick="createDeck()"') && !html.includes('onclick="duplicateDeck()"') && !html.includes('onclick="deleteDeck()"') && !html.includes('id="deck-aura"'), '오라 칸 관리 버튼 없음');
   assert.ok(html.includes(" 기본 덱으로 되돌리기</button>"), '기본 덱으로 되돌리기');
 });
+
+test('덱 편집 2단계: 들어가면 오라 5개 중 편집할 덱을 먼저 고르고, 고른 오라 덱 안에서 넣고 뺀다 (2026-11-09 PM)', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes("openCollection=function(view='deck',...rest){if(view==='deck')deckAuraStep='pick';"), '덱 편집을 열면 오라 고르기부터');
+  assert.ok(html.includes('<h3>어떤 오라의 덱을 편집할까요?</h3>'), '오라 고르기 화면');
+  assert.ok(html.includes('function pickAuraDeck(i)') && html.includes('function backToAuraPick()'), '고르기와 되돌아가기');
+  assert.ok(html.includes('#deck-view.aura-pick-mode .deck-toolbar,#deck-view.aura-pick-mode .deck-content{display:none!important}'), '고르기 화면에서는 편집 도구를 숨긴다');
+});
