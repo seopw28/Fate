@@ -5479,11 +5479,11 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
       overlay.querySelector('.tg-count').textContent='완료';
       overlay.querySelector('.tg-title').textContent='튜토리얼 완료';
       const reward=grantTutorialGuideReward();
-      overlay.querySelector('.tg-desc').textContent='주요 기능을 모두 익혔어요. 이제 대전에서 직접 써 보세요.'+(reward?' 완료 보상으로 '+reward+'크래커를 받았어요.':' 완료 보상은 처음 한 번만 받을 수 있어요.');
+      overlay.querySelector('.tg-desc').textContent='주요 기능을 모두 익혔어요. 이제 대전에서 직접 써 보세요.'+(reward?' 완료 보상으로 쿠키조각 '+reward+'개를 받았어요.':' 완료 보상은 처음 한 번만 받을 수 있어요.');
       overlay.querySelector('.tg-prompt').textContent='';
       overlay.querySelector('[data-tg-replay]').disabled=true;
       overlay.querySelector('[data-tg-skip]').hidden=true;
-      overlay.querySelector('.tg-stage').innerHTML='<div class="tg-scene tg-scene-default tg-scene-done">'+(reward?'<div class="tg-reward">◆ +'+reward+' 크래커</div>':'')+'<button type="button" class="tg-target tg-glow" data-tg-finish>대전하러 가기</button></div>';
+      overlay.querySelector('.tg-stage').innerHTML='<div class="tg-scene tg-scene-default tg-scene-done">'+(reward?'<div class="tg-reward">🍪 쿠키조각 +'+reward+'</div>':'')+'<button type="button" class="tg-target tg-glow" data-tg-finish>대전하러 가기</button></div>';
       const finishButton=overlay.querySelector('[data-tg-finish]');finishButton.addEventListener('click',()=>closeTutorialGuide(true),{once:true});finishButton.focus();
     }
     /* 처음 방문한 브라우저에서는 한 번 자동으로 연다. 자동화 검사(webdriver)에서는 열지 않는다. */
@@ -5813,16 +5813,14 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
       },
     };
 
-    /* ----- 완료 보상: 정상 완료 시 계정당 최초 1회 100크래커 (PRD 1-4). 건너뛰면 0 ----- */
-    const TUTORIAL_GUIDE_REWARD=100,TUTORIAL_GUIDE_REWARD_KEY='fate.tutorialGuide.rewarded';
+    /* ----- 완료 보상: 정상 완료 시 계정당 최초 1회 쿠키조각 200개 (PRD 1-4, 11/9 크래커에서 변경). 다음 버튼으로 넘긴 단계가 있어도 완료 화면에 닿으면 지급, 건너뛰면 미지급 ----- */
+    const TUTORIAL_GUIDE_REWARD=200,TUTORIAL_GUIDE_REWARD_KEY='fate.tutorialGuide.rewarded';
     function grantTutorialGuideReward(){
-      /* 지급 기록은 컬렉션 저장과 따로 둔다(컬렉션 불러오기가 모르는 필드를 지우기 때문). 실서비스에서는 계정 기준으로 서버가 판정한다. */
+      /* 지급 기록은 컬렉션 저장과 따로 둔다(쿠키 지급 이벤트 기록은 최근 50건만 남기 때문). 실서비스에서는 계정 기준으로 서버가 판정한다. */
       let granted=false;try{granted=localStorage.getItem(TUTORIAL_GUIDE_REWARD_KEY)==='1';}catch(e){}
-      if(granted||typeof collectionState==='undefined')return 0;
+      if(granted||typeof grantCookieFragments!=='function')return 0;
       try{localStorage.setItem(TUTORIAL_GUIDE_REWARD_KEY,'1');}catch(e){}
-      collectionState.crackers=(collectionState.crackers||0)+TUTORIAL_GUIDE_REWARD;
-      if(typeof persistCollection==='function')persistCollection();if(typeof updateCrackerHud==='function')updateCrackerHud();
-      return TUTORIAL_GUIDE_REWARD;
+      return grantCookieFragments(TUTORIAL_GUIDE_REWARD,'tutorial','first-complete');
     }
 </script>
 </body>
