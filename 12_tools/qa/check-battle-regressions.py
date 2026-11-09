@@ -40,7 +40,7 @@ CHECKS = [
     ("궁극기 효과가 적용될 때까지 턴 종료가 잠기고, 적용 뒤 풀린다",
      "(async()=>{const c=createRuntimeBattleCard('core.seraphina');ultimateState=ultimateSpec(c);ultimateUsed=false;lastUltimateTurn=null;"
      "turnNumber=8;mana=10;updateMana();" + ULT_READY + "activateUltimate();const during=battlePhase;endTurn(document.querySelector('.turn-actions .end'));"
-     "const afterEnd=battlePhase;" + WAIT % 2900 + "return {ok:during==='ultimate-resolving'&&afterEnd==='ultimate-resolving'&&battlePhase==='setup',during,afterEnd,after:battlePhase};})()"),
+     "const afterEnd=battlePhase;" + WAIT % 5500 + "return {ok:during==='ultimate-resolving'&&afterEnd==='ultimate-resolving'&&battlePhase==='setup',during,afterEnd,after:battlePhase};})()"),
     ("소환 효과(마나 화살)로 상대 소환사 체력이 0이 되면 승리한다",
      "(async()=>{enemyHp=2;updateHeroHealth();const u=summonBattleToken('t',1,3,'wind','arcane-arrow');triggerBattlecry(u);" + WAIT % 3500 +
      "const win=document.querySelector('#result').classList.contains('show');return {ok:enemyHp===0&&win,enemyHp,win};})()"),

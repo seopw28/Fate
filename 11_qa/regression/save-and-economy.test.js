@@ -266,7 +266,7 @@ test('궁극기: 사용 가능 턴·재사용 대기·강한 카드 분류가 �
     assert.ok(!html.includes(gone), `${gone}: 폐지된 규칙이 남아 있다`);
   }
   assert.ok(html.includes('function ultimateManaCost(spec){return spec?Math.max(1,maxMana-(auraUltimateMatch(spec)?ULTIMATE_RESONANCE_COST:0)):0;}'), '비용 = 최대 마나, 오라 공명이면 −2');
-  assert.ok(html.includes('ULTIMATE_RESONANCE_COST=2') && html.includes('ULTIMATE_RESONANCE_ATTACK_BONUS=12,ULTIMATE_RESONANCE_HP=4'), '오라 공명: 비용 −2, 소진자 기본 공격력 +12 · 체력 4');
+  assert.ok(html.includes('ULTIMATE_RESONANCE_COST=2') && html.includes('ULTIMATE_ARRIVAL_DAMAGE=6,ULTIMATE_RESONANCE_ARRIVAL_DAMAGE=10,ULTIMATE_ARRIVAL_HERO_DAMAGE=5'), '오라 공명: 비용 −2, 등장 피해 6 → 10 (소환사 5) (2026-11-09)');
   /* 혈마나 궁극기는 2026-11-07 제거했고, 게임 규칙으로 금지다 — 체력으로 궁극기의 마나를 대신할 수 없다.
      이름을 바꿔 되살아나도 잡히도록 식별자가 아니라 불변식을 본다. */
   assert.ok(!html.includes('ultimateBloodOverride') && !html.includes('fireBloodUltimate'), '혈마나 궁극기 우회 경로를 되살리지 말 것');
@@ -287,13 +287,13 @@ test('궁극기: 사용 가능 턴·재사용 대기·강한 카드 분류가 �
   }
 });
 
-test('궁극기: 전장이 가득 찼을 때만 맨 오른쪽 아군을 제물로 삼고, 순서 고정·전역 도발 소진자(기본 공격력 +7 / 체력 1)를 즉시 공격 가능하게 배치한다', () => {
+test('궁극기: 전장이 가득 찼을 때만 맨 오른쪽 아군을 제물로 삼고, 순서 고정·전역 도발 소진자(공격력 1 / 체력 1)를 즉시 공격 가능하게 배치한다', () => {
   assert.ok(!html.includes("if(fieldCount>=FIELD_CARD_LIMIT)return '내 전장 6장 · 궁극기 사용 불가'"));
   assert.ok(!html.includes('제물로 삼을 아군 하수인 필요'), '제물 필요 잠금 문구는 폐지됐다');
   assert.ok(html.includes('full=lane.querySelectorAll(\':scope > .unit:not(.unit-dying)\').length>=FIELD_CARD_LIMIT,victim=full?'), '전장이 가득 찼을 때만 제물을 정한다 (양쪽 공통)');
   assert.ok(html.includes("const spec=enemyUltimate;if(!spec||!enemyUltimateCondition(spec)||ultimateJustEquipped('enemy',spec))return false;"), '컴퓨터 발동 조건에 제물 필요가 없다');
-  assert.ok(html.includes("ULTIMATE_SPENT_ATTACK_BONUS=7,ULTIMATE_SPENT_HP=1"));
-  assert.ok(html.includes("attack:base+(resonance?ULTIMATE_RESONANCE_ATTACK_BONUS:ULTIMATE_SPENT_ATTACK_BONUS),hp:resonance?ULTIMATE_RESONANCE_HP:ULTIMATE_SPENT_HP"), '소진자 = 카드 기본 공격력 +7 / 체력 1 (공명이면 +12 / 4)');
+  assert.ok(html.includes("ULTIMATE_SPENT_ATTACK=1,ULTIMATE_SPENT_HP=1"));
+  assert.ok(html.includes("return {attack:ULTIMATE_SPENT_ATTACK,hp:ULTIMATE_SPENT_HP,resonance:Boolean(resonance)};"), '소진자 = 공격력 1 / 체력 1 (공명이어도 같다, 2026-11-09)');
   assert.ok(html.includes("summonBattleToken(spec.name,stats.attack,stats.hp,spec.element,'ultimate-spent',slot)"));
   assert.ok(html.includes("unit.dataset.ultimateSpent='true'"));
   assert.ok(html.includes("unit.dataset.rush='true';unit.classList.remove('exhausted');unit.querySelector('.emoji').innerHTML"), '내려놓은 즉시 공격할 수 있다');

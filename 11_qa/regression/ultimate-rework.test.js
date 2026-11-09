@@ -10,10 +10,10 @@ const html = fs.readFileSync(path.join(root, 'dist/index.html'), 'utf8');
 /* 궁극기·복수자·최후의 저항 폐지·묘지 재사용 (2026-11-07 PM 확정) 의 핵심 규칙.
    번들 문자열로 구조를 고정하고, 동작은 아래 마지막 테스트가 브라우저 검사(check-ultimate-rework.py)로 확인한다. */
 
-test('궁극기 수치 상수가 PM 확정값이다 (소진자 +7/1, 복수자 +7/+15, T+2, 공명 −2 · 소진자 +12/4, 재사용 체력 10)', () => {
-  const m = html.match(/const ULTIMATE_SPENT_ATTACK_BONUS=(\d+),ULTIMATE_SPENT_HP=(\d+),ULTIMATE_RESONANCE_ATTACK_BONUS=(\d+),ULTIMATE_RESONANCE_HP=(\d+),ULTIMATE_RESONANCE_COST=(\d+),AVENGER_ATTACK_BONUS=(\d+),AVENGER_HP_BONUS=(\d+),AVENGER_HERO_DAMAGE=(\d+),AVENGER_ARRIVAL_TURNS=(\d+),AVENGER_RESET_TURNS=(\d+),AVENGER_EXTRA_DRAW_AT=(\d+),GRAVEYARD_RECYCLE_HP_COST=(\d+),ULTIMATE_UNLOCK_HP=(\d+);/);
+test('궁극기 수치 상수가 PM 확정값이다 (소진자 1/1, 등장 피해 6 · 공명 10 · 소환사 5, 복수자 +7/+15, T+2, 공명 −2, 재사용 체력 10)', () => {
+  const m = html.match(/const ULTIMATE_SPENT_ATTACK=(\d+),ULTIMATE_SPENT_HP=(\d+),ULTIMATE_ARRIVAL_DAMAGE=(\d+),ULTIMATE_RESONANCE_ARRIVAL_DAMAGE=(\d+),ULTIMATE_ARRIVAL_HERO_DAMAGE=(\d+),ULTIMATE_RESONANCE_COST=(\d+),AVENGER_ATTACK_BONUS=(\d+),AVENGER_HP_BONUS=(\d+),AVENGER_HERO_DAMAGE=(\d+),AVENGER_ARRIVAL_TURNS=(\d+),AVENGER_RESET_TURNS=(\d+),AVENGER_EXTRA_DRAW_AT=(\d+),GRAVEYARD_RECYCLE_HP_COST=(\d+),ULTIMATE_UNLOCK_HP=(\d+);/);
   assert.ok(m, '상수 선언을 찾을 수 없다');
-  assert.deepEqual(m.slice(1).map(Number), [7, 1, 12, 4, 2, 7, 15, 7, 3, 2, 2, 10, 85]);
+  assert.deepEqual(m.slice(1).map(Number), [1, 1, 6, 10, 5, 2, 7, 15, 7, 3, 2, 2, 10, 85]);
 });
 
 test('각성 선택 전 세팅 불가 · 소진자 생존 중 세팅 불가는 버튼 경로와 카드 경로 모두 같은 판정을 쓴다', () => {
@@ -73,7 +73,7 @@ test('소진자는 상대 하수인이나 상대 소진자(전역 도발)가 있
   assert.ok(html.indexOf("if(unit.dataset.ultimateSpent==='true')return null;const ultimateAggro=") > 0, '컴퓨터 소진자는 내 소진자 도발보다 먼저 내 소환사를 노린다');
 });
 
-test('브라우저 검사: 세팅 잠금 · 소진자 +7/1 · 복수자 T+2 +7/+15 · 추가 드로우 · 묘지 재사용(체력 10) · 컴퓨터 대칭', (t) => {
+test('브라우저 검사: 세팅 잠금 · 소진자 1/1 · 복수자 T+2 +7/+15 · 추가 드로우 · 묘지 재사용(체력 10) · 컴퓨터 대칭', (t) => {
   const probe = spawnSync('python3', ['-I', '-c', 'import playwright'], { encoding: 'utf8' });
   if (probe.status !== 0) { t.skip('python playwright 가 없어 건너뜀 (npm run qa:ultimate 로 따로 실행)'); return; }
   const run = spawnSync('python3', ['-I', path.join(root, '12_tools/qa/check-ultimate-rework.py')], { encoding: 'utf8', timeout: 240000 });
