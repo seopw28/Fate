@@ -2400,11 +2400,48 @@
     .collection-tab.active, .collection-tab.secret-tab.active { border-color:#8fa0bb; background:#2c3546; color:#fff; }
     .collection-tab.shop { color:#ffdf9b; border-color:#b1884a88; }
     .collection-tab.shop.active { border-color:#ffd477; background:linear-gradient(180deg,#6b5020,#45341a); color:#fff; }
+
+    /* ===== 새 튜토리얼: 기능 시연 가이드 (07-tutorial-guide.js) ===== */
+    .tutorial-guide { position:fixed; inset:0; z-index:900; display:grid; place-items:center; padding:16px; background:radial-gradient(ellipse at 50% 40%,#1a2233f2,#05070cf7); animation:tg-in .25s ease-out; }
+    .tutorial-guide.closing { animation:tg-out .22s ease-in forwards; }
+    @keyframes tg-in { from { opacity:0; } to { opacity:1; } }
+    @keyframes tg-out { to { opacity:0; } }
+    .tg-panel { width:min(720px,100%); max-height:100%; display:flex; flex-direction:column; gap:12px; padding:16px 18px; border:1px solid #3b4658; border-radius:16px; background:#0e131cf2; box-shadow:0 24px 70px #000c; }
+    .tg-top { display:flex; align-items:center; gap:10px; }
+    .tg-brand { color:#ffdf9b; font-size:15px; }
+    .tg-count { color:#8b96a8; font-size:12px; font-weight:700; }
+    .tg-skip { margin-left:auto; padding:6px 12px; border:1px solid #3c4657; border-radius:8px; background:#161c26; color:#aeb8c9; font-size:12px; cursor:pointer; }
+    .tg-skip:hover { color:#fff; }
+    .tg-stage { position:relative; height:clamp(220px,42vh,340px); overflow:hidden; border:1px solid #2a3344; border-radius:12px; background:radial-gradient(ellipse at 50% 120%,#24304a,#0b0f17 70%); }
+    .tg-scene { position:absolute; inset:0; }
+    .tg-scene-default { display:grid; place-items:center; }
+    .tg-target { padding:12px 22px; border:1px solid #6f7d96; border-radius:12px; background:#1d2534; color:#e8edf6; font-size:15px; font-weight:800; cursor:pointer; }
+    .tg-target:disabled { cursor:default; }
+    .tg-glow { border-color:#ffd477; color:#fff; animation:tg-glow 1.1s ease-in-out infinite; }
+    @keyframes tg-glow { 0%,100% { box-shadow:0 0 0 0 #ffd47700, 0 0 10px #ffd47755; } 50% { box-shadow:0 0 0 6px #ffd47733, 0 0 26px #ffd477cc; } }
+    .tg-pressed { transform:scale(.94); transition:transform .12s; }
+    .tg-caption { display:flex; flex-direction:column; gap:6px; }
+    .tg-title { margin:0; color:#fff; font-size:20px; }
+    .tg-desc { margin:0; color:#c3ccdb; font-size:14px; line-height:1.55; word-break:keep-all; }
+    .tg-bottom { display:flex; align-items:center; gap:10px; min-height:32px; }
+    .tg-replay { padding:6px 12px; border:1px solid #3c4657; border-radius:8px; background:#161c26; color:#aeb8c9; font-size:12px; cursor:pointer; }
+    .tg-replay:disabled { opacity:.4; cursor:default; }
+    .tg-prompt { color:#8b96a8; font-size:13px; word-break:keep-all; }
+    .tg-prompt.ready { color:#ffdf9b; }
+    .tg-prompt.success { color:#8ff0b4; }
+    .tg-progress { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin:0; padding:0; list-style:none; }
+    .tg-progress li { display:flex; flex-direction:column; gap:5px; color:#6c778a; font-size:11px; text-align:center; word-break:keep-all; }
+    .tg-progress li::before { content:''; height:4px; border-radius:4px; background:#2a3344; }
+    .tg-progress li.current { color:#ffdf9b; }
+    .tg-progress li.current::before { background:#ffd477; }
+    .tg-progress li.done { color:#9fb0c8; }
+    .tg-progress li.done::before { background:#5d7aa6; }
+    .tutorial-open { flex-shrink:0; min-width:max-content; }
 </style>
 </head>
 <body>
   <main class="app">
-    <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><b class="hand-guide" id="hand-guide" role="status" aria-live="polite">카드를 선택하세요</b><div class="top-actions"><span class="ghost cracker-wallet" hidden>◆ 크래커 <strong id="cracker-count">0</strong></span><nav class="top-nav" aria-label="컬렉션 바로가기"><a class="top-nav-btn" href="#덱편집" data-view="deck" onclick="event.preventDefault();openCollectionDirect('deck')"><i aria-hidden="true">🂠</i>덱 편집</a><a class="top-nav-btn" href="#도감" data-view="codex" onclick="event.preventDefault();openCollectionDirect('codex')"><i aria-hidden="true">❐</i>도감</a><a class="top-nav-btn" href="#시크릿" data-view="secret" onclick="event.preventDefault();openCollectionDirect('secret')"><i aria-hidden="true">⛓</i>시크릿 외전</a><span class="nav-sep" aria-hidden="true"></span><a class="top-nav-btn" href="#합성" data-view="synth" onclick="event.preventDefault();openCollectionDirect('synth')"><i aria-hidden="true">⚗</i>합성</a><a class="top-nav-btn" href="#강화" data-view="enhance" onclick="event.preventDefault();openCollectionDirect('enhance')"><i aria-hidden="true">✦</i>강화</a><span class="nav-sep" aria-hidden="true"></span><a class="top-nav-btn shop" href="#상점" data-view="gacha" onclick="event.preventDefault();openCollectionDirect('gacha')"><i aria-hidden="true">◆</i>상점</a></nav><div class="util-group"><div class="sound-wrap"><button class="ghost" id="sound-toggle" onclick="toggleSoundPanel()" aria-haspopup="true" aria-expanded="false">🔊 사운드</button><div class="sound-panel" id="sound-panel" hidden><label><span>배경음악</span><output id="bgm-value">45%</output><input type="range" id="bgm-slider" min="0" max="100" step="1" aria-label="배경음악 볼륨"></label><label><span>효과음</span><output id="sfx-value">35%</output><input type="range" id="sfx-slider" min="0" max="100" step="1" aria-label="효과음 볼륨"></label><button class="sound-mute" id="sound-mute" onclick="toggleMute()">🔇 전체 음소거</button></div></div><button class="util-toggle" id="tutorial-toggle" type="button" role="switch" aria-checked="false" onclick="toggleTutorialMode()"><span class="toggle-track" aria-hidden="true"></span><span class="util-toggle-label">튜토리얼</span></button></div></div></header>
+    <header><div class="brand"><span class="brand-mark">✦</span> Crack TCG - FATE</div><b class="hand-guide" id="hand-guide" role="status" aria-live="polite">카드를 선택하세요</b><div class="top-actions"><span class="ghost cracker-wallet" hidden>◆ 크래커 <strong id="cracker-count">0</strong></span><nav class="top-nav" aria-label="컬렉션 바로가기"><a class="top-nav-btn" href="#덱편집" data-view="deck" onclick="event.preventDefault();openCollectionDirect('deck')"><i aria-hidden="true">🂠</i>덱 편집</a><a class="top-nav-btn" href="#도감" data-view="codex" onclick="event.preventDefault();openCollectionDirect('codex')"><i aria-hidden="true">❐</i>도감</a><a class="top-nav-btn" href="#시크릿" data-view="secret" onclick="event.preventDefault();openCollectionDirect('secret')"><i aria-hidden="true">⛓</i>시크릿 외전</a><span class="nav-sep" aria-hidden="true"></span><a class="top-nav-btn" href="#합성" data-view="synth" onclick="event.preventDefault();openCollectionDirect('synth')"><i aria-hidden="true">⚗</i>합성</a><a class="top-nav-btn" href="#강화" data-view="enhance" onclick="event.preventDefault();openCollectionDirect('enhance')"><i aria-hidden="true">✦</i>강화</a><span class="nav-sep" aria-hidden="true"></span><a class="top-nav-btn shop" href="#상점" data-view="gacha" onclick="event.preventDefault();openCollectionDirect('gacha')"><i aria-hidden="true">◆</i>상점</a></nav><div class="util-group"><div class="sound-wrap"><button class="ghost" id="sound-toggle" onclick="toggleSoundPanel()" aria-haspopup="true" aria-expanded="false">🔊 사운드</button><div class="sound-panel" id="sound-panel" hidden><label><span>배경음악</span><output id="bgm-value">45%</output><input type="range" id="bgm-slider" min="0" max="100" step="1" aria-label="배경음악 볼륨"></label><label><span>효과음</span><output id="sfx-value">35%</output><input type="range" id="sfx-slider" min="0" max="100" step="1" aria-label="효과음 볼륨"></label><button class="sound-mute" id="sound-mute" onclick="toggleMute()">🔇 전체 음소거</button></div></div><button class="ghost tutorial-open" id="tutorial-open" type="button" onclick="openTutorialGuide()">📖 튜토리얼</button></div></div></header>
     <div class="layout">
       <section class="battle">
         <div class="status"><span>캐릭터 체험전 · 오라 역전</span><span>연쇄 <strong id="combo-count">0</strong> · 전투 기록 <strong>03:42</strong></span></div>
@@ -5078,6 +5115,101 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
     function castEnemyAuraMagic(){if(auraMagicLockReason('enemy'))return false;if(enemyGuardian==='jujak'&&enemyHp-Math.ceil(enemyMana/2)<20)return false;return castAuraMagic('enemy');}
     /* 손패 탭을 바꾸면 오라 마법 패널을 다시 그린다: 마법카드 탭에서는 숨긴다 (2026-11-09 PM) */
     (function(){const base=setHandFilter;setHandFilter=function(...args){const result=base.apply(this,args);renderAuraMagic();return result;};})();
+
+    /* ===== 새 튜토리얼: 기능 시연 가이드 (2026-11-09 PM 요청, PRD 1-4) =====
+       대전과 별개인 연출 전용 무대에서 기능 6개를 차례로 보여 준다. 단계마다 시연 애니메이션이 끝나면
+       빛나는 버튼이 열리고, 유저가 한 번 눌러야 다음 단계로 넘어간다. 무대의 카드, 마나, 체력은 연출용이며
+       덱, 재화, 대전 기록에 반영하지 않는다. 세부 임시 결정은 docs/plan-tutorial-guide.md 를 따른다. */
+    const TUTORIAL_GUIDE_SEEN_KEY='fate.tutorialGuide.seen';
+    const tgWait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+    let tgRun=0;
+    const TUTORIAL_GUIDE_STEPS=[
+      {key:'draw',title:'카드 뽑기',desc:'준비 단계에서 마나를 내고 덱에서 카드를 더 뽑을 수 있어요. 한 턴에 뽑을수록 비용이 2, 4, 8로 올라가요.',prompt:'카드 뽑기 버튼을 눌러 보세요'},
+      {key:'order',title:'카드 순서 바꾸기',desc:'전장의 하수인 순서를 바꿀 수 있어요. 맨 왼쪽 하수인이 상대 공격을 가장 먼저 받아요.',prompt:'빛나는 하수인을 눌러 맨 왼쪽으로 옮겨 보세요'},
+      {key:'auraMagic',title:'오라 마법',desc:'남은 마나를 모두 모아 내 성격 오라의 마법을 써요. 쓴 마나가 많을수록 강하고, 3턴에 한 번 쓸 수 있어요.',prompt:'오라 마법 버튼을 눌러 보세요'},
+      {key:'graveRecall',title:'묘지 회수',desc:'손패의 마법 카드 1장을 제물로 바치면 묘지의 하수인 1장이 손패로 돌아와요. 마나 5와 체력이 들어요.',prompt:'묘지 회수 버튼을 눌러 보세요'},
+      {key:'awaken',title:'오라 각성',desc:'내 체력이 처음 85 이하가 되면 오라 각성이 열려요. 강화 2개 중 하나를 골라 대전 끝까지 유지해요.',prompt:'오라 각성 버튼을 눌러 보세요'},
+      {key:'hero',title:'영웅 강림',desc:'오라 각성을 마치면 영웅 강림을 쓸 수 있어요. 손패 하수인 하나를 골라 영웅으로 불러내요. 내 오라와 같은 카드는 더 강해져요.',prompt:'영웅 강림 버튼을 눌러 보세요'},
+    ];
+    /* 단계별 무대 구성과 시연은 체크리스트 2~4단계에서 채운다. 비어 있으면 기본 무대(따라 누를 버튼 하나)를 쓴다. */
+    const TUTORIAL_GUIDE_SCENES={};
+    function tgDefaultScene(stage,step){stage.innerHTML='<div class="tg-scene tg-scene-default"><button type="button" class="tg-target" data-tg-target>'+step.title+'</button></div>';}
+    function tutorialGuideOverlay(){return document.querySelector('.tutorial-guide');}
+    function openTutorialGuide(){
+      if(tutorialGuideOverlay())return;
+      try{localStorage.setItem(TUTORIAL_GUIDE_SEEN_KEY,'1');}catch(e){}
+      const overlay=document.createElement('div');overlay.className='tutorial-guide';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','튜토리얼');
+      overlay.innerHTML='<div class="tg-panel">'
+        +'<div class="tg-top"><strong class="tg-brand">튜토리얼</strong><span class="tg-count" aria-live="polite"></span><button type="button" class="tg-skip" data-tg-skip>건너뛰기</button></div>'
+        +'<div class="tg-stage" aria-hidden="true"></div>'
+        +'<div class="tg-caption"><h3 class="tg-title"></h3><p class="tg-desc"></p></div>'
+        +'<div class="tg-bottom"><button type="button" class="tg-replay" data-tg-replay>다시 보기</button><b class="tg-prompt" aria-live="polite"></b></div>'
+        +'<ol class="tg-progress">'+TUTORIAL_GUIDE_STEPS.map(step=>'<li title="'+step.title+'"><span>'+step.title+'</span></li>').join('')+'</ol>'
+        +'</div>';
+      document.body.appendChild(overlay);
+      overlay.querySelector('[data-tg-skip]').addEventListener('click',()=>closeTutorialGuide(false));
+      overlay.addEventListener('keydown',event=>{if(event.key==='Escape')closeTutorialGuide(false);});
+      showTutorialGuideStep(0);
+      overlay.querySelector('[data-tg-skip]').focus();
+    }
+    function closeTutorialGuide(completed){
+      tgRun++;const overlay=tutorialGuideOverlay();if(!overlay)return;
+      overlay.classList.add('closing');setTimeout(()=>overlay.remove(),220);
+      if(typeof writeLog==='function')writeLog('<strong>튜토리얼:</strong> '+(completed?'모두 마쳤습니다.':'건너뛰었습니다. 보상은 지급하지 않습니다.'));
+    }
+    async function showTutorialGuideStep(index){
+      const overlay=tutorialGuideOverlay();if(!overlay)return;
+      const run=++tgRun,alive=()=>run===tgRun&&overlay.isConnected;
+      const step=TUTORIAL_GUIDE_STEPS[index],scene=TUTORIAL_GUIDE_SCENES[step.key]||{};
+      overlay.dataset.step=step.key;
+      overlay.querySelector('.tg-count').textContent=(index+1)+' / '+TUTORIAL_GUIDE_STEPS.length;
+      overlay.querySelector('.tg-title').textContent=step.title;
+      overlay.querySelector('.tg-desc').textContent=step.desc;
+      overlay.querySelectorAll('.tg-progress li').forEach((li,i)=>{li.classList.toggle('done',i<index);li.classList.toggle('current',i===index);});
+      const prompt=overlay.querySelector('.tg-prompt'),replay=overlay.querySelector('[data-tg-replay]'),stage=overlay.querySelector('.tg-stage');
+      prompt.textContent='';prompt.classList.remove('ready');replay.disabled=true;
+      (scene.build||tgDefaultScene)(stage,step);
+      if(scene.demo)await scene.demo(stage,alive);
+      if(!alive())return;
+      replay.disabled=!scene.demo;replay.onclick=()=>showTutorialGuideStep(index);
+      prompt.textContent=step.prompt;prompt.classList.add('ready');
+      stage.setAttribute('aria-hidden','false');
+      const passed=scene.action?await scene.action(stage,alive):await tgWaitTarget(stage,alive);
+      if(!passed||!alive())return;
+      stage.setAttribute('aria-hidden','true');
+      prompt.textContent='잘했어요!';prompt.classList.add('success');
+      await tgWait(700);if(!alive())return;prompt.classList.remove('success');
+      if(index+1<TUTORIAL_GUIDE_STEPS.length)showTutorialGuideStep(index+1);
+      else showTutorialGuideComplete();
+    }
+    /* 무대 안의 [data-tg-target] 을 빛내고, 누르면 true 로 끝난다. 여러 개면 순서대로 눌러야 한다. */
+    function tgWaitTarget(stage,alive,selector='[data-tg-target]'){
+      return new Promise(resolve=>{
+        const target=stage.querySelector(selector);if(!target){resolve(true);return;}
+        target.classList.add('tg-glow');target.disabled=false;
+        target.addEventListener('click',()=>{target.classList.remove('tg-glow');target.classList.add('tg-pressed');resolve(alive());},{once:true});
+        target.focus({preventScroll:true});
+      });
+    }
+    function showTutorialGuideComplete(){
+      const overlay=tutorialGuideOverlay();if(!overlay)return;
+      overlay.querySelectorAll('.tg-progress li').forEach(li=>{li.classList.add('done');li.classList.remove('current');});
+      overlay.querySelector('.tg-count').textContent='완료';
+      overlay.querySelector('.tg-title').textContent='튜토리얼 완료';
+      overlay.querySelector('.tg-desc').textContent='주요 기능을 모두 익혔어요. 이제 대전에서 직접 써 보세요.';
+      overlay.querySelector('.tg-prompt').textContent='';
+      overlay.querySelector('[data-tg-replay]').disabled=true;
+      overlay.querySelector('[data-tg-skip]').hidden=true;
+      overlay.querySelector('.tg-stage').innerHTML='<div class="tg-scene tg-scene-default"><button type="button" class="tg-target tg-glow" data-tg-finish>대전하러 가기</button></div>';
+      const finishButton=overlay.querySelector('[data-tg-finish]');finishButton.addEventListener('click',()=>closeTutorialGuide(true),{once:true});finishButton.focus();
+    }
+    /* 처음 방문한 브라우저에서는 한 번 자동으로 연다. 자동화 검사(webdriver)에서는 열지 않는다. */
+    function maybeAutoOpenTutorialGuide(){
+      let seen=false;try{seen=localStorage.getItem(TUTORIAL_GUIDE_SEEN_KEY)==='1';}catch(e){seen=true;}
+      if(seen||navigator.webdriver)return;
+      setTimeout(openTutorialGuide,400);
+    }
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',maybeAutoOpenTutorialGuide);else maybeAutoOpenTutorialGuide();
 </script>
 </body>
 </html>
