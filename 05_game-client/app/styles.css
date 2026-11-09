@@ -2669,3 +2669,15 @@
     .deck-confirm-actions button.primary{border-color:#5fb878;background:#24402c;color:#e2f8e8}
     .collection-shell{position:relative}
     #deck-view.aura-edit-mode .deck-toast{bottom:118px}/* 저장·실행 버튼 위에 뜨게 */
+    /* 덱 목록 정렬 = 깔때기 아이콘 (2026-11-09 PM) */
+    .deck-tabs-row{display:flex;align-items:stretch;gap:6.3px;margin:0 0 6.3px}
+    .deck-tabs-row .deck-type-tabs{flex:1;margin:0}
+    .deck-sort{position:relative;flex:none}
+    .deck-sort-btn{display:grid;place-items:center;width:40px;height:100%;min-height:36px;border:1px solid #2d3643;border-radius:9px;background:#10151c;color:#9aa5b6;cursor:pointer}
+    .deck-sort-btn svg{width:17px;height:17px;fill:currentColor}
+    .deck-sort-btn:hover,.deck-sort-btn.open{border-color:#b68a4d;color:#ffd477}
+    .deck-sort-menu{position:absolute;right:0;top:calc(100% + 4.5px);z-index:8;display:flex;flex-direction:column;min-width:128px;padding:4.5px;border:1px solid #3a4455;border-radius:9px;background:#121821;box-shadow:0 12px 28px #000b}
+    .deck-sort-menu button{padding:8.1px 12.6px;border:0;border-radius:6.3px;background:none;color:#cbd2dc;font-size:12.6px;font-weight:700;text-align:left;cursor:pointer}
+    .deck-sort-menu button:hover{background:#1c2430}
+    .deck-sort-menu button.active{color:#ffd477}
+    #deck-view.aura-edit-mode .deck-group-toggle{display:none!important}

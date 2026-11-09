@@ -2678,6 +2678,18 @@
     .deck-confirm-actions button.primary{border-color:#5fb878;background:#24402c;color:#e2f8e8}
     .collection-shell{position:relative}
     #deck-view.aura-edit-mode .deck-toast{bottom:118px}/* 저장·실행 버튼 위에 뜨게 */
+    /* 덱 목록 정렬 = 깔때기 아이콘 (2026-11-09 PM) */
+    .deck-tabs-row{display:flex;align-items:stretch;gap:6.3px;margin:0 0 6.3px}
+    .deck-tabs-row .deck-type-tabs{flex:1;margin:0}
+    .deck-sort{position:relative;flex:none}
+    .deck-sort-btn{display:grid;place-items:center;width:40px;height:100%;min-height:36px;border:1px solid #2d3643;border-radius:9px;background:#10151c;color:#9aa5b6;cursor:pointer}
+    .deck-sort-btn svg{width:17px;height:17px;fill:currentColor}
+    .deck-sort-btn:hover,.deck-sort-btn.open{border-color:#b68a4d;color:#ffd477}
+    .deck-sort-menu{position:absolute;right:0;top:calc(100% + 4.5px);z-index:8;display:flex;flex-direction:column;min-width:128px;padding:4.5px;border:1px solid #3a4455;border-radius:9px;background:#121821;box-shadow:0 12px 28px #000b}
+    .deck-sort-menu button{padding:8.1px 12.6px;border:0;border-radius:6.3px;background:none;color:#cbd2dc;font-size:12.6px;font-weight:700;text-align:left;cursor:pointer}
+    .deck-sort-menu button:hover{background:#1c2430}
+    .deck-sort-menu button.active{color:#ffd477}
+    #deck-view.aura-edit-mode .deck-group-toggle{display:none!important}
 </style>
 </head>
 <body>
@@ -4638,12 +4650,15 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
     var deckInclude='all',deckGroupBy='element';
     const ELEMENT_COLOR={fire:'#ff6a4a',water:'#4fb8ff',wood:'#5fd38a',metal:'#cfd8e6',earth:'#d9a35b',magic:'#b07cff',wind:'#5fd38a',neutral:'#cfd8e6',ice:'#4fb8ff',thunder:'#cfd8e6'};/* 성격 오라 색과 같게. 카드 데이터 오라 키(wood·metal)도 넣어야 덱 구성 막대에 나무·금속이 잡힌다 (2026-11-09) */
     const DECK_GROUPS={
-      element:{label:'성격별',keys:['fire','water','wood','metal','earth','magic'],of:i=>collectionIsSpell[i]?'magic':collectionCards[i][0],title:k=>elementLabel[k]},
+      element:{label:'오라별',keys:['fire','water','wood','metal','earth','magic'],of:i=>collectionIsSpell[i]?'magic':collectionCards[i][0],title:k=>elementLabel[k]},
       cost:{label:'비용별',keys:['low','mid','high','top'],of:i=>{const c=Number(collectionCards[i][3]);return c<=2?'low':c<=4?'mid':c<=6?'high':'top';},title:k=>({low:'비용 1~2',mid:'비용 3~4',high:'비용 5~6',top:'비용 7 이상'})[k]},
       rarity:{label:'희귀도별',keys:['legendary','rare','common'],of:i=>rarityByCard[i],title:k=>rarityLabel[k]}
     };
     function setDeckInclude(key){deckInclude=key;renderDeckBuilder();}
-    function setDeckGroup(key){deckGroupBy=key;renderDeckBuilder();}
+    function setDeckGroup(key){deckGroupBy=key;deckSortOpen=false;renderDeckBuilder();}
+    var deckSortOpen=false;
+    function toggleDeckSort(event){event?.stopPropagation();deckSortOpen=!deckSortOpen;renderDeckBuilder();}
+    document.addEventListener('click',event=>{if(deckSortOpen&&!event.target.closest?.('.deck-sort')){deckSortOpen=false;renderDeckBuilder();}});
     function deckPanelMarkup(){
       const kinds=[...new Set(draftDeck)],total=draftDeck.length,group=DECK_GROUPS[deckGroupBy];
       const deckAuraKey=i=>collectionIsSpell[i]?'magic':collectionCards[i][0],elementCounts=Object.keys(ELEMENT_COLOR).map(el=>({el,n:draftDeck.filter(i=>deckAuraKey(i)===el).length}));/* 마법카드는 오라가 아니라 '마법'으로 센다 (2026-11-09 PM) */
@@ -4651,12 +4666,13 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
       const bar=total?elementCounts.filter(e=>e.n).map(e=>'<i style="flex:'+e.n+';background:'+ELEMENT_COLOR[e.el]+'" title="'+elementLabel[e.el]+' '+e.n+'장"></i>').join(''):'';
       const legend=elementCounts.filter(e=>e.n).map(e=>'<span><i style="background:'+ELEMENT_COLOR[e.el]+'"></i>'+elementLabel[e.el]+' <b>'+e.n+'</b></span>').join('');
       const curveHtml=curve.map((n,k)=>'<div title="비용 '+(k+1)+(k===7?'+':'')+' · '+n+'장"><b>'+(n||'')+'</b><i style="height:'+Math.round(n/curveMax*100)+'%"></i><small>'+(k===7?'8+':k+1)+'</small></div>').join('');
-      const toggle='<div class="deck-group-toggle">'+Object.entries(DECK_GROUPS).map(([key,g])=>'<button class="'+(deckGroupBy===key?'active':'')+'" onclick="setDeckGroup(\''+key+'\')">'+g.label+'</button>').join('')+'</div>';
+      /* 정렬은 깔때기 아이콘 하나로 접고, 누르면 오라별·비용별·희귀도별 메뉴가 열린다 (2026-11-09 PM). 기본은 오라별 */
+      const toggle='<div class="deck-sort"><button type="button" class="deck-sort-btn'+(deckSortOpen?' open':'')+'" aria-haspopup="menu" aria-expanded="'+deckSortOpen+'" aria-label="정렬: '+DECK_GROUPS[deckGroupBy].label+'" title="정렬: '+DECK_GROUPS[deckGroupBy].label+'" onclick="toggleDeckSort(event)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18l-7 8.2V19l-4 2v-8.8z"/></svg></button>'+(deckSortOpen?'<div class="deck-sort-menu" role="menu">'+Object.entries(DECK_GROUPS).map(([key,g])=>'<button type="button" role="menuitemradio" aria-checked="'+(deckGroupBy===key)+'" class="'+(deckGroupBy===key?'active':'')+'" onclick="setDeckGroup(\''+key+'\')">'+(deckGroupBy===key?'✓ ':'')+g.label+'</button>').join('')+'</div>':'')+'</div>';
       const rowHtml=index=>{const card=collectionCards[index],count=countInDraft(index),maxCopies=Math.min(DECK_COPY_LIMIT,collectionState.owned[index]),canAdd=count<maxCopies&&total<60&&canAddAuraToDeck(draftDeck,index)&&(!collectionIsSpell[index]||spellCountIn(draftDeck)<SPELL_DECK_LIMIT);const auraKey=collectionIsSpell[index]?'magic':card[0];/* 한 줄 덱 목록 (2026-11-09 PM): 비용 · 그림 띠 · 이름 · 장수 · −/＋ */return '<div class="deck-row slim" data-index="'+index+'" draggable="true" title="'+card[2]+' · '+elementLabel[auraKey]+' · 비용 '+card[3]+(collectionIsSpell[index]?'':' · ⚔ '+card[4]+' ♥ '+card[5])+'" style="--ac:'+(ELEMENT_COLOR[auraKey]||'#cfd8e6')+'"><b class="dr-cost">'+card[3]+'</b><img src="'+card[1]+'" alt=""><span class="dr-name">'+card[2]+'</span><b class="dr-count">×'+count+'</b><div class="deck-row-actions"><button type="button" onclick="removeFromDraft('+index+')" aria-label="'+card[2]+' 덱에서 1장 제거">−</button><button type="button" onclick="addToDraft('+index+')" aria-label="'+card[2]+' 덱에 1장 추가" '+(canAdd?'':'disabled')+'>＋</button></div></div>';};
       const typeOk=i=>deckTypeFilter==='all'||(deckTypeFilter==='spell')===collectionIsSpell[i],spellTotal=spellCountIn(draftDeck);/* 덱 목록 유형 탭과 왼쪽 보유 카드가 같은 deckTypeFilter 를 쓴다 (2026-11-09 PM) */
       const typeTabs='<div class="deck-type-tabs" role="tablist" aria-label="덱 카드 종류">'+[['all','전체',total],['champion','하수인',total-spellTotal],['spell','마법',spellTotal]].map(([key,label,n])=>'<button type="button" role="tab" aria-selected="'+(deckTypeFilter===key)+'" class="'+(deckTypeFilter===key?'active':'')+'" onclick="setDeckTypeFilter(\''+key+'\')">'+label+' <b>'+n+'</b></button>').join('')+'</div>';
       const sections=group.keys.map(key=>{const list=kinds.filter(i=>group.of(i)===key&&typeOk(i)).sort((a,b)=>Number(collectionCards[a][3])-Number(collectionCards[b][3])||collectionCards[a][2].localeCompare(collectionCards[b][2],'ko'));if(!list.length)return '';const copies=list.reduce((sum,i)=>sum+countInDraft(i),0);return '<div class="deck-group"><div class="deck-group-head"><span>'+group.title(key)+'</span><b>'+copies+'장</b></div>'+list.map(rowHtml).join('')+'</div>';}).join('');
-      return '<div class="deck-summary"><span>카드 종류 <b>'+kinds.length+'</b></span><span>마법 <b>'+spellCountIn(draftDeck)+' / '+SPELL_DECK_LIMIT+'</b></span><span>성격 <b>'+elementCounts.filter(e=>e.n&&e.el!=='magic').length+'</b></span></div>'+(total?'<div class="deck-comp"><div class="deck-bar">'+bar+'</div><div class="deck-legend">'+legend+'</div><div class="deck-curve-label">비용 곡선</div><div class="deck-curve">'+curveHtml+'</div></div>':'')+typeTabs+toggle+(sections||'<div class="gacha-empty">왼쪽 카드의 ＋ 버튼을 누르거나 이곳으로 드래그하세요.</div>');
+      return '<div class="deck-summary"><span>카드 종류 <b>'+kinds.length+'</b></span><span>마법 <b>'+spellCountIn(draftDeck)+' / '+SPELL_DECK_LIMIT+'</b></span><span>성격 <b>'+elementCounts.filter(e=>e.n&&e.el!=='magic').length+'</b></span></div>'+(total?'<div class="deck-comp"><div class="deck-bar">'+bar+'</div><div class="deck-legend">'+legend+'</div><div class="deck-curve-label">비용 곡선</div><div class="deck-curve">'+curveHtml+'</div></div>':'')+'<div class="deck-tabs-row">'+typeTabs+toggle+'</div>'+(sections||'<div class="gacha-empty">왼쪽 카드의 ＋ 버튼을 누르거나 이곳으로 드래그하세요.</div>');
     }
 
     /* -- 도감: 전체 카드 수집 현황 (캐릭터는 보유, 마법/함정은 전투에서 발견하면 등록) -- */

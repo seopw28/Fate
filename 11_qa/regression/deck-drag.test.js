@@ -39,3 +39,9 @@ test('덱 저장하기: 편집은 자동 저장하지 않고 확인 창을 거�
   assert.ok(html.includes("deckConfirm('저장하지 않은 변경이 있습니다'"), '나가기 확인');
   assert.ok(html.includes("backToAuraPick=function(){guardDeckLeave("), '오라 선택으로 돌아갈 때 확인');
 });
+
+test('덱 목록 정렬은 깔때기 아이콘 하나로 접고 누르면 오라별·비용별·희귀도별이 열린다. 기본은 오라별 (2026-11-09 PM)', () => {
+  assert.ok(html.includes("element:{label:'오라별',"), '성격별이 아니라 오라별');
+  assert.ok(html.includes('class="deck-sort-btn') && html.includes('function toggleDeckSort(event)'), '깔때기 아이콘');
+  assert.ok(html.includes("var deckInclude='all',deckGroupBy='element';"), '기본은 오라별');
+});
