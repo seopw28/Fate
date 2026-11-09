@@ -72,22 +72,16 @@ test('상대 함정은 세트 시 정체를 숨기고 발동 시에만 공개한
   assert.ok(!html.includes("(card.trap?'함정':'마법')+' <strong>'+card.name+'</strong>을(를) 세트했습니다."));
 });
 
-test('세팅 슬롯은 함정 1칸뿐이고, 칸이 차면 손패의 함정 카드만 비활성 시각화한다 (2026-11-07)', () => {
-  assert.ok(html.includes("const MAGIC_SLOT_KINDS=['reaction'];"), '함정 전용 1칸');
-  assert.ok(html.includes('id="magic-slot-0"') && !html.includes('id="magic-slot-1"'), '함정 칸 하나만 화면에 있어야 한다');
-  assert.ok(html.includes('slotIndex=freeMagicSlot(kind)'), '세트는 카드 종류에 맞는 빈 칸에만 들어가야 한다');
-  assert.ok(html.includes('.command-rail .card.magic-slot-blocked'), '비활성 카드 스타일이 있어야 한다');
-  assert.ok(html.includes('function syncMagicHandSlotAvailability()'), '손패 비활성 동기화 함수가 있어야 한다');
-  const sync = html.slice(html.indexOf('function syncMagicHandSlotAvailability()'), html.indexOf('const renderMagicSlotsBeforeHandBlock'));
-  assert.ok(sync.includes("const fullByKind = {active: freeMagicSlot('active') < 0, reaction: freeMagicSlot('reaction') < 0}"), '카드 종류별로 칸이 모두 찼을 때만 막아야 한다');
-  assert.ok(sync.includes("cardCategory(card)!=='spell'||magicKindOfCard(card)!=='reaction'"), '캐릭터와 마법 카드는 칸 비활성 대상이 아니어야 한다');
-  assert.ok(sync.includes("card.classList.toggle('magic-slot-blocked', full)"), '슬롯이 비면 비활성 표시를 해제해야 한다');
-  assert.ok(sync.includes("card.setAttribute('aria-disabled','true')"), '보조 기술에도 비활성을 알려야 한다');
-  assert.ok(!sync.includes("card.title=''"), '해제 시 빈 title 대신 속성을 제거해야 한다');
-  assert.ok(html.includes('renderMagicSlots = function(){ renderMagicSlotsBeforeHandBlock(); syncMagicHandSlotAvailability(); }'), '슬롯 상태가 바뀌면 손패도 갱신해야 한다');
-  assert.ok(html.includes('updateCardAffordability = function(...args){ const result = updateCardAffordabilityBeforeMagicBlock.apply(this,args); syncMagicHandSlotAvailability(); return result; }'), '손패 재정렬 후에도 비활성 표시가 유지돼야 한다');
-  assert.ok(!html.includes("content:'슬롯 2/2 · 세팅 불가'"), '공격력·체력을 가리는 글자 띠는 쓰지 않는다');
+test('함정 슬롯 대신 묘지 회수: 마법 1장 제물 + 마나 5 + 체력 1씩 누적, 묘지 하수인 1장을 무작위로 손패에 (2026-11-09 PM, 유저와 컴퓨터 동일)', () => {
+  assert.ok(html.includes('const MAGIC_SLOT_KINDS=[];'), '함정 슬롯은 없다');
+  assert.ok(html.includes('id="grave-recall"') && !html.includes('id="magic-slot-0"'), '함정 칸 자리에 묘지 회수 버튼');
+  assert.ok(html.includes('const GRAVE_RECALL_MANA=5,graveRecallUses={player:0,enemy:0}'));
+  assert.ok(html.includes('function graveRecallHpCost(side){return graveRecallUses[side]+1;}'), '체력 비용은 1, 2, 3 …');
+  assert.ok(html.includes('pick=pool[Math.floor(engineAdapter.random()*pool.length)]'), '묘지 하수인은 무작위');
+  assert.ok(html.includes("function enemyTryGraveRecall()"), '컴퓨터도 같은 규칙');
+  assert.ok(!/"cardType": "trap"/.test(require('node:fs').readFileSync(require('node:path').resolve(__dirname,'../../03_card-data/sets/core-set.json'),'utf8')), '함정 카드는 남지 않는다');
 });
+
 
 test('마법은 손패에서 더블클릭하면 마나로만 즉시 발동하고, 궁극기는 세팅 다음 턴부터 발동한다 (2026-11-07)', () => {
   assert.ok(html.includes('function castHandSpell(card)'), '손패 마법 즉시 발동 함수가 있어야 한다');
