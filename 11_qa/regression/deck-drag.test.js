@@ -28,3 +28,14 @@ test('덱 편집 배치: 실행 버튼은 덱 목록 아래, 덱 목록은 필�
   assert.ok(html.includes("actions.className='deck-actions';save.before(actions);"), '실행 버튼을 덱 목록 아래로');
   assert.ok(html.includes('grid-template-areas:"note note" "head head" "tools deck" "grid deck"'), '덱 목록을 필터 줄 높이까지 올린다');
 });
+
+test('덱 편집 보유 카드에는 0/7 같은 장수 표시를 숨기고 −/＋만 둔다 (2026-11-09 PM)', () => {
+  assert.ok(html.includes('#deck-view.aura-edit-mode .deck-card-controls>b{display:none!important}'));
+});
+
+test('덱 저장하기: 편집은 자동 저장하지 않고 확인 창을 거쳐 저장하며, 저장하지 않고 나가면 묻는다 (2026-11-09 PM)', () => {
+  assert.ok(html.includes('storeDraft=function(){};/* 자동 저장 끔 */'), '자동 저장 끔');
+  assert.ok(html.includes('function saveDeckDraft()') && html.includes("class=\"deck-save-now"), '덱 저장하기 버튼');
+  assert.ok(html.includes("deckConfirm('저장하지 않은 변경이 있습니다'"), '나가기 확인');
+  assert.ok(html.includes("backToAuraPick=function(){guardDeckLeave("), '오라 선택으로 돌아갈 때 확인');
+});

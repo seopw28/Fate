@@ -2652,3 +2652,20 @@
     .deck-type-tabs button{padding:6.3px 0;border:0;border-radius:6.3px;background:none;color:#9aa5b6;font-size:12.6px;font-weight:800;cursor:pointer}
     .deck-type-tabs button b{color:inherit;opacity:.8}
     .deck-type-tabs button.active{background:#2a2316;color:#ffd477;box-shadow:inset 0 0 0 1px #b68a4d}
+    /* 보유 카드 아래 '0/7' 같은 장수 표시는 숨긴다. 덱에 든 장수는 카드 왼쪽 위 '보유 n · 덱 n'과 덱 목록에서 본다 (2026-11-09 PM) */
+    #deck-view.aura-edit-mode .deck-card-controls{grid-template-columns:1fr 1fr!important}
+    #deck-view.aura-edit-mode .deck-card-controls>b{display:none!important}
+    /* 덱 저장하기 버튼과 확인 창 (2026-11-09 PM) */
+    #deck-view.aura-edit-mode .deck-actions .deck-save-now{flex:1 1 100%;padding:11.7px 9px;border-color:#5fb878;background:linear-gradient(135deg,#24402c,#18261d);color:#d6f5de;font-size:14.4px;font-weight:900}
+    #deck-view.aura-edit-mode .deck-actions .deck-save-now:hover{border-color:#8ef0a8;color:#fff}
+    #deck-view.aura-edit-mode .deck-actions .deck-save-now.saved{border-color:#2f3a2f;background:#151b17;color:#7d9a85;cursor:default}
+    .deck-confirm{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:#05070bcc;border-radius:inherit}
+    .deck-confirm-panel{width:min(420px,90%);padding:21.6px;border:1px solid #3a4455;border-radius:14.4px;background:#121821;box-shadow:0 24px 60px #000c;text-align:center}
+    .deck-confirm-panel h3{margin:0 0 9px;color:#f2e6cf;font-size:17.1px}
+    .deck-confirm-panel p{margin:0 0 16.2px;color:#aab4c3;font-size:13.5px;line-height:1.6}
+    .deck-confirm-warn{color:#ffcf7a}
+    .deck-confirm-actions{display:flex;gap:7.2px;justify-content:center}
+    .deck-confirm-actions button{flex:1;padding:9.9px 9px;border:1px solid #465365;border-radius:9px;background:#171e28;color:#d8dee8;font-size:13.5px;font-weight:800;cursor:pointer}
+    .deck-confirm-actions button.primary{border-color:#5fb878;background:#24402c;color:#e2f8e8}
+    .collection-shell{position:relative}
+    #deck-view.aura-edit-mode .deck-toast{bottom:118px}/* 저장·실행 버튼 위에 뜨게 */
