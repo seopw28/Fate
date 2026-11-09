@@ -202,3 +202,98 @@
         });
       },
     };
+
+    /* ----- 소환사 체력, 피해 숫자, 부서지기 ----- */
+    function tgHpHtml(side,label,hp){return '<div class="tg-hp tg-hp-'+side+'"><span>'+label+'</span><b>♥ <em>'+hp+'</em></b></div>';}
+    function tgSetHp(stage,side,hp,delta){
+      const box=stage.querySelector('.tg-hp-'+side);if(!box)return;box.querySelector('em').textContent=hp;
+      const pop=document.createElement('i');pop.className='tg-pop '+(delta<0?'dmg':'heal');pop.textContent=(delta>0?'+':'')+delta;box.appendChild(pop);setTimeout(()=>pop.remove(),900);
+      box.classList.remove('tg-hit');void box.offsetWidth;if(delta<0)box.classList.add('tg-hit');
+    }
+    function tgSetMana(stage,value){const mana=stage.querySelector('.tg-mana b');if(!mana)return;mana.textContent=value;mana.parentElement.classList.remove('spend');void mana.offsetWidth;mana.parentElement.classList.add('spend');}
+    async function tgShatter(stage,card){
+      const r=tgRect(stage,card),html=card.outerHTML;card.style.visibility='hidden';
+      const pieces=[[0,0,50,50,-1,-1],[50,0,100,50,1,-1],[0,50,50,100,-1,1],[50,50,100,100,1,1]].map(([x1,y1,x2,y2,dx,dy])=>{
+        const wrap=document.createElement('div');wrap.className='tg-shard';wrap.innerHTML=html;wrap.style.cssText='position:absolute;left:'+r.x+'px;top:'+r.y+'px;width:'+r.w+'px;height:'+r.h+'px;z-index:8;clip-path:polygon('+x1+'% '+y1+'%,'+x2+'% '+y1+'%,'+x2+'% '+y2+'%,'+x1+'% '+y2+'%)';
+        stage.appendChild(wrap);return wrap.animate([{transform:'none',opacity:1},{transform:'translate('+dx*34+'px,'+dy*30+'px) rotate('+dx*dy*24+'deg)',opacity:0}],{duration:520,easing:'cubic-bezier(.2,.6,.3,1)',fill:'forwards'}).finished.then(()=>wrap.remove()).catch(()=>{});
+      });
+      await Promise.all(pieces);card.remove();
+    }
+
+    /* ----- 3. 오라 마법: 남은 마나를 모두 모아 쏜다 (불 = 열정의 불꽃) ----- */
+    TUTORIAL_GUIDE_SCENES.auraMagic={
+      build(stage){
+        const spell=(typeof AURA_MAGIC!=='undefined'&&AURA_MAGIC.jujak)||{persona:'열정',name:'열정의 불꽃'};
+        stage.innerHTML='<div class="tg-scene tg-scene-aura">'
+          +tgHpHtml('enemy','상대 소환사',100)+tgHpHtml('player','내 소환사',100)
+          +'<div class="tg-mana">마나 <b>6</b> / 10</div>'
+          +'<button type="button" class="tg-action tg-aura-btn fire" data-tg-target disabled><span class="tg-aura-persona">'+tgEsc(spell.persona)+'</span>'+tgEsc(spell.name)+'<small>남은 마나를 모두 사용</small></button>'
+          +'<div class="tg-note">쓴 마나 6만큼 상대에게 피해, 나도 절반(3) 피해</div>'
+          +'</div>';
+      },
+      async cast(stage,alive){
+        const manaBox=stage.querySelector('.tg-mana'),button=stage.querySelector('.tg-aura-btn'),enemy=stage.querySelector('.tg-hp-enemy');
+        const from=tgRect(stage,manaBox),mid=tgRect(stage,button);
+        const orbs=Array.from({length:6},(_,i)=>{const orb=document.createElement('span');orb.className='tg-orb';return tgFly(stage,orb,{x:from.cx-6+(i-2.5)*6,y:from.cy-6},{x:mid.cx-6,y:mid.cy-6},380+i*70);});
+        tgSetMana(stage,0);await Promise.all(orbs);if(!alive())return;
+        stage.querySelectorAll('.tg-orb').forEach(orb=>orb.remove());
+        const to=tgRect(stage,enemy),ball=document.createElement('span');ball.className='tg-fireball';
+        await tgFly(stage,ball,{x:mid.cx-18,y:mid.cy-18,s:.6},{x:to.cx-18,y:to.cy-18,s:1.3},560);if(!alive())return;ball.remove();
+        tgSetHp(stage,'enemy',94,-6);await tgWait(380);if(!alive())return;tgSetHp(stage,'player',97,-3);
+        button.classList.add('cooling');button.querySelector('small').textContent='3턴 뒤 다시 쓸 수 있어요';await tgWait(900);
+      },
+      async demo(stage,alive){
+        const button=stage.querySelector('.tg-aura-btn');await tgCursorTo(stage,button);if(!alive())return;await tgCursorTap(stage);
+        tgCursorHide(stage);await this.cast(stage,alive);if(!alive())return;await tgWait(300);if(!alive())return;this.build(stage);
+      },
+      async action(stage,alive){const passed=await tgWaitTarget(stage,alive);if(!passed)return false;await this.cast(stage,alive);return alive();},
+    };
+
+    /* ----- 4. 묘지 회수: 손패 마법 1장을 제물로, 묘지 하수인 1장이 손패로 ----- */
+    TUTORIAL_GUIDE_SCENES.graveRecall={
+      build(stage){
+        const spells=tgPickCards(2,{type:'spell',aura:null}),minion=tgPickCards(1,{offset:2})[0];
+        stage.innerHTML='<div class="tg-scene tg-scene-grave">'
+          +tgHpHtml('player','내 소환사',100)
+          +'<div class="tg-mana">마나 <b>7</b> / 10</div>'
+          +'<div class="tg-grave"><div class="tg-grave-pile">'+tgCardHtml(tgPickCards(1,{offset:9})[0],'tg-dead')+'</div><span>묘지</span></div>'
+          +'<button type="button" class="tg-action tg-grave-btn" data-tg-target disabled>묘지 회수 <small>· 마나 5, 체력 1</small></button>'
+          +'<div class="tg-hand">'+spells.map(card=>tgCardHtml(card,'tg-hand-spell')).join('')+tgCardHtml(minion)+'</div>'
+          +'<div class="tg-offer" hidden><p>제물로 바칠 마법 카드를 고르세요</p><div class="tg-offer-row"></div></div>'
+          +'</div>';
+      },
+      /* 버튼을 누르면 손패 마법이 무대 가운데로 떠오른다 */
+      async open(stage){
+        const offer=stage.querySelector('.tg-offer'),row=offer.querySelector('.tg-offer-row');
+        stage.querySelectorAll('.tg-hand .tg-hand-spell').forEach(card=>{const clone=card.cloneNode(true);clone.classList.remove('tg-hand-spell');clone.classList.add('tg-offer-card');clone.dataset.source=card.dataset.cardId;row.appendChild(clone);card.classList.add('tg-ghost');});
+        offer.hidden=false;offer.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:320,easing:'ease-out'});await tgWait(340);
+      },
+      async sacrifice(stage,alive,pick){
+        const offer=stage.querySelector('.tg-offer'),handCard=stage.querySelector('.tg-hand .tg-hand-spell[data-card-id="'+pick.dataset.source+'"]');
+        offer.querySelectorAll('.tg-offer-card').forEach(card=>{if(card!==pick)card.style.opacity='.25';});
+        await tgShatter(stage,pick);if(!alive())return;
+        handCard?.remove();offer.hidden=true;stage.querySelectorAll('.tg-ghost').forEach(card=>card.classList.remove('tg-ghost'));
+        tgSetMana(stage,2);tgSetHp(stage,'player',99,-1);
+        const dead=stage.querySelector('.tg-grave .tg-card'),hand=stage.querySelector('.tg-hand');
+        const slot=document.createElement('div');slot.innerHTML=dead.outerHTML;const face=slot.firstChild;face.classList.remove('tg-dead');face.classList.add('tg-arriving');hand.appendChild(face);
+        const from=tgRect(stage,dead),to=tgRect(stage,face),riser=dead.cloneNode(true);riser.classList.remove('tg-dead');riser.classList.add('tg-rising');dead.style.visibility='hidden';
+        riser.style.cssText='position:absolute;left:0;top:0;z-index:7;';stage.appendChild(riser);
+        await riser.animate([{transform:'translate('+from.x+'px,'+(from.y+20)+'px)',opacity:.2,filter:'grayscale(1) brightness(.5)'},{transform:'translate('+from.x+'px,'+(from.y-30)+'px)',opacity:1,filter:'none'}],{duration:520,easing:'ease-out',fill:'forwards'}).finished.catch(()=>{});
+        if(!alive())return;riser.remove();
+        const flyer=dead.cloneNode(true);flyer.classList.remove('tg-dead');flyer.style.visibility='';
+        await tgFly(stage,flyer,{x:from.x,y:from.y-30},{x:to.x,y:to.y},560);if(!alive())return;flyer.remove();face.classList.remove('tg-arriving');face.classList.add('tg-flip');await tgWait(600);
+      },
+      async demo(stage,alive){
+        const button=stage.querySelector('.tg-grave-btn');await tgCursorTo(stage,button);if(!alive())return;await tgCursorTap(stage);
+        await this.open(stage);if(!alive())return;const pick=stage.querySelector('.tg-offer-card');
+        await tgCursorTo(stage,pick);if(!alive())return;await tgCursorTap(stage);tgCursorHide(stage);
+        await this.sacrifice(stage,alive,pick);if(!alive())return;await tgWait(300);if(!alive())return;this.build(stage);
+      },
+      async action(stage,alive){
+        if(!await tgWaitTarget(stage,alive))return false;await this.open(stage);if(!alive())return false;
+        const prompt=tutorialGuideOverlay()?.querySelector('.tg-prompt');if(prompt)prompt.textContent='제물로 바칠 마법 카드를 눌러 보세요';
+        const pick=await new Promise(resolve=>{stage.querySelectorAll('.tg-offer-card').forEach(card=>{card.classList.add('tg-glow');card.addEventListener('click',()=>resolve(card),{once:true});});});
+        if(!alive())return false;stage.querySelectorAll('.tg-offer-card').forEach(card=>card.classList.remove('tg-glow'));
+        await this.sacrifice(stage,alive,pick);return alive();
+      },
+    };
