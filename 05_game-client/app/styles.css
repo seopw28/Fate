@@ -2631,7 +2631,8 @@
     .owned-card.add-denied{animation:owned-denied .42s ease-in-out}
     @keyframes owned-denied{0%,100%{transform:none}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
     /* 덱 편집 배치 (2026-11-09 PM): 덱 목록을 필터 줄 높이까지 올리고(오른쪽 열 전체), 실행 버튼은 덱 목록 아래, 유형 탭은 덱 목록 위 */
-    #deck-view.aura-edit-mode{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(340px,40%);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"note note" "head head" "tools deck" "grid deck";column-gap:16.2px;row-gap:0}
+    /* 선택된 덱 편집 화면에만 격자 배치를 쓴다. :not(.active) 를 빼면 다른 탭으로 옮겨도 덱 편집이 숨겨지지 않고 아래에 함께 그려진다 (2026-11-09 PM 수정) */
+    #deck-view.active.aura-edit-mode{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(340px,40%);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"note note" "head head" "tools deck" "grid deck";column-gap:16.2px;row-gap:0}
     #deck-view.aura-edit-mode>.deck-battle-note{grid-area:note}
     #deck-view.aura-edit-mode>.deck-switcher{grid-area:head}
     #deck-view.aura-edit-mode>.deck-toolbar{grid-area:tools;min-width:0}

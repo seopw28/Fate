@@ -46,6 +46,13 @@ def main():
         pg.locator('.deck-row.slim').nth(0).drag_to(pg.locator('#owned-grid'), force=True); pg.wait_for_timeout(250)
         pg.click('.deck-aura-back'); pg.wait_for_timeout(250); pg.click('.deck-confirm-actions button:has-text("저장 안 함")'); pg.wait_for_timeout(300)
         check('저장 안 함을 고르면 편집 내용을 버리고 나간다', pg.evaluate("()=>deckAuraStep") == 'pick' and pg.evaluate("()=>draftOfDeck(0).length") == 60)
+        bad = []
+        for view in ['codex', 'secret', 'synth', 'enhance', 'gacha']:
+            pg.evaluate("()=>{openCollection('deck');pickAuraDeck(1);}"); pg.wait_for_timeout(250)
+            pg.click('.collection-tab[data-view="%s"]' % view); pg.wait_for_timeout(250)
+            vis = pg.evaluate("()=>[...document.querySelectorAll('.collection-view')].filter(v=>getComputedStyle(v).display!=='none').map(v=>v.id)")
+            if vis != [view + '-view']: bad.append((view, vis))
+        check('덱 편집 중 다른 탭으로 옮기면 그 탭 화면 하나만 보인다(덱 편집이 아래에 남지 않는다)', not bad, bad)
         check('끌기 표시가 남지 않는다', pg.evaluate("()=>document.querySelectorAll('#deck-view .dragging,.drag-over,.drag-denied').length") == 0)
         check('콘솔 오류가 없다', not errs, errs[:2])
         b.close()
