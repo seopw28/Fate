@@ -2326,3 +2326,31 @@
     .aura-magic-panel.ready .aura-magic-cast:hover{filter:brightness(1.15)}
     @keyframes aura-magic-ready{50%{box-shadow:0 0 24px color-mix(in srgb,var(--am-color) 70%,transparent),inset 0 0 16px color-mix(in srgb,var(--am-color) 28%,transparent)}}
     @media(prefers-reduced-motion:reduce){.aura-magic-panel.ready .aura-magic-cast{animation:none}}
+    /* 묘지 회수 무대 (2026-11-09 PM): 내 진영 위에 손패 마법이 떠오르고, 고른 카드가 부서진 뒤 묘지 틈에서 하수인이 솟아 손패로 날아간다 */
+    .grave-recall-stage{position:fixed;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10.8px;box-sizing:border-box;padding:12.6px;border-radius:14.4px;background:radial-gradient(ellipse at 50% 70%,#3a1f5acc,#0b0910e6 70%);box-shadow:inset 0 0 0 1px #8f6bd355,0 0 32px #6b45b455;animation:grs-open .32s ease-out both}
+    .grave-recall-stage.fading{opacity:0;transition:opacity .45s ease .2s}
+    @keyframes grs-open{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+    .grs-head{display:flex;align-items:center;gap:10.8px;color:#e4d6ff;font-size:12.6px}
+    .grs-head b{font-size:15.3px;color:#c9a8ff;letter-spacing:.04em}
+    .grs-head .grs-cancel{padding:4.5px 10.8px;border:1px solid #6d5a91;border-radius:7.2px;background:#1a1426;color:#cdbfe6;font-size:11.7px;cursor:pointer}
+    .grs-cards{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14.4px;max-width:100%}
+    .grs-card{width:clamp(92px,7.6vw,128px)!important;min-width:0!important;height:auto!important;margin:0!important;transform-origin:50% 60%;animation:grs-float 2.6s ease-in-out calc(var(--i,0) * -.37s) infinite;cursor:pointer;box-shadow:0 0 0 1px #b996ff66,0 10px 24px #000a,0 0 18px #8a5cff44;transition:box-shadow .2s,filter .2s}
+    .grs-card:hover,.grs-card:focus-visible{box-shadow:0 0 0 2px #e3cdff,0 12px 28px #000c,0 0 26px #b07cffaa;filter:brightness(1.12)}
+    @keyframes grs-float{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-10px) rotate(1.2deg)}}
+    .grave-recall-stage.resolving .grs-card:not(.chosen){opacity:.08;filter:grayscale(.8);pointer-events:none;transition:opacity .3s}
+    .grs-card.chosen{animation:grs-chosen .26s ease-out forwards;pointer-events:none}
+    .grs-card.shattered{visibility:hidden}
+    @keyframes grs-chosen{to{transform:translateY(-14px) scale(1.12);filter:brightness(1.6) drop-shadow(0 0 12px #e6d2ff)}}
+    .grs-shard{position:fixed;z-index:61;pointer-events:none;overflow:hidden;border-radius:6px;background:linear-gradient(135deg,#4d3a74,#1c1430);animation:grs-shard .85s cubic-bezier(.2,.7,.3,1) forwards}
+    .grs-shard img{width:100%;height:100%;object-fit:cover;filter:brightness(1.3) saturate(.7)}
+    @keyframes grs-shard{0%{transform:none;opacity:1;filter:brightness(2)}100%{transform:translate(var(--sx),var(--sy)) rotate(var(--sr)) scale(.7);opacity:0}}
+    .grs-rift{position:absolute;left:50%;bottom:16%;width:46%;height:16px;margin-left:-23%;border-radius:50%;background:radial-gradient(ellipse,#d9c2ff 0,#7a4ddb 35%,#24123f 70%,transparent 72%);box-shadow:0 0 28px #9b6bff;animation:grs-rift 1.1s ease-out both}
+    @keyframes grs-rift{0%{transform:scaleX(0);opacity:0}30%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:.85}}
+    .grs-rise{position:absolute;left:50%;bottom:16%;width:clamp(86px,7vw,118px);aspect-ratio:3/4;margin-left:calc(clamp(86px,7vw,118px) / -2);display:flex;flex-direction:column;border-radius:9px;overflow:hidden;background:#140f1f;box-shadow:0 0 0 1px #c7a6ff,0 0 26px #9a6bffaa;animation:grs-rise .95s cubic-bezier(.2,.9,.25,1) .15s both}
+    .grs-rise img,.grs-fly img{flex:1;min-height:0;width:100%;object-fit:cover;object-position:center 20%}
+    .grs-rise b,.grs-fly b{padding:3.6px 5.4px;color:#f1e6ff;font-size:10.8px;text-align:center;background:#1d1530}
+    @keyframes grs-rise{0%{transform:translateY(40%) scale(.85);clip-path:inset(100% 0 0 0);opacity:.2}60%{clip-path:inset(0 0 0 0);opacity:1}100%{transform:translateY(-8%) scale(1);clip-path:inset(0 0 0 0);opacity:1}}
+    .grs-fly{position:fixed;z-index:62;display:flex;flex-direction:column;border-radius:9px;overflow:hidden;background:#140f1f;box-shadow:0 0 0 1px #c7a6ff,0 0 22px #9a6bffaa;pointer-events:none;transform-origin:50% 50%}
+    .hand .card.grave-arrived{animation:grs-arrived .9s ease-out}
+    @keyframes grs-arrived{0%{box-shadow:0 0 0 2px #e3cdff,0 0 30px #a874ff}100%{box-shadow:none}}
+    @media(prefers-reduced-motion:reduce){.grs-card,.grs-shard,.grs-rise,.grs-rift{animation:none}}
