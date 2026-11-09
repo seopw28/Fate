@@ -17,7 +17,7 @@ test('궁극기 수치 상수가 PM 확정값이다 (소진자 1/1, 등장 피�
 });
 
 test('각성 선택 전 세팅 불가 · 소진자 생존 중 세팅 불가는 버튼 경로와 카드 경로 모두 같은 판정을 쓴다', () => {
-  assert.ok(html.includes("if(!ultimateAwakenGateOpen(side))return {reason:'오라 각성 후 세팅 가능'"));
+  assert.ok(html.includes("if(!ultimateAwakenGateOpen(side))return {reason:'오라 각성 후 강림 가능'"));
   assert.ok(html.includes("if(ledger.spent)return {reason:'소진자 생존 중'"));
   assert.ok(html.includes("'복수자 강림까지 '+left+'턴'"));
   assert.ok(html.includes("function armUltimateSetting(){if(battlePhase!=='setup'||ultimateState||ultimateUsed)return;const settingLock=ultimateSettingLockReason();"));

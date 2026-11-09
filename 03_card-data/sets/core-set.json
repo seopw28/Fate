@@ -381,15 +381,16 @@
       "stats": null,
       "effects": [
         {
-          "effectId": "prevent_damage",
-          "trigger": "on_hero_attacked",
-          "target": "none",
+          "effectId": "damage",
+          "trigger": "on_play",
+          "target": "strongest_enemy",
+          "amount": 3,
           "duration": "instant"
         },
         {
-          "effectId": "damage",
-          "trigger": "on_hero_attacked",
-          "target": "enemy",
+          "effectId": "heal",
+          "trigger": "on_play",
+          "target": "self",
           "amount": 3,
           "duration": "instant"
         }
@@ -477,9 +478,10 @@
       "effects": [
         {
           "effectId": "steel_guard",
-          "trigger": "on_hero_attacked",
-          "target": "none",
-          "duration": "instant"
+          "trigger": "on_play",
+          "target": "weakest_ally",
+          "amount": 4,
+          "duration": "match"
         }
       ],
       "assetId": "traps/generated/counter-current.webp",

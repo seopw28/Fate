@@ -2326,12 +2326,11 @@
       "stats": null,
       "effects": [
         {
-          "effectId": "global_destroy",
-          "trigger": "after_turns",
+          "effectId": "board_damage",
+          "trigger": "on_play",
           "target": "all_champions",
-          "excludeSource": false,
-          "duration": "instant",
-          "delay": 5
+          "amount": 6,
+          "duration": "instant"
         }
       ],
       "assetId": "spells/generated/great-ruin.webp",
