@@ -115,39 +115,9 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     const ENEMY_DIFFICULTIES={normal:{label:'초보자',mistakeRate:.35,searchDepth:0},nightmare:{label:'나이트메어',mistakeRate:.10,searchDepth:1},hell:{label:'헬',mistakeRate:0,searchDepth:2}};
     /* 난이도는 선택하지 않는다. 저장된 티어 점수·배치 전적으로 상대 실력에 맞춰 자동 결정한다 (matchEnemyDifficulty). */
     let enemyDifficulty='normal',difficultyAutoMatched=false;
-    /* 튜토리얼 모드: 설명 UI를 켜는 동시에 상대 AI를 약하게 만든다 (실수를 더 섞고 앞수를 읽지 않는다).
-       난이도 자동 매칭 위에 덧씌우는 보조 장치라 티어가 높아도 켜면 쉬워진다. 선택은 브라우저에 저장한다. */
-    const TUTORIAL_KEY='fate.tutorialMode';
-    const TUTORIAL_HANDICAP={mistakeRate:.55,searchDepth:0};
-    let tutorialMode=(()=>{try{return localStorage.getItem(TUTORIAL_KEY)==='1';}catch(e){return false;}})();
-    function persistTutorialMode(){try{localStorage.setItem(TUTORIAL_KEY,tutorialMode?'1':'0');}catch(e){}}
     const enemyDifficultyBase=()=>ENEMY_DIFFICULTIES[enemyDifficulty]||ENEMY_DIFFICULTIES.normal;
-    const enemyDifficultyConfig=()=>{const base=enemyDifficultyBase();return tutorialMode?{...base,...TUTORIAL_HANDICAP}:base;};
-    let beginnerHelpEnabled=false,beginnerOverviewDismissed=false,beginnerOverviewTimer=null;
-    /* 상단 안내 배너와 설명 토글은 폐지했다 (튜토리얼 탭으로 이관). 조작부에 붙는 짧은 맥락 설명만 남긴다. */
-    const BEGINNER_LABELS=[['.duel-hud','위는 상대, 아래는 나의 체력과 카드 수예요'],['.summon-zone','손패의 하수인을 누르면 여기에 소환돼요'],['.magic-field','마법을 미리 놓아 두는 자리예요'],['.hand-tabs','하수인과 마법 손패를 바꿔 볼 수 있어요'],['#draw-action','마나를 써서 손패를 한 장 늘려요'],['.turn-actions .end','준비가 끝났다면 눌러 공격을 시작해요'],['.mana-hud','이번 턴에 쓸 수 있는 마나예요. 카드 비용만큼 줄어요']];
-    function ensureBeginnerHelpUi(){BEGINNER_LABELS.forEach(([selector,label])=>document.querySelector(selector)?.setAttribute('data-beginner-label',label));}
-    function syncBeginnerHelp(){ensureBeginnerHelpUi();const available=!document.querySelector('.guardian-select');document.body.classList.toggle('beginner-help',available&&beginnerHelpEnabled);if(!(available&&beginnerHelpEnabled))clearBeginnerCoach();}
-    /* 튜토리얼 모드 on/off: 설명 UI와 AI 핸디캡을 한 스위치로 묶는다. 전투 중에 꺼도 즉시 반영된다. */
-    function syncTutorialToggle(){const toggle=document.querySelector('#tutorial-toggle');if(!toggle)return;
-      toggle.setAttribute('aria-checked',String(tutorialMode));
-      toggle.setAttribute('aria-label','튜토리얼 모드 '+(tutorialMode?'끄기':'켜기')+' · 켜면 설명이 나오고 상대가 약해집니다');
-      toggle.classList.toggle('on',tutorialMode);}
-    function toggleTutorialMode(force){
-      tutorialMode=typeof force==='boolean'?force:!tutorialMode;persistTutorialMode();
-      beginnerHelpEnabled=tutorialMode;if(!tutorialMode)beginnerOverviewDismissed=true;
-      syncTutorialToggle();syncBeginnerHelp();
-      const label=document.querySelector('#enemy-difficulty');
-      if(label)label.textContent=enemyDifficultyBase().label+(tutorialMode?' · 튜토리얼':'');
-      if(typeof writeLog==='function')writeLog('<strong>튜토리얼 모드:</strong> '+(tutorialMode?'켬 · 설명이 표시되고 상대가 실수를 더 섞습니다.':'끔 · 상대가 제 실력으로 돌아옵니다.'));
-      if(tutorialMode&&guardianChosen)startBeginnerGuideSequence();
-    }
-    let beginnerCoachTimer=0,beginnerSequenceTimers=[];
-    function clearBeginnerCoach(){clearTimeout(beginnerCoachTimer);document.querySelectorAll('.beginner-focus').forEach(node=>node.classList.remove('beginner-focus'));}
-    function showBeginnerCoach(selector,message,duration=3600){if(!beginnerHelpEnabled)return;const target=document.querySelector(selector);if(!target)return;clearBeginnerCoach();if(message)target.setAttribute('data-beginner-label',message);target.classList.add('beginner-focus');beginnerCoachTimer=setTimeout(()=>target.classList.remove('beginner-focus'),duration);}
-    function showBeginnerEndTurnGuide(delay=0){const run=()=>showBeginnerCoach('.turn-actions .end','카드를 냈다면 준비 완료! 이제 턴 종료를 눌러 공격을 시작하세요.',5200);if(delay)beginnerSequenceTimers.push(setTimeout(run,delay));else run();}
-    function hideBeginnerOverview(){clearTimeout(beginnerOverviewTimer);beginnerOverviewDismissed=true;}
-    function startBeginnerGuideSequence(){beginnerSequenceTimers.forEach(clearTimeout);beginnerSequenceTimers=[];if(!beginnerHelpEnabled)return;beginnerOverviewDismissed=false;showBeginnerCoach('.mana-hud','먼저 마나를 확인하세요. 카드 왼쪽 위 숫자가 필요한 마나예요.',3200);beginnerSequenceTimers.push(setTimeout(()=>showBeginnerCoach('.hand-tabs','이제 하수인 손패에서 마나 이하인 카드를 골라보세요.',4000),3400));beginnerSequenceTimers.push(setTimeout(()=>showBeginnerCoach('.turn-actions .end','카드를 모두 골랐다면 이 버튼으로 공격을 시작해요.',4200),7800));}
+    /* 옛 튜토리얼 모드(전투 중 설명, 컴퓨터 약화)는 2026-11-09 새 튜토리얼(07-tutorial-guide.js)로 대체해 없앴다. */
+    const enemyDifficultyConfig=()=>enemyDifficultyBase();
     function rollPowerGrade(){const roll=engineAdapter.random();return roll<.15?{key:'a',label:'A급',bonus:2}:roll<.50?{key:'b',label:'B급',bonus:1}:{key:'c',label:'C급',bonus:0};}
     function gradeCardData(data,side){if(data.spell)return data;const grade=rollPowerGrade(side==='player'?'player':'enemy');return {...data,grade,atkFinal:Number(data.atk)+grade.bonus};}
     function applyPowerGrade(card,base){const grade=rollPowerGrade('player'),attack=Number(base)+grade.bonus;card.classList.remove('grade-a','grade-b','grade-c','grade-s');card.classList.add('grade-'+grade.key);card.dataset.atk=attack;card.dataset.baseAtk=base;card.dataset.grade=grade.key;card.dataset.gradeBonus=grade.bonus;card.querySelector('.power-grade')?.remove();const badge=document.createElement('span');badge.className='power-grade';badge.textContent=String(grade.key).toUpperCase();badge.title=grade.label;const statsRow=card.querySelector('.card-stats');if(statsRow&&statsRow.lastElementChild&&statsRow.children.length>=2)statsRow.insertBefore(badge,statsRow.lastElementChild);else card.appendChild(badge);const attackNode=card.querySelector('.card-stats span:first-child');if(attackNode)attackNode.innerHTML='⚔ '+attack+(grade.bonus?'<small class="grade-bonus">+'+grade.bonus+'</small>':'');return grade;}
@@ -262,10 +232,8 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     }
     function applyMatchedDifficulty(){
       enemyDifficulty=matchEnemyDifficulty();difficultyAutoMatched=true;
-      beginnerHelpEnabled=tutorialMode;beginnerOverviewDismissed=false;
       const config=enemyDifficultyConfig(),label=document.querySelector('#enemy-difficulty');
-      if(label)label.textContent=config.label+(tutorialMode?' · 튜토리얼':'');
-      syncBeginnerHelp();
+      if(label)label.textContent=config.label;
       return config;
     }
     function rankPercentile(score){return Math.max(1,Math.min(99,Math.round(96-score/10)));}/* 실제 유저 풀이 없는 목업용 추정치 */

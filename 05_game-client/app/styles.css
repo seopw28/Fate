@@ -712,8 +712,6 @@
     .guardian-select{position:fixed;inset:0;z-index:310;display:grid;grid-template-rows:minmax(0,1fr);justify-items:center;align-items:center;gap:clamp(6px,1.2vh,14px);overflow:auto;padding:clamp(8px,1.6vh,22px) clamp(10px,2vw,32px);background:radial-gradient(ellipse at center,#1b2536f5 0,#06090ffa 75%);animation:gs-in .45s ease both}
     .enemy-difficulty{margin-left:4.5px;padding:1.8px 6.3px;border:1px solid #596477;border-radius:89.1px;color:#cbd3df;font-size:8.1px;vertical-align:middle}
     /* 초보자 설명 모드: 상단 토글 + 실제 조작부에 붙는 짧은 맥락 설명 */
-    body.beginner-help [data-beginner-label]{position:relative;overflow:visible!important}body.beginner-help [data-beginner-label]::after{display:none;content:attr(data-beginner-label);position:absolute;z-index:45;left:7.2px;bottom:calc(100% + 9px);width:max-content;max-width:252px;padding:9.9px 13.5px;border:1px solid #72d79aaa;border-radius:9px;background:#102019fa;color:#e4ffec;font-size:max(12.6px,.79rem);font-weight:850;line-height:1.45;white-space:normal;word-break:keep-all;box-shadow:0 7.2px 23.4px #000c,0 0 21.6px #72d79a33;pointer-events:none}body.beginner-help [data-beginner-label].beginner-focus::after{display:block;animation:beginner-coach-in .38s cubic-bezier(.2,.8,.2,1) both,beginner-coach-pulse 1.35s .38s ease-in-out infinite}.arena [data-beginner-label]::after{left:50%;transform:translateX(-50%)}.duel-hud[data-beginner-label]::after{left:auto;right:9px;bottom:7.2px;transform:none}.command-rail .hand-tabs[data-beginner-label]::after,.command-rail .hand[data-beginner-label]::after{left:auto;right:calc(100% + 12.6px);top:0;bottom:auto;transform:none}.turn-actions [data-beginner-label]::after{left:auto;right:calc(100% + 12.6px);top:50%;bottom:auto;transform:translateY(-50%)}body.beginner-help .beginner-focus{z-index:26;filter:brightness(1.08);box-shadow:0 0 0 2px #72d79a99,0 0 22px #72d79a44!important}@keyframes beginner-coach-in{from{opacity:0;filter:brightness(1.8)}to{opacity:1;filter:brightness(1)}}@keyframes beginner-coach-pulse{50%{border-color:#b6f7ca;box-shadow:0 8px 30px #000c,0 0 34px #72d79a66}}@media(prefers-reduced-motion:reduce){body.beginner-help [data-beginner-label].beginner-focus::after{animation:none}}
-    @media(max-width:1100px){body.beginner-help [data-beginner-label]::after{max-width:216px;font-size:12.6px}}
     .gs-board{width:min(1240px,100%);height:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));grid-template-areas:'. n .' 'w c e' '. s .';gap:clamp(8px,1.4vh,16px) clamp(10px,1.4vw,22px)}
     .gs-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(2px,.6vh,8px);min-width:0;min-height:0;padding:clamp(8px,1.4vh,18px) clamp(12px,1.4vw,22px);border:2px solid #3a4658;border-radius:18px;background:linear-gradient(160deg,#243044,#121926);color:#dce5ef;text-align:center;cursor:pointer;transition:transform .16s,border-color .16s,box-shadow .16s}
     .gs-card:hover,.gs-card:focus-visible{transform:translateY(-4px) scale(1.02);outline:none}
@@ -1793,13 +1791,6 @@
     .util-group { display:flex; align-items:center; gap:5.4px; }
     .util-group #sound-toggle { padding:4.5px 8.1px !important; font-size:9.9px; min-height:0; opacity:.85; }
     .util-group #sound-toggle:hover { opacity:1; }
-    .util-toggle { display:inline-flex; align-items:center; gap:5.4px; padding:4.5px 8.1px; border:1px solid #3c4657; border-radius:7.2px; background:#161c26; color:#8b96a8; font-size:9.9px; font-weight:700; opacity:.85; transition:color .15s,border-color .15s,background .15s,opacity .15s; }
-    .util-toggle:hover { opacity:1; color:#cfd8e6; }
-    .util-toggle .toggle-track { position:relative; width:21.6px; height:12.6px; border-radius:89.1px; background:#49535f; box-shadow:inset 0 .9px 2.7px #0008; transition:background .18s; }
-    .util-toggle .toggle-track::after { content:''; position:absolute; top:1.8px; left:1.8px; width:9px; height:9px; border-radius:50%; background:#fff; transition:transform .18s; }
-    .util-toggle.on { border-color:#72d79a88; background:#15271f; color:#c6f4d5; opacity:1; }
-    .util-toggle.on .toggle-track { background:#3f9c68; }
-    .util-toggle.on .toggle-track::after { transform:translateX(9px); }
     .top-nav-btn.current { background:linear-gradient(180deg,#6b45ad,#4b2f7a); color:#fff; box-shadow:inset 0 0 0 .9px #c4a4ff,0 0 14.4px #9b6bff66; }
     #sound-toggle { min-height:32.4px; }
     /* 컬렉션 창이 열려 있으면 바로가기는 숨김 (창 안 탭이 같은 역할) */
@@ -2074,7 +2065,7 @@
        한 단어가 칸보다 길 때만 단어 안에서 끊는다. 짧은 라벨은 접히지 않게 한 줄로 고정한다.
        검사: 12_tools/qa/check-text-overflow.py 의 '줄바꿈 이상' */
     html { word-break:keep-all; overflow-wrap:anywhere; }
-    #sound-toggle, .util-toggle-label, .rule-key { white-space:nowrap; }
+    #sound-toggle, .rule-key { white-space:nowrap; }
 /* ===== 상점 꾸미기 · 카드 뒷면/전장 배경 스킨 (2026-11-08) =====
    그림 에셋 없이 오라 색 그라데이션과 입자 효과만으로 칠한 임시 스킨이다. 스킨은 전투에 영향을 주지 않는다. */
 [data-skin="fire"],[data-field-skin="fire"]{--sk:#ff6a4a;--sk2:#7a2a14;--sk3:#2a0e09}

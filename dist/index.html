@@ -721,8 +721,6 @@
     .guardian-select{position:fixed;inset:0;z-index:310;display:grid;grid-template-rows:minmax(0,1fr);justify-items:center;align-items:center;gap:clamp(6px,1.2vh,14px);overflow:auto;padding:clamp(8px,1.6vh,22px) clamp(10px,2vw,32px);background:radial-gradient(ellipse at center,#1b2536f5 0,#06090ffa 75%);animation:gs-in .45s ease both}
     .enemy-difficulty{margin-left:4.5px;padding:1.8px 6.3px;border:1px solid #596477;border-radius:89.1px;color:#cbd3df;font-size:8.1px;vertical-align:middle}
     /* 초보자 설명 모드: 상단 토글 + 실제 조작부에 붙는 짧은 맥락 설명 */
-    body.beginner-help [data-beginner-label]{position:relative;overflow:visible!important}body.beginner-help [data-beginner-label]::after{display:none;content:attr(data-beginner-label);position:absolute;z-index:45;left:7.2px;bottom:calc(100% + 9px);width:max-content;max-width:252px;padding:9.9px 13.5px;border:1px solid #72d79aaa;border-radius:9px;background:#102019fa;color:#e4ffec;font-size:max(12.6px,.79rem);font-weight:850;line-height:1.45;white-space:normal;word-break:keep-all;box-shadow:0 7.2px 23.4px #000c,0 0 21.6px #72d79a33;pointer-events:none}body.beginner-help [data-beginner-label].beginner-focus::after{display:block;animation:beginner-coach-in .38s cubic-bezier(.2,.8,.2,1) both,beginner-coach-pulse 1.35s .38s ease-in-out infinite}.arena [data-beginner-label]::after{left:50%;transform:translateX(-50%)}.duel-hud[data-beginner-label]::after{left:auto;right:9px;bottom:7.2px;transform:none}.command-rail .hand-tabs[data-beginner-label]::after,.command-rail .hand[data-beginner-label]::after{left:auto;right:calc(100% + 12.6px);top:0;bottom:auto;transform:none}.turn-actions [data-beginner-label]::after{left:auto;right:calc(100% + 12.6px);top:50%;bottom:auto;transform:translateY(-50%)}body.beginner-help .beginner-focus{z-index:26;filter:brightness(1.08);box-shadow:0 0 0 2px #72d79a99,0 0 22px #72d79a44!important}@keyframes beginner-coach-in{from{opacity:0;filter:brightness(1.8)}to{opacity:1;filter:brightness(1)}}@keyframes beginner-coach-pulse{50%{border-color:#b6f7ca;box-shadow:0 8px 30px #000c,0 0 34px #72d79a66}}@media(prefers-reduced-motion:reduce){body.beginner-help [data-beginner-label].beginner-focus::after{animation:none}}
-    @media(max-width:1100px){body.beginner-help [data-beginner-label]::after{max-width:216px;font-size:12.6px}}
     .gs-board{width:min(1240px,100%);height:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));grid-template-areas:'. n .' 'w c e' '. s .';gap:clamp(8px,1.4vh,16px) clamp(10px,1.4vw,22px)}
     .gs-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(2px,.6vh,8px);min-width:0;min-height:0;padding:clamp(8px,1.4vh,18px) clamp(12px,1.4vw,22px);border:2px solid #3a4658;border-radius:18px;background:linear-gradient(160deg,#243044,#121926);color:#dce5ef;text-align:center;cursor:pointer;transition:transform .16s,border-color .16s,box-shadow .16s}
     .gs-card:hover,.gs-card:focus-visible{transform:translateY(-4px) scale(1.02);outline:none}
@@ -1802,13 +1800,6 @@
     .util-group { display:flex; align-items:center; gap:5.4px; }
     .util-group #sound-toggle { padding:4.5px 8.1px !important; font-size:9.9px; min-height:0; opacity:.85; }
     .util-group #sound-toggle:hover { opacity:1; }
-    .util-toggle { display:inline-flex; align-items:center; gap:5.4px; padding:4.5px 8.1px; border:1px solid #3c4657; border-radius:7.2px; background:#161c26; color:#8b96a8; font-size:9.9px; font-weight:700; opacity:.85; transition:color .15s,border-color .15s,background .15s,opacity .15s; }
-    .util-toggle:hover { opacity:1; color:#cfd8e6; }
-    .util-toggle .toggle-track { position:relative; width:21.6px; height:12.6px; border-radius:89.1px; background:#49535f; box-shadow:inset 0 .9px 2.7px #0008; transition:background .18s; }
-    .util-toggle .toggle-track::after { content:''; position:absolute; top:1.8px; left:1.8px; width:9px; height:9px; border-radius:50%; background:#fff; transition:transform .18s; }
-    .util-toggle.on { border-color:#72d79a88; background:#15271f; color:#c6f4d5; opacity:1; }
-    .util-toggle.on .toggle-track { background:#3f9c68; }
-    .util-toggle.on .toggle-track::after { transform:translateX(9px); }
     .top-nav-btn.current { background:linear-gradient(180deg,#6b45ad,#4b2f7a); color:#fff; box-shadow:inset 0 0 0 .9px #c4a4ff,0 0 14.4px #9b6bff66; }
     #sound-toggle { min-height:32.4px; }
     /* 컬렉션 창이 열려 있으면 바로가기는 숨김 (창 안 탭이 같은 역할) */
@@ -2083,7 +2074,7 @@
        한 단어가 칸보다 길 때만 단어 안에서 끊는다. 짧은 라벨은 접히지 않게 한 줄로 고정한다.
        검사: 12_tools/qa/check-text-overflow.py 의 '줄바꿈 이상' */
     html { word-break:keep-all; overflow-wrap:anywhere; }
-    #sound-toggle, .util-toggle-label, .rule-key { white-space:nowrap; }
+    #sound-toggle, .rule-key { white-space:nowrap; }
 /* ===== 상점 꾸미기 · 카드 뒷면/전장 배경 스킨 (2026-11-08) =====
    그림 에셋 없이 오라 색 그라데이션과 입자 효과만으로 칠한 임시 스킨이다. 스킨은 전투에 영향을 주지 않는다. */
 [data-skin="fire"],[data-field-skin="fire"]{--sk:#ff6a4a;--sk2:#7a2a14;--sk3:#2a0e09}
@@ -2729,39 +2720,9 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     const ENEMY_DIFFICULTIES={normal:{label:'초보자',mistakeRate:.35,searchDepth:0},nightmare:{label:'나이트메어',mistakeRate:.10,searchDepth:1},hell:{label:'헬',mistakeRate:0,searchDepth:2}};
     /* 난이도는 선택하지 않는다. 저장된 티어 점수·배치 전적으로 상대 실력에 맞춰 자동 결정한다 (matchEnemyDifficulty). */
     let enemyDifficulty='normal',difficultyAutoMatched=false;
-    /* 튜토리얼 모드: 설명 UI를 켜는 동시에 상대 AI를 약하게 만든다 (실수를 더 섞고 앞수를 읽지 않는다).
-       난이도 자동 매칭 위에 덧씌우는 보조 장치라 티어가 높아도 켜면 쉬워진다. 선택은 브라우저에 저장한다. */
-    const TUTORIAL_KEY='fate.tutorialMode';
-    const TUTORIAL_HANDICAP={mistakeRate:.55,searchDepth:0};
-    let tutorialMode=(()=>{try{return localStorage.getItem(TUTORIAL_KEY)==='1';}catch(e){return false;}})();
-    function persistTutorialMode(){try{localStorage.setItem(TUTORIAL_KEY,tutorialMode?'1':'0');}catch(e){}}
     const enemyDifficultyBase=()=>ENEMY_DIFFICULTIES[enemyDifficulty]||ENEMY_DIFFICULTIES.normal;
-    const enemyDifficultyConfig=()=>{const base=enemyDifficultyBase();return tutorialMode?{...base,...TUTORIAL_HANDICAP}:base;};
-    let beginnerHelpEnabled=false,beginnerOverviewDismissed=false,beginnerOverviewTimer=null;
-    /* 상단 안내 배너와 설명 토글은 폐지했다 (튜토리얼 탭으로 이관). 조작부에 붙는 짧은 맥락 설명만 남긴다. */
-    const BEGINNER_LABELS=[['.duel-hud','위는 상대, 아래는 나의 체력과 카드 수예요'],['.summon-zone','손패의 하수인을 누르면 여기에 소환돼요'],['.magic-field','마법을 미리 놓아 두는 자리예요'],['.hand-tabs','하수인과 마법 손패를 바꿔 볼 수 있어요'],['#draw-action','마나를 써서 손패를 한 장 늘려요'],['.turn-actions .end','준비가 끝났다면 눌러 공격을 시작해요'],['.mana-hud','이번 턴에 쓸 수 있는 마나예요. 카드 비용만큼 줄어요']];
-    function ensureBeginnerHelpUi(){BEGINNER_LABELS.forEach(([selector,label])=>document.querySelector(selector)?.setAttribute('data-beginner-label',label));}
-    function syncBeginnerHelp(){ensureBeginnerHelpUi();const available=!document.querySelector('.guardian-select');document.body.classList.toggle('beginner-help',available&&beginnerHelpEnabled);if(!(available&&beginnerHelpEnabled))clearBeginnerCoach();}
-    /* 튜토리얼 모드 on/off: 설명 UI와 AI 핸디캡을 한 스위치로 묶는다. 전투 중에 꺼도 즉시 반영된다. */
-    function syncTutorialToggle(){const toggle=document.querySelector('#tutorial-toggle');if(!toggle)return;
-      toggle.setAttribute('aria-checked',String(tutorialMode));
-      toggle.setAttribute('aria-label','튜토리얼 모드 '+(tutorialMode?'끄기':'켜기')+' · 켜면 설명이 나오고 상대가 약해집니다');
-      toggle.classList.toggle('on',tutorialMode);}
-    function toggleTutorialMode(force){
-      tutorialMode=typeof force==='boolean'?force:!tutorialMode;persistTutorialMode();
-      beginnerHelpEnabled=tutorialMode;if(!tutorialMode)beginnerOverviewDismissed=true;
-      syncTutorialToggle();syncBeginnerHelp();
-      const label=document.querySelector('#enemy-difficulty');
-      if(label)label.textContent=enemyDifficultyBase().label+(tutorialMode?' · 튜토리얼':'');
-      if(typeof writeLog==='function')writeLog('<strong>튜토리얼 모드:</strong> '+(tutorialMode?'켬 · 설명이 표시되고 상대가 실수를 더 섞습니다.':'끔 · 상대가 제 실력으로 돌아옵니다.'));
-      if(tutorialMode&&guardianChosen)startBeginnerGuideSequence();
-    }
-    let beginnerCoachTimer=0,beginnerSequenceTimers=[];
-    function clearBeginnerCoach(){clearTimeout(beginnerCoachTimer);document.querySelectorAll('.beginner-focus').forEach(node=>node.classList.remove('beginner-focus'));}
-    function showBeginnerCoach(selector,message,duration=3600){if(!beginnerHelpEnabled)return;const target=document.querySelector(selector);if(!target)return;clearBeginnerCoach();if(message)target.setAttribute('data-beginner-label',message);target.classList.add('beginner-focus');beginnerCoachTimer=setTimeout(()=>target.classList.remove('beginner-focus'),duration);}
-    function showBeginnerEndTurnGuide(delay=0){const run=()=>showBeginnerCoach('.turn-actions .end','카드를 냈다면 준비 완료! 이제 턴 종료를 눌러 공격을 시작하세요.',5200);if(delay)beginnerSequenceTimers.push(setTimeout(run,delay));else run();}
-    function hideBeginnerOverview(){clearTimeout(beginnerOverviewTimer);beginnerOverviewDismissed=true;}
-    function startBeginnerGuideSequence(){beginnerSequenceTimers.forEach(clearTimeout);beginnerSequenceTimers=[];if(!beginnerHelpEnabled)return;beginnerOverviewDismissed=false;showBeginnerCoach('.mana-hud','먼저 마나를 확인하세요. 카드 왼쪽 위 숫자가 필요한 마나예요.',3200);beginnerSequenceTimers.push(setTimeout(()=>showBeginnerCoach('.hand-tabs','이제 하수인 손패에서 마나 이하인 카드를 골라보세요.',4000),3400));beginnerSequenceTimers.push(setTimeout(()=>showBeginnerCoach('.turn-actions .end','카드를 모두 골랐다면 이 버튼으로 공격을 시작해요.',4200),7800));}
+    /* 옛 튜토리얼 모드(전투 중 설명, 컴퓨터 약화)는 2026-11-09 새 튜토리얼(07-tutorial-guide.js)로 대체해 없앴다. */
+    const enemyDifficultyConfig=()=>enemyDifficultyBase();
     function rollPowerGrade(){const roll=engineAdapter.random();return roll<.15?{key:'a',label:'A급',bonus:2}:roll<.50?{key:'b',label:'B급',bonus:1}:{key:'c',label:'C급',bonus:0};}
     function gradeCardData(data,side){if(data.spell)return data;const grade=rollPowerGrade(side==='player'?'player':'enemy');return {...data,grade,atkFinal:Number(data.atk)+grade.bonus};}
     function applyPowerGrade(card,base){const grade=rollPowerGrade('player'),attack=Number(base)+grade.bonus;card.classList.remove('grade-a','grade-b','grade-c','grade-s');card.classList.add('grade-'+grade.key);card.dataset.atk=attack;card.dataset.baseAtk=base;card.dataset.grade=grade.key;card.dataset.gradeBonus=grade.bonus;card.querySelector('.power-grade')?.remove();const badge=document.createElement('span');badge.className='power-grade';badge.textContent=String(grade.key).toUpperCase();badge.title=grade.label;const statsRow=card.querySelector('.card-stats');if(statsRow&&statsRow.lastElementChild&&statsRow.children.length>=2)statsRow.insertBefore(badge,statsRow.lastElementChild);else card.appendChild(badge);const attackNode=card.querySelector('.card-stats span:first-child');if(attackNode)attackNode.innerHTML='⚔ '+attack+(grade.bonus?'<small class="grade-bonus">+'+grade.bonus+'</small>':'');return grade;}
@@ -2876,10 +2837,8 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     }
     function applyMatchedDifficulty(){
       enemyDifficulty=matchEnemyDifficulty();difficultyAutoMatched=true;
-      beginnerHelpEnabled=tutorialMode;beginnerOverviewDismissed=false;
       const config=enemyDifficultyConfig(),label=document.querySelector('#enemy-difficulty');
-      if(label)label.textContent=config.label+(tutorialMode?' · 튜토리얼':'');
-      syncBeginnerHelp();
+      if(label)label.textContent=config.label;
       return config;
     }
     function rankPercentile(score){return Math.max(1,Math.min(99,Math.round(96-score/10)));}/* 실제 유저 풀이 없는 목업용 추정치 */
@@ -4305,19 +4264,17 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
     /* 성격 오라를 고르면 배경음악이 시작되고, 고른 인장이 내 프로필 자리로 날아가 박힌다 */
     function flyGuardianToProfile(id,from){const avatar=document.querySelector('.duel-hud .player .avatar');if(!avatar||!from)return;const to=avatar.getBoundingClientRect(),ghost=document.createElement('span');ghost.className='gd-emblem gd-'+id+' guardian-fly';ghost.innerHTML=auraMark(id);ghost.style.cssText='position:fixed;z-index:400;margin:0;left:'+from.left+'px;top:'+from.top+'px;--s:'+from.width+'px;pointer-events:none';document.body.appendChild(ghost);avatar.style.opacity='0';const dx=(to.left+to.width/2)-(from.left+from.width/2),dy=(to.top+to.height/2)-(from.top+from.height/2),scale=to.width/from.width;const anim=ghost.animate([{transform:'translate(0,0) scale(1)',filter:'brightness(1)'},{transform:'translate('+dx*.35+'px,'+(dy*.35-60)+'px) scale(1.25)',filter:'brightness(1.6)',offset:.35},{transform:'translate('+dx+'px,'+dy+'px) scale('+scale+')',filter:'brightness(1)'}],{duration:820,easing:'cubic-bezier(.45,0,.2,1)',fill:'forwards'});anim.onfinish=()=>{ghost.remove();avatar.style.opacity='';avatar.classList.remove('guardian-landed');void avatar.offsetWidth;avatar.classList.add('guardian-landed');sfx('summon','neutral',5);setTimeout(()=>avatar.classList.remove('guardian-landed'),900);};}
     const pickGuardianCore=pickGuardian;
-    pickGuardian=function(id,options={}){const nameRect=document.querySelector('.guardian-select .gs-'+id+' strong')?.getBoundingClientRect(),from=nameRect&&nameRect.width?{left:nameRect.left+nameRect.width/2-32,top:nameRect.top+nameRect.height/2-32,width:64,height:64}:null,before=guardianChosen;pickGuardianCore(id,options);if(before||!guardianChosen)return;if(typeof syncBgm==='function')syncBgm();if(playerGuardian===id)flyGuardianToProfile(id,from);renderUltimate();setTimeout(startBeginnerGuideSequence,900);};
+    pickGuardian=function(id,options={}){const nameRect=document.querySelector('.guardian-select .gs-'+id+' strong')?.getBoundingClientRect(),from=nameRect&&nameRect.width?{left:nameRect.left+nameRect.width/2-32,top:nameRect.top+nameRect.height/2-32,width:64,height:64}:null,before=guardianChosen;pickGuardianCore(id,options);if(before||!guardianChosen)return;if(typeof syncBgm==='function')syncBgm();if(playerGuardian===id)flyGuardianToProfile(id,from);renderUltimate();};
     function openGuardianSelect(){if(document.querySelector('.guardian-select')||guardianChosen)return;setBattlePhase('intro');document.querySelector('#hand-guide').textContent='오라를 선택하세요';const overlay=document.createElement('div');overlay.className='guardian-select gs-aura';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-label','성격의 오라 선택');const card=id=>{const g=GUARDIANS[id];return '<button class="gs-card gs-'+id+'" data-guardian="'+id+'" style="--ac:'+g.color+'"><span class="gd-emblem">'+auraMark(id)+'</span><strong>'+(g.child||g.label)+'</strong><em>'+g.label+'의 오라 · '+(g.traits||g.title)+'</em><b class="gs-power">'+g.short+'</b><span class="gs-desc">'+guardianDesc(id).replace(/ \((.+)\)$/,'<small class="gs-note">$1</small>')+'</span></button>';};overlay.innerHTML='<div class="gs-heading"><small>CHOOSE YOUR AURA</small><h2>성격의 오라</h2><p>화·수·목·금·토 중 캐릭터의 성격을 하나 고르세요 · 별도 재화 비용 없이</p></div><div class="gs-board">'+['jujak','cheongryong','namu','baekho','hyeonmu'].map(card).join('')+'<div class="aura-pentagon-core" aria-hidden="true"><span>나의 성격<br>오라 선택</span></div></div>';overlay.addEventListener('click',event=>{const button=event.target.closest('[data-guardian]');if(button)pickGuardian(button.dataset.guardian);});document.body.appendChild(overlay);if(typeof syncFieldFrame==='function')syncFieldFrame();}
     /* 난이도는 유저가 고르지 않는다. 티어 기반 자동 매칭 결과를 적용하고 바로 오라 선택으로 넘어간다.
        key를 주면 QA용 강제 지정(?difficulty=)으로 쓴다. */
     function applyEnemyDifficulty(key){
       let config;
-      if(key&&ENEMY_DIFFICULTIES[key]){enemyDifficulty=key;difficultyAutoMatched=false;beginnerHelpEnabled=tutorialMode;beginnerOverviewDismissed=false;config=enemyDifficultyConfig();const label=document.querySelector('#enemy-difficulty');if(label)label.textContent=enemyDifficultyBase().label+(tutorialMode?' · 튜토리얼':'');syncBeginnerHelp();}
+      if(key&&ENEMY_DIFFICULTIES[key]){enemyDifficulty=key;difficultyAutoMatched=false;config=enemyDifficultyConfig();const label=document.querySelector('#enemy-difficulty');if(label)label.textContent=enemyDifficultyBase().label;}
       else config=applyMatchedDifficulty();
-      syncTutorialToggle();
-      writeLog('<strong>컴퓨터 난이도:</strong> '+enemyDifficultyBase().label+(difficultyAutoMatched?' · 내 티어 실력에 맞춰 자동으로 맞췄습니다.':'')+' 동일한 카드·마나 조건에서 판단력만 달라집니다.'+(tutorialMode?' 튜토리얼 모드가 켜져 있어 상대가 실수를 더 섞습니다.':''));
+      writeLog('<strong>컴퓨터 난이도:</strong> '+enemyDifficultyBase().label+(difficultyAutoMatched?' · 내 티어 실력에 맞춰 자동으로 맞췄습니다.':'')+' 동일한 카드·마나 조건에서 판단력만 달라집니다.');
       openGuardianSelect();
     }
-    document.addEventListener('click',event=>{if(!beginnerHelpEnabled)return;const card=event.target.closest('.hand .card'),tab=event.target.closest('.hand-tab');if(card){hideBeginnerOverview();beginnerSequenceTimers.forEach(clearTimeout);beginnerSequenceTimers=[];setTimeout(()=>showBeginnerCoach(cardCategory(card)==='champion'?'.summon-zone':'.magic-field',cardCategory(card)==='champion'?'좋아요! 선택한 하수인이 내 전장에 소환됐어요.':'마법은 이 슬롯에 세팅되고 조건이 맞으면 발동해요.',2400),180);showBeginnerEndTurnGuide(2800);return;}if(tab){hideBeginnerOverview();setTimeout(()=>showBeginnerCoach('.hand',tab.dataset.filter==='champion'?'초록빛 카드 중 현재 마나로 낼 수 있는 하수인을 고르세요.':'마법카드는 바로 쓰거나 슬롯에 세팅해 다음 전투를 준비해요.',3800),120);return;}if(event.target.closest('#draw-action')){hideBeginnerOverview();setTimeout(()=>showBeginnerCoach('.hand','새 카드가 손패에 들어왔어요. 카드 뽑기는 반복할수록 비용이 커져요.',3800),500);return;}if(event.target.closest('.turn-actions .end')){hideBeginnerOverview();beginnerSequenceTimers.forEach(clearTimeout);beginnerSequenceTimers=[];clearBeginnerCoach();}},true);
     new MutationObserver(()=>{stampNewUnits();updateLoneWolfBonuses();updateSwarmBonuses();updateSynergyHud();updateEnemyFieldTarget();updateFieldReorderState();renderFieldGuardianUltimateAction();}).observe(document.querySelector('.arena'),{childList:true,subtree:true});
     document.addEventListener('keydown',event=>{if(event.key==='Escape')closeCollection();});
     /* 스페이스 바 = 손패 탭 전환(하수인 ↔ 마법카드), 엔터 = 턴 종료. 모달/결과 화면/입력창, 조합키에서는 무시한다. */
