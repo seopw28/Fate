@@ -40,7 +40,12 @@ def main():
         check('덱 저장하기를 누르면 확인 창이 뜬다', pg.locator('.deck-confirm').count() == 1)
         pg.click('.deck-confirm-actions button.primary'); pg.wait_for_timeout(300)
         saved = pg.evaluate("()=>JSON.stringify([...draftDeck].sort())===JSON.stringify(draftOfDeck(editingDeck).sort())")
-        t = toast(); check('저장하면 저장된 덱이 편집 내용과 같아지고 저장 안내가 나온다', saved and t and '저장' in t[1] and pg.locator('.deck-save-now.saved').count() == 1, (saved, t))
+        t = None
+        for _ in range(20):
+            t = pg.evaluate("()=>{const t=document.querySelector('.deck-toast');return t?[t.dataset.kind,t.textContent]:null}")
+            if t and '저장' in t[1]: break
+            pg.wait_for_timeout(100)
+        check('저장하면 저장된 덱이 편집 내용과 같아지고 저장 안내가 나온다', saved and t and '저장' in t[1] and pg.locator('.deck-save-now.saved').count() == 1, (saved, t))
         pg.reload(); pg.wait_for_timeout(1500); pg.evaluate("()=>{openCollection('deck');pickAuraDeck(0);}"); pg.wait_for_timeout(500)
         check('새로고침해도 저장한 덱이 남는다', pg.evaluate("()=>draftDeck.length") == 60)
         pg.locator('.deck-row.slim').nth(0).drag_to(pg.locator('#owned-grid'), force=True); pg.wait_for_timeout(250)
