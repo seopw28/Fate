@@ -2682,3 +2682,8 @@
     .deck-sort-menu button:hover{background:#1c2430}
     .deck-sort-menu button.active{color:#ffd477}
     #deck-view.aura-edit-mode .deck-group-toggle{display:none!important}
+
+    /* 튜토리얼 안내창: 다음 버튼은 익숙한 오른쪽 끝에 둔다 (2026-11-09 PM). 다시 보기는 왼쪽, 안내 문구는 가운데 */
+    .tg-bottom>.tg-replay{order:1}
+    .tg-bottom>.tg-prompt{order:2;flex:1 1 auto;min-width:0}
+    .tg-bottom>.tg-next{order:3;margin-left:auto}
