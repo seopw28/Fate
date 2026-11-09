@@ -2293,6 +2293,32 @@
     .arena>.field-action-dock>.field-ultimate-action:not(.locked):not(:disabled),.arena>.field-action-dock>.field-guardian-ultimate.ready{animation:action-ready-blink 1.1s ease-in-out infinite}
     @keyframes action-ready-blink{0%,42%{opacity:1;filter:saturate(1.4) brightness(1.4)}58%,100%{opacity:.4;filter:saturate(.8) brightness(.8)}}
     @media(prefers-reduced-motion:reduce){.arena>.field-action-dock>.field-ultimate-action:not(.locked):not(:disabled),.arena>.field-action-dock>.field-guardian-ultimate.ready{animation:action-ready-blink 2.4s ease-in-out infinite}}
+
+    /* 영웅 강림 선택 (2026-11-09 PM 요청): 궁극기 슬롯 대신 손패 하수인이 전장 위로 떠오르고, 같은 오라 카드는 오라 색으로 빛난다 */
+    #ultimate-panel{display:none!important}
+    .hero-pick{position:fixed;z-index:515;left:var(--field-left);top:var(--field-top);width:var(--field-width);height:var(--field-height);box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2.4vh,22px);padding:16px;border-radius:14px;background:radial-gradient(ellipse at 50% 55%,color-mix(in srgb,var(--hero-aura) 16%,transparent),#05070cd9 72%);backdrop-filter:blur(2px);animation:hero-pick-in .28s ease-out both}
+    .hero-pick-head{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;pointer-events:none}
+    .hero-pick-head small{color:color-mix(in srgb,var(--hero-aura) 70%,#fff);font-size:10px;font-weight:900;letter-spacing:.4em}
+    .hero-pick-head strong{color:#fff;font-size:clamp(17px,2.6vh,24px);font-weight:900;text-shadow:0 0 14px var(--hero-aura)}
+    .hero-pick-head span{color:#c9d1de;font-size:11.5px}
+    .hero-pick-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:clamp(10px,1.6vw,22px);max-width:100%;padding:18px 8px 6px}
+    .hero-pick-option{--float:-9px;position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer;animation:hero-pick-rise .45s cubic-bezier(.2,.8,.2,1) calc(var(--i) * 60ms) both,hero-pick-float 2.6s ease-in-out calc(.45s + var(--i) * 180ms) infinite}
+    .hero-pick-option>.card{position:relative!important;left:auto!important;top:auto!important;margin:0!important;transform:none!important;opacity:1!important;pointer-events:none;width:clamp(104px,calc(var(--field-height) * .27),150px)!important;flex:none;box-shadow:0 14px 26px #000a;transition:transform .18s,box-shadow .18s,filter .18s}
+    .hero-pick-option:hover>.card,.hero-pick-option:focus-visible>.card{transform:translateY(-6px) scale(1.06)!important;box-shadow:0 18px 34px #000c,0 0 0 2px #fff8}
+    .hero-pick-option.resonance>.card{box-shadow:0 0 0 2px var(--hero-aura),0 0 22px var(--hero-aura),0 0 52px color-mix(in srgb,var(--hero-aura) 55%,transparent),0 14px 26px #000a;animation:hero-pick-glow 1.6s ease-in-out infinite}
+    .hero-pick-option.resonance:hover>.card{box-shadow:0 0 0 3px #fff,0 0 30px var(--hero-aura),0 0 70px var(--hero-aura)}
+    .hero-pick-option.unaffordable{cursor:not-allowed;animation:hero-pick-rise .45s cubic-bezier(.2,.8,.2,1) calc(var(--i) * 60ms) both}
+    .hero-pick-option.unaffordable>.card{filter:grayscale(.75) brightness(.55)}
+    .hero-pick-tag{padding:3px 10px;border:1px solid #ffffff2e;border-radius:999px;background:#0b0f17e6;color:#dfe5ee;font-size:11px;font-weight:800;white-space:nowrap}
+    .hero-pick-option.resonance .hero-pick-tag{border-color:var(--hero-aura);color:#fff;background:color-mix(in srgb,var(--hero-aura) 30%,#0b0f17);box-shadow:0 0 12px color-mix(in srgb,var(--hero-aura) 60%,transparent)}
+    .hero-pick-option.unaffordable .hero-pick-tag{color:#ff9aa4;border-color:#ff9aa455}
+    .hero-pick-cancel{padding:6px 22px;border:1px solid #ffffff38;border-radius:999px;background:#10141ccc;color:#d6dbe4;font-size:12px;font-weight:800;cursor:pointer}
+    .hero-pick-cancel:hover{background:#1c2230}
+    @keyframes hero-pick-in{from{opacity:0}to{opacity:1}}
+    @keyframes hero-pick-rise{from{opacity:0;transform:translateY(60px) scale(.8)}to{opacity:1;transform:none}}
+    @keyframes hero-pick-float{0%,100%{transform:translateY(0)}50%{transform:translateY(var(--float))}}
+    @keyframes hero-pick-glow{50%{filter:brightness(1.18)}}
+    @media(prefers-reduced-motion:reduce){.hero-pick,.hero-pick-option,.hero-pick-option.resonance>.card{animation:none}}
 </style>
 </head>
 <body>
@@ -2839,7 +2865,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     /* 첫 궁극기는 오라 각성을 발동해 강화 선택을 마친 뒤부터 세팅할 수 있다(체력 85 이하가 되는 것만으로는 열리지 않는다). 선택 시점에 awakenGateOpened 가 켜진다 */
     function ultimateAwakenGateOpen(side='player'){return awakenGateOpened[side];}
     /* 궁극기 세팅 조건: (1) 오라 각성 버튼이 한 번이라도 열린 뒤(체력 85 이하를 찍은 적이 있어야 함) (2) 두 번째부터는 직전 소진자의 복수자가 강림한 뒤 */
-    function ultimateSettingLock(side='player'){if(!ultimateAwakenGateOpen(side))return {reason:'오라 각성 후 세팅 가능',detail:'오라 각성을 발동해 강화 선택을 마친 뒤에 세팅할 수 있습니다'};syncUltimateLedger(side);const ledger=ultimateLedger[side],mine=side==='player'?'내':'상대';if(ledger.spent)return {reason:'소진자 생존 중',detail:'소진자가 쓰러지고 복수자가 강림했다가 쓰러진 뒤에 다음 궁극기를 세팅할 수 있습니다'};if(ledger.pending.length){const left=Math.max(1,ledger.pending[0].due-ledger.turns);return {reason:'복수자 강림까지 '+left+'턴',detail:'복수자가 강림했다가 쓰러진 뒤에 다음 궁극기를 세팅할 수 있습니다 ('+mine+' 턴 시작 기준)'};}if(ledger.avenger)return {reason:'복수자 생존 중',detail:'복수자가 쓰러진 뒤 '+mine+' 턴이 두 번 시작되면 다음 궁극기를 세팅할 수 있습니다'};if(ledger.turns<ledger.cooldownUntil)return {reason:'다음 세팅까지 '+(ledger.cooldownUntil-ledger.turns)+'턴',detail:'복수자가 쓰러진 뒤 '+mine+' 턴이 두 번 시작되면 다음 궁극기를 세팅할 수 있습니다'};return null;}
+    function ultimateSettingLock(side='player'){if(!ultimateAwakenGateOpen(side))return {reason:'오라 각성 후 강림 가능',detail:'오라 각성을 발동해 강화 선택을 마친 뒤에 영웅 강림을 쓸 수 있습니다'};syncUltimateLedger(side);const ledger=ultimateLedger[side],mine=side==='player'?'내':'상대';if(ledger.spent)return {reason:'소진자 생존 중',detail:'소진자가 쓰러지고 복수자가 강림했다가 쓰러진 뒤에 다음 영웅 강림을 쓸 수 있습니다'};if(ledger.pending.length){const left=Math.max(1,ledger.pending[0].due-ledger.turns);return {reason:'복수자 강림까지 '+left+'턴',detail:'복수자가 강림했다가 쓰러진 뒤에 다음 영웅 강림을 쓸 수 있습니다 ('+mine+' 턴 시작 기준)'};}if(ledger.avenger)return {reason:'복수자 생존 중',detail:'복수자가 쓰러진 뒤 '+mine+' 턴이 두 번 시작되면 다음 영웅 강림을 쓸 수 있습니다'};if(ledger.turns<ledger.cooldownUntil)return {reason:'다음 강림까지 '+(ledger.cooldownUntil-ledger.turns)+'턴',detail:'복수자가 쓰러진 뒤 '+mine+' 턴이 두 번 시작되면 다음 영웅 강림을 쓸 수 있습니다'};return null;}
     function ultimateSettingLockReason(side='player'){return ultimateSettingLock(side)?.reason||'';}
     function ultimateSettingLockDetail(side='player'){return ultimateSettingLock(side)?.detail||'';}
     /* 세팅한 카드와 같은 카드(같은 art)가 대전 덱에 남아 있으면 모두 사용 처리한다(덱에서 빼서 묘지로) */
@@ -4874,6 +4900,31 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
       startPlayerTurn=function(button){const result=startPlayerTurnBeforePressure(button);if(battlePhase==='setup'&&!resultPending)tickBombs('player');return result;};
       const enemyTurnBeforePressure=enemyTurn;
       enemyTurn=function(done){if(!resultPending)tickBombs('enemy');return enemyTurnBeforePressure(done);};
+    })();
+
+    /* ===== 영웅 강림: 궁극기 슬롯 없이 손패에서 바로 고르기 (2026-11-09 PM 요청) =====
+       궁극기 슬롯 세팅이 사용 난이도를 올려서 슬롯을 없앤다. 영웅 강림 버튼이 깜빡일 때 누르면 손패의 하수인 카드가
+       전장 위로 떠오르고, 내 오라와 같은 카드는 오라 색으로 빛난다. 카드를 누르면 세팅과 발동을 한 번에 처리해 즉시 소진자가 내려온다.
+       비용(최대 마나, 오라 공명 −2), 소진자 능력치와 등장 피해, 재강림 잠금은 기존 규칙을 그대로 쓴다. 컴퓨터도 같은 규칙으로 강림할 수 있는 순간 손패에서 골라 즉시 강림한다. */
+    (()=>{
+      const heroCandidates=()=>[...document.querySelectorAll('.hand .card')].filter(card=>cardCategory(card)==='champion');
+      const heroCost=card=>ultimateManaCost(ultimateSpec(card));
+      function heroPickLockReason(){if(ultimateUsed)return '궁극기 '+ULTIMATE_MAX_USES+'회 모두 사용';const lock=ultimateSettingLockReason();if(lock)return lock;if(battlePhase!=='setup')return '전투 처리 중';const cards=heroCandidates();if(!cards.length)return '손패에 하수인 없음';const min=Math.min(...cards.map(heroCost));if(mana<min)return '마나 '+min+' 필요';return '';}
+      window.heroPickLockReason=heroPickLockReason;
+      function closeHeroPick(){document.querySelectorAll('.hero-pick').forEach(node=>node.remove());document.removeEventListener('keydown',onHeroPickKey);}
+      function onHeroPickKey(event){if(event.key==='Escape')closeHeroPick();}
+      function pickHero(card){if(!card?.isConnected||heroPickLockReason())return closeHeroPick();if(mana<heroCost(card))return;closeHeroPick();setUltimate(card);if(!ultimateState)return;/* 고르는 즉시 발동한다: '세팅한 다음 턴부터' 잠금을 쓰지 않는다 */ultimateState.equippedLedgerTurn=ultimateLedger.player.turns-1;fireUltimateAction();}
+      function openHeroPick(){if(document.querySelector('.hero-pick'))return closeHeroPick();const reason=heroPickLockReason();if(reason){writeLog('<strong>영웅 강림 대기:</strong> '+reason);return;}if(typeof syncFieldFrame==='function')syncFieldFrame();const auraColor=playerGuardian&&GUARDIANS[playerGuardian]?GUARDIANS[playerGuardian].color:'#ffd46b';const overlay=document.createElement('div');overlay.className='hero-pick';overlay.style.setProperty('--hero-aura',auraColor);overlay.innerHTML='<div class="hero-pick-head"><small>HERO DESCENT</small><strong>영웅으로 부를 하수인을 고르세요</strong><span>내 오라와 같은 카드는 오라 공명으로 마나 −'+ULTIMATE_RESONANCE_COST+', 등장 피해 '+ULTIMATE_RESONANCE_ARRIVAL_DAMAGE+'</span></div><div class="hero-pick-row"></div><button type="button" class="hero-pick-cancel">취소</button>';const row=overlay.querySelector('.hero-pick-row');heroCandidates().forEach((card,i)=>{const spec=ultimateSpec(card),cost=ultimateManaCost(spec),resonance=auraUltimateMatch(spec),affordable=mana>=cost,option=document.createElement('button');option.type='button';option.className='hero-pick-option'+(resonance?' resonance':'')+(affordable?'':' unaffordable');option.disabled=!affordable;option.style.setProperty('--i',i);const clone=card.cloneNode(true);clone.classList.remove('selected','hand-filtered','dragging');clone.removeAttribute('draggable');clone.removeAttribute('id');[...clone.querySelectorAll('*'),clone].forEach(node=>[...node.attributes].forEach(a=>{if(a.name.startsWith('on'))node.removeAttribute(a.name);}));option.appendChild(clone);const tag=document.createElement('span');tag.className='hero-pick-tag';tag.textContent=(resonance?'오라 공명 · ':'')+(affordable?'마나 '+cost:'마나 '+cost+' 필요');option.appendChild(tag);option.setAttribute('aria-label',spec.name+' 영웅 강림, '+tag.textContent);option.addEventListener('click',event=>{event.stopPropagation();pickHero(card);});row.appendChild(option);});overlay.addEventListener('click',event=>{if(event.target===overlay||event.target===row)closeHeroPick();});overlay.querySelector('.hero-pick-cancel').addEventListener('click',closeHeroPick);document.body.appendChild(overlay);document.addEventListener('keydown',onHeroPickKey);sfx('card-land','ultimate',3);}
+      window.openHeroPick=openHeroPick;window.closeHeroPick=closeHeroPick;
+      /* 버튼: 슬롯에 카드가 없을 때는 손패 기준으로 활성 여부를 판단한다 */
+      const renderFieldUltimateActionBeforeHeroPick=renderFieldUltimateAction;
+      renderFieldUltimateAction=function(){if(ultimateState)return renderFieldUltimateActionBeforeHeroPick();const button=document.querySelector('#field-ultimate-action');if(!button)return;const auraColor=playerGuardian&&GUARDIANS[playerGuardian]?GUARDIANS[playerGuardian].color:'#ff6a4a';button.style.setProperty('--ultimate-aura',auraColor);button.style.setProperty('--ultimate-aura-soft',auraColor+'33');const reason=heroPickLockReason(),ready=!reason;button.hidden=ultimateUsed;button.disabled=!ready;button.classList.toggle('locked',!ready&&!ultimateUsed);const markup=ready?'<strong class="ult-ready-label">영웅 강림</strong><small class="ult-ready-meta">손패에서 영웅 선택</small>':'<span class="ult-title">영웅 강림</span><span class="ult-reason">'+reason+'</span>';if(button.innerHTML!==markup)button.innerHTML=markup;button.setAttribute('aria-label',ready?'영웅 강림, 손패에서 영웅 선택':'영웅 강림 · '+reason);if(!ready)closeHeroPick();};
+      const fireUltimateActionBeforeHeroPick=fireUltimateAction;
+      fireUltimateAction=function(event){if(ultimateState)return fireUltimateActionBeforeHeroPick(event);event?.preventDefault();event?.stopPropagation();openHeroPick();return false;};
+      const updateManaBeforeHeroPick=updateMana;
+      updateMana=function(...args){const result=updateManaBeforeHeroPick(...args);renderFieldUltimateAction();return result;};
+      /* 컴퓨터: 강림할 수 있는 순간에만 손패에서 골라 즉시 강림한다(다음 턴 대기 없음) */
+      equipEnemyUltimate=function(){if(enemyUltimate||enemyUltimateSettingLocked())return;const candidates=enemyHand.map((card,index)=>({card,index,spec:enemyUltimateSpec(card)})).filter(x=>!x.card.spell&&enemyMana>=enemyUltimateManaCost(x.spec)).sort((a,b)=>enemyUnitValue(b.card)-enemyUnitValue(a.card));if(!candidates.length)return;const pick=enemyDifficulty==='normal'?candidates[candidates.length-1]:candidates[0];enemyUltimate=pick.spec;enemyUltimate.equippedLedgerTurn=ultimateLedger.enemy.turns-1;enemyHand.splice(pick.index,1);consumeDeckCopiesOfCard('enemy',enemyUltimate);writeLog('<strong>상대</strong>가 손패의 '+pick.card.name+'을(를) 영웅으로 골랐습니다.');};
     })();
 </script>
 </body>
