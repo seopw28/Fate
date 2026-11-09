@@ -8,7 +8,7 @@
     let tgRun=0;
     const TUTORIAL_GUIDE_STEPS=[
       {key:'draw',title:'카드 뽑기',desc:'준비 단계에서 마나를 내고 덱에서 카드를 더 뽑을 수 있어요. 한 턴에 뽑을수록 비용이 2, 4, 8로 올라가요.',prompt:'카드 뽑기 버튼을 눌러 보세요'},
-      {key:'order',title:'카드 순서 바꾸기',desc:'전장의 하수인 순서를 바꿀 수 있어요. 맨 왼쪽 하수인이 상대 공격을 가장 먼저 받아요.',prompt:'빛나는 하수인을 눌러 맨 왼쪽으로 옮겨 보세요'},
+      {key:'order',title:'카드 순서 바꾸기',desc:'전장의 하수인 순서를 바꿀 수 있어요. 맨 왼쪽 하수인이 상대 공격을 가장 먼저 받아요.',prompt:'빛나는 하수인을 맨 왼쪽으로 끌어 보세요'},
       {key:'auraMagic',title:'오라 마법',desc:'남은 마나를 모두 모아 내 성격 오라의 마법을 써요. 쓴 마나가 많을수록 강하고, 3턴에 한 번 쓸 수 있어요.',prompt:'오라 마법 버튼을 눌러 보세요'},
       {key:'graveRecall',title:'묘지 회수',desc:'손패의 마법 카드 1장을 제물로 바치면 묘지의 하수인 1장이 손패로 돌아와요. 마나 5와 체력이 들어요.',prompt:'묘지 회수 버튼을 눌러 보세요'},
       {key:'awaken',title:'오라 각성',desc:'내 체력이 처음 85 이하가 되면 오라 각성이 열려요. 강화 2개 중 하나를 골라 대전 끝까지 유지해요.',prompt:'오라 각성 버튼을 눌러 보세요'},
@@ -93,3 +93,112 @@
       setTimeout(openTutorialGuide,400);
     }
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',maybeAutoOpenTutorialGuide);else maybeAutoOpenTutorialGuide();
+
+    /* ----- 시연 공용 도구: 연출용 카드, 시연 커서, 날아가기 ----- */
+    const tgEsc=text=>String(text).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+    function tgPickCards(count,{aura='fire',type='champion',offset=0}={}){
+      const pool=PrimalCardSet.cards.filter(card=>card.cardType===type&&card.assetId&&(!aura||card.aura===aura));
+      const list=pool.length?pool:PrimalCardSet.cards.filter(card=>card.cardType===type&&card.assetId);
+      return Array.from({length:count},(_,i)=>list[(offset+i)%list.length]);
+    }
+    function tgCardHtml(card,extraClass=''){
+      const stats=card.stats?'<span class="tg-stats"><i>⚔ '+card.stats.attack+'</i><i>♥ '+card.stats.health+'</i></span>':'<span class="tg-stats tg-spell-tag"><i>마법</i></span>';
+      return '<div class="tg-card '+(card.aura||'')+' '+extraClass+'" data-card-id="'+tgEsc(card.cardId)+'"><span class="tg-cost">'+card.cost+'</span><img src="assets/'+tgEsc(card.assetId)+'" alt=""><b>'+tgEsc(card.displayName)+'</b>'+stats+'</div>';
+    }
+    function tgRect(stage,el){const s=stage.getBoundingClientRect(),r=el.getBoundingClientRect();return {x:r.left-s.left,y:r.top-s.top,w:r.width,h:r.height,cx:r.left-s.left+r.width/2,cy:r.top-s.top+r.height/2};}
+    function tgCursor(stage){let cursor=stage.querySelector('.tg-cursor');if(!cursor){cursor=document.createElement('span');cursor.className='tg-cursor';stage.appendChild(cursor);const r=stage.getBoundingClientRect();cursor.style.transform='translate('+(r.width*.5)+'px,'+(r.height+30)+'px)';}return cursor;}
+    async function tgCursorTo(stage,el,ms=650){const cursor=tgCursor(stage),r=tgRect(stage,el);cursor.style.transition='transform '+ms+'ms cubic-bezier(.4,.1,.2,1)';cursor.style.transform='translate('+r.cx+'px,'+r.cy+'px)';await tgWait(ms+60);}
+    async function tgCursorTap(stage){const cursor=tgCursor(stage);cursor.classList.remove('tap');void cursor.offsetWidth;cursor.classList.add('tap');await tgWait(260);}
+    function tgCursorHide(stage){stage.querySelector('.tg-cursor')?.remove();}
+    async function tgFly(stage,node,from,to,ms=520){
+      node.style.position='absolute';node.style.left='0';node.style.top='0';node.style.margin='0';node.style.zIndex='5';stage.appendChild(node);
+      const anim=node.animate([{transform:'translate('+from.x+'px,'+from.y+'px) scale('+(from.s||1)+')'},{transform:'translate('+((from.x+to.x)/2)+'px,'+(Math.min(from.y,to.y)-40)+'px) scale(1.08)',offset:.55},{transform:'translate('+to.x+'px,'+to.y+'px) scale('+(to.s||1)+')'}],{duration:ms,easing:'cubic-bezier(.3,.1,.25,1)',fill:'forwards'});
+      await anim.finished.catch(()=>{});return node;
+    }
+
+    /* ----- 1. 카드 뽑기: 덱에서 손패로, 비용 2 → 4 → 8 ----- */
+    const tgDrawState={};
+    TUTORIAL_GUIDE_SCENES.draw={
+      build(stage){
+        tgDrawState.mana=7;tgDrawState.cost=2;tgDrawState.next=3;
+        const hand=tgPickCards(3);
+        stage.innerHTML='<div class="tg-scene tg-scene-draw">'
+          +'<div class="tg-mana">마나 <b>7</b> / 10</div>'
+          +'<div class="tg-deck"><i></i><i></i><i></i><span>덱</span></div>'
+          +'<button type="button" class="tg-action tg-draw-btn" data-tg-target disabled>＋ 카드 뽑기 <small>· 비용 <b>2</b>마나</small></button>'
+          +'<div class="tg-hand">'+hand.map(card=>tgCardHtml(card)).join('')+'</div>'
+          +'</div>';
+      },
+      async draw(stage,alive){
+        const scene=stage.querySelector('.tg-scene-draw');if(!scene)return;
+        const cost=tgDrawState.cost;tgDrawState.mana-=cost;tgDrawState.cost*=2;
+        const mana=scene.querySelector('.tg-mana b');mana.textContent=tgDrawState.mana;mana.parentElement.classList.remove('spend');void mana.offsetWidth;mana.parentElement.classList.add('spend');
+        scene.querySelector('.tg-draw-btn small b').textContent=tgDrawState.cost;
+        const hand=scene.querySelector('.tg-hand'),deck=scene.querySelector('.tg-deck');
+        const card=tgPickCards(1,{offset:tgDrawState.next++})[0];
+        const slot=document.createElement('div');slot.innerHTML=tgCardHtml(card,'tg-arriving');const face=slot.firstChild;hand.appendChild(face);
+        const target=tgRect(stage,face),origin=tgRect(stage,deck);
+        const back=document.createElement('div');back.className='tg-card-back';back.style.width=target.w+'px';back.style.height=target.h+'px';
+        await tgFly(stage,back,{x:origin.x,y:origin.y},{x:target.x,y:target.y});
+        if(!alive())return;back.remove();face.classList.remove('tg-arriving');face.classList.add('tg-flip');
+        await tgWait(380);
+      },
+      async demo(stage,alive){
+        const button=stage.querySelector('.tg-draw-btn');
+        for(let i=0;i<2&&alive();i++){await tgCursorTo(stage,button);if(!alive())return;await tgCursorTap(stage);await this.draw(stage,alive);await tgWait(350);}
+        if(!alive())return;tgCursorHide(stage);await tgWait(300);if(!alive())return;this.build(stage);
+      },
+      async action(stage,alive){const passed=await tgWaitTarget(stage,alive);if(!passed)return false;await this.draw(stage,alive);return alive();},
+    };
+
+    /* ----- 2. 카드 순서 바꾸기: 끌어서 맨 왼쪽으로, 맨 왼쪽이 먼저 맞는다 ----- */
+    function tgOrderFlip(row,mutate){
+      const cards=[...row.children],before=new Map(cards.map(card=>[card,card.getBoundingClientRect().left]));
+      mutate();
+      cards.forEach(card=>{const dx=before.get(card)-card.getBoundingClientRect().left;if(dx)card.animate([{transform:'translateX('+dx+'px)'},{transform:'none'}],{duration:420,easing:'cubic-bezier(.3,.1,.25,1)'});});
+      return tgWait(440);
+    }
+    async function tgOrderHit(stage,alive){
+      const row=stage.querySelector('.tg-field'),first=row.firstElementChild,enemy=stage.querySelector('.tg-enemy');if(!first||!enemy)return;
+      const from=tgRect(stage,enemy),to=tgRect(stage,first);
+      const bolt=document.createElement('span');bolt.className='tg-bolt';
+      await tgFly(stage,bolt,{x:from.cx-10,y:from.cy},{x:to.cx-10,y:to.y+10},420);
+      if(!alive())return;bolt.remove();first.classList.remove('tg-hit');void first.offsetWidth;first.classList.add('tg-hit');await tgWait(450);
+    }
+    TUTORIAL_GUIDE_SCENES.order={
+      build(stage){
+        const field=tgPickCards(3,{offset:6});
+        stage.innerHTML='<div class="tg-scene tg-scene-order">'
+          +'<div class="tg-enemy">상대 하수인</div>'
+          +'<div class="tg-first-mark">먼저 맞아요</div>'
+          +'<div class="tg-field">'+field.map((card,i)=>tgCardHtml(card,i===2?'tg-mover':'')).join('')+'</div>'
+          +'</div>';
+      },
+      async demo(stage,alive){
+        await tgOrderHit(stage,alive);if(!alive())return;
+        const row=stage.querySelector('.tg-field'),mover=row.querySelector('.tg-mover');
+        await tgCursorTo(stage,mover);if(!alive())return;await tgCursorTap(stage);
+        mover.classList.add('tg-lifted');await tgCursorTo(stage,row.firstElementChild,700);if(!alive())return;
+        mover.classList.remove('tg-lifted');await tgOrderFlip(row,()=>row.prepend(mover));if(!alive())return;
+        tgCursorHide(stage);await tgOrderHit(stage,alive);if(!alive())return;await tgWait(500);if(!alive())return;this.build(stage);
+      },
+      action(stage,alive){
+        return new Promise(resolve=>{
+          const row=stage.querySelector('.tg-field'),mover=row.querySelector('.tg-mover');
+          mover.classList.add('tg-glow');mover.setAttribute('data-tg-target','');row.firstElementChild.classList.add('tg-drop-here');
+          let start=null;
+          const move=event=>{if(!start)return;mover.style.transform='translate('+(event.clientX-start.x)+'px,'+(event.clientY-start.y)+'px) scale(1.06)';};
+          const up=async event=>{
+            if(!start)return;window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);
+            const first=row.firstElementChild.getBoundingClientRect(),dropX=event.clientX;start=null;
+            mover.classList.remove('tg-lifted');mover.style.transform='';
+            if(dropX<first.left+first.width*.75){
+              mover.classList.remove('tg-glow');row.querySelector('.tg-drop-here')?.classList.remove('tg-drop-here');
+              await tgOrderFlip(row,()=>row.prepend(mover));if(!alive()){resolve(false);return;}
+              await tgOrderHit(stage,alive);resolve(alive());
+            }
+          };
+          mover.addEventListener('pointerdown',event=>{event.preventDefault();start={x:event.clientX,y:event.clientY};mover.classList.add('tg-lifted');window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);});
+        });
+      },
+    };
