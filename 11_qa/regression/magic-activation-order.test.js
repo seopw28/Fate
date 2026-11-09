@@ -104,3 +104,7 @@ test('소환을 막거나 되돌리는 카드는 쓴 쪽과 관계없이 양쪽 
   assert.ok(html.includes("setTimeout(()=>strongest.remove(),350);summonDenyRecoil(card.name);"), '컴퓨터 되돌리기 마법');
   assert.ok(html.includes("summonDenyRecoil(trap.name);return {prevented:true};"), '컴퓨터 소환 무효 함정');
 });
+
+test('대재앙은 대기 턴이 차면 다시 대기로 걸리지 않고 전멸 효과로 발동한다 (2026-11-09)', () => {
+  assert.ok(html.includes("if(trap.card?.dataset)trap.card.dataset.effect='global-destroy';setTimeout(()=>castSpell(trap.card),TRAP_EFFECT_LEAD_MS);"), '발동 때 효과 키를 great-ruin 에서 global-destroy 로 바꿔 건다');
+});

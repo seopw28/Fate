@@ -29,11 +29,6 @@ ADD_ENEMY = "enemySummonUnit(document.querySelector('.arena .lane:first-child'),
 ULT_READY = ADD_ENEMY + ADD_ENEMY + "playerHp=60;updateHeroHealth();['fire','water','earth'].forEach(el=>summonBattleToken('아군',2,5,el));"  # 어떤 성격의 궁극기든 발동 조건(적 2명·체력 75% 이하·서로 다른 성격 3명 등)을 채운다
 
 CHECKS = [
-    ("혈마나로 세트한 함정을 취소하면 낸 체력을 그대로 돌려받는다 (60으로 잘리지 않음)",
-     # 2026-11-07: 마법 슬롯이 없어졌다(마법은 더블클릭으로 즉시 발동, 혈마나 불가). 세팅 슬롯은 함정 1칸뿐이라 함정으로 같은 환불 경로를 검사한다.
-     "(async()=>{" + TRIM_HAND + "turnNumber=6;mana=0;playerHp=100;updateMana();const c=createRuntimeBattleCard('core.ambush-mine');"
-     "document.querySelector('.hand').appendChild(c);playCard(c);playCard(c);" + WAIT % 2500 + "const paid=playerHp,set=setMagicCards.length;cancelSetMagic(0);"
-     "return {ok:set===1&&paid<100&&playerHp===100&&setMagicCards.length===0,set,paid,afterCancel:playerHp};})()"),
     ("덱이 1장일 때 2장 뽑기 마법을 써도 빈 덱 패배가 나지 않는다",
      "(async()=>{" + TRIM_HAND + "deck.splice(1);const c=createRuntimeBattleCard('tower.arcane-insight');c.dataset.effect='draw';/* 드로우 마법 카드는 없앴지만(2026-11-08) 같은 드로우 경로를 계속 검사한다 */document.body.appendChild(c);castSpell(c);"
      + WAIT % 3500 + "const lost=document.querySelector('#result').classList.contains('show');return {ok:!lost&&deck.length===0,lost,deck:deck.length};})()"),

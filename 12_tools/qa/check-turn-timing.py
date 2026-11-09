@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """턴 타이밍 규칙 브라우저 검사 (2026-11-07 PM 결정).
 
-1. 마법은 손패에서 더블클릭하면 마나로만 즉시 발동한다. 세팅 슬롯은 함정 1칸이고 대재앙은 대기 턴 함정이다.
+1. 마법은 손패에서 더블클릭하면 마나로만 즉시 발동한다. 함정은 폐지돼 세팅 자리는 묘지 회수 1칸이고, 대재앙은 더블클릭하면 5턴 대기 마법으로 걸린다 (2026-11-09).
 2. 궁극기는 세팅한 턴에는 '다음 턴부터 발동'으로 잠기고, 내 다음 턴에 열린다. 컴퓨터도 같다.
 3. 오라 각성은 체력 85 이하에서 열린다.
 4. 중앙 스킬 소개가 있는 마법은 소개가 끝난 뒤 피해와 효과가 들어간다 (2026-11-08).
@@ -32,13 +32,14 @@ CHECKS = [
   """(async()=>{battlePhase='setup';turnNumber=9;maxMana=10;mana=1;playerHp=100;updateMana();setHandFilter('spell');const c=__card('core.crimson-bolt');updateCardAffordability();
   const dim=c.classList.contains('unaffordable')&&!c.classList.contains('blood-option');c.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}));await __wait(300);
   return {ok:dim&&c.isConnected&&mana===1&&playerHp===100,dim,still:c.isConnected,mana,hp:playerHp};})()"""),
- ("세팅 슬롯은 함정 1칸뿐이다",
-  """(()=>{const slots=[...document.querySelectorAll('.set-slot')].map(s=>s.id);return {ok:slots.length===1&&slots[0]==='magic-slot-0'&&MAGIC_SLOT_KINDS.join()==='reaction',slots};})()"""),
- ("대재앙: 함정 칸에 세팅하면 5턴을 세고, 대기 턴이 찬 내 턴 시작에 양쪽 하수인을 모두 파괴한다",
-  """(async()=>{battlePhase='setup';maxMana=mana=10;updateMana();summonBattleToken('아군',2,5,'earth');const c=__card('storm.great-ruin');const isTrap=c.classList.contains('trap-card');setHandFilter('spell');playCard(c);if(!setMagicCards.length)playCard(c);await __wait(900);
-  const m=setMagicCards[0],slotText=document.querySelector('#magic-slot-0')?.textContent||'';const early=triggerTrap('field_state');const stillSet=setMagicCards.length===1;
-  turnNumber=m.readyTurn;triggerTrap('field_state');await __wait(5000);/* 안내 2.3초 → 중앙 소개 1.7초 → 파괴 */const left=document.querySelectorAll('.summon-zone .unit:not([data-destroyed="true"])').length;
-  return {ok:isTrap&&!!m&&m.kind==='reaction'&&/발동까지 5턴/.test(slotText)&&stillSet&&setMagicCards.length===0&&left===0,isTrap,slotText,stillSet,left};})()"""),
+ ("세팅 슬롯 자리는 묘지 회수 1칸뿐이다 (함정 슬롯 폐지, 2026-11-09)",
+  """(()=>{const slots=[...document.querySelectorAll('.set-slot')].map(s=>s.id);return {ok:slots.length===1&&slots[0]==='grave-recall'&&MAGIC_SLOT_KINDS.length===0,slots};})()"""),
+ ("대재앙: 손패에서 더블클릭하면 숨은 대기 마법으로 5턴을 세고, 대기 턴이 찬 내 턴 시작에 양쪽 하수인을 모두 파괴한다 (함정 폐지 뒤, 2026-11-09)",
+  """(async()=>{battlePhase='setup';maxMana=mana=10;updateMana();summonBattleToken('아군',2,5,'earth');setHandFilter('spell');const c=__card('storm.great-ruin');const cost=Number(c.querySelector('.cost').textContent);
+  c.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}));for(let i=0;i<40&&battlePhase!=='setup';i++)await __wait(100);await __wait(300);
+  const m=setMagicCards.find(x=>x.effect==='global-destroy'),paid=mana===10-cost,wait=m?m.readyTurn-turnNumber:null;const early=triggerTrap('field_state');const stillSet=setMagicCards.includes(m);
+  turnNumber=m.readyTurn;triggerTrap('field_state');await __wait(5000);/* 안내 → 중앙 소개 1.7초 → 파괴 */const left=document.querySelectorAll('.summon-zone .unit:not([data-destroyed="true"])').length;
+  return {ok:!!m&&paid&&wait===5&&stillSet&&!setMagicCards.includes(m)&&left===0,found:!!m,paid,wait,stillSet,left};})()"""),
  ("궁극기: 세팅한 턴에는 '다음 턴부터 발동'으로 잠기고 발동 버튼도 막힌다. 내 다음 턴에는 열린다",
   """(async()=>{battlePhase='setup';playerHp=70;awakenGateOpened.player=true;maxMana=mana=10;updateMana();
   const id=collectionCardDefs.find(d=>d.cardType==='champion'&&d.aura!=='fire').cardId;const c=__card(id);setUltimate(c);renderUltimate();
