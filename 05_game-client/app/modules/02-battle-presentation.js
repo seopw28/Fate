@@ -678,9 +678,9 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
       const clearOver=()=>{deckList.classList.remove('drag-over','drag-denied');ownedGrid.classList.remove('drag-over');};
       document.querySelector('#deck-view').addEventListener('dragstart',e=>{const node=e.target.closest?.('.owned-card[data-index],.deck-row[data-index]');if(!node)return;dragged={index:Number(node.dataset.index),from:node.classList.contains('deck-row')?'deck':'owned'};e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain','deck-card:'+dragged.index);node.classList.add('dragging');});
       document.querySelector('#deck-view').addEventListener('dragend',e=>{dragged=null;clearOver();document.querySelectorAll('#deck-view .dragging').forEach(n=>n.classList.remove('dragging'));});
-      deckList.addEventListener('dragover',e=>{if(dragged?.from!=='owned')return;const ok=canAdd(dragged.index);e.preventDefault();e.dataTransfer.dropEffect=ok?'move':'none';deckList.classList.toggle('drag-over',ok);deckList.classList.toggle('drag-denied',!ok);});
+      deckList.addEventListener('dragover',e=>{if(dragged?.from!=='owned')return;const ok=canAdd(dragged.index);e.preventDefault();e.dataTransfer.dropEffect='move';/* 막혀도 놓기는 받아서 이유를 안내한다. 넣을 수 없음은 빨간 테두리(drag-denied)로 보인다 */deckList.classList.toggle('drag-over',ok);deckList.classList.toggle('drag-denied',!ok);});
       deckList.addEventListener('dragleave',e=>{if(!deckList.contains(e.relatedTarget))clearOver();});
-      deckList.addEventListener('drop',e=>{if(dragged?.from!=='owned')return;e.preventDefault();const index=dragged.index;clearOver();if(canAdd(index))addToDraft(index);});
+      deckList.addEventListener('drop',e=>{if(dragged?.from!=='owned')return;e.preventDefault();const index=dragged.index;clearOver();addToDraft(index);/* 막히는 경우도 addToDraft 피드백(이유 안내)으로 보낸다 */});
       ownedGrid.addEventListener('dragover',e=>{if(dragged?.from!=='deck')return;e.preventDefault();e.dataTransfer.dropEffect='move';ownedGrid.classList.add('drag-over');});
       ownedGrid.addEventListener('dragleave',e=>{if(!ownedGrid.contains(e.relatedTarget))clearOver();});
       ownedGrid.addEventListener('drop',e=>{if(dragged?.from!=='deck')return;e.preventDefault();const index=dragged.index;clearOver();removeFromDraft(index);});
