@@ -14,7 +14,7 @@ const between = (from, to) => html.slice(html.indexOf(from), html.indexOf(to, ht
 
 test('컴퓨터 카드 뽑기: 유저와 같은 비용(2×2^(n-1))·손패 8장 상한·별도 카운터', () => {
   assert.ok(html.includes('let enemyDrawActionsUsed = 0, enemyBloodManaUses = 0, enemyBloodManaBattleUses = 0, enemyTurnsTaken = 0;'));
-  assert.ok(html.includes('function enemyDrawQuote(){const cost=DRAW_BASE_COST*2**enemyDrawActionsUsed,quote=enemyBloodManaQuote(cost);'));
+  assert.ok(html.includes('function enemyDrawQuote(){const cost=DRAW_BASE_COST*2**enemyDrawActionsUsed,base=enemyBloodManaQuote(cost),'), '혈마나 카드 뽑기 누적(2026-11-09)을 더한 견적');
   const act = between('function performEnemyDrawAction()', 'function summonEnemyPriorityChampion');
   assert.ok(act.includes('if(enemyHand.length>=8)return false;'));
   assert.ok(act.includes('enemyDrawActionsUsed++;enemyDraw();'));
