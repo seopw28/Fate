@@ -21,3 +21,10 @@ test('브라우저 검사: 덱 편집 드래그 양방향과 피드백', (t) => 
   assert.equal(run.status, 0, run.stdout + run.stderr);
   assert.match(run.stdout, /OK: 덱 편집 드래그 양방향과 피드백 확인/);
 });
+
+test('덱 편집 배치: 실행 버튼은 덱 목록 아래, 덱 목록은 필터 줄부터, 전체/하수인/마법 탭이 왼쪽 보유 카드와 같은 기준으로 거른다 (2026-11-09 PM)', () => {
+  assert.ok(html.includes('class="deck-type-tabs"'), '덱 목록 유형 탭');
+  assert.ok(html.includes("const typeOk=i=>deckTypeFilter==='all'||(deckTypeFilter==='spell')===collectionIsSpell[i]"), '덱 목록도 같은 deckTypeFilter');
+  assert.ok(html.includes("actions.className='deck-actions';save.before(actions);"), '실행 버튼을 덱 목록 아래로');
+  assert.ok(html.includes('grid-template-areas:"note note" "head head" "tools deck" "grid deck"'), '덱 목록을 필터 줄 높이까지 올린다');
+});

@@ -2484,3 +2484,25 @@
     @keyframes owned-returned{0%{box-shadow:0 0 0 2px #ffcf7a,0 0 24px #ffcf7a99}100%{box-shadow:none}}
     .owned-card.add-denied{animation:owned-denied .42s ease-in-out}
     @keyframes owned-denied{0%,100%{transform:none}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+    /* 덱 편집 배치 (2026-11-09 PM): 덱 목록을 필터 줄 높이까지 올리고(오른쪽 열 전체), 실행 버튼은 덱 목록 아래, 유형 탭은 덱 목록 위 */
+    #deck-view.aura-edit-mode{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(340px,40%);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"note note" "head head" "tools deck" "grid deck";column-gap:16.2px;row-gap:0}
+    #deck-view.aura-edit-mode>.deck-battle-note{grid-area:note}
+    #deck-view.aura-edit-mode>.deck-switcher{grid-area:head}
+    #deck-view.aura-edit-mode>.deck-toolbar{grid-area:tools;min-width:0}
+    #deck-view.aura-edit-mode>.deck-content{display:contents!important}
+    #deck-view.aura-edit-mode .owned-grid{grid-area:grid;min-height:0}
+    #deck-view.aura-edit-mode .deck-list{grid-area:deck;min-height:0;align-self:stretch}
+    #deck-view.aura-edit-mode .deck-tools{display:none!important}
+    #deck-view.aura-edit-mode #deck-filters .deck-filter[onclick*="setDeckTypeFilter"],#deck-view.aura-edit-mode #deck-filters .deck-sep:first-of-type{display:none!important}
+    #deck-view.aura-edit-mode .deck-help,#deck-view.aura-edit-mode #deck-save{display:none!important}
+    #deck-view.aura-edit-mode .deck-actions{display:flex;flex-wrap:wrap;gap:6.3px;margin-top:8.1px}
+    #deck-view.aura-edit-mode .deck-actions button{flex:1 1 0;min-width:0;padding:9px 6.3px;border:1px solid #465365;border-radius:9px;background:#171e28;color:#d8dee8;font-size:12.6px;font-weight:700;cursor:pointer}
+    #deck-view.aura-edit-mode .deck-actions button:hover{border-color:#b68a4d;color:#ffd477}
+    #deck-view.aura-edit-mode .deck-actions .aura-deck-fill{border-color:#b68a4d;background:#1d1a14;color:#f3d9a8}
+    #deck-view.aura-edit-mode #deck-panel-title{display:flex;align-items:center;justify-content:space-between;gap:9px}
+    #deck-panel-title .deck-ready{padding:3.6px 9px;border:1px solid #465365;border-radius:999px;color:#9aa5b6;font-size:10.8px;font-weight:700;white-space:nowrap}
+    #deck-panel-title .deck-ready.ok{border-color:#5fb878;color:#a8e6b8;background:#1b2a1f}
+    .deck-type-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4.5px;margin:0 0 6.3px;padding:3.6px;border:1px solid #2d3643;border-radius:9px;background:#10151c}
+    .deck-type-tabs button{padding:6.3px 0;border:0;border-radius:6.3px;background:none;color:#9aa5b6;font-size:12.6px;font-weight:800;cursor:pointer}
+    .deck-type-tabs button b{color:inherit;opacity:.8}
+    .deck-type-tabs button.active{background:#2a2316;color:#ffd477;box-shadow:inset 0 0 0 1px #b68a4d}

@@ -2493,6 +2493,28 @@
     @keyframes owned-returned{0%{box-shadow:0 0 0 2px #ffcf7a,0 0 24px #ffcf7a99}100%{box-shadow:none}}
     .owned-card.add-denied{animation:owned-denied .42s ease-in-out}
     @keyframes owned-denied{0%,100%{transform:none}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+    /* 덱 편집 배치 (2026-11-09 PM): 덱 목록을 필터 줄 높이까지 올리고(오른쪽 열 전체), 실행 버튼은 덱 목록 아래, 유형 탭은 덱 목록 위 */
+    #deck-view.aura-edit-mode{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(340px,40%);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"note note" "head head" "tools deck" "grid deck";column-gap:16.2px;row-gap:0}
+    #deck-view.aura-edit-mode>.deck-battle-note{grid-area:note}
+    #deck-view.aura-edit-mode>.deck-switcher{grid-area:head}
+    #deck-view.aura-edit-mode>.deck-toolbar{grid-area:tools;min-width:0}
+    #deck-view.aura-edit-mode>.deck-content{display:contents!important}
+    #deck-view.aura-edit-mode .owned-grid{grid-area:grid;min-height:0}
+    #deck-view.aura-edit-mode .deck-list{grid-area:deck;min-height:0;align-self:stretch}
+    #deck-view.aura-edit-mode .deck-tools{display:none!important}
+    #deck-view.aura-edit-mode #deck-filters .deck-filter[onclick*="setDeckTypeFilter"],#deck-view.aura-edit-mode #deck-filters .deck-sep:first-of-type{display:none!important}
+    #deck-view.aura-edit-mode .deck-help,#deck-view.aura-edit-mode #deck-save{display:none!important}
+    #deck-view.aura-edit-mode .deck-actions{display:flex;flex-wrap:wrap;gap:6.3px;margin-top:8.1px}
+    #deck-view.aura-edit-mode .deck-actions button{flex:1 1 0;min-width:0;padding:9px 6.3px;border:1px solid #465365;border-radius:9px;background:#171e28;color:#d8dee8;font-size:12.6px;font-weight:700;cursor:pointer}
+    #deck-view.aura-edit-mode .deck-actions button:hover{border-color:#b68a4d;color:#ffd477}
+    #deck-view.aura-edit-mode .deck-actions .aura-deck-fill{border-color:#b68a4d;background:#1d1a14;color:#f3d9a8}
+    #deck-view.aura-edit-mode #deck-panel-title{display:flex;align-items:center;justify-content:space-between;gap:9px}
+    #deck-panel-title .deck-ready{padding:3.6px 9px;border:1px solid #465365;border-radius:999px;color:#9aa5b6;font-size:10.8px;font-weight:700;white-space:nowrap}
+    #deck-panel-title .deck-ready.ok{border-color:#5fb878;color:#a8e6b8;background:#1b2a1f}
+    .deck-type-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4.5px;margin:0 0 6.3px;padding:3.6px;border:1px solid #2d3643;border-radius:9px;background:#10151c}
+    .deck-type-tabs button{padding:6.3px 0;border:0;border-radius:6.3px;background:none;color:#9aa5b6;font-size:12.6px;font-weight:800;cursor:pointer}
+    .deck-type-tabs button b{color:inherit;opacity:.8}
+    .deck-type-tabs button.active{background:#2a2316;color:#ffd477;box-shadow:inset 0 0 0 1px #b68a4d}
 </style>
 </head>
 <body>
@@ -4502,8 +4524,10 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
       const curveHtml=curve.map((n,k)=>'<div title="비용 '+(k+1)+(k===7?'+':'')+' · '+n+'장"><b>'+(n||'')+'</b><i style="height:'+Math.round(n/curveMax*100)+'%"></i><small>'+(k===7?'8+':k+1)+'</small></div>').join('');
       const toggle='<div class="deck-group-toggle">'+Object.entries(DECK_GROUPS).map(([key,g])=>'<button class="'+(deckGroupBy===key?'active':'')+'" onclick="setDeckGroup(\''+key+'\')">'+g.label+'</button>').join('')+'</div>';
       const rowHtml=index=>{const card=collectionCards[index],count=countInDraft(index),maxCopies=Math.min(DECK_COPY_LIMIT,collectionState.owned[index]),canAdd=count<maxCopies&&total<60&&canAddAuraToDeck(draftDeck,index)&&(!collectionIsSpell[index]||spellCountIn(draftDeck)<SPELL_DECK_LIMIT);const auraKey=collectionIsSpell[index]?'magic':card[0];/* 한 줄 덱 목록 (2026-11-09 PM): 비용 · 그림 띠 · 이름 · 장수 · −/＋ */return '<div class="deck-row slim" data-index="'+index+'" draggable="true" title="'+card[2]+' · '+elementLabel[auraKey]+' · 비용 '+card[3]+(collectionIsSpell[index]?'':' · ⚔ '+card[4]+' ♥ '+card[5])+'" style="--ac:'+(ELEMENT_COLOR[auraKey]||'#cfd8e6')+'"><b class="dr-cost">'+card[3]+'</b><img src="'+card[1]+'" alt=""><span class="dr-name">'+card[2]+'</span><b class="dr-count">×'+count+'</b><div class="deck-row-actions"><button type="button" onclick="removeFromDraft('+index+')" aria-label="'+card[2]+' 덱에서 1장 제거">−</button><button type="button" onclick="addToDraft('+index+')" aria-label="'+card[2]+' 덱에 1장 추가" '+(canAdd?'':'disabled')+'>＋</button></div></div>';};
-      const sections=group.keys.map(key=>{const list=kinds.filter(i=>group.of(i)===key).sort((a,b)=>Number(collectionCards[a][3])-Number(collectionCards[b][3])||collectionCards[a][2].localeCompare(collectionCards[b][2],'ko'));if(!list.length)return '';const copies=list.reduce((sum,i)=>sum+countInDraft(i),0);return '<div class="deck-group"><div class="deck-group-head"><span>'+group.title(key)+'</span><b>'+copies+'장</b></div>'+list.map(rowHtml).join('')+'</div>';}).join('');
-      return '<div class="deck-summary"><span>카드 종류 <b>'+kinds.length+'</b></span><span>마법 <b>'+spellCountIn(draftDeck)+' / '+SPELL_DECK_LIMIT+'</b></span><span>성격 <b>'+elementCounts.filter(e=>e.n&&e.el!=='magic').length+'</b></span></div>'+(total?'<div class="deck-comp"><div class="deck-bar">'+bar+'</div><div class="deck-legend">'+legend+'</div><div class="deck-curve-label">비용 곡선</div><div class="deck-curve">'+curveHtml+'</div></div>':'')+toggle+(sections||'<div class="gacha-empty">왼쪽 카드의 ＋ 버튼을 누르거나 이곳으로 드래그하세요.</div>');
+      const typeOk=i=>deckTypeFilter==='all'||(deckTypeFilter==='spell')===collectionIsSpell[i],spellTotal=spellCountIn(draftDeck);/* 덱 목록 유형 탭과 왼쪽 보유 카드가 같은 deckTypeFilter 를 쓴다 (2026-11-09 PM) */
+      const typeTabs='<div class="deck-type-tabs" role="tablist" aria-label="덱 카드 종류">'+[['all','전체',total],['champion','하수인',total-spellTotal],['spell','마법',spellTotal]].map(([key,label,n])=>'<button type="button" role="tab" aria-selected="'+(deckTypeFilter===key)+'" class="'+(deckTypeFilter===key?'active':'')+'" onclick="setDeckTypeFilter(\''+key+'\')">'+label+' <b>'+n+'</b></button>').join('')+'</div>';
+      const sections=group.keys.map(key=>{const list=kinds.filter(i=>group.of(i)===key&&typeOk(i)).sort((a,b)=>Number(collectionCards[a][3])-Number(collectionCards[b][3])||collectionCards[a][2].localeCompare(collectionCards[b][2],'ko'));if(!list.length)return '';const copies=list.reduce((sum,i)=>sum+countInDraft(i),0);return '<div class="deck-group"><div class="deck-group-head"><span>'+group.title(key)+'</span><b>'+copies+'장</b></div>'+list.map(rowHtml).join('')+'</div>';}).join('');
+      return '<div class="deck-summary"><span>카드 종류 <b>'+kinds.length+'</b></span><span>마법 <b>'+spellCountIn(draftDeck)+' / '+SPELL_DECK_LIMIT+'</b></span><span>성격 <b>'+elementCounts.filter(e=>e.n&&e.el!=='magic').length+'</b></span></div>'+(total?'<div class="deck-comp"><div class="deck-bar">'+bar+'</div><div class="deck-legend">'+legend+'</div><div class="deck-curve-label">비용 곡선</div><div class="deck-curve">'+curveHtml+'</div></div>':'')+typeTabs+toggle+(sections||'<div class="gacha-empty">왼쪽 카드의 ＋ 버튼을 누르거나 이곳으로 드래그하세요.</div>');
     }
 
     /* -- 도감: 전체 카드 수집 현황 (캐릭터는 보유, 마법/함정은 전투에서 발견하면 등록) -- */
@@ -5024,6 +5048,13 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
         if(countInDraft(index)<before){const left=countInDraft(index),target=ownedNode(index),to=(target||document.querySelector('#owned-grid'))?.getBoundingClientRect();if(left)deckDeltaChip(deckRowNode(index),'−1','just-reduced');deckFlyGhost(src,from,to,()=>deckDeltaChip(ownedNode(index),'−1','just-returned'));deckToast('− '+collectionCards[index][2]+(left?' · 덱에 ×'+left+' 남음':' · 덱에서 뺐습니다')+' ('+draftDeck.length+'/60)','remove');}
         return result;};
     })();
+
+    /* 덱 편집 배치 (2026-11-09 PM): 되돌리기·자동편성·비우기를 덱 목록 아래 실행 버튼으로 옮기고, 대전 사용 여부는 덱 목록 제목 옆 작은 표시로 둔다 */
+    (function(){const base=renderDeckBuilder;renderDeckBuilder=function(...args){const result=base.apply(this,args);const list=document.querySelector('.deck-list'),save=document.querySelector('#deck-save'),d=collectionState.decks?.[editingDeck];if(!list||!save||!d)return result;
+      let actions=list.querySelector('.deck-actions');if(!actions){actions=document.createElement('div');actions.className='deck-actions';save.before(actions);}
+      const aura=d.aura,label=elementLabel[aura];actions.innerHTML=(AURA_DECKS.length&&aura?'<button type="button" class="aura-deck-fill" onclick="loadAuraDeck(\''+aura+'\')">'+label+' 기본 덱으로 되돌리기</button>':'')+'<button type="button" onclick="autoBuildDeck()">역전 체험덱 자동편성</button><button type="button" onclick="clearDraftDeck()">전체 비우기</button>';
+      const title=document.querySelector('#deck-panel-title'),ready=draftDeck.length===60&&!deckAuraLimitExceeded(draftDeck);if(title&&!title.querySelector('.deck-ready')){const chip=document.createElement('small');chip.className='deck-ready'+(ready?' ok':'');chip.textContent=ready?'✓ '+label+' 오라 전투 덱':'60장 전까지 기본 덱 사용';title.appendChild(chip);}
+      return result;};})();
 
     /* ===== 소환사 압박 하수인 (2026-11-08) =====
        초반 소환사 체력 100→85 구간이 너무 천천히 줄어 지루하다는 PM 피드백으로 추가한 세 종류. 컴퓨터도 같은 코드가 처리한다.
