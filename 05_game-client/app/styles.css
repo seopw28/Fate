@@ -2631,7 +2631,8 @@
     .owned-card.add-denied{animation:owned-denied .42s ease-in-out}
     @keyframes owned-denied{0%,100%{transform:none}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
     /* 덱 편집 배치 (2026-11-09 PM): 덱 목록을 필터 줄 높이까지 올리고(오른쪽 열 전체), 실행 버튼은 덱 목록 아래, 유형 탭은 덱 목록 위 */
-    #deck-view.aura-edit-mode{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(340px,40%);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"note note" "head head" "tools deck" "grid deck";column-gap:16.2px;row-gap:0}
+    /* 선택된 덱 편집 화면에만 격자 배치를 쓴다. :not(.active) 를 빼면 다른 탭으로 옮겨도 덱 편집이 숨겨지지 않고 아래에 함께 그려진다 (2026-11-09 PM 수정) */
+    #deck-view.active.aura-edit-mode{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(340px,40%);grid-template-rows:auto auto auto minmax(0,1fr);grid-template-areas:"note note" "head head" "tools deck" "grid deck";column-gap:16.2px;row-gap:0}
     #deck-view.aura-edit-mode>.deck-battle-note{grid-area:note}
     #deck-view.aura-edit-mode>.deck-switcher{grid-area:head}
     #deck-view.aura-edit-mode>.deck-toolbar{grid-area:tools;min-width:0}
@@ -2652,3 +2653,32 @@
     .deck-type-tabs button{padding:6.3px 0;border:0;border-radius:6.3px;background:none;color:#9aa5b6;font-size:12.6px;font-weight:800;cursor:pointer}
     .deck-type-tabs button b{color:inherit;opacity:.8}
     .deck-type-tabs button.active{background:#2a2316;color:#ffd477;box-shadow:inset 0 0 0 1px #b68a4d}
+    /* 보유 카드 아래 '0/7' 같은 장수 표시는 숨긴다. 덱에 든 장수는 카드 왼쪽 위 '보유 n · 덱 n'과 덱 목록에서 본다 (2026-11-09 PM) */
+    #deck-view.aura-edit-mode .deck-card-controls{grid-template-columns:1fr 1fr!important}
+    #deck-view.aura-edit-mode .deck-card-controls>b{display:none!important}
+    /* 덱 저장하기 버튼과 확인 창 (2026-11-09 PM) */
+    #deck-view.aura-edit-mode .deck-actions .deck-save-now{flex:1 1 100%;padding:11.7px 9px;border-color:#5fb878;background:linear-gradient(135deg,#24402c,#18261d);color:#d6f5de;font-size:14.4px;font-weight:900}
+    #deck-view.aura-edit-mode .deck-actions .deck-save-now:hover{border-color:#8ef0a8;color:#fff}
+    #deck-view.aura-edit-mode .deck-actions .deck-save-now.saved{border-color:#2f3a2f;background:#151b17;color:#7d9a85;cursor:default}
+    .deck-confirm{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:#05070bcc;border-radius:inherit}
+    .deck-confirm-panel{width:min(420px,90%);padding:21.6px;border:1px solid #3a4455;border-radius:14.4px;background:#121821;box-shadow:0 24px 60px #000c;text-align:center}
+    .deck-confirm-panel h3{margin:0 0 9px;color:#f2e6cf;font-size:17.1px}
+    .deck-confirm-panel p{margin:0 0 16.2px;color:#aab4c3;font-size:13.5px;line-height:1.6}
+    .deck-confirm-warn{color:#ffcf7a}
+    .deck-confirm-actions{display:flex;gap:7.2px;justify-content:center}
+    .deck-confirm-actions button{flex:1;padding:9.9px 9px;border:1px solid #465365;border-radius:9px;background:#171e28;color:#d8dee8;font-size:13.5px;font-weight:800;cursor:pointer}
+    .deck-confirm-actions button.primary{border-color:#5fb878;background:#24402c;color:#e2f8e8}
+    .collection-shell{position:relative}
+    #deck-view.aura-edit-mode .deck-toast{bottom:118px}/* 저장·실행 버튼 위에 뜨게 */
+    /* 덱 목록 정렬 = 깔때기 아이콘 (2026-11-09 PM) */
+    .deck-tabs-row{display:flex;align-items:stretch;gap:6.3px;margin:0 0 6.3px}
+    .deck-tabs-row .deck-type-tabs{flex:1;margin:0}
+    .deck-sort{position:relative;flex:none}
+    .deck-sort-btn{display:grid;place-items:center;width:40px;height:100%;min-height:36px;border:1px solid #2d3643;border-radius:9px;background:#10151c;color:#9aa5b6;cursor:pointer}
+    .deck-sort-btn svg{width:17px;height:17px;fill:currentColor}
+    .deck-sort-btn:hover,.deck-sort-btn.open{border-color:#b68a4d;color:#ffd477}
+    .deck-sort-menu{position:absolute;right:0;top:calc(100% + 4.5px);z-index:8;display:flex;flex-direction:column;min-width:128px;padding:4.5px;border:1px solid #3a4455;border-radius:9px;background:#121821;box-shadow:0 12px 28px #000b}
+    .deck-sort-menu button{padding:8.1px 12.6px;border:0;border-radius:6.3px;background:none;color:#cbd2dc;font-size:12.6px;font-weight:700;text-align:left;cursor:pointer}
+    .deck-sort-menu button:hover{background:#1c2430}
+    .deck-sort-menu button.active{color:#ffd477}
+    #deck-view.aura-edit-mode .deck-group-toggle{display:none!important}
