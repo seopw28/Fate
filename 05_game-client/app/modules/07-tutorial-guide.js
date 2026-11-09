@@ -26,7 +26,7 @@
         +'<div class="tg-top"><strong class="tg-brand">튜토리얼</strong><span class="tg-count" aria-live="polite"></span><button type="button" class="tg-skip" data-tg-skip>건너뛰기</button></div>'
         +'<div class="tg-stage" aria-hidden="true"></div>'
         +'<div class="tg-caption"><h3 class="tg-title"></h3><p class="tg-desc"></p></div>'
-        +'<div class="tg-bottom"><button type="button" class="tg-replay" data-tg-replay>다시 보기</button><b class="tg-prompt" aria-live="polite"></b></div>'
+        +'<div class="tg-bottom"><button type="button" class="tg-next" data-tg-next>다음 ▶</button><button type="button" class="tg-replay" data-tg-replay>다시 보기</button><b class="tg-prompt" aria-live="polite"></b></div>'
         +'<ol class="tg-progress">'+TUTORIAL_GUIDE_STEPS.map(step=>'<li title="'+step.title+'"><span>'+step.title+'</span></li>').join('')+'</ol>'
         +'</div>';
       document.body.appendChild(overlay);
@@ -50,7 +50,9 @@
       overlay.querySelector('.tg-desc').textContent=step.desc;
       overlay.querySelectorAll('.tg-progress li').forEach((li,i)=>{li.classList.toggle('done',i<index);li.classList.toggle('current',i===index);});
       const prompt=overlay.querySelector('.tg-prompt'),replay=overlay.querySelector('[data-tg-replay]'),stage=overlay.querySelector('.tg-stage');
-      prompt.textContent='';prompt.classList.remove('ready');replay.disabled=true;
+      prompt.textContent='';prompt.classList.remove('ready','success');replay.disabled=true;
+      /* 다음 버튼: 시연이나 따라 하기를 기다리지 않고 바로 다음 단계로 넘어간다 */
+      overlay.querySelector('[data-tg-next]').onclick=()=>{if(index+1<TUTORIAL_GUIDE_STEPS.length)showTutorialGuideStep(index+1);else showTutorialGuideComplete();};
       (scene.build||tgDefaultScene)(stage,step);
       if(scene.demo)await scene.demo(stage,alive);
       if(!alive())return;
@@ -75,7 +77,8 @@
       });
     }
     function showTutorialGuideComplete(){
-      const overlay=tutorialGuideOverlay();if(!overlay)return;
+      tgRun++;const overlay=tutorialGuideOverlay();if(!overlay)return;
+      overlay.querySelector('[data-tg-next]').hidden=true;
       overlay.querySelectorAll('.tg-progress li').forEach(li=>{li.classList.add('done');li.classList.remove('current');});
       overlay.querySelector('.tg-count').textContent='완료';
       overlay.querySelector('.tg-title').textContent='튜토리얼 완료';

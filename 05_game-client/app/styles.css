@@ -2384,144 +2384,145 @@
     .collection-tab.shop.active { border-color:#ffd477; background:linear-gradient(180deg,#6b5020,#45341a); color:#fff; }
 
     /* ===== 새 튜토리얼: 기능 시연 가이드 (07-tutorial-guide.js) ===== */
-    .tutorial-guide { position:fixed; inset:0; z-index:900; display:grid; place-items:center; padding:16px; background:radial-gradient(ellipse at 50% 40%,#1a2233f2,#05070cf7); animation:tg-in .25s ease-out; }
+    .tutorial-guide { --tg-card:clamp(72px,min(10.5vw,17vh),168px); --tg-fs:clamp(14px,min(1.35vw,2.1vh),22px); position:fixed; inset:0; z-index:900; display:grid; place-items:center; padding:2vh 2vw; background:radial-gradient(ellipse at 50% 40%,#1a2233f2,#05070cf7); animation:tg-in .25s ease-out; }
     .tutorial-guide.closing { animation:tg-out .22s ease-in forwards; }
     @keyframes tg-in { from { opacity:0; } to { opacity:1; } }
     @keyframes tg-out { to { opacity:0; } }
-    .tg-panel { width:min(720px,100%); max-height:100%; display:flex; flex-direction:column; gap:12px; padding:16px 18px; border:1px solid #3b4658; border-radius:16px; background:#0e131cf2; box-shadow:0 24px 70px #000c; }
+    .tg-panel { width:min(1600px,100%); height:100%; display:flex; flex-direction:column; gap:calc(var(--tg-fs)*.8); padding:calc(var(--tg-fs)*1.1) calc(var(--tg-fs)*1.4); border:1px solid #3b4658; border-radius:16px; background:#0e131cf2; box-shadow:0 24px 70px #000c; }
     .tg-top { display:flex; align-items:center; gap:10px; }
-    .tg-brand { color:#ffdf9b; font-size:15px; }
-    .tg-count { color:#8b96a8; font-size:12px; font-weight:700; }
-    .tg-skip { margin-left:auto; padding:6px 12px; border:1px solid #3c4657; border-radius:8px; background:#161c26; color:#aeb8c9; font-size:12px; cursor:pointer; }
+    .tg-brand { color:#ffdf9b; font-size:calc(var(--tg-fs)*1.25); }
+    .tg-count { color:#8b96a8; font-size:var(--tg-fs); font-weight:700; }
+    .tg-skip { margin-left:auto; padding:.45em .9em; border:1px solid #3c4657; border-radius:8px; background:#161c26; color:#aeb8c9; font-size:var(--tg-fs); cursor:pointer; }
     .tg-skip:hover { color:#fff; }
-    .tg-stage { position:relative; height:clamp(220px,42vh,340px); overflow:hidden; border:1px solid #2a3344; border-radius:12px; background:radial-gradient(ellipse at 50% 120%,#24304a,#0b0f17 70%); }
+    .tg-stage { position:relative; flex:1; min-height:0; overflow:hidden; border:1px solid #2a3344; border-radius:12px; background:radial-gradient(ellipse at 50% 120%,#24304a,#0b0f17 70%); }
     .tg-scene { position:absolute; inset:0; }
     .tg-scene-default { display:grid; place-items:center; }
-    .tg-target { padding:12px 22px; border:1px solid #6f7d96; border-radius:12px; background:#1d2534; color:#e8edf6; font-size:15px; font-weight:800; cursor:pointer; }
+    .tg-target { padding:.7em 1.4em; border:1px solid #6f7d96; border-radius:12px; background:#1d2534; color:#e8edf6; font-size:calc(var(--tg-fs)*1.35); font-weight:800; cursor:pointer; }
     .tg-target:disabled { cursor:default; }
     .tg-glow { border-color:#ffd477; color:#fff; animation:tg-glow 1.1s ease-in-out infinite; }
     @keyframes tg-glow { 0%,100% { box-shadow:0 0 0 0 #ffd47700, 0 0 10px #ffd47755; } 50% { box-shadow:0 0 0 6px #ffd47733, 0 0 26px #ffd477cc; } }
     .tg-pressed { transform:scale(.94); transition:transform .12s; }
     .tg-caption { display:flex; flex-direction:column; gap:6px; }
-    .tg-title { margin:0; color:#fff; font-size:20px; }
-    .tg-desc { margin:0; color:#c3ccdb; font-size:14px; line-height:1.55; word-break:keep-all; }
-    .tg-bottom { display:flex; align-items:center; gap:10px; min-height:32px; }
-    .tg-replay { padding:6px 12px; border:1px solid #3c4657; border-radius:8px; background:#161c26; color:#aeb8c9; font-size:12px; cursor:pointer; }
+    .tg-title { margin:0; color:#fff; font-size:calc(var(--tg-fs)*1.7); }
+    .tg-desc { margin:0; color:#c3ccdb; font-size:calc(var(--tg-fs)*1.15); line-height:1.55; word-break:keep-all; }
+    .tg-bottom { display:flex; align-items:center; gap:calc(var(--tg-fs)*.8); min-height:calc(var(--tg-fs)*2.4); }
+    .tg-replay { padding:.45em .9em; border:1px solid #3c4657; border-radius:8px; background:#161c26; color:#aeb8c9; font-size:var(--tg-fs); cursor:pointer; }
     .tg-replay:disabled { opacity:.4; cursor:default; }
-    .tg-prompt { color:#8b96a8; font-size:13px; word-break:keep-all; }
+    .tg-prompt { color:#8b96a8; font-size:calc(var(--tg-fs)*1.15); word-break:keep-all; }
     .tg-prompt.ready { color:#ffdf9b; }
     .tg-prompt.success { color:#8ff0b4; }
     .tg-progress { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin:0; padding:0; list-style:none; }
-    .tg-progress li { display:flex; flex-direction:column; gap:5px; color:#6c778a; font-size:11px; text-align:center; word-break:keep-all; }
-    .tg-progress li::before { content:''; height:4px; border-radius:4px; background:#2a3344; }
+    .tg-progress li { display:flex; flex-direction:column; gap:6px; color:#6c778a; font-size:calc(var(--tg-fs)*.9); text-align:center; word-break:keep-all; }
+    .tg-progress li::before { content:''; height:6px; border-radius:6px; background:#2a3344; }
     .tg-progress li.current { color:#ffdf9b; }
     .tg-progress li.current::before { background:#ffd477; }
     .tg-progress li.done { color:#9fb0c8; }
     .tg-progress li.done::before { background:#5d7aa6; }
     .tutorial-open { flex-shrink:0; min-width:max-content; }
     /* 시연 공용 */
-    .tg-card { position:relative; width:clamp(52px,11vw,74px); aspect-ratio:5/7; display:flex; flex-direction:column; overflow:hidden; border:1.5px solid #58657c; border-radius:8px; background:#151b26; box-shadow:0 6px 14px #0008; flex-shrink:0; touch-action:none; user-select:none; }
+    .tg-card { position:relative; width:var(--tg-card); aspect-ratio:5/7; display:flex; flex-direction:column; overflow:hidden; border:2px solid #58657c; border-radius:calc(var(--tg-card)*.09); background:#151b26; box-shadow:0 6px 14px #0008; flex-shrink:0; touch-action:none; user-select:none; }
     .tg-card.fire { border-color:#e0703f; } .tg-card.water { border-color:#4f9be0; } .tg-card.wood, .tg-card.wind { border-color:#5fbf6e; } .tg-card.metal { border-color:#b9c3d0; } .tg-card.earth { border-color:#c79a55; }
     .tg-card img { width:100%; flex:1; min-height:0; object-fit:cover; object-position:50% 20%; pointer-events:none; }
-    .tg-card b { padding:2px 3px 0; color:#eef2f8; font-size:8px; line-height:1.2; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .tg-stats { display:flex; justify-content:space-between; padding:1px 4px 3px; font-size:8px; font-weight:800; }
+    .tg-card b { padding:.25em .35em 0; color:#eef2f8; font-size:calc(var(--tg-card)*.105); line-height:1.2; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .tg-stats { display:flex; justify-content:space-between; padding:.1em .45em .35em; font-size:calc(var(--tg-card)*.105); font-weight:800; }
     .tg-stats i { font-style:normal; color:#ffd2a6; } .tg-stats i + i { color:#ff9aa8; } .tg-spell-tag i { color:#a9c8ff; }
-    .tg-cost { position:absolute; top:2px; left:2px; z-index:1; display:grid; place-items:center; width:16px; height:16px; border-radius:50%; background:#2f6fd0; color:#fff; font-size:9px; font-weight:900; box-shadow:0 0 0 1.5px #0b1220; }
+    .tg-cost { position:absolute; top:3px; left:3px; z-index:1; display:grid; place-items:center; width:calc(var(--tg-card)*.22); height:calc(var(--tg-card)*.22); border-radius:50%; background:#2f6fd0; color:#fff; font-size:calc(var(--tg-card)*.13); font-weight:900; box-shadow:0 0 0 1.5px #0b1220; }
     .tg-card-back { border:1.5px solid #8a6f3f; border-radius:8px; background:repeating-linear-gradient(45deg,#2a2140 0 6px,#1f1830 6px 12px); box-shadow:0 6px 14px #0009; }
     .tg-arriving { visibility:hidden; }
     .tg-flip { animation:tg-flip .38s ease-out; }
     @keyframes tg-flip { from { transform:scaleX(0); } to { transform:scaleX(1); } }
-    .tg-cursor { position:absolute; left:-14px; top:-14px; z-index:20; width:28px; height:28px; border:2px solid #fff; border-radius:50%; background:#ffffff33; box-shadow:0 0 12px #fff8; pointer-events:none; }
+    .tg-cursor { position:absolute; left:-21px; top:-21px; z-index:20; width:42px; height:42px; border:2px solid #fff; border-radius:50%; background:#ffffff33; box-shadow:0 0 12px #fff8; pointer-events:none; }
     .tg-cursor.tap::after { content:''; position:absolute; inset:-2px; border:2px solid #ffd477; border-radius:50%; animation:tg-tap .26s ease-out forwards; }
     @keyframes tg-tap { to { transform:scale(2.2); opacity:0; } }
-    .tg-action { padding:8px 14px; border:1px solid #6f7d96; border-radius:10px; background:#1d2534; color:#e8edf6; font-size:13px; font-weight:800; cursor:pointer; }
+    .tg-action { padding:.6em 1.1em; border:1px solid #6f7d96; border-radius:10px; background:#1d2534; color:#e8edf6; font-size:calc(var(--tg-fs)*1.25); font-weight:800; cursor:pointer; }
     .tg-action small { color:#aeb8c9; font-weight:700; }
     .tg-action:disabled { cursor:default; }
-    .tg-mana { position:absolute; top:12px; right:14px; padding:5px 11px; border:1px solid #2f6fd0; border-radius:20px; background:#0f1d36; color:#9cc2ff; font-size:13px; font-weight:800; }
-    .tg-mana b { color:#fff; font-size:16px; }
+    .tg-mana { position:absolute; top:2.5%; right:2%; padding:.35em .8em; border:1px solid #2f6fd0; border-radius:20px; background:#0f1d36; color:#9cc2ff; font-size:calc(var(--tg-fs)*1.2); font-weight:800; }
+    .tg-mana b { color:#fff; font-size:1.45em; }
     .tg-mana.spend b { animation:tg-spend .5s ease-out; }
     @keyframes tg-spend { 0% { color:#ff8a8a; transform:scale(1.4); } 100% { color:#fff; transform:none; } }
     /* 1. 카드 뽑기 */
-    .tg-deck { position:absolute; top:22%; left:7%; width:clamp(52px,11vw,74px); aspect-ratio:5/7; }
+    .tg-deck { position:absolute; top:16%; left:7%; width:var(--tg-card); aspect-ratio:5/7; }
     .tg-deck i { position:absolute; inset:0; border:1.5px solid #8a6f3f; border-radius:8px; background:repeating-linear-gradient(45deg,#2a2140 0 6px,#1f1830 6px 12px); }
     .tg-deck i:nth-child(2) { transform:translate(3px,-3px); } .tg-deck i:nth-child(3) { transform:translate(6px,-6px); }
-    .tg-deck span { position:absolute; left:0; right:0; bottom:-18px; color:#aeb8c9; font-size:11px; text-align:center; }
-    .tg-draw-btn { position:absolute; top:24%; left:calc(7% + clamp(52px,11vw,74px) + 22px); }
-    .tg-hand { position:absolute; left:0; right:0; bottom:14px; display:flex; justify-content:center; gap:8px; }
+    .tg-deck span { position:absolute; left:0; right:0; bottom:-1.6em; color:#aeb8c9; font-size:var(--tg-fs); text-align:center; }
+    .tg-draw-btn { position:absolute; top:20%; left:calc(7% + var(--tg-card) + 22px); }
+    .tg-hand { position:absolute; left:0; right:0; bottom:4%; display:flex; justify-content:center; gap:calc(var(--tg-card)*.12); }
     /* 2. 카드 순서 바꾸기 */
-    .tg-enemy { position:absolute; top:12px; left:50%; transform:translateX(-50%); padding:6px 12px; border:1px solid #a24a4a; border-radius:10px; background:#2a1416; color:#ffb4b4; font-size:12px; font-weight:800; }
-    .tg-field { position:absolute; left:0; right:0; bottom:22px; display:flex; justify-content:center; gap:12px; }
-    .tg-first-mark { position:absolute; bottom:calc(22px + clamp(52px,11vw,74px) * 1.4 + 8px); left:calc(50% - (clamp(52px,11vw,74px) * 1.5 + 12px)); width:clamp(52px,11vw,74px); color:#ffb4b4; font-size:10px; font-weight:800; text-align:center; white-space:nowrap; }
-    .tg-bolt { width:20px; height:20px; border-radius:50%; background:radial-gradient(circle,#fff,#ff6a6a 55%,#ff6a6a00 70%); }
+    .tg-enemy { position:absolute; top:4%; left:50%; transform:translateX(-50%); padding:.45em .9em; border:1px solid #a24a4a; border-radius:10px; background:#2a1416; color:#ffb4b4; font-size:calc(var(--tg-fs)*1.1); font-weight:800; }
+    .tg-field { position:absolute; left:0; right:0; bottom:8%; display:flex; justify-content:center; gap:calc(var(--tg-card)*.16); }
+    .tg-first-mark { position:absolute; bottom:calc(8% + var(--tg-card) * 1.4 + 10px); left:calc(50% - (var(--tg-card) * 1.66)); width:var(--tg-card); color:#ffb4b4; font-size:var(--tg-fs); font-weight:800; text-align:center; white-space:nowrap; }
+    .tg-bolt { width:30px; height:30px; border-radius:50%; background:radial-gradient(circle,#fff,#ff6a6a 55%,#ff6a6a00 70%); }
     .tg-hit { animation:tg-hit .45s ease-out; }
     @keyframes tg-hit { 20% { transform:translateX(-5px); filter:brightness(2); } 45% { transform:translateX(5px); } 100% { transform:none; } }
     .tg-lifted { z-index:6; box-shadow:0 14px 26px #000c; outline:2px solid #ffd477; }
     .tg-card.tg-glow { cursor:grab; animation:tg-glow 1.1s ease-in-out infinite; }
     .tg-drop-here { outline:2px dashed #ffd47799; outline-offset:4px; }
     /* 소환사 체력, 피해 숫자 */
-    .tg-hp { position:absolute; display:flex; align-items:center; gap:8px; padding:6px 12px; border:1px solid #3c4657; border-radius:10px; background:#141a25; font-size:12px; font-weight:800; }
-    .tg-hp span { color:#aeb8c9; } .tg-hp b { color:#ff9aa8; font-size:15px; } .tg-hp em { font-style:normal; }
-    .tg-hp-enemy { top:12px; left:50%; transform:translateX(-50%); border-color:#a24a4a; }
-    .tg-hp-player { bottom:12px; left:14px; }
+    .tg-hp { position:absolute; display:flex; align-items:center; gap:.6em; padding:.45em .9em; border:1px solid #3c4657; border-radius:10px; background:#141a25; font-size:calc(var(--tg-fs)*1.1); font-weight:800; }
+    .tg-hp span { color:#aeb8c9; } .tg-hp b { color:#ff9aa8; font-size:1.4em; } .tg-hp em { font-style:normal; }
+    .tg-hp-enemy { top:3%; left:50%; transform:translateX(-50%); border-color:#a24a4a; }
+    .tg-hp-player { bottom:3%; left:2%; }
     .tg-hp-enemy.tg-hit { animation:tg-hit-c .45s ease-out; }
     @keyframes tg-hit-c { 20% { transform:translateX(calc(-50% - 5px)); filter:brightness(2); } 45% { transform:translateX(calc(-50% + 5px)); } 100% { transform:translateX(-50%); } }
-    .tg-pop { position:absolute; right:-6px; top:-14px; font-style:normal; font-size:18px; font-weight:900; animation:tg-pop .9s ease-out forwards; pointer-events:none; }
+    .tg-pop { position:absolute; right:-6px; top:-14px; font-style:normal; font-size:calc(var(--tg-fs)*1.6); font-weight:900; animation:tg-pop .9s ease-out forwards; pointer-events:none; }
     .tg-pop.dmg { color:#ff6a6a; } .tg-pop.heal { color:#8ff0b4; }
     @keyframes tg-pop { from { transform:translateY(6px); opacity:0; } 20% { opacity:1; } to { transform:translateY(-20px); opacity:0; } }
-    .tg-note { position:absolute; left:0; right:0; bottom:58px; color:#8b96a8; font-size:12px; text-align:center; word-break:keep-all; padding:0 12px; }
+    .tg-note { position:absolute; left:0; right:0; bottom:18%; color:#8b96a8; font-size:calc(var(--tg-fs)*1.05); text-align:center; word-break:keep-all; padding:0 12px; }
     /* 3. 오라 마법 */
-    .tg-aura-btn { position:absolute; top:44%; left:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:3px; min-width:150px; border-color:#e0703f; background:linear-gradient(180deg,#3a1d14,#24130e); }
-    .tg-aura-btn small { font-size:11px; }
-    .tg-aura-persona { padding:1px 8px; border-radius:10px; background:#e0703f33; color:#ffb48a; font-size:11px; }
+    .tg-aura-btn { position:absolute; top:44%; left:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:3px; min-width:14em; border-color:#e0703f; background:linear-gradient(180deg,#3a1d14,#24130e); }
+    .tg-aura-btn small { font-size:.75em; }
+    .tg-aura-persona { padding:.1em .6em; border-radius:10px; background:#e0703f33; color:#ffb48a; font-size:.75em; }
     .tg-aura-btn.cooling { filter:grayscale(.8) brightness(.7); }
     .tg-aura-btn.tg-glow { animation:tg-glow 1.1s ease-in-out infinite; }
-    .tg-orb { width:12px; height:12px; border-radius:50%; background:radial-gradient(circle,#fff,#5aa2ff 60%,#5aa2ff00 75%); }
-    .tg-fireball { width:36px; height:36px; border-radius:50%; background:radial-gradient(circle,#fff 0 15%,#ffb347 35%,#ff5a1f 60%,#ff5a1f00 72%); box-shadow:0 0 24px #ff6a2a; }
+    .tg-orb { width:18px; height:18px; border-radius:50%; background:radial-gradient(circle,#fff,#5aa2ff 60%,#5aa2ff00 75%); }
+    .tg-fireball { width:54px; height:54px; border-radius:50%; background:radial-gradient(circle,#fff 0 15%,#ffb347 35%,#ff5a1f 60%,#ff5a1f00 72%); box-shadow:0 0 24px #ff6a2a; }
     /* 4. 묘지 회수 */
-    .tg-grave { position:absolute; top:20%; left:7%; display:flex; flex-direction:column; align-items:center; gap:6px; color:#aeb8c9; font-size:11px; }
+    .tg-grave { position:absolute; top:16%; left:7%; display:flex; flex-direction:column; align-items:center; gap:.4em; color:#aeb8c9; font-size:var(--tg-fs); }
     .tg-grave-pile { padding:4px; border:1px dashed #4b5568; border-radius:10px; background:#0a0d13; }
     .tg-dead { filter:grayscale(1) brightness(.5); }
-    .tg-grave-btn { position:absolute; top:24%; left:calc(7% + clamp(52px,11vw,74px) + 30px); }
-    .tg-scene-grave .tg-hand { left:auto; right:14px; bottom:12px; justify-content:flex-end; }
-    .tg-scene-grave .tg-hp-player { bottom:auto; top:12px; left:auto; right:120px; }
+    .tg-grave-btn { position:absolute; top:20%; left:calc(7% + var(--tg-card) + 30px); }
+    .tg-scene-grave .tg-hand { left:auto; right:2%; bottom:4%; justify-content:flex-end; }
+    .tg-scene-grave .tg-hp-player { bottom:auto; top:2.5%; left:auto; right:calc(2% + 9em); }
     .tg-ghost { opacity:.25; }
     .tg-offer { position:absolute; inset:0; z-index:6; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; background:#05070cc4; }
     .tg-offer[hidden] { display:none; }
-    .tg-offer p { margin:0; color:#ffdf9b; font-size:13px; font-weight:800; }
-    .tg-offer-row { display:flex; gap:16px; }
-    .tg-offer-row .tg-card { width:clamp(70px,15vw,96px); cursor:pointer; }
+    .tg-offer p { margin:0; color:#ffdf9b; font-size:calc(var(--tg-fs)*1.3); font-weight:800; }
+    .tg-offer-row { display:flex; gap:calc(var(--tg-card)*.25); }
+    .tg-offer-row .tg-card { width:calc(var(--tg-card)*1.25); cursor:pointer; }
+    .tg-offer-row .tg-card b, .tg-offer-row .tg-card .tg-stats { font-size:calc(var(--tg-card)*.13); }
     .tg-shard .tg-card { width:100%; height:100%; }
     .tg-rising { box-shadow:0 0 22px #9b7bff; }
     .tg-hp-enemy .tg-pop { top:auto; bottom:-26px; right:auto; left:50%; margin-left:-10px; }
     .tg-hp-player .tg-pop { top:2px; right:-34px; }
     .tg-scene-aura .tg-mana { top:auto; bottom:12px; }
     /* 5. 오라 각성 */
-    .tg-scene-awaken .tg-hp-player { left:50%; bottom:16px; transform:translateX(-50%); }
+    .tg-scene-awaken .tg-hp-player { left:50%; bottom:4%; transform:translateX(-50%); }
     .tg-scene-awaken .tg-hp-player.tg-hit { animation:tg-hit-c .45s ease-out; }
-    .tg-threshold { position:absolute; left:0; right:0; bottom:58px; color:#8b96a8; font-size:12px; text-align:center; }
+    .tg-threshold { position:absolute; left:0; right:0; bottom:calc(4% + 3.4em); color:#8b96a8; font-size:calc(var(--tg-fs)*1.05); text-align:center; }
     .tg-threshold.met { color:#ffdf9b; }
-    .tg-awaken-btn { position:absolute; top:45%; left:50%; transform:translate(-50%,-50%); min-width:130px; opacity:.45; }
+    .tg-awaken-btn { position:absolute; top:45%; left:50%; transform:translate(-50%,-50%); min-width:9em; opacity:.45; }
     .tg-awaken-btn.unlocked { opacity:1; border-color:#e0703f; background:linear-gradient(180deg,#3a1d14,#24130e); }
     .tg-awaken-btn.spent { opacity:.45; animation:none; }
-    .tg-choice { display:flex; flex-direction:column; gap:5px; width:clamp(120px,30vw,180px); padding:12px; border:1px solid #e0703f; border-radius:12px; background:linear-gradient(180deg,#3a1d14,#1d100c); color:#fff; cursor:pointer; text-align:left; }
-    .tg-choice b { font-size:15px; } .tg-choice small { color:#ffcfb0; font-size:11px; line-height:1.4; word-break:keep-all; }
-    .tg-sigil { position:absolute; left:50%; top:45%; z-index:9; display:grid; place-items:center; width:84px; height:84px; border-radius:50%; background:radial-gradient(circle,#ffd9a0,#ff6a2a 55%,#ff6a2a00 72%); box-shadow:0 0 50px #ff6a2a; pointer-events:none; }
-    .tg-sigil span { color:#fff; font-size:24px; font-weight:900; text-shadow:0 0 8px #000; }
-    .tg-banner { position:absolute; left:0; right:0; top:22%; z-index:10; color:#ffdf9b; font-size:22px; font-weight:900; text-align:center; text-shadow:0 0 16px #ff6a2a, 0 2px 4px #000; animation:tg-banner .5s ease-out; pointer-events:none; }
-    .tg-banner-soft { color:#c3ccdb; font-size:16px; text-shadow:0 2px 4px #000; }
+    .tg-choice { display:flex; flex-direction:column; gap:.4em; width:min(30vw,calc(var(--tg-fs)*17)); padding:1em; border:1px solid #e0703f; border-radius:12px; background:linear-gradient(180deg,#3a1d14,#1d100c); color:#fff; cursor:pointer; text-align:left; }
+    .tg-choice b { font-size:calc(var(--tg-fs)*1.35); } .tg-choice small { color:#ffcfb0; font-size:var(--tg-fs); line-height:1.4; word-break:keep-all; }
+    .tg-sigil { position:absolute; left:50%; top:45%; z-index:9; display:grid; place-items:center; width:calc(var(--tg-card)*1.1); height:calc(var(--tg-card)*1.1); border-radius:50%; background:radial-gradient(circle,#ffd9a0,#ff6a2a 55%,#ff6a2a00 72%); box-shadow:0 0 50px #ff6a2a; pointer-events:none; }
+    .tg-sigil span { color:#fff; font-size:calc(var(--tg-fs)*2); font-weight:900; text-shadow:0 0 8px #000; }
+    .tg-banner { position:absolute; left:0; right:0; top:22%; z-index:10; color:#ffdf9b; font-size:calc(var(--tg-fs)*2.3); font-weight:900; text-align:center; text-shadow:0 0 16px #ff6a2a, 0 2px 4px #000; animation:tg-banner .5s ease-out; pointer-events:none; }
+    .tg-banner-soft { color:#c3ccdb; font-size:calc(var(--tg-fs)*1.6); text-shadow:0 2px 4px #000; }
     @keyframes tg-banner { from { transform:scale(1.6); opacity:0; } to { transform:none; opacity:1; } }
     /* 6. 영웅 강림 */
-    .tg-scene-hero .tg-hp-enemy { top:8px; }
-    .tg-enemy-field { position:absolute; top:48px; left:0; right:0; display:flex; justify-content:center; gap:8px; }
-    .tg-card.tg-small { width:clamp(40px,8vw,56px); }
-    .tg-card.tg-small b, .tg-card.tg-small .tg-stats { font-size:7px; }
+    .tg-scene-hero .tg-hp-enemy { top:2%; }
+    .tg-enemy-field { position:absolute; top:calc(2% + 3.2em); font-size:calc(var(--tg-fs)*1.1); left:0; right:0; display:flex; justify-content:center; gap:8px; }
+    .tg-card.tg-small { width:calc(var(--tg-card)*.72); }
+    .tg-card.tg-small b, .tg-card.tg-small .tg-stats { font-size:calc(var(--tg-card)*.08); }
     .tg-my-field { position:absolute; top:52%; left:0; right:0; display:flex; justify-content:center; min-height:20px; }
-    .tg-hero-btn { position:absolute; top:52%; left:14px; border-color:#ffd477; color:#ffdf9b; }
-    .tg-scene-hero .tg-hand { left:auto; right:14px; bottom:12px; justify-content:flex-end; }
+    .tg-hero-btn { position:absolute; top:52%; left:2%; border-color:#ffd477; color:#ffdf9b; }
+    .tg-scene-hero .tg-hand { left:auto; right:2%; bottom:4%; justify-content:flex-end; }
     .tg-aura-shine { box-shadow:0 0 0 2px #ff6a2a, 0 0 22px #ff6a2a; }
     .tg-exhausted { transform:scale(1.15); box-shadow:0 0 0 3px #3b3f47, 0 8px 18px #000a; }
     .tg-avenger { transform:scale(1.25); border:3px solid #ff6a2a; box-shadow:0 0 24px #ff6a2a; }
-    .tg-hero-label { position:absolute; left:0; right:0; top:-16px; color:#ffdf9b; font-size:9px; font-weight:900; text-align:center; text-shadow:0 1px 2px #000; }
+    .tg-hero-label { position:absolute; left:0; right:0; top:-1.6em; color:#ffdf9b; font-size:calc(var(--tg-card)*.12); font-weight:900; text-align:center; text-shadow:0 1px 2px #000; }
     .tg-card:has(.tg-hero-label) { overflow:visible; }
     .tg-resonance-beam { position:absolute; top:0; bottom:0; z-index:6; width:60px; margin-left:-30px; background:linear-gradient(180deg,#ff6a2a00,#ff6a2acc 60%,#ffd9a0); filter:blur(6px); animation:tg-beam .9s ease-out forwards; pointer-events:none; }
     @keyframes tg-beam { from { opacity:0; transform:scaleY(.2); transform-origin:top; } 40% { opacity:1; transform:scaleY(1); } to { opacity:0; } }
@@ -2531,5 +2532,8 @@
     @keyframes tg-fade { to { opacity:0; filter:grayscale(1); } }
     .tg-card .tg-pop { left:50%; right:auto; top:30%; margin-left:-12px; }
     .tg-scene-done { display:flex; flex-direction:column; justify-content:center; gap:16px; }
-    .tg-reward { color:#ffdf9b; font-size:22px; font-weight:900; text-shadow:0 0 14px #ffd47799; animation:tg-banner .5s ease-out; }
+    .tg-reward { color:#ffdf9b; font-size:calc(var(--tg-fs)*2.3); font-weight:900; text-shadow:0 0 14px #ffd47799; animation:tg-banner .5s ease-out; }
     .tg-replay { flex-shrink:0; min-width:max-content; }
+    .tg-next { flex-shrink:0; min-width:max-content; padding:.45em 1.1em; border:1px solid #ffd477aa; border-radius:8px; background:#2a2414; color:#ffdf9b; font-size:var(--tg-fs); font-weight:800; cursor:pointer; }
+    .tg-next:hover { background:#3a3118; color:#fff; }
+    .tg-next[hidden] { display:none; }
