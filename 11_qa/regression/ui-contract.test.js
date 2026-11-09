@@ -377,9 +377,9 @@ test('궁극기 세팅은 오라 각성 선택을 마친 뒤에만, 두 번째�
   assert.ok(html.includes('ULTIMATE_UNLOCK_HP=85') && html.includes('const GUARDIAN_AWAKEN_HP=ULTIMATE_UNLOCK_HP;'), '각성 버튼과 같은 체력 85 기준을 쓴다');
   assert.ok(html.includes("function ultimateAwakenGateOpen(side='player'){return awakenGateOpened[side];}"), '체력이 아니라 각성 선택 완료로 열린다');
   assert.ok(html.includes('guardianAwakenChoice=choice;awakenGateOpened.player=true;') && html.includes('enemyGuardianAwakenChoice=choice;awakenGateOpened.enemy=true;'), '유저·컴퓨터 모두 각성 선택 시점에 열린다');
-  assert.ok(html.includes("{reason:'복수자 생존 중'") && html.includes("'다음 세팅까지 '+(ledger.cooldownUntil-ledger.turns)+'턴'"), '복수자 생존 중 / 다음 세팅까지 N턴 잠금');
+  assert.ok(html.includes("{reason:'복수자 생존 중'") && html.includes("'다음 강림까지 '+(ledger.cooldownUntil-ledger.turns)+'턴'"), '복수자 생존 중 / 다음 강림까지 N턴 잠금');
   assert.ok(html.includes('ledger.cooldownUntil=ledger.turns+AVENGER_RESET_TURNS'), '복수자가 쓰러진 뒤 두 번째 턴 시작부터(강림 +3 과 별개로 +2)');
-  assert.ok(html.includes("function ultimateSettingLock(side='player'){if(!ultimateAwakenGateOpen(side))return {reason:'오라 각성 후 세팅 가능'"), '각성 전에는 세팅 불가');
+  assert.ok(html.includes("function ultimateSettingLock(side='player'){if(!ultimateAwakenGateOpen(side))return {reason:'오라 각성 후 강림 가능'"), '각성 전에는 세팅 불가');
   assert.ok(html.includes("if(ledger.spent)return {reason:'소진자 생존 중'"), '소진자가 살아 있으면 다음 세팅 불가');
   assert.ok(html.includes("'복수자 강림까지 '+left+'턴'"), '잠금 해제 조건(강림까지 N턴)을 표시한다');
   // 버튼 경로와 실제 세팅 경로(클릭·드래그) 양쪽을 다 막아야 한다.
