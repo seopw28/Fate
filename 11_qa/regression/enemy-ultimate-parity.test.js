@@ -40,7 +40,8 @@ test('복수자는 소진자가 쓰러진 뒤 그 편의 턴 시작 3번째에 �
   assert.ok(html.includes('AVENGER_ARRIVAL_TURNS=3,AVENGER_RESET_TURNS=2'));
   assert.ok(html.includes('ledger.pending.push({rec:spent,due:ledger.turns+AVENGER_ARRIVAL_TURNS})'), '사망 시점의 턴 수 +3 이 강림 시점이다');
   assert.ok(html.includes('const due=ledger.pending.filter(item=>item.due<=ledger.turns)'), '턴 시작마다 강림 시점이 된 복수자만 내려놓는다');
-  assert.ok(html.includes('registerUltimateSpentDeath(unit.closest(\'.summon-zone\')?\'player\':\'enemy\',unit)'), '소진자 사망 컷에서 양쪽 모두 등록한다');
+  assert.ok(html.includes("const deathSide=unit.closest('.summon-zone')?'player':'enemy';registerUltimateSpentDeath(deathSide,unit);"), '소진자가 쓰러지면 양쪽 모두 복수자 대기열에 등록한다');
+  assert.ok(html.includes("if(deathSide==='enemy'){unit.__cutPromise=Promise.resolve();return unit.__cutPromise;}"), '상대 소진자의 죽음 컷씬은 보여주지 않는다 (2026-11-09 PM)');
   // 사망 컷은 연출 큐에 올라가 필드를 멈추고, 강림은 같은 우선순위로 그 뒤에 이어진다(FIFO).
   assert.ok(html.includes("fxPresent('ultimate-spent-death'"), '사망 컷은 연출 큐를 통해 필드를 멈춰야 한다');
   const cut = html.slice(html.indexOf("fxPresent('ultimate-spent-death'"));
