@@ -32,11 +32,11 @@ window.__q={
 """
 
 CHECKS = [
- ("오라 마법(2026-11-09): 남은 마나를 모두 쓰고 성격마다 효과가 다르며(열정 m/반동 ceil(m/2), 냉철 ceil(m/2), 무던 맨 왼쪽 체력 +m), 내 턴 3번 뒤 다시 쓸 수 있다",
+ ("오라 마법(2026-11-09): 남은 마나를 모두 쓰고 성격마다 효과가 다르며(열정 m/반동 ceil(m/2), 냉철 ceil(m/2), 무던은 지진: 적 하수인마다 m×10% 확률 1 피해), 내 턴 3번 뒤 다시 쓸 수 있다",
   "(async()=>{const g0=playerGuardian,res={};const run=async(g)=>{playerGuardian=g;auraMagicUsedAt.player=null;playerHp=90;enemyHp=90;absoluteDefense=false;enemyAbsoluteDefense=false;mana=5;updateMana();const ok=castAuraMagic('player');await __q.wait(600);return {ok,e:90-enemyHp,p:90-playerHp,m:mana,lock:auraMagicLockReason()};};"
-  "res.jujak=await run('jujak');res.baekho=await run('baekho');document.querySelector('.summon-zone').innerHTML='';summonBattleToken('왼쪽',2,5,'earth');summonBattleToken('오른쪽',2,5,'earth');const left=document.querySelector('.summon-zone > .unit');res.hyeonmu=await run('hyeonmu');res.leftHp=__q.hp(left);"
+  "res.jujak=await run('jujak');res.baekho=await run('baekho');const lane=document.querySelector('.arena .lane:first-child');lane.innerHTML='';const proto=enemyDeck.find(d=>!d.spell)||{art:collectionCards[0][1]};const foes=[1,2].map(i=>enemySummonUnit(lane,{name:'지진대상'+i,art:proto.art,el:'water',atk:1,hp:5,cost:0}));playerGuardian='hyeonmu';auraMagicUsedAt.player=null;mana=10;updateMana();res.hyeonmu={ok:castAuraMagic('player')};await __q.wait(600);res.leftHp=foes.map(u=>__q.hp(u)).join(',');/* 마나 10 = 100% */"
   "const t=ultimateLedger.player.turns;ultimateLedger.player.turns=t+2;mana=5;const wait=auraMagicLockReason();ultimateLedger.player.turns=t+3;const open=auraMagicLockReason();ultimateLedger.player.turns=t;playerGuardian=g0;"
-  "return {ok:res.jujak.ok&&res.jujak.e===5&&res.jujak.p===3&&res.jujak.m===0&&res.baekho.e===3&&res.hyeonmu.ok&&res.leftHp===10&&res.jujak.lock==='다음 사용까지 3턴'&&wait==='다음 사용까지 1턴'&&open==='',res,wait,open};})()"),
+  "return {ok:res.jujak.ok&&res.jujak.e===5&&res.jujak.p===3&&res.jujak.m===0&&res.baekho.e===3&&res.hyeonmu.ok&&res.leftHp==='4,4'&&res.jujak.lock==='다음 사용까지 3턴'&&wait==='다음 사용까지 1턴'&&open==='',res,wait,open};})()"),
  ("오라 마법: 컴퓨터도 같은 규칙으로 쓰고(남은 마나 모두 사용, 3턴 쿨다운), 열정은 반동 뒤 체력 20 미만이면 쓰지 않는다",
   "(()=>{const g0=enemyGuardian;enemyGuardian='baekho';auraMagicUsedAt.enemy=null;enemyAbsoluteDefense=false;absoluteDefense=false;playerHp=90;enemyMana=6;const ok=castEnemyAuraMagic();const dmg=90-playerHp,left=enemyMana,lock=auraMagicLockReason('enemy');"
   "enemyGuardian='jujak';auraMagicUsedAt.enemy=null;enemyHp=21;enemyMana=6;const risky=castEnemyAuraMagic();enemyHp=90;enemyGuardian=g0;auraMagicUsedAt.enemy=null;"
@@ -186,7 +186,7 @@ CHECKS = [
   "const noTaunt=chooseEnemyAttackTarget(sp,mine)===null;const my=mine[0];my.dataset.ultimateAggro='true';const ignoresSpent=chooseEnemyAttackTarget(sp,mine)===null;const normalTaunted=chooseEnemyAttackTarget(enemySummonUnit(el,{name:'적일반0',art:proto.art,el:'water',atk:1,hp:3,cost:0}),mine)===my;delete my.dataset.ultimateAggro;"
   "const normal=enemySummonUnit(el,{name:'적일반',art:proto.art,el:'water',atk:2,hp:3,cost:0});const normalTarget=chooseEnemyAttackTarget(normal,mine)!==null;"
   "const p0=playerHp,hp0=mine.map(u=>__q.hp(u));enemyHand.length=0;enemyMana=0;[...el.querySelectorAll(':scope > .unit')].forEach(u=>{if(u!==sp)u.remove();});"
-  "const keepDeck=enemyDeck.splice(0);/* 턴 시작 드로우로 덱의 등장 피해 하수인이 나오면 소환사 피해가 덱 구성에 따라 달라진다 (2026-11-09) */"
+  "const keepDeck=enemyDeck.splice(0);auraMagicUsedAt.enemy=ultimateLedger.enemy.turns;/* 컴퓨터 지진(2026-11-09)이 내 하수인을 건드리지 않게 이 검사에서는 오라 마법을 잠근다 *//* 턴 시작 드로우로 덱의 등장 피해 하수인이 나오면 소환사 피해가 덱 구성에 따라 달라진다 (2026-11-09) */"
   "let finished=false;enemyTurn(()=>{finished=true;});for(let i=0;i<150&&!finished;i++)await __q.wait(100);await __q.wait(200);enemyDeck.push(...keepDeck);"
   "const r={noTaunt,ignoresSpent,normalTaunted,normalTarget,heroDmg:p0-playerHp,minesUntouched:mine.every((u,i)=>__q.hp(u)===hp0[i])};"
   "return {ok:noTaunt&&ignoresSpent&&normalTaunted&&normalTarget&&r.heroDmg===6&&r.minesUntouched,...r};})()"),
