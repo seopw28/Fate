@@ -35,8 +35,10 @@ test('보조 장치는 작게, 결제로 이어지는 상점 요소는 도드라
   assert.ok(html.includes('.util-toggle { display:inline-flex'));
   assert.ok(html.includes('.util-group #sound-toggle { padding:4.5px 8.1px !important; font-size:9.9px'));
   assert.ok(html.includes('.top-nav-btn.shop { color:#ffdf9b'));
-  assert.ok(html.includes('class="top-nav-btn main shop" href="#강화"'));
-  assert.ok(html.includes('class="top-nav-btn main shop" href="#상점"'));
+  /* 2026-11-09 메뉴 통일: 결제로 이어지는 상점만 금색으로 구분하고, 강화는 다른 메뉴와 같은 중립색을 쓴다 */
+  assert.ok(html.includes('class="top-nav-btn shop" href="#상점"'));
+  assert.ok(html.includes('class="top-nav-btn" href="#강화"'));
+  assert.ok(html.includes('class="collection-tab shop" data-view="gacha"'));
 });
 
 test('조작부에 붙는 짧은 맥락 설명은 그대로 남긴다', () => {
