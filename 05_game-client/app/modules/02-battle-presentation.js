@@ -8,8 +8,7 @@
       Element.prototype.remove=function(){
         const isFieldUnit=this instanceof Element&&this.classList?.contains('unit')
           &&this.isConnected&&(this.closest('.summon-zone')||this.closest('.arena .lane'));
-        /* 소진자 죽음 컷이 재생 중이면 카드는 컷이 끝난 뒤에 제거한다 */
-        if(isFieldUnit&&this.__cutPromise&&!this.__cutWaited){this.__cutWaited=true;this.__cutPromise.then(()=>this.remove());return;}
+        /* 소진자 카드는 컷을 기다리지 않고 바로 회색으로 사라진다. 죽음 컷이 사라진 뒤에 뜬다 (2026-11-09 PM) */
         if(!isFieldUnit||this.dataset.dyingFx==='true')return nativeRemove.call(this);
         this.dataset.dyingFx='true';
         this.classList.add('unit-dying');
