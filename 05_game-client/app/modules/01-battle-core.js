@@ -65,7 +65,7 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     const COMBAT_TIMING={counterDelay:1000,guardianReaction:2100,followUpDelay:2900,postCombatPause:278,cardImpactTail:900,heroImpactTail:500,phaseTransition:250,initiativeLeadIn:278,spellGap:3400};
     const FIELD_CARD_LIMIT = 5;
     const combatMs = value => Math.round(value * COMBAT_TIME_SCALE);
-    function slowCombatAnimations(node){requestAnimationFrame(()=>node?.getAnimations().forEach(animation=>{animation.playbackRate=1/COMBAT_TIME_SCALE;}));}
+    function slowCombatAnimations(node){requestAnimationFrame(()=>node?.getAnimations().forEach(animation=>{animation.playbackRate=(typeof battleSpeedActive==='function'&&battleSpeedActive()?battleSpeed:1)/COMBAT_TIME_SCALE;}));}
     let combatBusyUntil=0,combatQueueHasNext=false;
     function markCombatBusy(duration){combatBusyUntil=Math.max(combatBusyUntil,performance.now()+Math.max(0,duration));}
     /* 죽은 카드를 전장에서 빼면 남은 카드들이 그 자리를 메우며 즉시 옆으로 밀린다.
