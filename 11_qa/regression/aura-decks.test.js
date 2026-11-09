@@ -100,3 +100,10 @@ test('덱 편집과 컬렉션에서 마법카드는 오라 대신 마법으로 �
   assert.ok(html.includes("collectionFilter==='magic'?collectionIsSpell[index]:!collectionIsSpell[index]&&card[0]===collectionFilter"), '오라 필터는 하수인만, 마법 필터 추가');
   assert.ok(html.includes("(collectionIsSpell[index]?'마법':elementLabel[card[0]])+' · 비용 '"), '보유 카드 설명');
 });
+
+test('덱 편집 UX: 넓은 한 줄 덱 목록(비용·그림 띠·이름·장수·−/＋)과 그림을 띠로 줄인 보유 카드 타일 (2026-11-09 PM)', () => {
+  const html = readFileSync(resolve(__dirname, '../../dist/index.html'), 'utf8');
+  assert.ok(html.includes('<div class="deck-row slim"'), '한 줄 덱 목록');
+  assert.ok(html.includes('#deck-view.aura-edit-mode .deck-content{grid-template-columns:minmax(0,1fr) minmax(340px,40%)!important;'), '덱 목록 폭을 넓힌다');
+  assert.ok(html.includes('#deck-view.aura-edit-mode .owned-card img{aspect-ratio:auto!important;height:64px!important;'), '보유 카드 그림은 띠로');
+});

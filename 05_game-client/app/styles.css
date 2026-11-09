@@ -2419,3 +2419,40 @@
     .deck-aura-count{color:#ffd477;font-weight:800;font-size:clamp(12.6px,1vw,15.3px)}
     #deck-view.aura-edit-mode .deck-switcher{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:9px}
     @media(max-width:1100px){.aura-pick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    /* 덱 편집 UX 개선 (2026-11-09 PM): 덱 목록은 넓고 얇은 한 줄 목록, 보유 카드는 그림을 띠로 줄인 촘촘한 타일.
+       하스스톤·레전드 오브 룬테라·MTG 아레나의 덱 편집처럼 덱 60장을 스크롤 몇 번에 훑고, 보유 카드는 한 화면에 많이 보이게 한다 */
+    #deck-view.aura-edit-mode .deck-content{grid-template-columns:minmax(0,1fr) minmax(340px,40%)!important;gap:16.2px!important}
+    #deck-view.aura-edit-mode .owned-grid{grid-template-columns:repeat(auto-fill,minmax(148px,1fr))!important;gap:9px!important;align-content:start}
+    #deck-view.aura-edit-mode .owned-card{padding:7.2px!important;border-radius:9px!important}
+    #deck-view.aura-edit-mode .owned-card img{aspect-ratio:auto!important;height:64px!important;width:100%;object-fit:cover;object-position:center 22%;border-radius:6.3px}
+    #deck-view.aura-edit-mode .owned-card h4{margin:6.3px 0 2.7px!important;font-size:12.6px!important;line-height:1.25;white-space:normal}
+    #deck-view.aura-edit-mode .owned-card small{font-size:10.4px!important;line-height:1.4}
+    #deck-view.aura-edit-mode .owned-card .owned-rule{display:block;font-size:10px;line-height:1.4}/* 설명은 자르지 않는다(넘침 검사 규칙) */
+    #deck-view.aura-edit-mode .owned-card .owned-count{top:10.8px!important;left:10.8px!important;font-size:9.4px!important}
+    #deck-view.aura-edit-mode .deck-card-controls{grid-template-columns:30px 1fr 30px!important;gap:5.4px!important;margin-top:6.3px!important}
+    #deck-view.aura-edit-mode .deck-card-controls button{height:28px!important}
+    #deck-view.aura-edit-mode .deck-list{padding:10.8px!important}
+    #deck-view.aura-edit-mode .deck-summary{margin-bottom:6.3px!important;padding:6.3px 9px!important;font-size:11.7px!important}
+    #deck-view.aura-edit-mode .deck-comp{padding:7.2px 9px!important;margin-bottom:6.3px!important}
+    #deck-view.aura-edit-mode .deck-curve{height:40px!important}
+    #deck-view.aura-edit-mode .deck-group-toggle{margin:0 0 6.3px!important}
+    #deck-view.aura-edit-mode .deck-group-toggle button{padding:5.4px 0!important;font-size:11.7px!important}
+    #deck-view.aura-edit-mode .deck-group-head{margin:7.2px 2px 3.6px!important;font-size:11.7px!important}
+    #deck-view.aura-edit-mode .deck-help{margin:5.4px 0!important;font-size:10.4px!important}
+    .deck-row.slim{display:grid!important;grid-template-columns:26px 44px minmax(0,1fr) auto auto!important;align-items:center;gap:8.1px!important;min-height:0!important;height:38px;margin:0 0 3.6px!important;padding:0 6.3px 0 0!important;border:1px solid #2d3643;border-left:3px solid var(--ac);border-radius:7.2px;background:linear-gradient(90deg,color-mix(in srgb,var(--ac) 14%,#171e28),#171e28 60%);overflow:hidden}
+    .deck-row.slim .dr-cost{display:grid;place-items:center;width:26px;height:100%;background:#0e1219;color:#ffd477;font-size:13.5px;font-weight:900}
+    .deck-row.slim img{width:44px!important;height:36px!important;object-fit:cover;object-position:center 22%;border-radius:0!important;-webkit-mask-image:linear-gradient(90deg,#000 60%,transparent)}
+    .deck-row.slim .dr-name{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#e8edf4;font-size:12.6px;font-weight:700}
+    .deck-row.slim .dr-count{color:#ffd477;font-size:12.6px;font-weight:900}
+    .deck-row.slim .deck-row-actions{display:flex;gap:3.6px}
+    .deck-row.slim .deck-row-actions button{width:26px!important;height:26px!important;min-width:0!important;padding:0!important;border-radius:6.3px!important;font-size:14.4px!important;line-height:1}
+    /* 덱 목록 위 요약 압축: 카드 종류 줄은 오라 범례와 겹치므로 숨기고, 오라 막대·범례(왼쪽)와 비용 곡선(오른쪽)을 한 줄에 둔다 */
+    #deck-view.aura-edit-mode .deck-summary{display:none!important}
+    #deck-view.aura-edit-mode .deck-comp{display:grid!important;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"bar curve" "legend curve";column-gap:12.6px;row-gap:4.5px;align-items:center}
+    #deck-view.aura-edit-mode .deck-bar{grid-area:bar;height:7.2px!important}
+    #deck-view.aura-edit-mode .deck-legend{grid-area:legend;margin:0!important;font-size:10.4px!important;gap:2.7px 8.1px!important}
+    #deck-view.aura-edit-mode .deck-curve-label{display:none!important}
+    #deck-view.aura-edit-mode .deck-curve{grid-area:curve;height:34px!important;gap:2.7px!important}
+    #deck-view.aura-edit-mode .deck-curve div b{font-size:8.6px!important}
+    #deck-view.aura-edit-mode .deck-curve div small{font-size:8.1px!important}
+    #deck-view.aura-edit-mode .deck-group-toggle button{padding:4.5px 0!important}
