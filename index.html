@@ -2335,6 +2335,34 @@
     .aura-magic-panel.ready .aura-magic-cast:hover{filter:brightness(1.15)}
     @keyframes aura-magic-ready{50%{box-shadow:0 0 24px color-mix(in srgb,var(--am-color) 70%,transparent),inset 0 0 16px color-mix(in srgb,var(--am-color) 28%,transparent)}}
     @media(prefers-reduced-motion:reduce){.aura-magic-panel.ready .aura-magic-cast{animation:none}}
+    /* 묘지 회수 무대 (2026-11-09 PM): 내 진영 위에 손패 마법이 떠오르고, 고른 카드가 부서진 뒤 묘지 틈에서 하수인이 솟아 손패로 날아간다 */
+    .grave-recall-stage{position:fixed;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10.8px;box-sizing:border-box;padding:12.6px;border-radius:14.4px;background:radial-gradient(ellipse at 50% 70%,#3a1f5acc,#0b0910e6 70%);box-shadow:inset 0 0 0 1px #8f6bd355,0 0 32px #6b45b455;animation:grs-open .32s ease-out both}
+    .grave-recall-stage.fading{opacity:0;transition:opacity .45s ease .2s}
+    @keyframes grs-open{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+    .grs-head{display:flex;align-items:center;gap:10.8px;color:#e4d6ff;font-size:12.6px}
+    .grs-head b{font-size:15.3px;color:#c9a8ff;letter-spacing:.04em}
+    .grs-head .grs-cancel{padding:4.5px 10.8px;border:1px solid #6d5a91;border-radius:7.2px;background:#1a1426;color:#cdbfe6;font-size:11.7px;cursor:pointer}
+    .grs-cards{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14.4px;max-width:100%}
+    .grs-card{width:clamp(92px,7.6vw,128px)!important;min-width:0!important;height:auto!important;margin:0!important;transform-origin:50% 60%;animation:grs-float 2.6s ease-in-out calc(var(--i,0) * -.37s) infinite;cursor:pointer;box-shadow:0 0 0 1px #b996ff66,0 10px 24px #000a,0 0 18px #8a5cff44;transition:box-shadow .2s,filter .2s}
+    .grs-card:hover,.grs-card:focus-visible{box-shadow:0 0 0 2px #e3cdff,0 12px 28px #000c,0 0 26px #b07cffaa;filter:brightness(1.12)}
+    @keyframes grs-float{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-10px) rotate(1.2deg)}}
+    .grave-recall-stage.resolving .grs-card:not(.chosen){opacity:.08;filter:grayscale(.8);pointer-events:none;transition:opacity .3s}
+    .grs-card.chosen{animation:grs-chosen .26s ease-out forwards;pointer-events:none}
+    .grs-card.shattered{visibility:hidden}
+    @keyframes grs-chosen{to{transform:translateY(-14px) scale(1.12);filter:brightness(1.6) drop-shadow(0 0 12px #e6d2ff)}}
+    .grs-shard{position:fixed;z-index:61;pointer-events:none;overflow:hidden;border-radius:6px;background:linear-gradient(135deg,#4d3a74,#1c1430);animation:grs-shard .85s cubic-bezier(.2,.7,.3,1) forwards}
+    .grs-shard img{width:100%;height:100%;object-fit:cover;filter:brightness(1.3) saturate(.7)}
+    @keyframes grs-shard{0%{transform:none;opacity:1;filter:brightness(2)}100%{transform:translate(var(--sx),var(--sy)) rotate(var(--sr)) scale(.7);opacity:0}}
+    .grs-rift{position:absolute;left:50%;bottom:16%;width:46%;height:16px;margin-left:-23%;border-radius:50%;background:radial-gradient(ellipse,#d9c2ff 0,#7a4ddb 35%,#24123f 70%,transparent 72%);box-shadow:0 0 28px #9b6bff;animation:grs-rift 1.1s ease-out both}
+    @keyframes grs-rift{0%{transform:scaleX(0);opacity:0}30%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:.85}}
+    .grs-rise{position:absolute;left:50%;bottom:16%;width:clamp(86px,7vw,118px);aspect-ratio:3/4;margin-left:calc(clamp(86px,7vw,118px) / -2);display:flex;flex-direction:column;border-radius:9px;overflow:hidden;background:#140f1f;box-shadow:0 0 0 1px #c7a6ff,0 0 26px #9a6bffaa;animation:grs-rise .95s cubic-bezier(.2,.9,.25,1) .15s both}
+    .grs-rise img,.grs-fly img{flex:1;min-height:0;width:100%;object-fit:cover;object-position:center 20%}
+    .grs-rise b,.grs-fly b{padding:3.6px 5.4px;color:#f1e6ff;font-size:10.8px;text-align:center;background:#1d1530}
+    @keyframes grs-rise{0%{transform:translateY(40%) scale(.85);clip-path:inset(100% 0 0 0);opacity:.2}60%{clip-path:inset(0 0 0 0);opacity:1}100%{transform:translateY(-8%) scale(1);clip-path:inset(0 0 0 0);opacity:1}}
+    .grs-fly{position:fixed;z-index:62;display:flex;flex-direction:column;border-radius:9px;overflow:hidden;background:#140f1f;box-shadow:0 0 0 1px #c7a6ff,0 0 22px #9a6bffaa;pointer-events:none;transform-origin:50% 50%}
+    .hand .card.grave-arrived{animation:grs-arrived .9s ease-out}
+    @keyframes grs-arrived{0%{box-shadow:0 0 0 2px #e3cdff,0 0 30px #a874ff}100%{box-shadow:none}}
+    @media(prefers-reduced-motion:reduce){.grs-card,.grs-shard,.grs-rise,.grs-rift{animation:none}}
 </style>
 </head>
 <body>
@@ -2900,15 +2928,15 @@ let absoluteDefense = false;/* 땅 궁극기: 다음 상대 턴 동안 아군 �
     const GRAVE_RECALL_MANA=5,graveRecallUses={player:0,enemy:0};let graveRecallPicking=false;
     function graveRecallHpCost(side){return graveRecallUses[side]+1;}
     function graveRecallBlocker(side){const player=side==='player',m=player?mana:enemyMana,hp=heroHpOf(side),cost=graveRecallHpCost(side),spells=player?document.querySelectorAll('.hand .card.spell-card').length:enemyHand.filter(c=>c.spell).length,room=8-(player?document.querySelectorAll('.hand .card').length:enemyHand.length)+1;if(m<GRAVE_RECALL_MANA)return '마나 '+GRAVE_RECALL_MANA+'이 필요합니다.';if(hp<=cost)return '소환사 체력이 '+cost+'보다 많아야 합니다.';if(!spells)return '제물로 낼 마법카드가 손패에 없습니다.';if(!recyclableGraveyard(side).length)return '묘지에 가져올 하수인이 없습니다.';if(room<=0)return '손패가 가득 찼습니다.';return '';}
-    function performGraveRecall(side,spell){const player=side==='player',why=graveRecallBlocker(side);if(why)return false;const cost=graveRecallHpCost(side),yard=player?allyGraveyard:enemyGraveyard,pool=recyclableGraveyard(side),pick=pool[Math.floor(engineAdapter.random()*pool.length)],name=pick.name||'하수인',spellName=player?spell.querySelector('h3')?.textContent||'마법':spell.name;graveRecallUses[side]++;
-      if(player){mana-=GRAVE_RECALL_MANA;playerHp=Math.max(0,playerHp-cost);spell.classList.remove('selected');const gone=typeof sendCardTo==='function'?sendCardTo(spell,'graveyard',spellName):0;spell.style.visibility='hidden';setTimeout(()=>spell.remove(),Math.max(1,gone||0));}
+    function performGraveRecall(side,spell,opts={}){const player=side==='player',why=graveRecallBlocker(side);if(why)return false;const cost=graveRecallHpCost(side),yard=player?allyGraveyard:enemyGraveyard,pool=recyclableGraveyard(side),pick=pool[Math.floor(engineAdapter.random()*pool.length)],name=pick.name||'하수인',spellName=player?spell.querySelector('h3')?.textContent||'마법':spell.name;graveRecallUses[side]++;
+      if(player){mana-=GRAVE_RECALL_MANA;playerHp=Math.max(0,playerHp-cost);spell.classList.remove('selected');if(opts.shattered)spell.remove();/* 묘지 회수 무대에서 이미 부서지는 연출을 보여 줬다 */else{const gone=typeof sendCardTo==='function'?sendCardTo(spell,'graveyard',spellName):0;spell.style.visibility='hidden';setTimeout(()=>spell.remove(),Math.max(1,gone||0));}}
       else{enemyMana-=GRAVE_RECALL_MANA;enemyHp=Math.max(0,enemyHp-cost);enemyHand.splice(enemyHand.indexOf(spell),1);}
-      updateHeroHealth();updateMana();yard.splice(yard.indexOf(pick),1);const entry=deckEntry(baseCardStatsByArt(pick.art).index);if(player)setTimeout(()=>{deck.unshift(entry);drawCard();updateMana();renderGraveRecall();},260);else enemyHand.push(gradeCardData(entry,'enemy'));
+      updateHeroHealth();updateMana();yard.splice(yard.indexOf(pick),1);const entry=deckEntry(baseCardStatsByArt(pick.art).index);if(player){if(opts.onEntry)opts.onEntry(entry,pick);else setTimeout(()=>{deck.unshift(entry);drawCard();updateMana();renderGraveRecall();},260);}else enemyHand.push(gradeCardData(entry,'enemy'));
       showSkillEffect('burn',document.querySelector(player?'.duel-hud .player .avatar':'.duel-hud .enemy .avatar'),'묘지 회수 · 체력 −'+cost);
       writeLog('<strong>'+(player?'':'상대 ')+'묘지 회수:</strong> 마법 '+spellName+'을(를) 제물로, 마나 '+GRAVE_RECALL_MANA+'와 체력 '+cost+'을 내고 묘지의 <strong>'+name+'</strong>을(를) 손패로 가져왔습니다. 다음 회수 체력 비용 '+graveRecallHpCost(side)+'.');renderGraveRecall();return true;}
     function renderGraveRecall(){const button=document.querySelector('#grave-recall');if(!button)return;const why=graveRecallBlocker('player');button.classList.toggle('ready',!why);button.classList.toggle('picking',graveRecallPicking);button.title=why||'';button.innerHTML='<strong>묘지 회수 · 마나 '+GRAVE_RECALL_MANA+' + 체력 '+graveRecallHpCost('player')+'</strong><span class="slot-empty">'+(graveRecallPicking?'제물로 낼 마법카드를 손패에서 고르세요 (다시 누르면 취소)':(why||'손패 마법 1장을 제물로 묘지 하수인 1장을 무작위로 가져옵니다'))+'</span>';}
-    function startGraveRecall(){if(graveRecallPicking){graveRecallPicking=false;document.body.classList.remove('grave-recall-picking');renderGraveRecall();return;}if(battlePhase!=='setup')return;const why=graveRecallBlocker('player');if(why){writeLog('<strong>묘지 회수 불가:</strong> '+why);renderGraveRecall();return;}graveRecallPicking=true;document.body.classList.add('grave-recall-picking');renderGraveRecall();}
-    document.addEventListener('click',event=>{if(!graveRecallPicking)return;const card=event.target.closest?.('.hand .card.spell-card');if(!card)return;event.preventDefault();event.stopPropagation();graveRecallPicking=false;document.body.classList.remove('grave-recall-picking');performGraveRecall('player',card);},true);
+    function startGraveRecall(){if(typeof graveRecallBusy!=='undefined'&&graveRecallBusy)return;if(graveRecallPicking){graveRecallPicking=false;document.body.classList.remove('grave-recall-picking');if(typeof closeGraveRecallStage==='function')closeGraveRecallStage();renderGraveRecall();return;}if(battlePhase!=='setup')return;const why=graveRecallBlocker('player');if(why){writeLog('<strong>묘지 회수 불가:</strong> '+why);renderGraveRecall();return;}graveRecallPicking=true;document.body.classList.add('grave-recall-picking');renderGraveRecall();if(typeof openGraveRecallStage==='function')openGraveRecallStage();}
+    document.addEventListener('click',event=>{if(!graveRecallPicking)return;const card=event.target.closest?.('.hand .card.spell-card');if(!card)return;event.preventDefault();event.stopPropagation();if(typeof chooseGraveRecallSpell==='function'){chooseGraveRecallSpell(card);return;}graveRecallPicking=false;document.body.classList.remove('grave-recall-picking');performGraveRecall('player',card);},true);
     function playerCanDraw(){return deck.length>0||canRecycleGraveyard('player');}
     function deckHasChampion(pile){return pile.some(card=>!card.spell);}
     function needsRecyclePrompt(){return !deckHasChampion(deck)&&canRecycleGraveyard('player');}
@@ -4811,6 +4839,32 @@ function guardianAwakenLockReason(){if(!playerGuardian)return '성격 오라 필
       if(typeof updateHandTabs==='function')updateHandTabs();updateMana();
       if(mine)writeLog('<strong>덱 매칭:</strong> 「'+mine.name+'」'+(mine.own?'':'(60장 덱이 없어 오라 기본 덱)')+'으로 싸웁니다. 상대는 「'+(theirs?.name||'기본 덱')+'」입니다.');}
     (function(){const base=pickGuardian;pickGuardian=function(...args){const before=guardianChosen,result=base.apply(this,args);if(!before&&guardianChosen)applyAuraMatchedDecks();return result;};})();
+
+    /* 묘지 회수 무대 (2026-11-09 PM): 묘지 회수를 누르면 내 진영 가운데에 손패의 마법카드들이 떠오르고,
+       제물로 고른 카드가 부서진 뒤 묘지 틈에서 하수인이 솟아올라 손패로 날아온다. 비용·판정은 performGraveRecall 그대로다(컴퓨터는 무대 없이 같은 판정). */
+    var graveRecallBusy=false;let graveRecallArrival=false,graveRecallArrivalCard=null;
+    (function(){const base=queueDrawFlip;queueDrawFlip=function(card,onDone){if(graveRecallArrival){graveRecallArrivalCard=card;return;}return base.call(this,card,onDone);};})();
+    function closeGraveRecallStage(){document.querySelector('.grave-recall-stage')?.remove();document.removeEventListener('keydown',graveRecallStageKey,true);}
+    function graveRecallStageKey(event){if(event.key==='Escape'&&!graveRecallBusy){event.preventDefault();startGraveRecall();}}
+    function openGraveRecallStage(){closeGraveRecallStage();const zone=document.querySelector('.summon-zone')||document.querySelector('.arena');if(!zone)return;const r=zone.getBoundingClientRect(),spells=[...document.querySelectorAll('.hand .card.spell-card')],stage=document.createElement('div');
+      stage.className='grave-recall-stage';stage.setAttribute('role','dialog');stage.setAttribute('aria-label','묘지 회수: 제물로 바칠 마법 고르기');Object.assign(stage.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});
+      stage.innerHTML='<div class="grs-head"><b>묘지 회수</b><span>제물로 바칠 마법을 고르세요 · 마나 '+GRAVE_RECALL_MANA+' + 체력 '+graveRecallHpCost('player')+'</span><button class="grs-cancel" type="button">취소</button></div><div class="grs-cards"></div>';
+      const row=stage.querySelector('.grs-cards');spells.forEach((card,i)=>{const ghost=card.cloneNode(true);ghost.classList.remove('selected');ghost.classList.add('grs-card');ghost.removeAttribute('id');ghost.disabled=false;ghost.style.visibility='visible';ghost.style.setProperty('--i',i);ghost._source=card;ghost.addEventListener('click',event=>{event.stopPropagation();chooseGraveRecallSpell(card,ghost);});row.appendChild(ghost);});
+      stage.querySelector('.grs-cancel').addEventListener('click',event=>{event.stopPropagation();startGraveRecall();});
+      stage.addEventListener('click',event=>{if(event.target===stage&&!graveRecallBusy)startGraveRecall();});
+      document.addEventListener('keydown',graveRecallStageKey,true);document.body.appendChild(stage);}
+    function shatterGraveRecallCard(ghost){const r=ghost.getBoundingClientRect(),art=ghost.querySelector('img')?.getAttribute('src')||'',pieces=[[0,0,55,0,40,45,0,38],[55,0,100,0,100,30,40,45],[0,38,40,45,30,100,0,100],[40,45,100,30,100,70,62,62],[30,100,40,45,62,62,55,100],[62,62,100,70,100,100,55,100]];
+      pieces.forEach((pt,i)=>{const shard=document.createElement('div');shard.className='grs-shard';Object.assign(shard.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',clipPath:'polygon('+pt[0]+'% '+pt[1]+'%,'+pt[2]+'% '+pt[3]+'%,'+pt[4]+'% '+pt[5]+'%,'+pt[6]+'% '+pt[7]+'%)'});shard.style.setProperty('--sx',((i%2?1:-1)*(40+i*14))+'px');shard.style.setProperty('--sy',(-30+i*22)+'px');shard.style.setProperty('--sr',((i%2?1:-1)*(18+i*9))+'deg');shard.innerHTML=art?'<img src="'+art+'" alt="">':'';document.body.appendChild(shard);setTimeout(()=>shard.remove(),900);});
+      ghost.classList.add('shattered');ghost.style.visibility='hidden';/* 떠 있는 사본은 인라인으로 보이게 해 두었으므로 직접 숨긴다 */if(typeof noise==='function')noise(.35,.09,2200);if(typeof tone==='function')tone(880,.18,'square',.03,220,0);}
+    function chooseGraveRecallSpell(card,ghost){if(graveRecallBusy||!card?.isConnected)return;if(graveRecallBlocker('player')){startGraveRecall();return;}const stage=document.querySelector('.grave-recall-stage');ghost=ghost||[...(stage?.querySelectorAll('.grs-card')||[])].find(node=>node._source===card);if(!stage||!ghost){graveRecallPicking=false;document.body.classList.remove('grave-recall-picking');performGraveRecall('player',card);return;}
+      graveRecallBusy=true;graveRecallPicking=false;document.body.classList.remove('grave-recall-picking');stage.classList.add('resolving');ghost.classList.add('chosen');card.style.visibility='hidden';
+      setTimeout(()=>{shatterGraveRecallCard(ghost);setTimeout(()=>{const ok=performGraveRecall('player',card,{shattered:true,onEntry:(entry,pick)=>riseFromGraveyard(stage,entry,pick)});if(!ok){card.style.visibility='';graveRecallBusy=false;closeGraveRecallStage();renderGraveRecall();}},380);},260);}
+    function riseFromGraveyard(stage,entry,pick){const rift=document.createElement('div'),riser=document.createElement('div');rift.className='grs-rift';riser.className='grs-rise';riser.innerHTML='<img src="'+(pick.art||entry.art)+'" alt=""><b>'+(pick.name||entry.name)+'</b>';stage.appendChild(rift);stage.appendChild(riser);const note=stage.querySelector('.grs-head span');if(note)note.textContent=(pick.name||entry.name)+'이(가) 묘지에서 돌아옵니다';if(typeof tone==='function'){tone(110,.9,'sine',.08,220,0);tone(330,.7,'triangle',.03,660,.2);}
+      setTimeout(()=>{graveRecallArrival=true;graveRecallArrivalCard=null;deck.unshift(entry);drawCard();graveRecallArrival=false;updateMana();renderGraveRecall();const card=graveRecallArrivalCard,from=riser.getBoundingClientRect();
+        const finish=()=>{if(card){card.style.visibility='visible';card.classList.add('grave-arrived');setTimeout(()=>card.classList.remove('grave-arrived'),900);}closeGraveRecallStage();graveRecallBusy=false;renderGraveRecall();};
+        if(!card){finish();return;}card.scrollIntoView?.({block:'nearest',inline:'nearest'});const to=card.getBoundingClientRect(),fly=riser.cloneNode(true);fly.className='grs-fly';Object.assign(fly.style,{left:from.left+'px',top:from.top+'px',width:from.width+'px',height:from.height+'px'});document.body.appendChild(fly);riser.style.visibility='hidden';stage.classList.add('fading');
+        const anim=fly.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+(to.left+to.width/2-(from.left+from.width/2))+'px,'+(to.top+to.height/2-(from.top+from.height/2))+'px) scale('+Math.max(.4,to.width/Math.max(1,from.width))+')',opacity:.9}],{duration:matchMedia('(prefers-reduced-motion: reduce)').matches?1:620,easing:'cubic-bezier(.3,.7,.2,1)',fill:'forwards'});
+        anim.onfinish=()=>{fly.remove();finish();};setTimeout(()=>{if(fly.isConnected){fly.remove();finish();}},1400);},1050);}
 
     /* ===== 소환사 압박 하수인 (2026-11-08) =====
        초반 소환사 체력 100→85 구간이 너무 천천히 줄어 지루하다는 PM 피드백으로 추가한 세 종류. 컴퓨터도 같은 코드가 처리한다.
