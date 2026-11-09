@@ -2504,3 +2504,41 @@
     .tg-hp-enemy .tg-pop { top:auto; bottom:-26px; right:auto; left:50%; margin-left:-10px; }
     .tg-hp-player .tg-pop { top:2px; right:-34px; }
     .tg-scene-aura .tg-mana { top:auto; bottom:12px; }
+    /* 5. 오라 각성 */
+    .tg-scene-awaken .tg-hp-player { left:50%; bottom:16px; transform:translateX(-50%); }
+    .tg-scene-awaken .tg-hp-player.tg-hit { animation:tg-hit-c .45s ease-out; }
+    .tg-threshold { position:absolute; left:0; right:0; bottom:58px; color:#8b96a8; font-size:12px; text-align:center; }
+    .tg-threshold.met { color:#ffdf9b; }
+    .tg-awaken-btn { position:absolute; top:45%; left:50%; transform:translate(-50%,-50%); min-width:130px; opacity:.45; }
+    .tg-awaken-btn.unlocked { opacity:1; border-color:#e0703f; background:linear-gradient(180deg,#3a1d14,#24130e); }
+    .tg-awaken-btn.spent { opacity:.45; animation:none; }
+    .tg-choice { display:flex; flex-direction:column; gap:5px; width:clamp(120px,30vw,180px); padding:12px; border:1px solid #e0703f; border-radius:12px; background:linear-gradient(180deg,#3a1d14,#1d100c); color:#fff; cursor:pointer; text-align:left; }
+    .tg-choice b { font-size:15px; } .tg-choice small { color:#ffcfb0; font-size:11px; line-height:1.4; word-break:keep-all; }
+    .tg-sigil { position:absolute; left:50%; top:45%; z-index:9; display:grid; place-items:center; width:84px; height:84px; border-radius:50%; background:radial-gradient(circle,#ffd9a0,#ff6a2a 55%,#ff6a2a00 72%); box-shadow:0 0 50px #ff6a2a; pointer-events:none; }
+    .tg-sigil span { color:#fff; font-size:24px; font-weight:900; text-shadow:0 0 8px #000; }
+    .tg-banner { position:absolute; left:0; right:0; top:22%; z-index:10; color:#ffdf9b; font-size:22px; font-weight:900; text-align:center; text-shadow:0 0 16px #ff6a2a, 0 2px 4px #000; animation:tg-banner .5s ease-out; pointer-events:none; }
+    .tg-banner-soft { color:#c3ccdb; font-size:16px; text-shadow:0 2px 4px #000; }
+    @keyframes tg-banner { from { transform:scale(1.6); opacity:0; } to { transform:none; opacity:1; } }
+    /* 6. 영웅 강림 */
+    .tg-scene-hero .tg-hp-enemy { top:8px; }
+    .tg-enemy-field { position:absolute; top:48px; left:0; right:0; display:flex; justify-content:center; gap:8px; }
+    .tg-card.tg-small { width:clamp(40px,8vw,56px); }
+    .tg-card.tg-small b, .tg-card.tg-small .tg-stats { font-size:7px; }
+    .tg-my-field { position:absolute; top:52%; left:0; right:0; display:flex; justify-content:center; min-height:20px; }
+    .tg-hero-btn { position:absolute; top:52%; left:14px; border-color:#ffd477; color:#ffdf9b; }
+    .tg-scene-hero .tg-hand { left:auto; right:14px; bottom:12px; justify-content:flex-end; }
+    .tg-aura-shine { box-shadow:0 0 0 2px #ff6a2a, 0 0 22px #ff6a2a; }
+    .tg-exhausted { transform:scale(1.15); box-shadow:0 0 0 3px #3b3f47, 0 8px 18px #000a; }
+    .tg-avenger { transform:scale(1.25); border:3px solid #ff6a2a; box-shadow:0 0 24px #ff6a2a; }
+    .tg-hero-label { position:absolute; left:0; right:0; top:-16px; color:#ffdf9b; font-size:9px; font-weight:900; text-align:center; text-shadow:0 1px 2px #000; }
+    .tg-card:has(.tg-hero-label) { overflow:visible; }
+    .tg-resonance-beam { position:absolute; top:0; bottom:0; z-index:6; width:60px; margin-left:-30px; background:linear-gradient(180deg,#ff6a2a00,#ff6a2acc 60%,#ffd9a0); filter:blur(6px); animation:tg-beam .9s ease-out forwards; pointer-events:none; }
+    @keyframes tg-beam { from { opacity:0; transform:scaleY(.2); transform-origin:top; } 40% { opacity:1; transform:scaleY(1); } to { opacity:0; } }
+    .tg-shockwave { position:absolute; z-index:6; width:20px; height:20px; margin:-10px 0 0 -10px; border:3px solid #ffb347; border-radius:50%; animation:tg-wave .8s ease-out forwards; pointer-events:none; }
+    @keyframes tg-wave { to { transform:scale(40); opacity:0; } }
+    .tg-dying { animation:tg-hit .45s ease-out, tg-fade .5s .3s ease-in forwards; }
+    @keyframes tg-fade { to { opacity:0; filter:grayscale(1); } }
+    .tg-card .tg-pop { left:50%; right:auto; top:30%; margin-left:-12px; }
+    .tg-scene-done { display:flex; flex-direction:column; justify-content:center; gap:16px; }
+    .tg-reward { color:#ffdf9b; font-size:22px; font-weight:900; text-shadow:0 0 14px #ffd47799; animation:tg-banner .5s ease-out; }
+    .tg-replay { flex-shrink:0; min-width:max-content; }
