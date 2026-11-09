@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """턴 타이밍 규칙 브라우저 검사 (2026-11-07 PM 결정).
 
-1. 마법은 손패에서 더블클릭하면 마나로만 즉시 발동한다. 함정은 폐지돼 세팅 자리는 묘지 회수 1칸이고, 대재앙은 더블클릭하면 5턴 대기 마법으로 걸린다 (2026-11-09).
-2. 궁극기는 세팅한 턴에는 '다음 턴부터 발동'으로 잠기고, 내 다음 턴에 열린다. 컴퓨터도 같다.
+1. 마법은 손패에서 더블클릭하면 마나로만 즉시 발동한다. 함정은 폐지돼 세팅 자리는 묘지 회수 1칸이고, 대재앙은 대기 없이 바로 양쪽 하수인에게 6 피해를 준다 (2026-11-09).
+2. 영웅 강림은 손패에서 고르는 즉시 소진자가 내려온다(궁극기 슬롯과 다음 턴 대기 폐지, 2026-11-09). 컴퓨터도 같다.
 3. 오라 각성은 체력 85 이하에서 열린다.
 4. 중앙 스킬 소개가 있는 마법은 소개가 끝난 뒤 피해와 효과가 들어간다 (2026-11-08).
 자기 트리의 dist 를 serve_own_tree 로 띄운다(남의 번들을 재지 않는다).
@@ -34,24 +34,21 @@ CHECKS = [
   return {ok:dim&&c.isConnected&&mana===1&&playerHp===100,dim,still:c.isConnected,mana,hp:playerHp};})()"""),
  ("세팅 슬롯 자리는 묘지 회수 1칸뿐이다 (함정 슬롯 폐지, 2026-11-09)",
   """(()=>{const slots=[...document.querySelectorAll('.set-slot')].map(s=>s.id);return {ok:slots.length===1&&slots[0]==='grave-recall'&&MAGIC_SLOT_KINDS.length===0,slots};})()"""),
- ("대재앙: 손패에서 더블클릭하면 숨은 대기 마법으로 5턴을 세고, 대기 턴이 찬 내 턴 시작에 양쪽 하수인을 모두 파괴한다 (함정 폐지 뒤, 2026-11-09)",
-  """(async()=>{battlePhase='setup';maxMana=mana=10;updateMana();summonBattleToken('아군',2,5,'earth');setHandFilter('spell');const c=__card('storm.great-ruin');const cost=Number(c.querySelector('.cost').textContent);
-  c.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}));for(let i=0;i<40&&battlePhase!=='setup';i++)await __wait(100);await __wait(300);
-  const m=setMagicCards.find(x=>x.effect==='global-destroy'),paid=mana===10-cost,wait=m?m.readyTurn-turnNumber:null;const early=triggerTrap('field_state');const stillSet=setMagicCards.includes(m);
-  turnNumber=m.readyTurn;triggerTrap('field_state');await __wait(5000);/* 안내 → 중앙 소개 1.7초 → 파괴 */const left=document.querySelectorAll('.summon-zone .unit:not([data-destroyed="true"])').length;
-  return {ok:!!m&&paid&&wait===5&&stillSet&&!setMagicCards.includes(m)&&left===0,found:!!m,paid,wait,stillSet,left};})()"""),
- ("궁극기: 세팅한 턴에는 '다음 턴부터 발동'으로 잠기고 발동 버튼도 막힌다. 내 다음 턴에는 열린다",
+ ("대재앙: 손패에서 더블클릭하면 대기 없이 바로 양쪽 하수인 전체에 6 피해를 준다 (2026-11-09 재개편)",
+  """(async()=>{battlePhase='setup';maxMana=mana=10;updateMana();const lane=document.querySelector('.arena .lane:first-child');document.querySelectorAll('.arena .unit').forEach(u=>u.remove());summonBattleToken('아군',2,10,'earth');enemySummonUnit(lane,{el:'fire',name:'적',atk:3,hp:10,cost:3});await __wait(400);
+  setHandFilter('spell');const c=__card('storm.great-ruin');c.dispatchEvent(new MouseEvent('dblclick',{bubbles:true}));for(let i=0;i<60&&battlePhase!=='setup';i++)await __wait(100);await __wait(800);
+  const hps=[...document.querySelectorAll('.arena .unit')].map(u=>Number(u.querySelector('.stats span:last-child').textContent.replace(/[^0-9]/g,'')));
+  return {ok:hps.length===2&&hps.every(h=>h===4)&&!setMagicCards.some(x=>x.effect==='global-destroy'),hps,queued:setMagicCards.length};})()"""),
+ ("영웅 강림: 버튼을 누르면 손패 하수인이 떠오르고, 고르는 즉시 다음 턴 대기 없이 소진자가 내려온다 (궁극기 슬롯 폐지, 2026-11-09)",
   """(async()=>{battlePhase='setup';playerHp=70;awakenGateOpened.player=true;maxMana=mana=10;updateMana();
-  const id=collectionCardDefs.find(d=>d.cardType==='champion'&&d.aura!=='fire').cardId;const c=__card(id);setUltimate(c);renderUltimate();
-  const same=ultimateLockReason(),btn=document.querySelector('#field-ultimate-action'),btnDisabled=btn?btn.disabled:null;
-  const fired=fireUltimateAction();const still=!!ultimateState;
-  advanceUltimateLedger('player');mana=maxMana;const next=ultimateLockReason();
-  return {ok:same==='다음 턴부터 발동'&&btnDisabled===true&&fired===false&&still&&next==='',same,btnDisabled,fired,still,next};})()"""),
- ("컴퓨터 궁극기: 장착한 턴에는 발동하지 않고, 다음 상대 턴에 발동한다",
+  const id=collectionCardDefs.find(d=>d.cardType==='champion'&&d.aura!=='fire').cardId;const c=__card(id);updateMana();const lock=heroPickLockReason();
+  fireUltimateAction();const opts=[...document.querySelectorAll('.hero-pick .hero-pick-option')];const opened=opts.length>0;const opt=opts.find(o=>o.dataset.cardId===id||o.textContent.includes(c.querySelector('h3,h4')?.textContent||'@'))||opts[0];opt?.click();
+  await __wait(ULTIMATE_EFFECT_DELAY+400);const spent=document.querySelector('.summon-zone .unit[data-effect="ultimate-spent"]');
+  return {ok:lock===''&&opened&&!!spent&&!document.querySelector('.hero-pick'),lock,opened,options:opts.length,spent:!!spent};})()"""),
+ ("컴퓨터 영웅 강림: 강림할 수 있는 턴에 손패에서 골라 그 턴에 바로 강림한다 (2026-11-09)",
   """(async()=>{const proto=enemyDeck.find(d=>!d.spell);enemyHand.length=0;enemyHand.push({...proto,atkFinal:proto.atk});
-  enemyHp=70;awakenGateOpened.enemy=true;enemyUltimate=null;equipEnemyUltimate();const equipped=!!enemyUltimate;
-  enemyTurnMaxMana=maxMana=7;enemyMana=7;const first=castEnemyUltimate();advanceUltimateLedger('enemy');enemyMana=7;const second=castEnemyUltimate();
-  return {ok:equipped&&first===false&&second===true,equipped,first,second};})()"""),
+  enemyHp=70;awakenGateOpened.enemy=true;enemyUltimate=null;enemyTurnMaxMana=maxMana=7;enemyMana=7;equipEnemyUltimate();const equipped=!!enemyUltimate;const first=castEnemyUltimate();
+  return {ok:equipped&&first===true,equipped,first};})()"""),
  ("컴퓨터 마법: 칸 제한 없이 마나 안에서 쓰고 그 자리에서 바로 발동한다",
   """(async()=>{const spell=enemyDeck.find(d=>d.spell&&!d.trap&&(d.delay||1)===1)||enemyOriginalDeck.find(d=>d.spell&&!d.trap&&(d.delay||1)===1);
   if(!spell)return {ok:false,error:'no enemy spell'};enemySetMagic.length=0;enemySetMagic.push({...spell,readyTurn:turnNumber+1,fireAt:ultimateLedger.enemy.turns});
