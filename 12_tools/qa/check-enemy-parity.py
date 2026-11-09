@@ -24,10 +24,10 @@ CHECKS = [
  ("첫 턴 자동 드로우: 컴퓨터도 자기 첫 턴에는 뽑지 않고, 둘째 턴부터 뽑으며, 손패 8장이면 뽑지 않는다",
   "(()=>{enemyTurnsTaken=0;enemyHand.length=0;const first=enemyAutoDraw(),h1=enemyHand.length;const second=enemyAutoDraw(),h2=enemyHand.length;while(enemyHand.length<8)enemyHand.push(enemyDeck[0]||__q.champ());const before=enemyDeck.length;enemyAutoDraw();"
   "return {ok:!first&&h1===0&&second&&h2===1&&enemyHand.length===8&&enemyDeck.length===before,first,h1,second,h2,hand:enemyHand.length};})()"),
- ("카드 뽑기 비용: 컴퓨터도 그 턴 n번째 2·4·8, 모자란 마나는 배틀 첫 혈마나 1번이 마나 1당 체력 1",
-  "(()=>{enemyHand.length=0;enemyHp=100;enemyMana=10;enemyDrawActionsUsed=0;enemyBloodManaUses=0;enemyBloodManaBattleUses=0;turnNumber=3;"
+ ("카드 뽑기 비용: 컴퓨터도 그 턴 n번째 2·4·8, 모자란 마나는 배틀 첫 혈마나 뽑기라 마나 1당 체력 1, 카드 사용 혈마나 횟수와 따로 센다 (2026-11-09)",
+  "(()=>{enemyHand.length=0;enemyHp=100;enemyMana=10;enemyDrawActionsUsed=0;enemyBloodManaUses=0;enemyBloodManaBattleUses=0;enemyBloodDrawUses=0;turnNumber=3;"
   "while(enemyDeck.length<12)enemyDeck.push(...enemyOriginalDeck.slice(0,4));const r=[];performEnemyDrawAction();r.push(enemyMana);performEnemyDrawAction();r.push(enemyMana);performEnemyDrawAction();r.push(enemyMana,enemyHp,enemyBloodManaBattleUses,enemyBloodManaUses);"
-  "return {ok:r.join()==='8,4,0,96,1,0'&&enemyDrawActionsUsed===3&&enemyHand.length===3,r,used:enemyDrawActionsUsed};})()"),
+  "return {ok:r.join()==='8,4,0,96,0,0'&&enemyBloodDrawUses===1&&enemyDrawActionsUsed===3&&enemyHand.length===3,r,used:enemyDrawActionsUsed};})()"),
  ("혈마나 2번째 사용부터는 마나 1당 체력 2에서 시작해 같은 턴 사용마다 1씩 오른다(턴이 바뀌면 되돌아간다)",
   "(()=>{enemyHp=100;enemyMana=0;enemyBloodManaBattleUses=1;enemyBloodManaUses=0;turnNumber=3;const q1=enemyBloodManaQuote(3);recordEnemyBloodManaUse();const q2=enemyBloodManaQuote(3);enemyBloodManaUses=0;const q3=enemyBloodManaQuote(3);enemyHp=6;const q4=enemyBloodManaQuote(3);"
   "return {ok:q1.rate===2&&q1.healthCost===6&&q2.rate===3&&q3.rate===2&&!q4.affordable,q1:q1.rate,q2:q2.rate,q3:q3.rate,aff:q4.affordable};})()"),
